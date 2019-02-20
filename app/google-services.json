@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "1064028971909-p51t6up0rbcgpga7ulmhiri1bbfncj1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pechuro.cashdebts",
+            "certificate_hash": "f8ccf284f5dd9bd04b331a3bcc3b62a9c667c0e0"
+          }
+        },
+        {
           "client_id": "1064028971909-79475kgoer6eko5pjkmb0jrkgs5lncln.apps.googleusercontent.com",
           "client_type": 3
         }

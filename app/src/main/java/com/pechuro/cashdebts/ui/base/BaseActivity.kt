@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatActivity(),
@@ -27,18 +26,10 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
     protected lateinit var viewDataBinding: T
     protected open val bindingVariables: Map<Int, Any>? = null
 
-    @Inject
-    protected lateinit var compositeDisposable: CompositeDisposable
-
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
         performDataBinding()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector

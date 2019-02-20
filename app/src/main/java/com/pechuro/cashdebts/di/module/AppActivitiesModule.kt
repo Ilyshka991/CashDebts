@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.di.module
 
 import com.pechuro.cashdebts.di.annotations.ActivityScope
+import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -13,4 +14,8 @@ interface AppActivitiesModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [])
     fun bindNavigationActivity(): MainActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    fun bindAuthActivity(): AuthActivity
 }

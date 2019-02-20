@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pechuro.cashdebts.di.annotations.ViewModelKey
+import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
@@ -19,5 +20,10 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(MainActivityViewModel::class)
     fun navigationActivity(viewModel: MainActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AuthActivityViewModel::class)
+    fun authActivity(viewModel: AuthActivityViewModel): ViewModel
 
 }
