@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1064028971909",
+    "firebase_url": "https://cash-debts-5c1d0.firebaseio.com",
+    "project_id": "cash-debts-5c1d0",
+    "storage_bucket": "cash-debts-5c1d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064028971909:android:fad67d188fa390b7",
+        "android_client_info": {
+          "package_name": "com.pechuro.cashdebts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064028971909-lfblvr11u0r95veuhel324pg7lf3kic3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pechuro.cashdebts",
+            "certificate_hash": "eb61c6e842d6b1b9296039cf13d48db3fa8e6590"
+          }
+        },
+        {
+          "client_id": "1064028971909-79475kgoer6eko5pjkmb0jrkgs5lncln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCci6inAUSY3hMJDzGjcmehfx0rcvwEclQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064028971909-79475kgoer6eko5pjkmb0jrkgs5lncln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
