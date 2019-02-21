@@ -1,0 +1,27 @@
+package com.pechuro.cashdebts.ui.activity.auth.code
+
+import android.os.Bundle
+import androidx.lifecycle.ViewModelProviders
+import com.pechuro.cashdebts.BR
+import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
+import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
+import com.pechuro.cashdebts.ui.base.BaseFragment
+
+class AuthCodeFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
+    override val viewModel: AuthActivityViewModel
+        get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AuthActivityViewModel::class.java)
+    override val bindingVariables: Map<Int, Any>
+        get() = mapOf(BR.viewModel to viewModel)
+    override val layoutId: Int
+        get() = R.layout.fragment_auth_code
+
+
+    companion object {
+
+        fun newInstance() = AuthCodeFragment().apply {
+            arguments = Bundle().apply {
+            }
+        }
+    }
+}
