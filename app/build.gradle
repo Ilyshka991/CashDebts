@@ -65,6 +65,8 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.16'
     implementation 'com.google.dagger:dagger-android-support:2.16'
     kapt 'com.google.dagger:dagger-android-processor:2.16'
+
+    implementation 'com.hbb20:ccp:2.2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

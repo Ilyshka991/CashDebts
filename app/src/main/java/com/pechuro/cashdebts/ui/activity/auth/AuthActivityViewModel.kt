@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.activity.auth
 
+import androidx.annotation.StringRes
 import androidx.databinding.ObservableBoolean
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
@@ -8,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.SingleLiveEvent
 import java.util.concurrent.TimeUnit
@@ -30,10 +32,16 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 
         override fun onVerificationFailed(e: FirebaseException) {
             println("FAILED")
+            isLoading.set(false)
             when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
+                    command.call(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
                 }
                 is FirebaseTooManyRequestsException -> {
+                    command.call(Events.ShowSnackBarError(R.string.error_auth_too_many_requests))
+                }
+                else -> {
+                    command.call(Events.ShowSnackBarError(R.string.error_auth_common))
                 }
             }
         }
@@ -45,14 +53,13 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
             storedVerificationId = verificationId
             resendToken = token
         }
-
-        override fun onCodeAutoRetrievalTimeOut(verificationId: String?) {
-            println("CODE TIMEOUT")
-            storedVerificationId = verificationId
-        }
     }
 
-    fun startPhoneNumberVerification(phoneNumber: String) {
+    fun startPhoneNumberVerification(phoneNumber: String?) {
+        if (phoneNumber.isNullOrEmpty()) {
+            command.call(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            return
+        }
         isLoading.set(true)
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,
@@ -63,9 +70,8 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    fun verifyPhoneNumberWithCode(verificationId: String, code: String) {
-        val credential = PhoneAuthProvider.getCredential(verificationId, code)
-        signInWithPhoneAuthCredential(credential)
+    fun verifyPhoneNumberWithCode(code: String) {
+        storedVerificationId?.let { verifyPhoneNumberWithCode(it, code) }
     }
 
     fun resendVerificationCode(phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -77,6 +83,11 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
             authCallback,
             token
         )
+    }
+
+    private fun verifyPhoneNumberWithCode(verificationId: String, code: String) {
+        val credential = PhoneAuthProvider.getCredential(verificationId, code)
+        signInWithPhoneAuthCredential(credential)
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
@@ -99,4 +110,5 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 sealed class Events {
     object OnStartVerification : Events()
     object OnSuccess : Events()
+    class ShowSnackBarError(@StringRes val id: Int) : Events()
 }

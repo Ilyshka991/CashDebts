@@ -10,7 +10,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:name=".App"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".ui.activity.splash.SplashActivity"
@@ -25,7 +25,9 @@
                 android:name=".ui.activity.main.MainActivity"
                 android:label="@string/title_activity_main"/>
 
-        <activity android:name=".ui.activity.auth.AuthActivity"/>
+        <activity android:name=".ui.activity.auth.AuthActivity"
+                  android:windowSoftInputMode="adjustResize"
+                  android:label="@string/title_auth_activity"/>
 
     </application>
 </manifest>

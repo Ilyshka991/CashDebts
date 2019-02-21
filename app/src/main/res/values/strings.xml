@@ -2,21 +2,9 @@
     <string name="app_name">Cash Debts</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <string name="phone_title_text">Phone Number</string>
-    <string name="signed_in">Signed In</string>
-    <string name="signed_out">Signed Out</string>
-    <string name="resend_phone_auth">Resend</string>
-    <string name="hint_phone_number">Phone Number</string>
-    <string name="hint_verification_code">Verification Code</string>
-    <string name="start_phone_auth">Start</string>
-    <string name="verify_phone_auth">Verify</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="desc_firebase_lockup">Firebase logo and name</string>
-    <string name="status_code_sent">Code Sent</string>
-    <string name="status_verification_failed">Verification failed</string>
-    <string name="status_verification_succeeded">Verification succeeded</string>
-    <string name="status_sign_in_failed">Sign-in failed</string>
-    <string name="instant_validation">(instant validation)</string>
-    <string name="firebase_status_fmt">Firebase User: %s</string>
-    <string name="firebase_user_management">Firebase User Management</string>
+    <string name="title_auth_activity">Sign in</string>
+
+    <string name="error_auth_phone_validation">Phone number isn\'t correct</string>
+    <string name="error_auth_too_many_requests">Service is not available. Please, retry later</string>
+    <string name="error_auth_common">Something went wrong. Please, retry later</string>
 </resources>

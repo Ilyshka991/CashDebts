@@ -20,6 +20,7 @@
 
         <include
                 android:id="@+id/container_auth_code"
-                layout="@layout/layout_auth_code"/>
+                layout="@layout/layout_auth_code"
+                app:viewModel="@{viewModel}"/>
     </ViewSwitcher>
 </layout>
