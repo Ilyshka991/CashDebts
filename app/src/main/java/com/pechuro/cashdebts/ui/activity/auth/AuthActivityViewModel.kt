@@ -70,8 +70,12 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    fun verifyPhoneNumberWithCode(code: String) {
-        storedVerificationId?.let { verifyPhoneNumberWithCode(it, code) }
+    fun verifyPhoneNumberWithCode(code: String?) {
+        when {
+            code.isNullOrEmpty() -> command.call(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+            storedVerificationId == null -> command.call(Events.ShowSnackBarError(R.string.error_auth_common))
+            else -> verifyPhoneNumberWithCode(storedVerificationId!!, code)
+        }
     }
 
     fun resendVerificationCode(phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -86,6 +90,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
     }
 
     private fun verifyPhoneNumberWithCode(verificationId: String, code: String) {
+        isLoading.set(true)
         val credential = PhoneAuthProvider.getCredential(verificationId, code)
         signInWithPhoneAuthCredential(credential)
     }
@@ -97,6 +102,8 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
                     command.call(Events.OnSuccess)
                     println("SING SUCCESS")
                 } else {
+                    command.call(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+                    isLoading.set(false)
                     println("SIGN FAILED")
                 }
             }

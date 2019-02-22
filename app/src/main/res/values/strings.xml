@@ -5,6 +5,7 @@
     <string name="title_auth_activity">Sign in</string>
 
     <string name="error_auth_phone_validation">Phone number isn\'t correct</string>
+    <string name="error_auth_code_validation">Verification code isn\'t correct</string>
     <string name="error_auth_too_many_requests">Service is not available. Please, retry later</string>
     <string name="error_auth_common">Something went wrong. Please, retry later</string>
 </resources>
