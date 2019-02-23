@@ -5,6 +5,7 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
+import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -14,8 +15,8 @@ import dagger.android.support.AndroidSupportInjectionModule
 interface AppActivitiesModule {
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [])
-    fun bindNavigationActivity(): MainActivity
+    @ContributesAndroidInjector(modules = [DebtListFragmentProvider::class])
+    fun bindMainActivity(): MainActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [AuthPhoneFragmentProvider::class, AuthCodeFragmentProvider::class])
