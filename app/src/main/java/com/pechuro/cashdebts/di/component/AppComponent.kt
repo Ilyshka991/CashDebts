@@ -4,6 +4,7 @@ import com.pechuro.cashdebts.App
 import com.pechuro.cashdebts.di.module.AppActivitiesModule
 import com.pechuro.cashdebts.di.module.AppViewModelsModule
 import com.pechuro.cashdebts.di.module.ApplicationModule
+import com.pechuro.cashdebts.di.module.RxModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -13,7 +14,8 @@ import javax.inject.Singleton
     modules = [
         ApplicationModule::class,
         AppActivitiesModule::class,
-        AppViewModelsModule::class]
+        AppViewModelsModule::class,
+        RxModule::class]
 )
 interface AppComponent {
 

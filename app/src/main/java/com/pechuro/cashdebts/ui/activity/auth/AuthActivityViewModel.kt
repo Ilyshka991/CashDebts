@@ -11,12 +11,12 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import com.pechuro.cashdebts.ui.utils.SingleLiveEvent
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
-    val command = SingleLiveEvent<Events>()
+    val command = PublishSubject.create<Events>()
 
     val isLoading = ObservableBoolean()
 
@@ -35,20 +35,20 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
             isLoading.set(false)
             when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
-                    command.call(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+                    command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
                 }
                 is FirebaseTooManyRequestsException -> {
-                    command.call(Events.ShowSnackBarError(R.string.error_auth_too_many_requests))
+                    command.onNext(Events.ShowSnackBarError(R.string.error_auth_too_many_requests))
                 }
                 else -> {
-                    command.call(Events.ShowSnackBarError(R.string.error_auth_common))
+                    command.onNext(Events.ShowSnackBarError(R.string.error_auth_common))
                 }
             }
         }
 
         override fun onCodeSent(verificationId: String?, token: PhoneAuthProvider.ForceResendingToken) {
             isLoading.set(false)
-            command.call(Events.OnStartVerification)
+            command.onNext(Events.OnStartVerification)
             println("CODE SENT")
             storedVerificationId = verificationId
             resendToken = token
@@ -57,7 +57,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 
     fun startPhoneNumberVerification(phoneNumber: String?) {
         if (phoneNumber.isNullOrEmpty()) {
-            command.call(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
             return
         }
         isLoading.set(true)
@@ -72,8 +72,8 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 
     fun verifyPhoneNumberWithCode(code: String?) {
         when {
-            code.isNullOrEmpty() -> command.call(Events.ShowSnackBarError(R.string.error_auth_code_validation))
-            storedVerificationId == null -> command.call(Events.ShowSnackBarError(R.string.error_auth_common))
+            code.isNullOrEmpty() -> command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+            storedVerificationId == null -> command.onNext(Events.ShowSnackBarError(R.string.error_auth_common))
             else -> verifyPhoneNumberWithCode(storedVerificationId!!, code)
         }
     }
@@ -99,10 +99,10 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    command.call(Events.OnSuccess)
+                    command.onNext(Events.OnSuccess)
                     println("SING SUCCESS")
                 } else {
-                    command.call(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+                    command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
                     isLoading.set(false)
                     println("SIGN FAILED")
                 }

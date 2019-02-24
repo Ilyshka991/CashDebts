@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.StringRes
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
@@ -46,13 +45,13 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, AuthActivityViewModel>() 
     }
 
     private fun subscribeToEvents() {
-        viewModel.command.observe(this, Observer {
+        viewModel.command.subscribe {
             when (it) {
                 is Events.OnStartVerification -> showNextFragment()
                 is Events.OnSuccess -> openNextActivity()
                 is Events.ShowSnackBarError -> showSnackBar(it.id)
             }
-        })
+        }.let(weakCompositeDisposable::add)
     }
 
     private fun homeFragment() {

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(),
@@ -28,6 +29,11 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
     protected lateinit var viewDataBinding: T
     protected open val bindingVariables: Map<Int, Any>? = null
 
+    @Inject
+    protected lateinit var weakCompositeDisposable: CompositeDisposable
+    @Inject
+    protected lateinit var strongCompositeDisposable: CompositeDisposable
+
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
@@ -43,6 +49,16 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
         super.onActivityCreated(savedInstanceState)
         bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
         viewDataBinding.executePendingBindings()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        weakCompositeDisposable.dispose()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        strongCompositeDisposable.clear()
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
