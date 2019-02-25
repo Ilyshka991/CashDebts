@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.pechuro.cashdebts.di.annotations.ViewModelKey
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
+import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -25,5 +26,11 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(AuthActivityViewModel::class)
     fun authActivity(viewModel: AuthActivityViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DebtListFragmentViewModel::class)
+    fun debtListFragment(viewModel: DebtListFragmentViewModel): ViewModel
 
 }

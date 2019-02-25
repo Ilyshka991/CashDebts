@@ -24,6 +24,7 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
         super.onActivityCreated(savedInstanceState)
         setupView()
         setListeners()
+        subscribeToData()
     }
 
     private fun setupView() {
@@ -35,8 +36,14 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
 
     private fun setListeners() {
         viewDataBinding.fabAdd.setOnClickListener {
-
+            viewModel.add()
         }
+    }
+
+    private fun subscribeToData() {
+        viewModel.data.subscribe {
+            adapter.setData(it)
+        }.let(weakCompositeDisposable::add)
     }
 
     companion object {

@@ -44,6 +44,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
                     command.onNext(Events.ShowSnackBarError(R.string.error_auth_common))
                 }
             }
+            println(e.message)
         }
 
         override fun onCodeSent(verificationId: String?, token: PhoneAuthProvider.ForceResendingToken) {

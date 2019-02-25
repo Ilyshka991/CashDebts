@@ -22,9 +22,13 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, AuthActivityViewModel>() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        subscribeToEvents()
         setupView()
         if (savedInstanceState == null) homeFragment()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        subscribeToEvents()
     }
 
     override fun onSupportNavigateUp(): Boolean {
