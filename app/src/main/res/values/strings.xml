@@ -8,4 +8,9 @@
     <string name="error_auth_code_validation">Verification code isn\'t correct</string>
     <string name="error_auth_too_many_requests">Service is not available. Please, retry later</string>
     <string name="error_auth_common">Something went wrong. Please, retry later</string>
+
+
+    <string name="item_debt_who">Who: %1$s</string>
+    <string name="item_debt_whom">Whom: %1$s</string>
+    <string name="item_debt_value">Value: %1$.0f</string>
 </resources>

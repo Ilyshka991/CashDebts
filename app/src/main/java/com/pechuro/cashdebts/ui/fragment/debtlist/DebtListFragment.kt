@@ -41,7 +41,11 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
     }
 
     private fun subscribeToData() {
-        viewModel.data.subscribe {
+        viewModel.dataOnce.subscribe {
+            // adapter.setData(it)
+        }.let(weakCompositeDisposable::add)
+
+        viewModel.dataList.subscribe {
             adapter.setData(it)
         }.let(weakCompositeDisposable::add)
     }

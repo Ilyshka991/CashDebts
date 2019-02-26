@@ -26,12 +26,10 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
     private val authCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            println("COMPLETE")
             signInWithPhoneAuthCredential(credential)
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
-            println("FAILED")
             isLoading.set(false)
             when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
@@ -44,13 +42,11 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
                     command.onNext(Events.ShowSnackBarError(R.string.error_auth_common))
                 }
             }
-            println(e.message)
         }
 
         override fun onCodeSent(verificationId: String?, token: PhoneAuthProvider.ForceResendingToken) {
             isLoading.set(false)
             command.onNext(Events.OnStartVerification)
-            println("CODE SENT")
             storedVerificationId = verificationId
             resendToken = token
         }
@@ -101,11 +97,9 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     command.onNext(Events.OnSuccess)
-                    println("SING SUCCESS")
                 } else {
                     command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
                     isLoading.set(false)
-                    println("SIGN FAILED")
                 }
             }
     }

@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-            android:id="@+id/text"
+    <data>
+
+        <variable name="debt"
+                  type="com.pechuro.cashdebts.data.model.Debt"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"/>
+            android:layout_height="wrap_content" app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:layout_margin="16dp">
+
+
+            <TextView
+                    android:id="@+id/text_debtor"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.format(@string/item_debt_who, debt.debtor)}"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                    android:id="@+id/text_debtee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.format(@string/item_debt_whom, debt.debtee)}"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/text_debtor"
+                    app:layout_constraintTop_toTopOf="@+id/text_debtor"/>
+
+            <TextView
+                    android:id="@+id/text_value"
+                    android:text="@{String.format(@string/item_debt_value, debt.value)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_debtor"
+                    app:layout_constraintTop_toBottomOf="@+id/text_debtor"/>
+
+            <TextView
+                    android:id="@+id/text_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_value"
+                    app:layout_constraintTop_toBottomOf="@+id/text_value"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>
