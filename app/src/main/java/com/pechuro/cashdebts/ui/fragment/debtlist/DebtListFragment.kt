@@ -25,6 +25,10 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
         super.onActivityCreated(savedInstanceState)
         setupView()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
         subscribeToData()
     }
 
@@ -43,16 +47,11 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
 
     private fun subscribeToData() {
         viewModel.dataSource.subscribe({ (type, value) ->
+            println("AAAAAAAAAAAAAAAAAAAA")
             when (type) {
-                DocumentChange.Type.ADDED -> {
-                    adapter.addData(value)
-                }
-                DocumentChange.Type.REMOVED -> {
-                    adapter.removeData(value)
-                }
-                DocumentChange.Type.MODIFIED -> {
-                    adapter.modifyData(value)
-                }
+                DocumentChange.Type.ADDED -> adapter.addData(value)
+                DocumentChange.Type.REMOVED -> adapter.removeData(value)
+                DocumentChange.Type.MODIFIED -> adapter.modifyData(value)
             }
         }, {
             println(it.message)

@@ -1,13 +1,13 @@
 package com.pechuro.cashdebts
 
 import android.app.Activity
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
-class App : MultiDexApplication(), HasActivityInjector {
+class App : Application(), HasActivityInjector {
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
@@ -19,16 +19,11 @@ class App : MultiDexApplication(), HasActivityInjector {
         LeakCanary.install(this)*/
 
         initDI()
-        initFirebase()
     }
 
     override fun activityInjector() = activityDispatchingAndroidInjector
 
     private fun initDI() {
         DaggerAppComponent.builder().application(this).build().inject(this)
-    }
-
-    private fun initFirebase() {
-        //  firebaseInteractor.init()
     }
 }

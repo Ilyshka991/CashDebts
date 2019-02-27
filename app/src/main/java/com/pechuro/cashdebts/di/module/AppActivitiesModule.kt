@@ -19,6 +19,10 @@ interface AppActivitiesModule {
     fun bindMainActivity(): MainActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [AuthPhoneFragmentProvider::class, AuthCodeFragmentProvider::class])
+    @ContributesAndroidInjector(
+        modules = [
+            AuthPhoneFragmentProvider::class,
+            AuthCodeFragmentProvider::class]
+    )
     fun bindAuthActivity(): AuthActivity
 }
