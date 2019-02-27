@@ -13,4 +13,6 @@
     <string name="item_debt_who">Who: %1$s</string>
     <string name="item_debt_whom">Whom: %1$s</string>
     <string name="item_debt_value">Value: %1$.0f</string>
+
+    <string name="menu_logout">Logout</string>
 </resources>

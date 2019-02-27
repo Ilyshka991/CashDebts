@@ -1,6 +1,5 @@
 package com.pechuro.cashdebts.ui.fragment.debtlist
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.pechuro.cashdebts.data.model.CurrentUser
 import com.pechuro.cashdebts.data.model.Debt
@@ -24,7 +23,7 @@ class DebtListFragmentViewModel @Inject constructor(
         .observeOn(AndroidSchedulers.mainThread())
 
     fun add() {
-        FirebaseAuth.getInstance().signOut()
+
     }
 
     private fun DocumentSnapshot.getDebt(): Debt {

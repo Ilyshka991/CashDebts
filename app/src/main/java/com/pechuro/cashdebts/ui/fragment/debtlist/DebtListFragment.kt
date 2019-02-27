@@ -47,7 +47,6 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
 
     private fun subscribeToData() {
         viewModel.dataSource.subscribe({ (type, value) ->
-            println("AAAAAAAAAAAAAAAAAAAA")
             when (type) {
                 DocumentChange.Type.ADDED -> adapter.addData(value)
                 DocumentChange.Type.REMOVED -> adapter.removeData(value)
