@@ -1,6 +1,6 @@
-package com.pechuro.cashdebts.data.model
+package com.pechuro.cashdebts.data.remote
 
-object DatabaseStructure {
+class FireStoreStructure {
     object Debts {
         const val TAG = "debts"
 
