@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.debtlist
 
+import com.google.firebase.auth.FirebaseAuth
 import com.pechuro.cashdebts.data.local.database.dao.DebtDao
 import com.pechuro.cashdebts.data.model.Debt
 import com.pechuro.cashdebts.ui.base.BaseViewModel
@@ -16,7 +17,9 @@ class DebtListFragmentViewModel @Inject constructor(private val dao: DebtDao) : 
 
     }
 
-    fun add() {}
+    fun add() {
+        FirebaseAuth.getInstance().signOut()
+    }
 
     private fun getData() {
         dao.getAll()
