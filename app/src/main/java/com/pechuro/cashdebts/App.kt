@@ -2,7 +2,6 @@ package com.pechuro.cashdebts
 
 import android.app.Activity
 import androidx.multidex.MultiDexApplication
-import com.pechuro.cashdebts.data.remote.FirebaseInteractor
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -12,8 +11,6 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-    @Inject
-    lateinit var firebaseInteractor: FirebaseInteractor
 
     override fun onCreate() {
         super.onCreate()
@@ -32,6 +29,6 @@ class App : MultiDexApplication(), HasActivityInjector {
     }
 
     private fun initFirebase() {
-        firebaseInteractor.init()
+        //  firebaseInteractor.init()
     }
 }

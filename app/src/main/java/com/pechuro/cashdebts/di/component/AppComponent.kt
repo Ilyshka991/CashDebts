@@ -13,7 +13,6 @@ import javax.inject.Singleton
         AppActivitiesModule::class,
         AppViewModelsModule::class,
         RxModule::class,
-        DatabaseModule::class,
         FirebaseModule::class]
 )
 interface AppComponent {

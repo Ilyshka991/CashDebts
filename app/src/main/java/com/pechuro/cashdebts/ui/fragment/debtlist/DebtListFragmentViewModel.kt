@@ -1,33 +1,39 @@
 package com.pechuro.cashdebts.ui.fragment.debtlist
 
 import com.google.firebase.auth.FirebaseAuth
-import com.pechuro.cashdebts.data.local.database.dao.DebtDao
+import com.google.firebase.firestore.DocumentSnapshot
+import com.pechuro.cashdebts.data.model.CurrentUser
 import com.pechuro.cashdebts.data.model.Debt
+import com.pechuro.cashdebts.data.remote.FirestoreRepository
+import com.pechuro.cashdebts.data.remote.FirestoreStructure
+import com.pechuro.cashdebts.data.remote.FirestoreStructure.Debts.Structure.debtee
+import com.pechuro.cashdebts.data.remote.FirestoreStructure.Debts.Structure.debtor
+import com.pechuro.cashdebts.data.remote.FirestoreStructure.Debts.Structure.description
+import com.pechuro.cashdebts.data.remote.FirestoreStructure.Debts.Structure.value
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class DebtListFragmentViewModel @Inject constructor(private val dao: DebtDao) : BaseViewModel() {
-    val dataList = BehaviorSubject.create<List<Debt>>()
+class DebtListFragmentViewModel @Inject constructor(
+    repository: FirestoreRepository,
+    private val user: CurrentUser
+) : BaseViewModel() {
 
-    init {
-        getData()
-
-    }
+    val dataSource = repository.getDataSource()
+        .map { it.type to it.document.getDebt() }
+        .observeOn(AndroidSchedulers.mainThread())
 
     fun add() {
         FirebaseAuth.getInstance().signOut()
     }
 
-    private fun getData() {
-        dao.getAll()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                dataList.onNext(it)
-            }
-            .let(compositeDisposable::add)
+    private fun DocumentSnapshot.getDebt(): Debt {
+        val isCurrentUserDebtor = getString(debtor) == user.phoneNumber
+        return Debt(
+            id,
+            if (isCurrentUserDebtor) getString(debtee)!! else getString(FirestoreStructure.Debts.Structure.debtor)!!,
+            getDouble(value)!!,
+            getString(description)
+        )
     }
 }

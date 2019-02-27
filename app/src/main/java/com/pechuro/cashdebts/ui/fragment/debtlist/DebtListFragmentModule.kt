@@ -2,7 +2,6 @@ package com.pechuro.cashdebts.ui.fragment.debtlist
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pechuro.cashdebts.di.annotations.FragmentScope
-import com.pechuro.cashdebts.ui.fragment.debtlist.adapter.DebtDiffCallback
 import com.pechuro.cashdebts.ui.fragment.debtlist.adapter.DebtListAdapter
 import dagger.Module
 import dagger.Provides
@@ -15,9 +14,5 @@ class DebtListFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideDiffCallback() = DebtDiffCallback()
-
-    @Provides
-    @FragmentScope
-    fun provideAdapter(diffCallback: DebtDiffCallback) = DebtListAdapter(diffCallback)
+    fun provideAdapter() = DebtListAdapter()
 }
