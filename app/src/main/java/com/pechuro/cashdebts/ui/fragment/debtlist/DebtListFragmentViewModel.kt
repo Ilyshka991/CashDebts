@@ -22,10 +22,6 @@ class DebtListFragmentViewModel @Inject constructor(
         .map { it.type to it.document.getDebt() }
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun add() {
-
-    }
-
     private fun DocumentSnapshot.getDebt(): Debt {
         val isCurrentUserDebtor = getString(debtor) == user.phoneNumber
         return Debt(

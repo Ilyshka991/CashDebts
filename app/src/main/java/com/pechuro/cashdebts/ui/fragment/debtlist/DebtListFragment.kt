@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.DocumentChange
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentDebtListBinding
+import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.debtlist.adapter.DebtListAdapter
+import com.pechuro.cashdebts.ui.utils.EventBus
 import javax.inject.Inject
 
 class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentViewModel>() {
@@ -41,7 +43,7 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
 
     private fun setListeners() {
         viewDataBinding.fabAdd.setOnClickListener {
-            viewModel.add()
+            EventBus.publish(MainActivityEvent.OpenAddActivity)
         }
     }
 

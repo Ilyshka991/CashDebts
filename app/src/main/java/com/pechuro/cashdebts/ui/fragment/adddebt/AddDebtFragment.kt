@@ -14,6 +14,8 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtFragmentView
 
 
     companion object {
+        const val TAG = "AddFragment"
+
         fun newInstance() = AddDebtFragment().apply {
             arguments = Bundle().apply {
             }

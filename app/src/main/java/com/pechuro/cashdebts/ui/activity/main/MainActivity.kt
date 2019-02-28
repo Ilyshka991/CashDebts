@@ -7,23 +7,29 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.ActivityMainBinding
+import com.pechuro.cashdebts.databinding.ActivityContainerBinding
+import com.pechuro.cashdebts.ui.activity.add.AddActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.base.BaseActivity
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
+import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.transaction
 
-
-class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
+class MainActivity : BaseActivity<ActivityContainerBinding, MainActivityViewModel>() {
 
     override val viewModel: MainActivityViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
     override val layoutId: Int
-        get() = R.layout.activity_main
+        get() = R.layout.activity_container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) homeFragment()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        subscribeToEvents()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -53,6 +59,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         supportFragmentManager.transaction {
             replace(viewDataBinding.container.id, fragment)
         }
+    }
+
+    private fun subscribeToEvents() {
+        EventBus.listen(MainActivityEvent::class.java).subscribe {
+            when (it) {
+                is MainActivityEvent.OpenAddActivity -> openAddActivity()
+            }
+        }.let(weakCompositeDisposable::add)
+    }
+
+    private fun openAddActivity() {
+        val intent = AddActivity.newIntent(this)
+        startActivity(intent)
     }
 
     companion object {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
@@ -12,6 +13,8 @@ import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.base.BaseActivity
+import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
 class AuthActivity : BaseActivity<ActivityAuthBinding, AuthActivityViewModel>() {
@@ -51,7 +54,7 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, AuthActivityViewModel>() 
     private fun subscribeToEvents() {
         viewModel.command.subscribe {
             when (it) {
-                is Events.OnStartVerification -> showNextFragment()
+                is Events.OnStartVerification -> showNextFragment(AuthCodeFragment.newInstance())
                 is Events.OnSuccess -> openNextActivity()
                 is Events.ShowSnackBarError -> showSnackBar(it.id)
             }
@@ -65,8 +68,7 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, AuthActivityViewModel>() 
         }
     }
 
-    private fun showNextFragment() {
-        val fragment = AuthCodeFragment.newInstance()
+    private fun <T : ViewDataBinding, V : BaseViewModel> showNextFragment(fragment: BaseFragment<T, V>) {
         supportFragmentManager.transaction {
             setCustomAnimations(
                 R.anim.anim_slide_in_right,
