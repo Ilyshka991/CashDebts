@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.data.model
+package com.pechuro.cashdebts.data
 
 import com.google.firebase.auth.FirebaseAuth
 

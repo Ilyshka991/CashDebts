@@ -22,11 +22,10 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtFragmentView
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            REQUEST_PICK_CONTACT -> {
-                if (resultCode == RESULT_OK) {
-                    data?.data?.let { getContact(it) }
-                }
+        when {
+            requestCode == REQUEST_PICK_CONTACT && resultCode == RESULT_OK -> {
+                data?.data?.let { getContact(it) }
+                return
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -35,6 +34,17 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtFragmentView
     private fun setListeners() {
         viewDataBinding.buttonPickContact.setOnClickListener {
             startPickContactActivity()
+        }
+        viewDataBinding.buttonSave.setOnClickListener {
+
+            /* FirebaseFirestore.getInstance().collection("debts").add(
+                 FirestoreDebt(
+                     FirebaseAuth.getInstance().currentUser!!.phoneNumber!!,
+                     viewDataBinding.textPhone.text.toString(),
+                     viewDataBinding.textValue.text.toString().toDouble(),
+                     ""
+                 )
+             )*/
         }
     }
 
@@ -47,7 +57,9 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtFragmentView
         context?.contentResolver?.query(uri, null, null, null, null).use {
             if (it?.moveToFirst() == true) {
                 val number = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                println("AAA $number")
+                val name = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                viewDataBinding.textPhone.setText(number)
+                viewDataBinding.textName.setText(name)
             }
         }
     }

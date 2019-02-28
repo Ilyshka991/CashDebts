@@ -3,8 +3,8 @@ package com.pechuro.cashdebts.ui.activity.main.debtlist.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.pechuro.cashdebts.data.model.Debt
 import com.pechuro.cashdebts.databinding.ItemDebtBinding
+import com.pechuro.cashdebts.ui.activity.main.debtlist.data.Debt
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 
 class DebtListAdapter : RecyclerView.Adapter<BaseViewHolder<Debt>>() {

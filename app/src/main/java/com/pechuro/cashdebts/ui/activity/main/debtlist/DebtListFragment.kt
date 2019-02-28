@@ -44,6 +44,17 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
     private fun setListeners() {
         viewDataBinding.fabAdd.setOnClickListener {
             EventBus.publish(MainActivityEvent.OpenAddActivity)
+            /*  FirebaseFirestore.getInstance().collection("debts")
+                  .add(
+                      FirestoreDebt(
+                          "+375259050135",
+                          "+375259050134",
+                          214.1,
+                          "Test",
+                          Date(),
+                          FirestoreDebtStatus.WAIT_FOR_CONFIRMATION
+                      )
+                  )*/
         }
     }
 

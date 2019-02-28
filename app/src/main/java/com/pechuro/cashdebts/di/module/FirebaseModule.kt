@@ -2,8 +2,8 @@ package com.pechuro.cashdebts.di.module
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.pechuro.cashdebts.data.model.CurrentUser
-import com.pechuro.cashdebts.data.remote.FirestoreRepository
+import com.pechuro.cashdebts.data.CurrentUser
+import com.pechuro.cashdebts.data.FirestoreRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

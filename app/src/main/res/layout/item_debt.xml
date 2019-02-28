@@ -5,7 +5,7 @@
     <data>
 
         <variable name="debt"
-                  type="com.pechuro.cashdebts.data.model.Debt"/>
+                  type="com.pechuro.cashdebts.ui.activity.main.debtlist.data.Debt"/>
     </data>
 
     <androidx.cardview.widget.CardView

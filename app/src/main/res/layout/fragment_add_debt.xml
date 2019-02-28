@@ -13,20 +13,42 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:ems="10"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button_pick_contact"/>
+                app:layout_constraintStart_toStartOf="@+id/text_name"
+                app:layout_constraintEnd_toStartOf="@+id/button_pick_contact"
+                app:layout_constraintTop_toBottomOf="@+id/text_name" android:hint="Phone"/>
 
         <Button
                 android:id="@+id/button_pick_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
+                android:text="Pick"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_phone"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/text_name" android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent" android:hint="Name"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/text_value"
+                app:layout_constraintStart_toStartOf="@+id/text_phone" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_phone" android:inputType="number" android:hint="Value"/>
+        <Button
+                android:text="Ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_save" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_value"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
