@@ -1,13 +1,13 @@
 package com.pechuro.cashdebts.di.module
 
 import com.pechuro.cashdebts.di.annotations.ActivityScope
-import com.pechuro.cashdebts.ui.activity.add.AddActivity
+import com.pechuro.cashdebts.ui.activity.adddebt.AddActivity
+import com.pechuro.cashdebts.ui.activity.adddebt.adddebt.AddDebtFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
-import com.pechuro.cashdebts.ui.fragment.adddebt.AddDebtFragmentProvider
-import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentProvider
+import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule

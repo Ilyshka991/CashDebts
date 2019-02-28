@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.debtlist
+package com.pechuro.cashdebts.ui.activity.main.debtlist
 
 import com.pechuro.cashdebts.di.annotations.FragmentScope
 import dagger.Module

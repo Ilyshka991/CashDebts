@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.activity.add
+package com.pechuro.cashdebts.ui.activity.adddebt
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,9 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityContainerBinding
+import com.pechuro.cashdebts.ui.activity.adddebt.adddebt.AddDebtFragment
 import com.pechuro.cashdebts.ui.base.BaseActivity
-import com.pechuro.cashdebts.ui.fragment.adddebt.AddDebtFragment
 import com.pechuro.cashdebts.ui.utils.transaction
-
 
 class AddActivity : BaseActivity<ActivityContainerBinding, AddActivityViewModel>() {
 

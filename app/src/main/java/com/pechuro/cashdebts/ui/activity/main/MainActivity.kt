@@ -8,10 +8,10 @@ import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityContainerBinding
-import com.pechuro.cashdebts.ui.activity.add.AddActivity
+import com.pechuro.cashdebts.ui.activity.adddebt.AddActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
+import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragment
 import com.pechuro.cashdebts.ui.base.BaseActivity
-import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.transaction
 

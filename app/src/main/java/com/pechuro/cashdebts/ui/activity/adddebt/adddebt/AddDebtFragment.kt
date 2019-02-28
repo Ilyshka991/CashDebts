@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.adddebt
+package com.pechuro.cashdebts.ui.activity.adddebt.adddebt
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders

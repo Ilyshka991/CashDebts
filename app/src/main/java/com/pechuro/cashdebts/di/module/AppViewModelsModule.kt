@@ -3,9 +3,11 @@ package com.pechuro.cashdebts.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pechuro.cashdebts.di.annotations.ViewModelKey
+import com.pechuro.cashdebts.ui.activity.adddebt.AddActivityViewModel
+import com.pechuro.cashdebts.ui.activity.adddebt.adddebt.AddDebtFragmentViewModel
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
-import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentViewModel
+import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -20,17 +22,25 @@ interface AppViewModelsModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainActivityViewModel::class)
-    fun navigationActivity(viewModel: MainActivityViewModel): ViewModel
+    fun mainActivity(viewModel: MainActivityViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(AuthActivityViewModel::class)
     fun authActivity(viewModel: AuthActivityViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddActivityViewModel::class)
+    fun addDebtActivity(viewModel: AddActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddDebtFragmentViewModel::class)
+    fun addDebtFragment(viewModel: AddDebtFragmentViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(DebtListFragmentViewModel::class)
     fun debtListFragment(viewModel: DebtListFragmentViewModel): ViewModel
-
 }

@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.debtlist.adapter
+package com.pechuro.cashdebts.ui.activity.main.debtlist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

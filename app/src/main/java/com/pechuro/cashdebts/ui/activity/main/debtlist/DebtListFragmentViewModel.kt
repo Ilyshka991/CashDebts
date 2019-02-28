@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.debtlist
+package com.pechuro.cashdebts.ui.activity.main.debtlist
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.pechuro.cashdebts.data.model.CurrentUser
