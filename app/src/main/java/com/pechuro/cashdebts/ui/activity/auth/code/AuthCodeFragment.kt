@@ -25,7 +25,7 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     private fun setupView() {
         viewDataBinding.textCode.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                viewDataBinding.buttonConfirmCode.performClick()
+                viewModel.verifyPhoneNumberWithCode()
                 return@setOnEditorActionListener true
             }
             false
@@ -33,7 +33,6 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     }
 
     companion object {
-
         fun newInstance() = AuthCodeFragment().apply {
             arguments = Bundle().apply {
             }

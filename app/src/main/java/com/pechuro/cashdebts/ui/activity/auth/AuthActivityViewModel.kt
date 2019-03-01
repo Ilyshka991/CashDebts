@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.activity.auth
 
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -19,6 +20,8 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
     val isLoading = ObservableBoolean()
+    val phoneNumber = ObservableField<String?>()
+    val phoneCode = ObservableField<String?>()
 
     private var storedVerificationId: String? = null
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -46,20 +49,20 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 
         override fun onCodeSent(verificationId: String?, token: PhoneAuthProvider.ForceResendingToken) {
             isLoading.set(false)
-            command.onNext(Events.OnStartVerification)
+            command.onNext(Events.OnCodeSent)
             storedVerificationId = verificationId
             resendToken = token
         }
     }
 
-    fun startPhoneNumberVerification(phoneNumber: String?) {
-        if (phoneNumber.isNullOrEmpty()) {
+    fun startPhoneNumberVerification() {
+        if (phoneNumber.get().isNullOrEmpty()) {
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
             return
         }
         isLoading.set(true)
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-            phoneNumber,
+            phoneNumber.get()!!,
             TIMEOUT,
             TimeUnit.SECONDS,
             TaskExecutors.MAIN_THREAD,
@@ -67,11 +70,11 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    fun verifyPhoneNumberWithCode(code: String?) {
+    fun verifyPhoneNumberWithCode() {
         when {
-            code.isNullOrEmpty() -> command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+            phoneCode.get().isNullOrEmpty() -> command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
             storedVerificationId == null -> command.onNext(Events.ShowSnackBarError(R.string.error_auth_common))
-            else -> verifyPhoneNumberWithCode(storedVerificationId!!, code)
+            else -> verifyPhoneNumberWithCode(storedVerificationId!!, phoneCode.get()!!)
         }
     }
 
@@ -110,7 +113,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 }
 
 sealed class Events {
-    object OnStartVerification : Events()
+    object OnCodeSent : Events()
     object OnSuccess : Events()
     class ShowSnackBarError(@StringRes val id: Int) : Events()
 }

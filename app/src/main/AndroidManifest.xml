@@ -27,7 +27,7 @@
 
         <activity android:name=".ui.activity.auth.AuthActivity"
                   android:windowSoftInputMode="adjustResize"
-                  android:label="@string/title_auth_activity"/>
+                  android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".ui.activity.adddebt.AddDebtActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>

@@ -30,6 +30,7 @@ class MainActivity : BaseActivity<ActivityContainerBinding, MainActivityViewMode
     override fun onResume() {
         super.onResume()
         subscribeToEvents()
+        println(weakCompositeDisposable.size())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

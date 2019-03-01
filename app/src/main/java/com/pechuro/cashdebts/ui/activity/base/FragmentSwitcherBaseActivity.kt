@@ -1,23 +1,25 @@
 package com.pechuro.cashdebts.ui.activity.base
 
 import android.os.Bundle
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
-import androidx.fragment.app.FragmentTransaction
+import android.view.View.*
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivitySwitcherContainerBinding
 import com.pechuro.cashdebts.ui.base.BaseActivity
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
 abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<ActivitySwitcherContainerBinding, VM>() {
+    protected abstract val isCloseButtonEnabled: Boolean
+    protected abstract val homeFragment: Fragment
+    protected open val label: Int? = null
+
     override val layoutId: Int
         get() = R.layout.activity_switcher_container
-    abstract val isCloseButtonEnabled: Boolean
 
-    protected abstract fun homeFragment()
-
-    protected abstract fun onDoneButtonClick()
+    protected abstract fun onDoneButtonClick(currentPosition: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,22 +29,15 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         if (savedInstanceState == null) homeFragment()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        showPreviousFragment()
-        setupActionBar()
-        return true
-    }
-
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             showPreviousFragment()
-            setupActionBar()
         } else {
             super.onBackPressed()
         }
     }
 
-    protected fun showNextFragment(body: FragmentTransaction.() -> Unit) {
+    protected fun <T : ViewDataBinding, V : BaseViewModel> showNextFragment(fragment: BaseFragment<T, V>) {
         supportFragmentManager.transaction {
             setCustomAnimations(
                 R.anim.anim_slide_in_right,
@@ -50,12 +45,18 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
                 R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_right
             )
-            body()
+            replace(viewDataBinding.container.id, fragment)
             addToBackStack(null)
         }
     }
 
-    protected fun showPreviousFragment() {
+    private fun homeFragment() {
+        supportFragmentManager.transaction {
+            replace(viewDataBinding.container.id, homeFragment)
+        }
+    }
+
+    private fun showPreviousFragment() {
         supportFragmentManager.popBackStack()
     }
 
@@ -63,36 +64,40 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         with(viewDataBinding) {
             buttonBack.setOnClickListener {
                 showPreviousFragment()
-                setupActionBar()
             }
             buttonDone.setOnClickListener {
-                onDoneButtonClick()
-                setupActionBar()
+                onDoneButtonClick(supportFragmentManager.backStackEntryCount)
             }
             buttonClose.setOnClickListener {
-
+                finish()
             }
+        }
+        supportFragmentManager.addOnBackStackChangedListener {
+            setupActionBar()
         }
     }
 
     private fun setupActionBar() {
         with(viewDataBinding) {
-            if (supportFragmentManager.backStackEntryCount > 0) {
-                if (isCloseButtonEnabled) {
-                    buttonClose.visibility = INVISIBLE
+            when {
+                supportFragmentManager.backStackEntryCount > 0 -> {
+                    buttonClose.visibility = GONE
+                    buttonBack.visibility = VISIBLE
                 }
-                buttonBack.visibility = VISIBLE
-            } else {
-                if (isCloseButtonEnabled) {
+                isCloseButtonEnabled -> {
                     buttonClose.visibility = VISIBLE
+                    buttonBack.visibility = INVISIBLE
                 }
-                buttonBack.visibility = INVISIBLE
+                else -> {
+                    buttonClose.visibility = GONE
+                    buttonBack.visibility = GONE
+                }
             }
         }
     }
 
     private fun initActionBar() {
+        label?.let { viewDataBinding.textLabel.setText(it) }
         setSupportActionBar(viewDataBinding.toolbar)
     }
-
 }

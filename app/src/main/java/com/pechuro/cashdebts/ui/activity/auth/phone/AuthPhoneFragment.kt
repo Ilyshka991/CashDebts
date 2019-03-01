@@ -9,7 +9,6 @@ import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
 
-
 class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
     override val viewModel: AuthActivityViewModel
         get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AuthActivityViewModel::class.java)
@@ -26,7 +25,7 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
     private fun setupView() {
         viewDataBinding.textPhone.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                viewDataBinding.buttonSendCode.performClick()
+                viewModel.startPhoneNumberVerification()
                 return@setOnEditorActionListener true
             }
             false

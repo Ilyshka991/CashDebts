@@ -40,7 +40,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
 
     override fun onPause() {
         super.onPause()
-        weakCompositeDisposable.dispose()
+        weakCompositeDisposable.clear()
     }
 
     override fun onDestroy() {
