@@ -6,14 +6,14 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityContainerBinding
-import com.pechuro.cashdebts.ui.activity.adddebt.adddebt.AddDebtFragment
+import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragment
 import com.pechuro.cashdebts.ui.base.BaseActivity
 import com.pechuro.cashdebts.ui.utils.transaction
 
-class AddActivity : BaseActivity<ActivityContainerBinding, AddActivityViewModel>() {
+class AddActivity : BaseActivity<ActivityContainerBinding, AddDebtActivityViewModel>() {
 
-    override val viewModel: AddActivityViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(AddActivityViewModel::class.java)
+    override val viewModel: AddDebtActivityViewModel
+        get() = ViewModelProviders.of(this, viewModelFactory).get(AddDebtActivityViewModel::class.java)
     override val layoutId: Int
         get() = R.layout.activity_container
 
@@ -23,7 +23,7 @@ class AddActivity : BaseActivity<ActivityContainerBinding, AddActivityViewModel>
     }
 
     private fun homeFragment() {
-        val fragment = AddDebtFragment.newInstance()
+        val fragment = AddDebtUserFragment.newInstance()
         supportFragmentManager.transaction {
             replace(viewDataBinding.container.id, fragment)
         }
