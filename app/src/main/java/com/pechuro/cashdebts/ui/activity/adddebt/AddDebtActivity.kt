@@ -20,7 +20,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     override val viewModel: AddDebtActivityViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(AddDebtActivityViewModel::class.java)
     override val label: Int
-        get() = R.string.title_auth_activity
+        get() = R.string.label_add_debt_activity
 
     override fun onStart() {
         super.onStart()
@@ -30,20 +30,21 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     override fun onDoneButtonClick(currentPosition: Int) {
         when (currentPosition) {
             0 -> showNextFragment(AddDebtInfoFragment.newInstance())
-            1 -> {
-            }
+            1 -> viewModel.save()
         }
-
     }
 
     private fun subscribeToEvents() {
         viewModel.command.subscribe {
             when (it) {
-                is Events.ShowInfoFragment -> showNextFragment(AddDebtInfoFragment.newInstance())
-                //  is Events.ShowUserfragment -> showNextFragment(AddDebtUserFragment.newInstance())
+                is Events.OnSaved -> closeActivity()
                 is Events.ShowSnackBarError -> showSnackBar(it.id)
             }
         }.let(weakCompositeDisposable::add)
+    }
+
+    private fun closeActivity() {
+        finish()
     }
 
     private fun showSnackBar(@StringRes id: Int) {

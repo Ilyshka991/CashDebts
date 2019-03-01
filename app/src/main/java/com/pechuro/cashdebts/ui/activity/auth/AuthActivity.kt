@@ -21,7 +21,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean
         get() = false
     override val label: Int
-        get() = R.string.title_auth_activity
+        get() = R.string.label_auth_activity
 
     override fun onStart() {
         super.onStart()

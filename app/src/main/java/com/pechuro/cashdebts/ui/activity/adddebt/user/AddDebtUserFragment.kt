@@ -1,10 +1,12 @@
 package com.pechuro.cashdebts.ui.activity.adddebt.user
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.lifecycle.ViewModelProviders
+import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAddDebtUserBinding
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
@@ -15,6 +17,29 @@ class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActi
         get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AddDebtActivityViewModel::class.java)
     override val layoutId: Int
         get() = R.layout.fragment_add_debt_user
+    override val bindingVariables: Map<Int, Any>?
+        get() = mapOf(BR.viewModel to viewModel)
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setListeners()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when {
+            requestCode == REQUEST_PICK_CONTACT && resultCode == RESULT_OK -> {
+                data?.data?.let { getContact(it) }
+                return
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun setListeners() {
+        viewDataBinding.buttonPickContact.setOnClickListener {
+            startPickContactActivity()
+        }
+    }
 
     private fun startPickContactActivity() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
@@ -26,8 +51,7 @@ class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActi
             if (it?.moveToFirst() == true) {
                 val number = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 val name = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                viewDataBinding.textPhone.setText(number)
-                viewDataBinding.textName.setText(name)
+                viewModel.setData(name, number)
             }
         }
     }

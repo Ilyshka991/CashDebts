@@ -4,8 +4,8 @@
 
     <data>
 
-        <variable name="debt"
-                  type="com.pechuro.cashdebts.data.FirestoreDebt"/>
+        <variable name="viewModel"
+                  type="com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:hint="Name"
-                android:text="@={debt.debtorName}"
+                android:text="@={viewModel.debt.debtorName}"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
@@ -35,7 +35,7 @@
                 android:inputType="phone"
                 android:ems="10"
                 android:hint="Phone"
-                android:text="@={debt.debtorPhone}"
+                android:text="@={viewModel.debt.debtorPhone}"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="@+id/text_name"
                 app:layout_constraintTop_toBottomOf="@+id/text_name"

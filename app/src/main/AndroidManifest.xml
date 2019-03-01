@@ -23,7 +23,7 @@
 
         <activity
                 android:name=".ui.activity.main.MainActivity"
-                android:label="@string/title_activity_main"/>
+                android:label="@string/label_activity_main"/>
 
         <activity android:name=".ui.activity.auth.AuthActivity"
                   android:windowSoftInputMode="adjustResize"
