@@ -15,4 +15,5 @@
     <string name="item_debt_value">Value: %1$.0f</string>
 
     <string name="menu_logout">Logout</string>
+    <string name="menu_ok">OK</string>
 </resources>

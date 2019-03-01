@@ -16,8 +16,6 @@ class AddDebtInfoFragment : BaseFragment<FragmentAddDebtInfoBinding, AddDebtActi
     companion object {
         const val TAG = "AddDebtInfoFragment"
 
-        private const val REQUEST_PICK_CONTACT = 342
-
         fun newInstance() = AddDebtInfoFragment().apply {
             arguments = Bundle().apply {
             }

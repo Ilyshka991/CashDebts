@@ -13,13 +13,17 @@ import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRM
 import java.util.*
 
 data class FirestoreDebt(
-    val creditor: String,
-    val debtor: String,
-    val value: Double,
-    val description: String?,
-    val date: Date,
-    @FirestoreDebtStatus val status: Int
-)
+    var creditorPhone: String,
+    var creditorName: String,
+    var debtorPhone: String,
+    var debtorName: String,
+    var value: Double,
+    var description: String?,
+    var date: Date,
+    @FirestoreDebtStatus var status: Int
+) {
+    constructor() : this("", "", "", "", 0.0, "", Date(), FirestoreDebtStatus.NOT_SEND)
+}
 
 @IntDef(
     NOT_SEND,

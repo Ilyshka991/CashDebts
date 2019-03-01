@@ -1,7 +1,7 @@
 package com.pechuro.cashdebts.di.module
 
 import com.pechuro.cashdebts.di.annotations.ActivityScope
-import com.pechuro.cashdebts.ui.activity.adddebt.AddActivity
+import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragmentProvider
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
@@ -27,7 +27,7 @@ interface AppActivitiesModule {
             AddDebtInfoFragmentProvider::class,
             AddDebtUserFragmentProvider::class]
     )
-    fun bindAddActivity(): AddActivity
+    fun bindAddActivity(): AddDebtActivity
 
     @ActivityScope
     @ContributesAndroidInjector(
