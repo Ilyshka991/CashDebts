@@ -7,6 +7,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentViewModel
+import com.pechuro.cashdebts.ui.activity.phonecode.PhoneCodeActivityViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -22,6 +23,11 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(MainActivityViewModel::class)
     fun mainActivity(viewModel: MainActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PhoneCodeActivityViewModel::class)
+    fun phoneCodeActivity(viewModel: PhoneCodeActivityViewModel): ViewModel
 
     @Binds
     @IntoMap

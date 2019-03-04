@@ -1,13 +1,13 @@
 package com.pechuro.cashdebts.ui.activity.auth.phone
 
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.custom.phone.CountyData
 
 class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
     override val viewModel: AuthActivityViewModel
@@ -23,13 +23,14 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
     }
 
     private fun setupView() {
-        viewDataBinding.textPhone.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                viewModel.startPhoneNumberVerification()
-                return@setOnEditorActionListener true
-            }
-            false
-        }
+        /* viewDataBinding.textPhone.setOnEditorActionListener { _, actionId, _ ->
+             if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                 viewModel.startPhoneNumberVerification()
+                 return@setOnEditorActionListener true
+             }
+             false
+         }*/
+        viewDataBinding.textPhone.setCountryData(CountyData("BY", "375", "Belarus", "XXX XXX XX XXX"))
     }
 
     companion object {

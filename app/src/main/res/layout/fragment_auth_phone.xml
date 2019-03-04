@@ -12,11 +12,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_phone_layout"
+        <com.pechuro.cashdebts.ui.custom.phone.PhoneNumberEditText
+                android:id="@+id/text_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Phone number"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
@@ -26,20 +25,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.3">
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={viewModel.phoneNumber}"
-                    android:inputType="phone"
-                    android:imeOptions="actionNext"
-                    android:ems="10">
-
-                <requestFocus/>
-            </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintVertical_bias="0.3"/>
 
         <ProgressBar
                 android:id="@+id/progress"
@@ -47,9 +33,9 @@
                 android:layout_height="wrap_content"
                 app:visibility="@{viewModel.isLoading}"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@+id/text_phone_layout"
-                app:layout_constraintEnd_toEndOf="@+id/text_phone_layout"
-                app:layout_constraintTop_toBottomOf="@+id/text_phone_layout"
+                app:layout_constraintStart_toStartOf="@+id/text_phone"
+                app:layout_constraintEnd_toEndOf="@+id/text_phone"
+                app:layout_constraintTop_toBottomOf="@+id/text_phone"
                 style="?android:attr/progressBarStyle"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

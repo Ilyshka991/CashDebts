@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
@@ -33,6 +34,16 @@ class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActi
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun setupView() {
+        viewDataBinding.textPhone.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     }
 
     private fun setListeners() {

@@ -29,5 +29,6 @@ class AddDebtActivityViewModel @Inject constructor(private val repository: Fires
 
 sealed class Events {
     object OnSaved : Events()
+
     class ShowSnackBarError(@StringRes val id: Int) : Events()
 }

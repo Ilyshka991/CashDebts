@@ -32,5 +32,8 @@
         <activity android:name=".ui.activity.adddebt.AddDebtActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".ui.activity.phonecode.PhoneCodeActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 </manifest>
