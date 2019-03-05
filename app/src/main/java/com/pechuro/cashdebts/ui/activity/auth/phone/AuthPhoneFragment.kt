@@ -30,7 +30,7 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
              }
              false
          }*/
-        viewDataBinding.textPhone.setCountryData(CountyData("BY", "375", "Belarus", "XXX XXX XX XXX"))
+        viewDataBinding.textPhone.setCountryData(CountyData("BY", "375", "Belarus", "–– –– –– XXX"))
     }
 
     companion object {
