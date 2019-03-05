@@ -6,10 +6,10 @@ import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragmentProvide
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
+import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountrySelectFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentProvider
-import com.pechuro.cashdebts.ui.activity.phonecode.PhoneCodeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -34,11 +34,8 @@ interface AppActivitiesModule {
     @ContributesAndroidInjector(
         modules = [
             AuthPhoneFragmentProvider::class,
-            AuthCodeFragmentProvider::class]
+            AuthCodeFragmentProvider::class,
+            CountrySelectFragmentProvider::class]
     )
     fun bindAuthActivity(): AuthActivity
-
-    @ActivityScope
-    @ContributesAndroidInjector
-    fun bindPhoneCodeActivity(): PhoneCodeActivity
 }

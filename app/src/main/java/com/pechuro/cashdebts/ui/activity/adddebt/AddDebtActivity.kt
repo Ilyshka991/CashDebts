@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragment
 import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
@@ -19,8 +18,6 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         get() = true
     override val viewModel: AddDebtActivityViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(AddDebtActivityViewModel::class.java)
-    override val label: Int
-        get() = R.string.label_add_debt_activity
 
     override fun onStart() {
         super.onStart()

@@ -115,5 +115,6 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 sealed class Events {
     object OnCodeSent : Events()
     object OnSuccess : Events()
+    object OpenCountySelection : Events()
     class ShowSnackBarError(@StringRes val id: Int) : Events()
 }
