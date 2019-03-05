@@ -1,56 +1,56 @@
-JM;1876;Jamaica;XXX XXXX
-KN;1869;Saint Kitts & Nevis;XXX XXXX
-TT;1868;Trinidad & Tobago;XXX XXXX
-VC;1784;Saint Vincent & the Grenadines;XXX XXXX
-DM;1767;Dominica;XXX XXXX
-LC;1758;Saint Lucia;XXX XXXX
-SX;1721;Sint Maarten;XXX XXXX
-AS;1684;American Samoa;XXX XXXX
-GU;1671;Guam;XXX XXXX
-MP;1670;Northern Mariana Islands;XXX XXXX
-MS;1664;Montserrat;XXX XXXX
-TC;1649;Turks & Caicos Islands;XXX XXXX
-GD;1473;Grenada;XXX XXXX
-BM;1441;Bermuda;XXX XXXX
-KY;1345;Cayman Islands;XXX XXXX
-VI;1340;US Virgin Islands;XXX XXXX
-VG;1284;British Virgin Islands;XXX XXXX
-AG;1268;Antigua & Barbuda;XXX XXXX
-AI;1264;Anguilla;XXX XXXX
-BB;1246;Barbados;XXX XXXX
-BS;1242;Bahamas;XXX XXXX
-UZ;998;Uzbekistan;XX XXXXXXX
-KG;996;Kyrgyzstan;XXX XXXXXX
-GE;995;Georgia;XXX XXX XXX
-AZ;994;Azerbaijan;XX XXX XXXX
-TM;993;Turkmenistan;XX XXXXXX
-TJ;992;Tajikistan;XX XXX XXXX
-NP;977;Nepal;XX XXXX XXXX
-MN;976;Mongolia;XX XX XXXX
-BT;975;Bhutan;XX XXX XXX
-QA;974;Qatar;XX XXX XXX
-BH;973;Bahrain;XXXX XXXX
-IL;972;Israel;XX XXX XXXX
-AE;971;United Arab Emirates;XX XXX XXXX
-PS;970;Palestine;XXX XX XXXX
-OM;968;Oman;XXXX XXXX
-YE;967;Yemen;XXX XXX XXX
-SA;966;Saudi Arabia;XX XXX XXXX
-KW;965;Kuwait;XXXX XXXX
-IQ;964;Iraq;XXX XXX XXXX
-SY;963;Syria;XXX XXX XXX
-JO;962;Jordan;X XXXX XXXX
+JM;1876;Jamaica;––– ––––
+KN;1869;Saint Kitts & Nevis;––– ––––
+TT;1868;Trinidad & Tobago;––– ––––
+VC;1784;Saint Vincent & the Grenadines;––– ––––
+DM;1767;Dominica;––– ––––
+LC;1758;Saint Lucia;––– ––––
+SX;1721;Sint Maarten;––– ––––
+AS;1684;American Samoa;––– ––––
+GU;1671;Guam;––– ––––
+MP;1670;Northern Mariana Islands;––– ––––
+MS;1664;Montserrat;––– ––––
+TC;1649;Turks & Caicos Islands;––– ––––
+GD;1473;Grenada;––– ––––
+BM;1441;Bermuda;––– ––––
+KY;1345;Cayman Islands;––– ––––
+VI;1340;US Virgin Islands;––– ––––
+VG;1284;British Virgin Islands;––– ––––
+AG;1268;Antigua & Barbuda;––– ––––
+AI;1264;Anguilla;––– ––––
+BB;1246;Barbados;––– ––––
+BS;1242;Bahamas;––– ––––
+UZ;998;Uzbekistan;–– –––––––
+KG;996;Kyrgyzstan;––– ––––––
+GE;995;Georgia;––– ––– –––
+AZ;994;Azerbaijan;–– ––– ––––
+TM;993;Turkmenistan;–– ––––––
+TJ;992;Tajikistan;–– ––– ––––
+NP;977;Nepal;–– –––– ––––
+MN;976;Mongolia;–– –– ––––
+BT;975;Bhutan;–– ––– –––
+QA;974;Qatar;–– ––– –––
+BH;973;Bahrain;–––– ––––
+IL;972;Israel;–– ––– ––––
+AE;971;United Arab Emirates;–– ––– ––––
+PS;970;Palestine;––– –– ––––
+OM;968;Oman;–––– ––––
+YE;967;Yemen;––– ––– –––
+SA;966;Saudi Arabia;–– ––– ––––
+KW;965;Kuwait;–––– ––––
+IQ;964;Iraq;––– ––– ––––
+SY;963;Syria;––– ––– –––
+JO;962;Jordan;– –––– ––––
 LB;961;Lebanon
-MV;960;Maldives;XXX XXXX
-TW;886;Taiwan;XXX XXX XXX
+MV;960;Maldives;––– ––––
+TW;886;Taiwan;––– ––– –––
 GO;883;International Networks
 GO;882;International Networks
 GO;881;Global Mobile Satellite
 BD;880;Bangladesh
-LA;856;Laos;XX XX XXX XXX
+LA;856;Laos;–– –– ––– –––
 KH;855;Cambodia
-MO;853;Macau;XXXX XXXX
-HK;852;Hong Kong;X XXX XXXX
+MO;853;Macau;–––– ––––
+HK;852;Hong Kong;– ––– ––––
 KP;850;North Korea
 MH;692;Marshall Islands
 FM;691;Micronesia
@@ -70,167 +70,167 @@ SB;677;Solomon Islands
 TO;676;Tonga
 PG;675;Papua New Guinea
 NR;674;Nauru
-BN;673;Brunei Darussalam;XXX XXXX
+BN;673;Brunei Darussalam;––– ––––
 NF;672;Norfolk Island
 TL;670;Timor-Leste
 BQ;599;Bonaire, Sint Eustatius & Saba
 CW;599;Curaçao
-UY;598;Uruguay;X XXX XXXX
-SR;597;Suriname;XXX XXXX
+UY;598;Uruguay;– ––– ––––
+SR;597;Suriname;––– ––––
 MQ;596;Martinique
-PY;595;Paraguay;XXX XXX XXX
+PY;595;Paraguay;––– ––– –––
 GF;594;French Guiana
-EC;593;Ecuador;XX XXX XXXX
+EC;593;Ecuador;–– ––– ––––
 GY;592;Guyana
-BO;591;Bolivia;X XXX XXXX
-GP;590;Guadeloupe;XXX XX XX XX
+BO;591;Bolivia;– ––– ––––
+GP;590;Guadeloupe;––– –– –– ––
 HT;509;Haiti
 PM;508;Saint Pierre & Miquelon
-PA;507;Panama;XXXX XXXX
-CR;506;Costa Rica;XXXX XXXX
-NI;505;Nicaragua;XXXX XXXX
-HN;504;Honduras;XXXX XXXX
-SV;503;El Salvador;XXXX XXXX
-GT;502;Guatemala;X XXX XXXX
+PA;507;Panama;–––– ––––
+CR;506;Costa Rica;–––– ––––
+NI;505;Nicaragua;–––– ––––
+HN;504;Honduras;–––– ––––
+SV;503;El Salvador;–––– ––––
+GT;502;Guatemala;– ––– ––––
 BZ;501;Belize
 FK;500;Falkland Islands
 LI;423;Liechtenstein
-SK;421;Slovakia;XXX XXX XXX
-CZ;420;Czech Republic;XXX XXX XXX
-MK;389;Macedonia;XX XXX XXX
-BA;387;Bosnia & Herzegovina;XX XXX XXX
-SI;386;Slovenia;XX XXX XXX
+SK;421;Slovakia;––– ––– –––
+CZ;420;Czech Republic;––– ––– –––
+MK;389;Macedonia;–– ––– –––
+BA;387;Bosnia & Herzegovina;–– ––– –––
+SI;386;Slovenia;–– ––– –––
 HR;385;Croatia
-XK;383;Kosovo;XXXX XXXX
+XK;383;Kosovo;–––– ––––
 ME;382;Montenegro
-RS;381;Serbia;XX XXX XXXX
-UA;380;Ukraine;XX XXX XX XX
-SM;378;San Marino;XXX XXX XXXX
-MC;377;Monaco;XXXX XXXX
-AD;376;Andorra;XX XX XX
-BY;375;Belarus;XX XXX XXXX
-AM;374;Armenia;XX XXX XXX
-MD;373;Moldova;XX XXX XXX
+RS;381;Serbia;–– ––– ––––
+UA;380;Ukraine;–– ––– –– ––
+SM;378;San Marino;––– ––– ––––
+MC;377;Monaco;–––– ––––
+AD;376;Andorra;–– –– ––
+BY;375;Belarus;–– ––– ––––
+AM;374;Armenia;–– ––– –––
+MD;373;Moldova;–– ––– –––
 EE;372;Estonia
-LV;371;Latvia;XXX XXXXX
-LT;370;Lithuania;XXX XXXXX
+LV;371;Latvia;––– –––––
+LT;370;Lithuania;––– –––––
 BG;359;Bulgaria
 FI;358;Finland
-CY;357;Cyprus;XXXX XXXX
-MT;356;Malta;XX XX XX XX
-AL;355;Albania;XX XXX XXXX
-IS;354;Iceland;XXX XXXX
-IE;353;Ireland;XX XXX XXXX
+CY;357;Cyprus;–––– ––––
+MT;356;Malta;–– –– –– ––
+AL;355;Albania;–– ––– ––––
+IS;354;Iceland;––– ––––
+IE;353;Ireland;–– ––– ––––
 LU;352;Luxembourg
-PT;351;Portugal;X XXXX XXXX
-GI;350;Gibraltar;XXXX XXXX
-GL;299;Greenland;XXX XXX
-FO;298;Faroe Islands;XXX XXX
-AW;297;Aruba;XXX XXXX
-ER;291;Eritrea;X XXX XXX
-SH;290;Saint Helena;XX XXX
-KM;269;Comoros;XXX XXXX
-SZ;268;Swaziland;XXXX XXXX
-BW;267;Botswana;XX XXX XXX
-LS;266;Lesotho;XX XXX XXX
-MW;265;Malawi;77 XXX XXXX
-NA;264;Namibia;XX XXX XXXX
-ZW;263;Zimbabwe;XX XXX XXXX
-RE;262;Réunion;XXX XXX XXX
-MG;261;Madagascar;XX XX XXX XX
-ZM;260;Zambia;XX XXX XXXX
-MZ;258;Mozambique;XX XXX XXXX
-BI;257;Burundi;XX XX XXXX
-UG;256;Uganda;XX XXX XXXX
-TZ;255;Tanzania;XX XXX XXXX
-KE;254;Kenya;XXX XXX XXX
-DJ;253;Djibouti;XX XX XX XX
-SO;252;Somalia;XX XXX XXX
-ET;251;Ethiopia;XX XXX XXXX
-RW;250;Rwanda;XXX XXX XXX
-SD;249;Sudan;XX XXX XXXX
-SC;248;Seychelles;X XX XX XX
-SH;247;Saint Helena;XXXX
-IO;246;Diego Garcia;XXX XXXX
-GW;245;Guinea-Bissau;XXX XXXX
-AO;244;Angola;XXX XXX XXX
-CD;243;Congo (Dem. Rep.);XX XXX XXXX
-CG;242;Congo (Rep.);XX XXX XXXX
-GA;241;Gabon;X XX XX XX
-GQ;240;Equatorial Guinea;XXX XXX XXX
-ST;239;São Tomé & Príncipe;XX XXXXX
-CV;238;Cape Verde;XXX XXXX
-CM;237;Cameroon;XXXX XXXX
-CF;236;Central African Rep.;XX XX XX XX
-TD;235;Chad;XX XX XX XX
+PT;351;Portugal;– –––– ––––
+GI;350;Gibraltar;–––– ––––
+GL;299;Greenland;––– –––
+FO;298;Faroe Islands;––– –––
+AW;297;Aruba;––– ––––
+ER;291;Eritrea;– ––– –––
+SH;290;Saint Helena;–– –––
+KM;269;Comoros;––– ––––
+SZ;268;Swaziland;–––– ––––
+BW;267;Botswana;–– ––– –––
+LS;266;Lesotho;–– ––– –––
+MW;265;Malawi;77 ––– ––––
+NA;264;Namibia;–– ––– ––––
+ZW;263;Zimbabwe;–– ––– ––––
+RE;262;Réunion;––– ––– –––
+MG;261;Madagascar;–– –– ––– ––
+ZM;260;Zambia;–– ––– ––––
+MZ;258;Mozambique;–– ––– ––––
+BI;257;Burundi;–– –– ––––
+UG;256;Uganda;–– ––– ––––
+TZ;255;Tanzania;–– ––– ––––
+KE;254;Kenya;––– ––– –––
+DJ;253;Djibouti;–– –– –– ––
+SO;252;Somalia;–– ––– –––
+ET;251;Ethiopia;–– ––– ––––
+RW;250;Rwanda;––– ––– –––
+SD;249;Sudan;–– ––– ––––
+SC;248;Seychelles;– –– –– ––
+SH;247;Saint Helena;––––
+IO;246;Diego Garcia;––– ––––
+GW;245;Guinea-Bissau;––– ––––
+AO;244;Angola;––– ––– –––
+CD;243;Congo (Dem. Rep.);–– ––– ––––
+CG;242;Congo (Rep.);–– ––– ––––
+GA;241;Gabon;– –– –– ––
+GQ;240;Equatorial Guinea;––– ––– –––
+ST;239;São Tomé & Príncipe;–– –––––
+CV;238;Cape Verde;––– ––––
+CM;237;Cameroon;–––– ––––
+CF;236;Central African Rep.;–– –– –– ––
+TD;235;Chad;–– –– –– ––
 NG;234;Nigeria
 GH;233;Ghana
-SL;232;Sierra Leone;XX XXX XXX
+SL;232;Sierra Leone;–– ––– –––
 LR;231;Liberia
 MU;230;Mauritius
-BJ;229;Benin;XX XXX XXX
-TG;228;Togo;XX XXX XXX
-NE;227;Niger;XX XX XX XX
-BF;226;Burkina Faso;XX XX XX XX
-CI;225;Côte d`Ivoire;XX XXX XXX
-GN;224;Guinea;XXX XXX XXX
-ML;223;Mali;XXXX XXXX
-MR;222;Mauritania;XXXX XXXX
-SN;221;Senegal;XX XXX XXXX
-GM;220;Gambia;XXX XXXX
-LY;218;Libya;XX XXX XXXX
-TN;216;Tunisia;XX XXX XXX
-DZ;213;Algeria;XXX XX XX XX
-MA;212;Morocco;XX XXX XXXX
-SS;211;South Sudan;XX XXX XXXX
-IR;98;Iran;XXX XXX XXXX
+BJ;229;Benin;–– ––– –––
+TG;228;Togo;–– ––– –––
+NE;227;Niger;–– –– –– ––
+BF;226;Burkina Faso;–– –– –– ––
+CI;225;Côte d`Ivoire;–– ––– –––
+GN;224;Guinea;––– ––– –––
+ML;223;Mali;–––– ––––
+MR;222;Mauritania;–––– ––––
+SN;221;Senegal;–– ––– ––––
+GM;220;Gambia;––– ––––
+LY;218;Libya;–– ––– ––––
+TN;216;Tunisia;–– ––– –––
+DZ;213;Algeria;––– –– –– ––
+MA;212;Morocco;–– ––– ––––
+SS;211;South Sudan;–– ––– ––––
+IR;98;Iran;––– ––– ––––
 MM;95;Myanmar
-LK;94;Sri Lanka;XX XXX XXXX
-AF;93;Afghanistan;XXX XXX XXX
-PK;92;Pakistan;XXX XXX XXXX
-IN;91;India;XXXXX XXXXX
-TR;90;Turkey;XXX XXX XXXX
-CN;86;China;XXX XXXX XXXX
+LK;94;Sri Lanka;–– ––– ––––
+AF;93;Afghanistan;––– ––– –––
+PK;92;Pakistan;––– ––– ––––
+IN;91;India;––––– –––––
+TR;90;Turkey;––– ––– ––––
+CN;86;China;––– –––– ––––
 VN;84;Vietnam
 KR;82;South Korea
-JP;81;Japan;XX XXXX XXXX
-TH;66;Thailand;X XXXX XXXX
-SG;65;Singapore;XXXX XXXX
+JP;81;Japan;–– –––– ––––
+TH;66;Thailand;– –––– ––––
+SG;65;Singapore;–––– ––––
 NZ;64;New Zealand
-PH;63;Philippines;XXX XXX XXXX
+PH;63;Philippines;––– ––– ––––
 ID;62;Indonesia
-AU;61;Australia;XXX XXX XXX
+AU;61;Australia;––– ––– –––
 MY;60;Malaysia
-VE;58;Venezuela;XXX XXX XXXX
-CO;57;Colombia;XXX XXX XXXX
-CL;56;Chile;X XXXX XXXX
-BR;55;Brazil;XX XXXXX XXXX
+VE;58;Venezuela;––– ––– ––––
+CO;57;Colombia;––– ––– ––––
+CL;56;Chile;– –––– ––––
+BR;55;Brazil;–– ––––– ––––
 AR;54;Argentina
-CU;53;Cuba;XXXX XXXX
+CU;53;Cuba;–––– ––––
 MX;52;Mexico
-PE;51;Peru;XXX XXX XXX
+PE;51;Peru;––– ––– –––
 DE;49;Germany
-PL;48;Poland;XXX XXX XXX
-NO;47;Norway;XXXX XXXX
-SE;46;Sweden;XX XXX XXXX
-DK;45;Denmark;XXXX XXXX
-GB;44;United Kingdom;XXXX XXXXXX
+PL;48;Poland;––– ––– –––
+NO;47;Norway;–––– ––––
+SE;46;Sweden;–– ––– ––––
+DK;45;Denmark;–––– ––––
+GB;44;United Kingdom;–––– ––––––
 AT;43;Austria
 YL;42;Y-land
-CH;41;Switzerland;XX XXX XXXX
-RO;40;Romania;XXX XXX XXX
+CH;41;Switzerland;–– ––– ––––
+RO;40;Romania;––– ––– –––
 IT;39;Italy
-HU;36;Hungary;XXX XXX XXX
-ES;34;Spain;XXX XXX XXX
-FR;33;France;X XX XX XX XX
-BE;32;Belgium;XXX XX XX XX
-NL;31;Netherlands;X XX XX XX XX
-GR;30;Greece;XXX XXX XXXX
-ZA;27;South Africa;XX XXX XXXX
-EG;20;Egypt;XX XXXX XXXX
-KZ;7;Kazakhstan;XXX XXX XX XX
-RU;7;Russian Federation;XXX XXX XXXX
-PR;1;Puerto Rico;XXX XXX XXXX
-DO;1;Dominican Rep.;XXX XXX XXXX
-CA;1;Canada;XXX XXX XXXX
-US;1;USA;XXX XXX XXXX
+HU;36;Hungary;––– ––– –––
+ES;34;Spain;––– ––– –––
+FR;33;France;– –– –– –– ––
+BE;32;Belgium;––– –– –– ––
+NL;31;Netherlands;– –– –– –– ––
+GR;30;Greece;––– ––– ––––
+ZA;27;South Africa;–– ––– ––––
+EG;20;Egypt;–– –––– ––––
+KZ;7;Kazakhstan;––– ––– –– ––
+RU;7;Russian Federation;––– ––– ––––
+PR;1;Puerto Rico;––– ––– ––––
+DO;1;Dominican Rep.;––– ––– ––––
+CA;1;Canada;––– ––– ––––
+US;1;USA;––– ––– ––––
