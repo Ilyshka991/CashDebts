@@ -8,7 +8,7 @@ import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.auth.Events
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.custom.phone.CountyData
+import com.pechuro.cashdebts.ui.custom.phone.CountryData
 
 class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
     override val viewModel: AuthActivityViewModel
@@ -27,7 +27,7 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
         viewDataBinding.textCounty.setOnClickListener {
             viewModel.command.onNext(Events.OpenCountySelection)
         }
-        viewDataBinding.textPhone.setCountryData(CountyData("BY", "375", "Belarus", "–– –– –– XXX"))
+        viewDataBinding.textPhone.setCountryData(CountryData("BY", "375", "Belarus", "–– –– –– XXX"))
     }
 
     companion object {

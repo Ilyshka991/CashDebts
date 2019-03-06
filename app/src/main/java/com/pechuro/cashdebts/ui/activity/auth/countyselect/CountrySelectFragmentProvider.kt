@@ -8,6 +8,9 @@ import dagger.android.ContributesAndroidInjector
 interface CountrySelectFragmentProvider {
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+        modules = [
+            CountrySelectModule::class]
+    )
     fun bind(): CountySelectFragment
 }

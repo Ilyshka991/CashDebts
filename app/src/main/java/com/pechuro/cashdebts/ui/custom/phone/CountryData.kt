@@ -1,6 +1,6 @@
 package com.pechuro.cashdebts.ui.custom.phone
 
-data class CountyData(
+data class CountryData(
     val code: String,
     val phonePrefix: String,
     val name: String,

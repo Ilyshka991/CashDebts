@@ -58,6 +58,7 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
 
     private fun showPreviousFragment() {
         supportFragmentManager.popBackStack()
+
     }
 
     private fun setListeners() {

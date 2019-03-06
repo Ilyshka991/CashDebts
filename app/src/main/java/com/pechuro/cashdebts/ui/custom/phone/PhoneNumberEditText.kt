@@ -48,7 +48,7 @@ class PhoneNumberEditText @JvmOverloads constructor(
     }
 
     @SuppressLint("SetTextI18n")
-    fun setCountryData(data: CountyData) {
+    fun setCountryData(data: CountryData) {
         textCode.setText("+${data.phonePrefix}")
         textNumber.hintText = data.phonePattern
     }
