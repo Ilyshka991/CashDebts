@@ -48,6 +48,10 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewDataBinding.executePendingBindings()
     }
 

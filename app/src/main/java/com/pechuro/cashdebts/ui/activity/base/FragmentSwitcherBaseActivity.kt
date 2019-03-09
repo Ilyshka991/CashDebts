@@ -50,15 +50,14 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         }
     }
 
+    protected fun showPreviousFragment() {
+        supportFragmentManager.popBackStack()
+    }
+
     private fun homeFragment() {
         supportFragmentManager.transaction {
             replace(viewDataBinding.container.id, homeFragment)
         }
-    }
-
-    private fun showPreviousFragment() {
-        supportFragmentManager.popBackStack()
-
     }
 
     private fun setListeners() {

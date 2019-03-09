@@ -11,6 +11,7 @@
     <string name="error_auth_too_many_requests">Service is not available. Please, retry later</string>
     <string name="error_auth_common">Something went wrong. Please, retry later</string>
 
+    <string name="auth_invalid_country">Invalid country</string>
 
     <string name="item_debt_who">Who: %1$s</string>
     <string name="item_debt_whom">Whom: %1$s</string>

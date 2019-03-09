@@ -3,13 +3,14 @@ package com.pechuro.cashdebts.ui.activity.auth
 import android.content.Context
 import android.content.Intent
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
-import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountySelectFragment
+import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountrySelectFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
@@ -44,30 +45,36 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
             when (it) {
                 is Events.OnCodeSent -> showNextFragment(AuthCodeFragment.newInstance())
                 is Events.OnSuccess -> openMainActivity()
-                is Events.OpenCountySelection -> openCountySelection()
+                is Events.OpenCountrySelection -> openCountrySelection()
+                is Events.CloseCountrySelection -> closeCountrySelection()
                 is Events.ShowSnackBarError -> showSnackBar(it.id)
             }
         }.let(weakCompositeDisposable::add)
     }
 
+
     private fun showSnackBar(@StringRes id: Int) {
         Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun openCountySelection() {
-        val fragment = CountySelectFragment.newInstance()
+    private fun openCountrySelection() {
+        val fragment = CountrySelectFragment.newInstance()
         supportFragmentManager.transaction {
             setCustomAnimations(
-                R.anim.anim_slide_in_right,
-                R.anim.anim_slide_out_left,
-                R.anim.anim_slide_in_left,
-                R.anim.anim_slide_out_right
+                R.anim.anim_slide_in_up,
+                R.anim.anim_fade_out,
+                R.anim.anim_fade_in,
+                R.anim.anim_fade_out
             )
             replace(viewDataBinding.container.id, fragment)
             addToBackStack(null)
         }
         viewDataBinding.buttonDone.visibility = GONE
+    }
 
+    private fun closeCountrySelection() {
+        showPreviousFragment()
+        viewDataBinding.buttonDone.visibility = VISIBLE
     }
 
     private fun openMainActivity() {

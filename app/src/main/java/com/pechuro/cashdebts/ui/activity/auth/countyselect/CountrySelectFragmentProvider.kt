@@ -12,5 +12,5 @@ interface CountrySelectFragmentProvider {
         modules = [
             CountrySelectModule::class]
     )
-    fun bind(): CountySelectFragment
+    fun bind(): CountrySelectFragment
 }

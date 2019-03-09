@@ -12,6 +12,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -22,6 +23,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
     val isLoading = ObservableBoolean()
     val phoneNumber = ObservableField<String?>()
     val phoneCode = ObservableField<String?>()
+    val countryData = ObservableField<CountryData?>()
 
     private var storedVerificationId: String? = null
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -115,6 +117,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 sealed class Events {
     object OnCodeSent : Events()
     object OnSuccess : Events()
-    object OpenCountySelection : Events()
+    object OpenCountrySelection : Events()
+    object CloseCountrySelection : Events()
     class ShowSnackBarError(@StringRes val id: Int) : Events()
 }

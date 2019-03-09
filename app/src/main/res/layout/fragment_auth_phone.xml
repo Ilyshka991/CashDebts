@@ -13,14 +13,16 @@
             android:layout_height="match_parent">
 
         <EditText
-                android:id="@+id/text_county"
+                android:id="@+id/text_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
+                android:text="@{viewModel.countryData.name ?? @string/auth_invalid_country}"
+                android:inputType="none"
+                android:ems="12"
+                android:editable="false"
+                android:focusable="false"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:editable="false"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -29,12 +31,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:phone_number="@={viewModel.phoneNumber}"
+                app:country_data="@{viewModel.countryData}"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="32dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_county"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_country"/>
 
         <ProgressBar
                 android:id="@+id/progress"
