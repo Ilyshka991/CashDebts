@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.custom.hintedittext
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -76,6 +77,7 @@ class HintEditText : EditText {
 
     fun getEnteredText() = text.replace("[ ]".toRegex(), "")
 
+    @SuppressLint("Recycle")
     private fun init(attrs: AttributeSet?) {
         context.obtainStyledAttributes(attrs, R.styleable.HintEditText).use {
             hintText = it.getString(R.styleable.HintEditText_hint)
