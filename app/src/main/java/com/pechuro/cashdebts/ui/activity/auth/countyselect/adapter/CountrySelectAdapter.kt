@@ -9,13 +9,43 @@ import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.utils.EventBus
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 class CountrySelectAdapter(
     private val diffCallback: CountrySelectDiffCallback,
-    initialCountries: List<CountryData>
+    private val initialCountries: List<CountryData>
 ) : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
 
-    private val countries = mutableListOf(*initialCountries.toTypedArray())
+    private val countries = mutableListOf<CountryData>()
+
+    private val searchSource = PublishSubject.create<String>()
+    private val searchSubscriber = searchSource
+        .map { query ->
+            initialCountries.filter { it.name.startsWith(query, true) }
+        }
+        .map {
+            diffCallback.setData(countries, it)
+            val result = DiffUtil.calculateDiff(diffCallback)
+            countries.clear()
+            countries += it
+            result
+        }
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+            it.dispatchUpdatesTo(this)
+        }
+
+    init {
+        countries += initialCountries
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        searchSubscriber.dispose()
+        super.onDetachedFromRecyclerView(recyclerView)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CountryData> {
         val binding = ItemCountryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -27,12 +57,8 @@ class CountrySelectAdapter(
     override fun onBindViewHolder(holder: BaseViewHolder<CountryData>, position: Int) =
         holder.onBind(countries[position])
 
-    fun setCountries(data: List<CountryData>) {
-        diffCallback.setData(countries, data)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        countries.clear()
-        countries += data
-        diffResult.dispatchUpdatesTo(this)
+    fun filterCountries(query: String) {
+        searchSource.onNext(query)
     }
 
     class ViewHolder(private val binding: ItemCountryBinding) : BaseViewHolder<CountryData>(binding.root) {

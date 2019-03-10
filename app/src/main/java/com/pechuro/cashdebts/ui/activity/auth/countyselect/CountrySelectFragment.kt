@@ -18,8 +18,6 @@ import javax.inject.Inject
 class CountrySelectFragment : BaseFragment<FragmentCountrySelectBinding, AuthActivityViewModel>() {
     @Inject
     protected lateinit var adapter: CountrySelectAdapter
-    @Inject
-    protected lateinit var countries: List<CountryData>
 
     override val viewModel: AuthActivityViewModel
         get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AuthActivityViewModel::class.java)
@@ -51,18 +49,12 @@ class CountrySelectFragment : BaseFragment<FragmentCountrySelectBinding, AuthAct
             recycler.apply {
                 adapter = this@CountrySelectFragment.adapter
             }
-            search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    val result = if (newText.isNullOrEmpty()) {
-                        countries
-                    } else {
-                        countries.filter { it.name.startsWith(newText, true) }
-                    }
-                    adapter.setCountries(result)
+            search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?) = false
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    query?.let { adapter.filterCountries(it) }
                     return true
                 }
             })
