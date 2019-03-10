@@ -1,12 +1,14 @@
 package com.pechuro.cashdebts.ui.activity.auth.phone
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
-import com.pechuro.cashdebts.ui.activity.auth.Events
+import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.custom.phone.PhoneNumberEditText
@@ -42,16 +44,40 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
         viewDataBinding.textPhone.addListener(phoneTextWatcher)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            INTENT_REQUEST_COUNTRY_SELECT -> {
+                when (resultCode) {
+                    RESULT_OK -> {
+                        val country =
+                            data?.getParcelableExtra<CountryData>(CountrySelectionActivity.INTENT_DATA_SELECTED_COUNTRY)
+                        viewModel.countryData.set(country)
+                    }
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     private fun setupView() {
         viewDataBinding.textCountry.setOnClickListener {
-            viewModel.command.onNext(Events.OpenCountrySelection)
+            openCountrySelection()
         }
         viewDataBinding.textPhone.onDoneClick = {
             viewModel.startPhoneNumberVerification()
         }
     }
 
+    private fun openCountrySelection() {
+        context?.let {
+            val intent = CountrySelectionActivity.newIntent(it)
+            startActivityForResult(intent, INTENT_REQUEST_COUNTRY_SELECT)
+        }
+    }
+
     companion object {
+        private const val INTENT_REQUEST_COUNTRY_SELECT = 133
+
         fun newInstance() = AuthPhoneFragment().apply {
             arguments = Bundle().apply {
             }

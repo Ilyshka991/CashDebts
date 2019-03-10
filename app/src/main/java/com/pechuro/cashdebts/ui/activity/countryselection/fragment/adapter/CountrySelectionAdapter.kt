@@ -1,20 +1,21 @@
-package com.pechuro.cashdebts.ui.activity.auth.countyselect.adapter
+package com.pechuro.cashdebts.ui.activity.countryselection.fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.databinding.ItemCountryBinding
-import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountySelectEvent
+import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
-class CountrySelectAdapter(
-    private val diffCallback: CountrySelectDiffCallback,
+class CountrySelectionAdapter(
+    private val diffCallback: CountrySelectionDiffCallback,
     private val initialCountries: List<CountryData>
 ) : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
 
@@ -22,6 +23,8 @@ class CountrySelectAdapter(
 
     private val searchSource = PublishSubject.create<String>()
     private val searchSubscriber = searchSource
+        .debounce(100, TimeUnit.MILLISECONDS)
+        .distinctUntilChanged()
         .map { query ->
             initialCountries.filter { it.name.startsWith(query, true) }
         }
@@ -66,11 +69,7 @@ class CountrySelectAdapter(
             binding.country = data
             binding.executePendingBindings()
             binding.root.setOnClickListener {
-                EventBus.publish(
-                    CountySelectEvent.OnCountySelect(
-                        data
-                    )
-                )
+                EventBus.publish(CountySelectEvent.OnCountySelect(data))
             }
         }
     }

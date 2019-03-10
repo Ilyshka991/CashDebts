@@ -7,8 +7,9 @@ import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragmentProvide
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityModule
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
-import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountrySelectFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
+import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
+import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentProvider
 import dagger.Module
@@ -36,8 +37,11 @@ interface AppActivitiesModule {
         modules = [
             AuthPhoneFragmentProvider::class,
             AuthCodeFragmentProvider::class,
-            CountrySelectFragmentProvider::class,
             AuthActivityModule::class]
     )
     fun bindAuthActivity(): AuthActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [CountrySelectionFragmentProvider::class])
+    fun bindCountrySelectActivity(): CountrySelectionActivity
 }

@@ -2,7 +2,6 @@ package com.pechuro.cashdebts.ui.activity.auth
 
 import android.content.Context
 import android.content.Intent
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -10,11 +9,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
-import com.pechuro.cashdebts.ui.activity.auth.countyselect.CountrySelectFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
+import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
-import com.pechuro.cashdebts.ui.utils.transaction
 
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
@@ -58,18 +56,8 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     }
 
     private fun openCountrySelection() {
-        val fragment = CountrySelectFragment.newInstance()
-        supportFragmentManager.transaction {
-            setCustomAnimations(
-                R.anim.anim_slide_in_up,
-                R.anim.anim_fade_out,
-                R.anim.anim_fade_in,
-                R.anim.anim_fade_out
-            )
-            replace(viewDataBinding.container.id, fragment)
-            addToBackStack(null)
-        }
-        viewDataBinding.buttonDone.visibility = GONE
+        val intent = CountrySelectionActivity.newIntent(this)
+        startActivity(intent)
     }
 
     private fun closeCountrySelection() {

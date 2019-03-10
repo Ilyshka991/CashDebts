@@ -1,9 +1,9 @@
-package com.pechuro.cashdebts.ui.activity.auth.countyselect.adapter
+package com.pechuro.cashdebts.ui.activity.countryselection.fragment.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 
-class CountrySelectDiffCallback : DiffUtil.Callback() {
+class CountrySelectionDiffCallback : DiffUtil.Callback() {
 
     private var oldList: List<CountryData> = emptyList()
     private var newList: List<CountryData> = emptyList()
