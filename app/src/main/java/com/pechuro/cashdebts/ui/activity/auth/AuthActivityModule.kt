@@ -19,6 +19,7 @@ class AuthActivityModule {
                 CountryData(it[0], "+${it[1]}", it[2], if (it.size == 4) it[3] else null)
             }
         }
+        resultList.sortBy { it.name }
         return resultList
     }
 }

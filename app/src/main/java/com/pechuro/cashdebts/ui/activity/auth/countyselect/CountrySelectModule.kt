@@ -1,6 +1,8 @@
 package com.pechuro.cashdebts.ui.activity.auth.countyselect
 
 import com.pechuro.cashdebts.di.annotations.FragmentScope
+import com.pechuro.cashdebts.ui.activity.auth.countyselect.adapter.CountrySelectAdapter
+import com.pechuro.cashdebts.ui.activity.auth.countyselect.adapter.CountrySelectDiffCallback
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import dagger.Module
 import dagger.Provides
@@ -10,5 +12,10 @@ class CountrySelectModule {
 
     @Provides
     @FragmentScope
-    fun provideAdapter(data: List<CountryData>) = CountrySelectAdapter(data)
+    fun provideAdapter(diffCallback: CountrySelectDiffCallback, countries: List<CountryData>) =
+        CountrySelectAdapter(diffCallback, countries)
+
+    @Provides
+    @FragmentScope
+    fun provideDiffCallback() = CountrySelectDiffCallback()
 }

@@ -1,12 +1,14 @@
 package com.pechuro.cashdebts.ui.activity.auth.countyselect
 
 import android.os.Bundle
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentCountrySelectBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.auth.Events
+import com.pechuro.cashdebts.ui.activity.auth.countyselect.adapter.CountrySelectAdapter
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.utils.BaseEvent
@@ -16,6 +18,8 @@ import javax.inject.Inject
 class CountrySelectFragment : BaseFragment<FragmentCountrySelectBinding, AuthActivityViewModel>() {
     @Inject
     protected lateinit var adapter: CountrySelectAdapter
+    @Inject
+    protected lateinit var countries: List<CountryData>
 
     override val viewModel: AuthActivityViewModel
         get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AuthActivityViewModel::class.java)
@@ -47,11 +51,21 @@ class CountrySelectFragment : BaseFragment<FragmentCountrySelectBinding, AuthAct
             recycler.apply {
                 adapter = this@CountrySelectFragment.adapter
             }
-            searchFab.apply {
-                setOnClickListener {
-                    println("AAAAAAAAAAAAAAAAAA")
+            search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
                 }
-            }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val result = if (newText.isNullOrEmpty()) {
+                        countries
+                    } else {
+                        countries.filter { it.name.startsWith(newText, true) }
+                    }
+                    adapter.setCountries(result)
+                    return true
+                }
+            })
         }
     }
 
