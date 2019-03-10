@@ -50,7 +50,7 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         }
     }
 
-    protected fun showPreviousFragment() {
+    private fun showPreviousFragment() {
         supportFragmentManager.popBackStack()
     }
 

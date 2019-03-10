@@ -1,8 +1,10 @@
 package com.pechuro.cashdebts.ui.activity.auth.phone
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
@@ -11,7 +13,7 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
-import com.pechuro.cashdebts.ui.custom.phone.PhoneNumberEditText
+import com.pechuro.cashdebts.ui.custom.phone.PhoneTextWatcher
 import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
@@ -25,13 +27,16 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
     @Inject
     protected lateinit var countryList: List<CountryData>
 
-    private val phoneTextWatcher = object : PhoneNumberEditText.PhoneTextWatcher {
+    private val phoneTextWatcher = object : PhoneTextWatcher {
         override fun onCodeChanged(code: String?) {
             val country = countryList.findLast { it.phonePrefix == code }
             viewModel.countryData.set(country)
         }
+    }
 
-        override fun onNumberChanged(number: String?) {}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) setCountry()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -73,6 +78,26 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
             val intent = CountrySelectionActivity.newIntent(it)
             startActivityForResult(intent, INTENT_REQUEST_COUNTRY_SELECT)
         }
+    }
+
+    private fun setCountry() {
+        val countryCode = getUserCountryCode()
+        val country = countryList.find { it.code == countryCode }
+        viewModel.countryData.set(country)
+    }
+
+    private fun getUserCountryCode(): String? {
+        val tm = context?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val simCountry = tm.simCountryIso
+        if (simCountry != null && simCountry.length == 2) {
+            return simCountry.toUpperCase()
+        } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
+            val networkCountry = tm.networkCountryIso
+            if (networkCountry != null && networkCountry.length == 2) {
+                return networkCountry.toUpperCase()
+            }
+        }
+        return null
     }
 
     companion object {

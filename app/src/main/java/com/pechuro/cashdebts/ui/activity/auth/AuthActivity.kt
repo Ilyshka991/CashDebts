@@ -2,7 +2,6 @@ package com.pechuro.cashdebts.ui.activity.auth
 
 import android.content.Context
 import android.content.Intent
-import android.view.View.VISIBLE
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -11,7 +10,6 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
-import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 
 
@@ -43,26 +41,13 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
             when (it) {
                 is Events.OnCodeSent -> showNextFragment(AuthCodeFragment.newInstance())
                 is Events.OnSuccess -> openMainActivity()
-                is Events.OpenCountrySelection -> openCountrySelection()
-                is Events.CloseCountrySelection -> closeCountrySelection()
                 is Events.ShowSnackBarError -> showSnackBar(it.id)
             }
         }.let(weakCompositeDisposable::add)
     }
 
-
     private fun showSnackBar(@StringRes id: Int) {
         Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun openCountrySelection() {
-        val intent = CountrySelectionActivity.newIntent(this)
-        startActivity(intent)
-    }
-
-    private fun closeCountrySelection() {
-        showPreviousFragment()
-        viewDataBinding.buttonDone.visibility = VISIBLE
     }
 
     private fun openMainActivity() {

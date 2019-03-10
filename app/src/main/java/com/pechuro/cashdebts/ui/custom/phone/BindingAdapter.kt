@@ -25,7 +25,7 @@ fun setListeners(
     view: PhoneNumberEditText,
     attrChange: InverseBindingListener
 ) {
-    val listener = object : PhoneNumberEditText.PhoneTextWatcher {
+    val listener = object : PhoneTextWatcher {
         override fun onCodeChanged(code: String?) {
             attrChange.onChange()
         }

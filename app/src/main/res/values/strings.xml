@@ -12,6 +12,9 @@
     <string name="error_auth_common">Something went wrong. Please, retry later</string>
 
     <string name="auth_invalid_country">Invalid country</string>
+    <string name="auth_code_time">You can resend it after: %1$d sec</string>
+    <string name="auth_action_resend">Resend</string>
+    <string name="auth_msg_not_receive_code">Not receive code?</string>
 
     <string name="item_debt_who">Who: %1$s</string>
     <string name="item_debt_whom">Whom: %1$s</string>
@@ -19,4 +22,5 @@
 
     <string name="menu_logout">Logout</string>
     <string name="menu_ok">OK</string>
+    <string name="auth_resend_code_error">Still not receive code? Please, retry later</string>
 </resources>

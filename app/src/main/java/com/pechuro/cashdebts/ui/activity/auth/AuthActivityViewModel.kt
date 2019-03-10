@@ -27,6 +27,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 
     private var storedVerificationId: String? = null
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private var isCodeResended = false
 
     private val authCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -51,7 +52,7 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
 
         override fun onCodeSent(verificationId: String?, token: PhoneAuthProvider.ForceResendingToken) {
             isLoading.set(false)
-            command.onNext(Events.OnCodeSent)
+            if (!isCodeResended) command.onNext(Events.OnCodeSent)
             storedVerificationId = verificationId
             resendToken = token
         }
@@ -80,15 +81,20 @@ class AuthActivityViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun resendVerificationCode(phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken) {
+    fun resendVerificationCode() {
+        if (phoneNumber.get().isNullOrEmpty()) {
+            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            return
+        }
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-            phoneNumber,
+            phoneNumber.get()!!,
             TIMEOUT,
             TimeUnit.SECONDS,
             TaskExecutors.MAIN_THREAD,
             authCallback,
-            token
+            resendToken
         )
+        isCodeResended = true
     }
 
     private fun verifyPhoneNumberWithCode(verificationId: String, code: String) {

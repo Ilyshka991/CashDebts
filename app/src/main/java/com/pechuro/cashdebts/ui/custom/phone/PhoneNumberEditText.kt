@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.custom.TextWatcher
+import com.pechuro.cashdebts.ui.custom.hintedittext.HintEditText
 import kotlinx.android.synthetic.main.layout_phone_edit_text.view.*
 
 class PhoneNumberEditText @JvmOverloads constructor(
@@ -76,15 +77,9 @@ class PhoneNumberEditText @JvmOverloads constructor(
         textNumber.hintText = data?.phonePattern
     }
 
-    fun getPhoneNumber() = textCode.text.toString() + textNumber.text.replace("[ ]".toRegex(), "")
+    fun getPhoneNumber() = textCode.text.toString() + textNumber.getEnteredText()
 
     private fun moveCodeCursorAtTheEnd() {
         textCode.setSelection(textCode.text.length)
-    }
-
-    interface PhoneTextWatcher {
-        fun onCodeChanged(code: String?)
-
-        fun onNumberChanged(number: String?)
     }
 }

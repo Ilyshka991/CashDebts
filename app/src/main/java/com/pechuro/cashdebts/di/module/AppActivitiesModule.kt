@@ -5,7 +5,6 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragmentProvider
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
-import com.pechuro.cashdebts.ui.activity.auth.AuthActivityModule
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
@@ -36,8 +35,7 @@ interface AppActivitiesModule {
     @ContributesAndroidInjector(
         modules = [
             AuthPhoneFragmentProvider::class,
-            AuthCodeFragmentProvider::class,
-            AuthActivityModule::class]
+            AuthCodeFragmentProvider::class]
     )
     fun bindAuthActivity(): AuthActivity
 
