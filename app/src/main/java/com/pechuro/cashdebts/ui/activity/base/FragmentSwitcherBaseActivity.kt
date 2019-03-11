@@ -1,32 +1,27 @@
 package com.pechuro.cashdebts.ui.activity.base
 
 import android.os.Bundle
-import android.view.View.*
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.ActivitySwitcherContainerBinding
+import com.pechuro.cashdebts.databinding.ActivityContainerBinding
 import com.pechuro.cashdebts.ui.base.BaseActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
-abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<ActivitySwitcherContainerBinding, VM>() {
+abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<ActivityContainerBinding, VM>() {
     protected abstract val isCloseButtonEnabled: Boolean
     protected abstract val homeFragment: Fragment
-    protected open val label: Int? = null
 
     override val layoutId: Int
-        get() = R.layout.activity_switcher_container
-
-    protected abstract fun onDoneButtonClick(currentPosition: Int)
+        get() = R.layout.activity_container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initActionBar()
-        setListeners()
-        setupActionBar()
         if (savedInstanceState == null) homeFragment()
+        setBackStackListener()
+        setupActionBar()
     }
 
     override fun onBackPressed() {
@@ -35,6 +30,11 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     protected fun <T : ViewDataBinding, V : BaseViewModel> showNextFragment(fragment: BaseFragment<T, V>) {
@@ -54,50 +54,25 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         supportFragmentManager.popBackStack()
     }
 
+    private fun setBackStackListener() {
+        supportFragmentManager.addOnBackStackChangedListener {
+            setupActionBar(supportFragmentManager.backStackEntryCount)
+        }
+    }
+
+    private fun setupActionBar(backStackCount: Int = 0) {
+        if (isCloseButtonEnabled && backStackCount == 0) {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close_white)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            return
+        }
+        if (isCloseButtonEnabled) supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_back_white)
+        supportActionBar?.setDisplayHomeAsUpEnabled(backStackCount != 0)
+    }
+
     private fun homeFragment() {
         supportFragmentManager.transaction {
             replace(viewDataBinding.container.id, homeFragment)
         }
-    }
-
-    private fun setListeners() {
-        with(viewDataBinding) {
-            buttonBack.setOnClickListener {
-                showPreviousFragment()
-            }
-            buttonDone.setOnClickListener {
-                onDoneButtonClick(supportFragmentManager.backStackEntryCount)
-            }
-            buttonClose.setOnClickListener {
-                finish()
-            }
-        }
-        supportFragmentManager.addOnBackStackChangedListener {
-            setupActionBar()
-        }
-    }
-
-    private fun setupActionBar() {
-        with(viewDataBinding) {
-            when {
-                supportFragmentManager.backStackEntryCount > 0 -> {
-                    buttonClose.visibility = GONE
-                    buttonBack.visibility = VISIBLE
-                }
-                isCloseButtonEnabled -> {
-                    buttonClose.visibility = VISIBLE
-                    buttonBack.visibility = INVISIBLE
-                }
-                else -> {
-                    buttonClose.visibility = GONE
-                    buttonBack.visibility = GONE
-                }
-            }
-        }
-    }
-
-    private fun initActionBar() {
-        label?.let { viewDataBinding.textLabel.setText(it) }
-        setSupportActionBar(viewDataBinding.toolbar)
     }
 }

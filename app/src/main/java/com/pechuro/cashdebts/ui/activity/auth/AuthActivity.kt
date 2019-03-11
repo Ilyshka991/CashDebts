@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
@@ -21,19 +20,10 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
         get() = AuthPhoneFragment.newInstance()
     override val isCloseButtonEnabled: Boolean
         get() = false
-    override val label: Int
-        get() = R.string.label_auth_activity
 
     override fun onStart() {
         super.onStart()
         subscribeToEvents()
-    }
-
-    override fun onDoneButtonClick(currentPosition: Int) {
-        when (currentPosition) {
-            0 -> viewModel.startPhoneNumberVerification()
-            1 -> viewModel.verifyPhoneNumberWithCode()
-        }
     }
 
     private fun subscribeToEvents() {

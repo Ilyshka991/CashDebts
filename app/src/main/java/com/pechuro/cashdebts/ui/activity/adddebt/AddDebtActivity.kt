@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragment
 import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
 
@@ -24,12 +23,12 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         subscribeToEvents()
     }
 
-    override fun onDoneButtonClick(currentPosition: Int) {
-        when (currentPosition) {
-            0 -> showNextFragment(AddDebtInfoFragment.newInstance())
-            1 -> viewModel.save()
-        }
-    }
+    /*  override fun onDoneButtonClick(currentPosition: Int) {
+          when (currentPosition) {
+              0 -> showNextFragment(AddDebtInfoFragment.newInstance())
+              1 -> viewModel.save()
+          }
+      }*/
 
     private fun subscribeToEvents() {
         viewModel.command.subscribe {

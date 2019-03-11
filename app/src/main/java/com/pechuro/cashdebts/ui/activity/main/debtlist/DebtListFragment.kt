@@ -2,7 +2,6 @@ package com.pechuro.cashdebts.ui.activity.main.debtlist
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.DocumentChange
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentDebtListBinding
@@ -15,8 +14,6 @@ import javax.inject.Inject
 class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentViewModel>() {
     @Inject
     lateinit var adapter: DebtListAdapter
-    @Inject
-    lateinit var layoutManager: LinearLayoutManager
 
     override val viewModel: DebtListFragmentViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(DebtListFragmentViewModel::class.java)
@@ -36,7 +33,6 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
 
     private fun setupView() {
         viewDataBinding.recyclerView.apply {
-            layoutManager = this@DebtListFragment.layoutManager
             adapter = this@DebtListFragment.adapter
         }
     }

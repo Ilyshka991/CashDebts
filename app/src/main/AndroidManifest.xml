@@ -26,11 +26,9 @@
                 android:label="@string/label_activity_main"/>
 
         <activity android:name=".ui.activity.auth.AuthActivity"
-                  android:windowSoftInputMode="adjustResize"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+                  android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".ui.activity.adddebt.AddDebtActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activity.adddebt.AddDebtActivity"/>
 
         <activity android:name=".ui.activity.countryselection.CountrySelectionActivity"
                   android:label="@string/label_county_select"/>
