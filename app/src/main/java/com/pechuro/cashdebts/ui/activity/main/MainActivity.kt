@@ -8,10 +8,10 @@ import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityContainerBinding
-import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragment
 import com.pechuro.cashdebts.ui.base.BaseActivity
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.transaction
 
@@ -70,8 +70,12 @@ class MainActivity : BaseActivity<ActivityContainerBinding, MainActivityViewMode
     }
 
     private fun openAddActivity() {
-        val intent = AddDebtActivity.newIntent(this)
-        startActivity(intent)
+        /*val intent = AddDebtActivity.newIntent(this)
+        startActivity(intent)*/
+        val fragment = ProfileEditFragment.newInstance()
+        supportFragmentManager.transaction {
+            replace(viewDataBinding.container.id, fragment)
+        }
     }
 
     companion object {

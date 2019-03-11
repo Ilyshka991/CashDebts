@@ -57,7 +57,7 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
 
     override fun onPause() {
         super.onPause()
-        weakCompositeDisposable.dispose()
+        weakCompositeDisposable.clear()
     }
 
     override fun onDestroy() {

@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivi
 import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -21,7 +22,12 @@ import dagger.android.support.AndroidSupportInjectionModule
 interface AppActivitiesModule {
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [DebtListFragmentProvider::class])
+    @ContributesAndroidInjector(
+        modules = [
+            DebtListFragmentProvider::class,
+            ProfileEditFragmentProvider::class
+        ]
+    )
     fun bindMainActivity(): MainActivity
 
     @ActivityScope

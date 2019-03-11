@@ -23,4 +23,10 @@
     <string name="menu_logout">Logout</string>
     <string name="menu_ok">OK</string>
     <string name="auth_resend_code_error">Still not receive code? Please, retry later</string>
+
+    <string name="action_camera">Camera</string>
+    <string name="action_gallery">Gallery</string>
+
+    <string name="profile_edit_error_first_name">Incorrect!</string>
+    <string name="profile_edit_error_last_name">Incorrect!</string>
 </resources>

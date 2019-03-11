@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.di.module
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.pechuro.cashdebts.data.CurrentUser
 import com.pechuro.cashdebts.data.FirestoreRepository
 import dagger.Module
@@ -23,4 +24,8 @@ class FirebaseModule {
     @Provides
     @Singleton
     fun provideAuth() = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideStorage() = FirebaseStorage.getInstance()
 }

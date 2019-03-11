@@ -9,6 +9,8 @@ import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivi
 import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentViewModel
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel
+import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -49,4 +51,14 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(DebtListFragmentViewModel::class)
     fun debtListFragment(viewModel: DebtListFragmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileEditFragmentViewModel::class)
+    fun profileEditFragment(viewModel: ProfileEditFragmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewFragmentViewModel::class)
+    fun profileViewFragment(viewModel: ProfileViewFragmentViewModel): ViewModel
 }

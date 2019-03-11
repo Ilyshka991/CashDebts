@@ -1,17 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+>
 
     <data>
         <variable name="viewModel"
                   type="com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_auth_phone"
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                    android:id="@+id/image_photo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:image_avatar="@{viewModel.localAvatarUri ?? viewModel.data.fields.imageUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_first_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:error="@{viewModel.data.errors.firstNameError}"
+                    app:layout_constraintTop_toBottomOf="@+id/image_photo"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:text="@={viewModel.data.fields.firstName}"
+                        android:layout_height="match_parent"
+                        android:hint="First name"
+                        android:inputType="textPersonName"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_last_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:error="@{viewModel.data.errors.lastNameError}"
+                    app:layout_constraintTop_toBottomOf="@+id/text_first_name_layout"
+                    app:layout_constraintStart_toStartOf="@+id/text_first_name_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={viewModel.data.fields.lastName}"
+                        android:hint="Last name"
+                        android:inputType="textPersonName"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                    android:id="@+id/button_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:textSize="18sp"
+                    android:onClick="@{() -> viewModel.save()}"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_last_name_layout"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

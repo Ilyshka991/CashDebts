@@ -34,5 +34,15 @@
 
         <activity android:name=".ui.activity.countryselection.CountrySelectionActivity"
                   android:label="@string/label_county_select"/>
+
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="com.pechuro.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/files"/>
+        </provider>
     </application>
 </manifest>

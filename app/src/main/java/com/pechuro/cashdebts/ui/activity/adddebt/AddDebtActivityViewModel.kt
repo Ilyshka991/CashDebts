@@ -17,7 +17,7 @@ class AddDebtActivityViewModel @Inject constructor(
     val command = PublishSubject.create<Events>()
 
     init {
-        println("AAAAAAAAAAAAA ${user.name}")
+        println("AAAAAAAAAAAAA ${user.displayName}")
     }
 
     fun setData(name: String, phoneNumber: String) {
