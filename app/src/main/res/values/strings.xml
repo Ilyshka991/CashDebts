@@ -14,6 +14,7 @@
     <string name="auth_invalid_country">Invalid country</string>
     <string name="auth_code_time">You can resend it after: %1$d sec</string>
     <string name="auth_action_resend">Resend</string>
+    <string name="auth_action_code_confirm">Confirm</string>
     <string name="auth_msg_not_receive_code">Not receive code?</string>
 
     <string name="item_debt_who">Who: %1$s</string>
@@ -29,4 +30,5 @@
 
     <string name="profile_edit_error_first_name">Incorrect!</string>
     <string name="profile_edit_error_last_name">Incorrect!</string>
+    <string name="auth_action_verify">Verify</string>
 </resources>

@@ -39,15 +39,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_country"/>
 
-        <ProgressBar
-                android:id="@+id/progress"
+        <com.pechuro.cashdebts.ui.custom.progressbutton.ProgressButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:visibility="@{viewModel.isLoading}"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
+                android:text="@string/auth_action_verify"
+                android:onClick="@{() -> viewModel.startPhoneNumberVerification()}"
+                app:show_progress="@{viewModel.isLoading}"
                 app:layout_constraintStart_toStartOf="@+id/text_phone"
                 app:layout_constraintEnd_toEndOf="@+id/text_phone"
-                app:layout_constraintTop_toBottomOf="@+id/text_phone"
-                style="?android:attr/progressBarStyle"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_phone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
