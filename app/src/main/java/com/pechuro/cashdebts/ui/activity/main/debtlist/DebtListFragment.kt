@@ -55,7 +55,7 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
                 DocumentChange.Type.MODIFIED -> adapter.modifyData(value)
             }
         }, {
-            println(it.message)
+            it.printStackTrace()
         }).let(weakCompositeDisposable::add)
     }
 

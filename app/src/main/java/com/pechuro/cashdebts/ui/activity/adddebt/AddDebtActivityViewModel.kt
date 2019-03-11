@@ -2,15 +2,23 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableField
+import com.pechuro.cashdebts.data.CurrentUser
 import com.pechuro.cashdebts.data.FirestoreDebt
 import com.pechuro.cashdebts.data.FirestoreRepository
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class AddDebtActivityViewModel @Inject constructor(private val repository: FirestoreRepository) : BaseViewModel() {
+class AddDebtActivityViewModel @Inject constructor(
+    private val repository: FirestoreRepository,
+    private val user: CurrentUser
+) : BaseViewModel() {
     val debt = ObservableField<FirestoreDebt>(FirestoreDebt())
     val command = PublishSubject.create<Events>()
+
+    init {
+        println("AAAAAAAAAAAAA ${user.name}")
+    }
 
     fun setData(name: String, phoneNumber: String) {
         debt.get()?.apply {
