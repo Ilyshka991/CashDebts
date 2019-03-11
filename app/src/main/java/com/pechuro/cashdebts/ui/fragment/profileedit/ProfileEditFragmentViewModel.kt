@@ -4,56 +4,73 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.databinding.ObservableField
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.auth.FirebaseAuth
 import com.pechuro.cashdebts.data.CurrentUser
-import com.pechuro.cashdebts.data.FirebaseStorage.Companion.AVATARS_PATH
+import com.pechuro.cashdebts.data.FirebaseStorageRepository
+import com.pechuro.cashdebts.data.FirestoreUserRepository
+import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.utils.AVATAR_PATH
 import com.pechuro.cashdebts.utils.isExternalStorageWritable
+import io.reactivex.rxkotlin.addTo
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
 class ProfileEditFragmentViewModel @Inject constructor(
+    private val userRepository: FirestoreUserRepository,
+    private val auth: FirebaseAuth,
+    private val storageRepository: FirebaseStorageRepository,
     private val currentUser: CurrentUser,
-    private val storage: FirebaseStorage,
     private val appContext: Context
 ) : BaseViewModel() {
 
-    val data = ProfileEditModel(currentUser.displayName, currentUser.photoUrl)
+    init {
+        getExistingUser()
+    }
+
+    val data = ProfileEditModel()
     val localAvatarUri = ObservableField<Uri?>()
 
     private var localAvatarFile: File? = null
 
+    fun getExistingUser() {
+        userRepository.get(auth.currentUser?.uid!!)
+            .subscribe({
+                data.setUser(it)
+            }, {
+
+            }).addTo(compositeDisposable)
+    }
+
+    //TODO!!!!!!!!!!!
     fun save() {
         if (!data.isValid()) return
         if (localAvatarFile != null) {
-            val avatarRef = storage.reference.child("$AVATARS_PATH/${localAvatarFile!!.name}")
-            val uri = Uri.fromFile(localAvatarFile)
-            avatarRef.putFile(uri)
-                .continueWithTask {
-                    if (!it.isSuccessful) {
-                        throw Exception("PZDC")
-                    }
-                    avatarRef.downloadUrl
+            storageRepository.uploadAndGetUrl(localAvatarFile!!.toUri(), localAvatarFile!!.name)
+                .flatMapCompletable {
+                    val user = FirestoreUser(
+                        data.fields.firstName,
+                        data.fields.lastName,
+                        currentUser.phoneNumber!!,
+                        it.toString()
+                    )
+                    userRepository.setUser(currentUser.uid!!, user)
                 }
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        currentUser.update(data.getDisplayName(), it.result)
-                    }
-                }
-        } else {
-            currentUser.update(data.getDisplayName())
+                .subscribe {
+                    println("COMPLEEEEEEEEEEEEEEEEEEEEETE")
+                }.addTo(compositeDisposable)
+
         }
     }
 
-    fun loadTempImage() {
+    fun loadEditedAvatar() {
         localAvatarUri.set(localAvatarFile?.toUri())
     }
 
     fun createImageFile() = try {
-        createAvatarFile(appContext, "${currentUser.phoneNumber!!.substring(1)}.jpg")?.also {
+        createAvatarFile(appContext, "${currentUser.uid!!}.jpg")?.also {
             localAvatarFile = it
         }
     } catch (ex: IOException) {

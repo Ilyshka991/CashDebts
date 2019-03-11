@@ -102,7 +102,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     }
 
     private fun loadEditedAvatar() {
-        viewModel.loadTempImage()
+        viewModel.loadEditedAvatar()
     }
 
     companion object {

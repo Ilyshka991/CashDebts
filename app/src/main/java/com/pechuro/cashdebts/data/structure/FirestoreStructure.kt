@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.data
+package com.pechuro.cashdebts.data.structure
 
 class FirestoreStructure {
     object Debts {
@@ -11,6 +11,17 @@ class FirestoreStructure {
             const val description = "description"
             const val date = "date"
             const val status = "status"
+        }
+    }
+
+    object Users {
+        const val TAG = "users"
+
+        object Structure {
+            const val firstName = "firstName"
+            const val lastName = "lastName"
+            const val phoneNumber = "phoneNumber"
+            const val photoUrl = "photoUrl"
         }
     }
 }

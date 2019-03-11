@@ -1,29 +1,22 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.databinding.BaseObservable
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.model.FirestoreUser
 
-class ProfileEditModel() : BaseObservable() {
+class ProfileEditModel : BaseObservable() {
     val fields = ProfileEditFields()
     val errors = ProfileEditFieldsError()
 
-    constructor(displayName: String?, imageUri: Uri?) : this() {
-        displayName?.let {
-            val nameList = displayName.split(" ")
-            if (nameList.size == 2) {
-                fields.apply {
-                    firstName = nameList[0]
-                    lastName = nameList[1]
-                }
-            }
+    fun setUser(user: FirestoreUser) {
+        with(fields) {
+            firstName = user.firstName
+            lastName = user.lastName
+            imageUrl = user.photoUrl?.toUri()
         }
-        imageUri?.let {
-            fields.imageUrl = it
-        }
+        notifyChange()
     }
-
-    fun getDisplayName() = "${fields.firstName} ${fields.lastName}"
 
     fun isValid(): Boolean {
         val isValid = isFirstNameValid() && isLastNameValid()

@@ -1,15 +1,15 @@
-package com.pechuro.cashdebts.data
+package com.pechuro.cashdebts.data.model
 
 import androidx.annotation.IntDef
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.COMPLETE
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_CREDITOR
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_DEBTOR
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.CONFIRMATION_APPROVED
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.CONFIRMATION_REJECTED
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.NOT_SEND
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_CREDITOR
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_DEBTOR
-import com.pechuro.cashdebts.data.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRMATION
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.COMPLETE
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_CREDITOR
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_DEBTOR
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.CONFIRMATION_APPROVED
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.CONFIRMATION_REJECTED
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.NOT_SEND
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_CREDITOR
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_DEBTOR
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRMATION
 import java.util.*
 
 data class FirestoreDebt(

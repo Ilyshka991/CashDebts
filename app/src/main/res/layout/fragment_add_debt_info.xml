@@ -6,7 +6,7 @@
     <data>
 
         <variable name="debt"
-                  type="com.pechuro.cashdebts.data.FirestoreDebt"/>
+                  type="com.pechuro.cashdebts.data.model.FirestoreDebt"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -3,14 +3,17 @@ package com.pechuro.cashdebts.data
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
-import com.pechuro.cashdebts.data.FirestoreStructure.Debts.Structure.creditor
-import com.pechuro.cashdebts.data.FirestoreStructure.Debts.Structure.debtor
+import com.pechuro.cashdebts.data.model.FirestoreDebt
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus
+import com.pechuro.cashdebts.data.structure.FirestoreStructure
+import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.creditor
+import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.debtor
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class FirestoreRepository(private val store: FirebaseFirestore, private val user: CurrentUser) {
+class FirestoreDebtRepository(private val store: FirebaseFirestore, private val user: CurrentUser) {
 
     fun getDataSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
         store.collection(FirestoreStructure.Debts.TAG)
