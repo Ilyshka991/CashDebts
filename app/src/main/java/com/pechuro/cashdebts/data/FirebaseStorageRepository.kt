@@ -5,7 +5,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.pechuro.cashdebts.data.exception.FirebaseStorageCommonException
 import com.pechuro.cashdebts.data.structure.FirebaseStorageStructure
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 
 class FirebaseStorageRepository(private val storage: FirebaseStorage) {
 
@@ -26,5 +25,4 @@ class FirebaseStorageRepository(private val storage: FirebaseStorage) {
                 }
             }
     }
-        .subscribeOn(Schedulers.io())
 }

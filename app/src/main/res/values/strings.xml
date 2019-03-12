@@ -31,4 +31,7 @@
     <string name="profile_edit_error_first_name">Incorrect!</string>
     <string name="profile_edit_error_last_name">Incorrect!</string>
     <string name="auth_action_verify">Verify</string>
+    <string name="profile_edit_action_save">Save</string>
+    <string name="profile_edit_hint_last_name">Last name</string>
+    <string name="profile_edit_hint_first_name">First name</string>
 </resources>

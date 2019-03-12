@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.profileedit
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.google.firebase.auth.FirebaseAuth
 import com.pechuro.cashdebts.data.CurrentUser
@@ -32,6 +33,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
 
     val data = ProfileEditModel()
     val localAvatarUri = ObservableField<Uri?>()
+    val isLoading = ObservableBoolean()
 
     private var localAvatarFile: File? = null
 
@@ -44,10 +46,10 @@ class ProfileEditFragmentViewModel @Inject constructor(
             }).addTo(compositeDisposable)
     }
 
-    //TODO!!!!!!!!!!!
     fun save() {
         if (!data.isValid()) return
-        if (localAvatarFile != null) {
+        isLoading.set(true)
+        val task = if (localAvatarFile != null) {
             storageRepository.uploadAndGetUrl(localAvatarFile!!.toUri(), localAvatarFile!!.name)
                 .flatMapCompletable {
                     val user = FirestoreUser(
@@ -58,11 +60,20 @@ class ProfileEditFragmentViewModel @Inject constructor(
                     )
                     userRepository.setUser(currentUser.uid!!, user)
                 }
-                .subscribe {
-                    println("COMPLEEEEEEEEEEEEEEEEEEEEETE")
-                }.addTo(compositeDisposable)
-
+        } else {
+            val user = FirestoreUser(
+                data.fields.firstName,
+                data.fields.lastName,
+                currentUser.phoneNumber!!,
+                data.fields.imageUrl.toString()
+            )
+            userRepository.setUser(currentUser.uid!!, user)
         }
+        task.subscribe({
+            isLoading.set(false)
+        }, {
+            println("AAAAAAAAA ${it.message}")
+        }).addTo(compositeDisposable)
     }
 
     fun loadEditedAvatar() {

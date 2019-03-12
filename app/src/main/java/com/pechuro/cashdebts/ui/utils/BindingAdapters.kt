@@ -5,7 +5,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.google.android.material.textfield.TextInputLayout
 import com.pechuro.cashdebts.R
 
@@ -25,10 +26,13 @@ fun setError(inputLayout: TextInputLayout, errorId: Int?) {
 
 @BindingAdapter("image_avatar")
 fun loadImage(view: ImageView, imageUrl: Uri?) {
+    val crossFadeFactory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
+
     Glide.with(view)
         .load(imageUrl)
-        .apply(RequestOptions().placeholder(R.drawable.avatar))
-        .apply(RequestOptions().error(R.drawable.avatar))
-        .apply(RequestOptions().circleCrop())
+        .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+        .placeholder(R.drawable.avatar)
+        .error(R.drawable.avatar)
+        .circleCrop()
         .into(view)
 }
