@@ -26,17 +26,20 @@
                     app:image_avatar="@{viewModel.localAvatarUri ?? viewModel.data.fields.imageUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" tools:srcCompat="@tools:sample/avatars[3]"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars[3]"/>
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_first_name_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     app:error="@{viewModel.data.errors.firstNameError}"
                     app:layout_constraintTop_toBottomOf="@+id/image_photo"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -74,8 +77,10 @@
                     app:show_progress="@{viewModel.isLoading}"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_last_name_layout"/>
+                    app:layout_constraintTop_toBottomOf="@+id/text_last_name_layout"
+                    app:layout_constraintStart_toStartOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

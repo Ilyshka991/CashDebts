@@ -60,7 +60,7 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
 
     override fun onPause() {
         super.onPause()
-        weakCompositeDisposable.dispose()
+        weakCompositeDisposable.clear()
     }
 
     override fun onDestroy() {

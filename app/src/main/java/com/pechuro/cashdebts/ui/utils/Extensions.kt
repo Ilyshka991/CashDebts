@@ -9,7 +9,7 @@ inline fun FragmentManager.transaction(
     body: FragmentTransaction.() -> Unit
 ) {
     val transaction = beginTransaction().apply {
-        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_in)
+        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
     }
     transaction.body()
     if (now) {

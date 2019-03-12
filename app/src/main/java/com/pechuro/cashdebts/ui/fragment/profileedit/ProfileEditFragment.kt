@@ -13,7 +13,9 @@ import com.pechuro.cashdebts.databinding.FragmentProfileEditBinding
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
+import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.transaction
 import com.pechuro.cashdebts.utils.getBytes
 import io.reactivex.rxkotlin.addTo
 
@@ -34,6 +36,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     override fun onStart() {
         super.onStart()
         setEventListeners()
+        loadUserIfRequire()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -63,6 +66,18 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
                 is AddOptionsEvent.TakePictureFromGallery -> dispatchTakePictureFromGalleryIntent()
             }
         }.addTo(weakCompositeDisposable)
+
+        EventBus.listen(ProfileEditEvent::class.java).subscribe {
+            when (it) {
+                is ProfileEditEvent.OnUserStartLoad -> showProgressDialog()
+                is ProfileEditEvent.OnUserStopLoad -> dismissProgressDialog()
+            }
+        }.addTo(weakCompositeDisposable)
+    }
+
+    private fun loadUserIfRequire() {
+        val isFirstTime = arguments?.getBoolean(ARG_IS_FIRST_TIME)
+        if (isFirstTime == false) viewModel.getExistingUser()
     }
 
     private fun dispatchTakePictureFromCameraIntent() {
@@ -101,6 +116,17 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
         PictureTakeOptionsDialog.newInstance().show(childFragmentManager, PictureTakeOptionsDialog.TAG)
     }
 
+    private fun showProgressDialog() {
+        childFragmentManager.transaction {
+            add(ProgressDialog.newInstance(), ProgressDialog.TAG)
+            addToBackStack(ProgressDialog.TAG)
+        }
+    }
+
+    private fun dismissProgressDialog() {
+        childFragmentManager.popBackStack()
+    }
+
     private fun loadEditedAvatar() {
         viewModel.loadEditedAvatar()
     }
@@ -109,8 +135,11 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
         private const val REQUEST_TAKE_PHOTO = 1213
         private const val REQUEST_PICK_PHOTO = 2453
 
-        fun newInstance() = ProfileEditFragment().apply {
+        private const val ARG_IS_FIRST_TIME = "isFirstTime"
+
+        fun newInstance(isFirstTime: Boolean = false) = ProfileEditFragment().apply {
             arguments = Bundle().apply {
+                putBoolean(ARG_IS_FIRST_TIME, isFirstTime)
             }
         }
     }

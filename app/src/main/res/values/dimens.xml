@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="progress_dialog_size">130dp</dimen>
 </resources>

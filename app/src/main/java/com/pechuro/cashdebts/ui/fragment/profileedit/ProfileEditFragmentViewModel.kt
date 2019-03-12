@@ -12,6 +12,8 @@ import com.pechuro.cashdebts.data.FirestoreUserRepository
 import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
+import com.pechuro.cashdebts.ui.utils.BaseEvent
+import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.utils.AVATAR_PATH
 import com.pechuro.cashdebts.utils.isExternalStorageWritable
 import io.reactivex.rxkotlin.addTo
@@ -27,22 +29,25 @@ class ProfileEditFragmentViewModel @Inject constructor(
     private val appContext: Context
 ) : BaseViewModel() {
 
-    init {
-        getExistingUser()
-    }
-
     val data = ProfileEditModel()
     val localAvatarUri = ObservableField<Uri?>()
     val isLoading = ObservableBoolean()
 
     private var localAvatarFile: File? = null
 
+    private var isUserAlreadyLoaded = false
+
     fun getExistingUser() {
+        if (isUserAlreadyLoaded) return
+        EventBus.publish(ProfileEditEvent.OnUserStartLoad)
+        isUserAlreadyLoaded = true
         userRepository.get(auth.currentUser?.uid!!)
             .subscribe({
                 data.setUser(it)
+                EventBus.publish(ProfileEditEvent.OnUserStopLoad)
             }, {
-
+                EventBus.publish(ProfileEditEvent.OnUserStopLoad)
+                it.printStackTrace()
             }).addTo(compositeDisposable)
     }
 
@@ -72,11 +77,12 @@ class ProfileEditFragmentViewModel @Inject constructor(
         task.subscribe({
             isLoading.set(false)
         }, {
-            println("AAAAAAAAA ${it.message}")
+            it.printStackTrace()
         }).addTo(compositeDisposable)
     }
 
     fun loadEditedAvatar() {
+        println(localAvatarFile?.toUri())
         localAvatarUri.set(localAvatarFile?.toUri())
     }
 
@@ -99,4 +105,9 @@ class ProfileEditFragmentViewModel @Inject constructor(
         }
         return File(storageDir, name)
     }
+}
+
+sealed class ProfileEditEvent : BaseEvent() {
+    object OnUserStopLoad : ProfileEditEvent()
+    object OnUserStartLoad : ProfileEditEvent()
 }
