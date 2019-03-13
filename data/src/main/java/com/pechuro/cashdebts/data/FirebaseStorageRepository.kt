@@ -5,8 +5,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.pechuro.cashdebts.data.exception.FirebaseStorageCommonException
 import com.pechuro.cashdebts.data.structure.FirebaseStorageStructure
 import io.reactivex.Single
+import javax.inject.Inject
 
-class FirebaseStorageRepository(private val storage: FirebaseStorage) {
+class FirebaseStorageRepository @Inject constructor(private val storage: FirebaseStorage) {
 
     fun uploadAndGetUrl(fileUri: Uri, name: String) = Single.create<Uri> { emitter ->
         val avatarRef = storage.reference.child("${FirebaseStorageStructure.AVATARS_PATH}/$name")

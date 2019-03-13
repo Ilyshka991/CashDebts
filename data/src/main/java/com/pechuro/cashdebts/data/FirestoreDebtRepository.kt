@@ -12,8 +12,9 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import javax.inject.Inject
 
-class FirestoreDebtRepository(private val store: FirebaseFirestore, private val user: CurrentUser) {
+class FirestoreDebtRepository @Inject constructor(private val store: FirebaseFirestore, private val user: CurrentUser) {
 
     fun getDataSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
         store.collection(FirestoreStructure.Debts.TAG)

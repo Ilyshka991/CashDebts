@@ -45,6 +45,8 @@ dependencies {
     kapt daggerProcessorDependencies.values()
     implementation glideDependencies.values()
     implementation firebaseDependencies.values()
+
+    implementation project(path: ':data')
 }
 
 apply plugin: 'com.google.gms.google-services'

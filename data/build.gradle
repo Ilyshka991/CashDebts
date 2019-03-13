@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: '../dependencies.gradle'
+apply from: '../configuration.gradle'
+
+android {
+    compileSdkVersion configuration.compileSdkVersion
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    implementation kotlin
+    implementation rxDependencies.values()
+    implementation androidFrameworkDependencies.appCompat
+    implementation daggerDependencies.dagger
+    kapt daggerProcessorDependencies.daggerProcessor
+    implementation firebaseDependencies.values()
+}

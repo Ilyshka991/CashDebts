@@ -8,8 +8,9 @@ import com.pechuro.cashdebts.data.structure.FirestoreStructure
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class FirestoreUserRepository(private val store: FirebaseFirestore) {
+class FirestoreUserRepository @Inject constructor(private val store: FirebaseFirestore) {
 
     fun get(uid: String) = Single.create<FirestoreUser> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
