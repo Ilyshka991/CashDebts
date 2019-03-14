@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.data
+package com.pechuro.cashdebts.data.repositories
 
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage

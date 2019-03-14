@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.data
+package com.pechuro.cashdebts.data.repositories
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pechuro.cashdebts.data.exception.FirestoreCommonException

@@ -1,8 +1,9 @@
-package com.pechuro.cashdebts.data
+package com.pechuro.cashdebts.data.repositories
 
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
+import com.pechuro.cashdebts.data.CurrentUser
 import com.pechuro.cashdebts.data.model.FirestoreDebt
 import com.pechuro.cashdebts.data.model.FirestoreDebtStatus
 import com.pechuro.cashdebts.data.structure.FirestoreStructure

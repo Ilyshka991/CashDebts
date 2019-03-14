@@ -5,27 +5,21 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.google.firebase.auth.FirebaseAuth
-import com.pechuro.cashdebts.data.CurrentUser
-import com.pechuro.cashdebts.data.FirebaseStorageRepository
-import com.pechuro.cashdebts.data.FirestoreUserRepository
-import com.pechuro.cashdebts.data.model.FirestoreUser
+import com.pechuro.cashdebts.data.repositories.FirebaseStorageRepository
+import com.pechuro.cashdebts.data.repositories.FirestoreUserRepository
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
-import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.utils.AVATAR_PATH
 import com.pechuro.cashdebts.utils.isExternalStorageWritable
-import io.reactivex.rxkotlin.addTo
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
 class ProfileEditFragmentViewModel @Inject constructor(
     private val userRepository: FirestoreUserRepository,
-    private val auth: FirebaseAuth,
     private val storageRepository: FirebaseStorageRepository,
-    private val currentUser: CurrentUser,
+    /*private val currentUser: CurrentUser,*/
     private val appContext: Context
 ) : BaseViewModel() {
 
@@ -38,47 +32,47 @@ class ProfileEditFragmentViewModel @Inject constructor(
     private var isUserAlreadyLoaded = false
 
     fun getExistingUser() {
-        if (isUserAlreadyLoaded) return
-        EventBus.publish(ProfileEditEvent.OnUserStartLoad)
-        isUserAlreadyLoaded = true
-        userRepository.get(auth.currentUser?.uid!!)
-            .subscribe({
-                data.setUser(it)
-                EventBus.publish(ProfileEditEvent.OnUserStopLoad)
-            }, {
-                EventBus.publish(ProfileEditEvent.OnUserStopLoad)
-                it.printStackTrace()
-            }).addTo(compositeDisposable)
+        /* if (isUserAlreadyLoaded) return
+         EventBus.publish(ProfileEditEvent.OnUserStartLoad)
+         isUserAlreadyLoaded = true
+         userRepository.get(currentUser.uid!!)
+             .subscribe({
+                 data.setUser(it)
+                 EventBus.publish(ProfileEditEvent.OnUserStopLoad)
+             }, {
+                 EventBus.publish(ProfileEditEvent.OnUserStopLoad)
+                 it.printStackTrace()
+             }).addTo(compositeDisposable)*/
     }
 
     fun save() {
-        if (!data.isValid()) return
-        isLoading.set(true)
-        val task = if (localAvatarFile != null) {
-            storageRepository.uploadAndGetUrl(localAvatarFile!!.toUri(), localAvatarFile!!.name)
-                .flatMapCompletable {
-                    val user = FirestoreUser(
-                        data.fields.firstName,
-                        data.fields.lastName,
-                        currentUser.phoneNumber!!,
-                        it.toString()
-                    )
-                    userRepository.setUser(currentUser.uid!!, user)
-                }
-        } else {
-            val user = FirestoreUser(
-                data.fields.firstName,
-                data.fields.lastName,
-                currentUser.phoneNumber!!,
-                data.fields.imageUrl.toString()
-            )
-            userRepository.setUser(currentUser.uid!!, user)
-        }
-        task.subscribe({
-            isLoading.set(false)
-        }, {
-            it.printStackTrace()
-        }).addTo(compositeDisposable)
+        /* if (!data.isValid()) return
+         isLoading.set(true)
+         val task = if (localAvatarFile != null) {
+             storageRepository.uploadAndGetUrl(localAvatarFile!!.toUri(), localAvatarFile!!.name)
+                 .flatMapCompletable {
+                     val user = FirestoreUser(
+                         data.fields.firstName,
+                         data.fields.lastName,
+                         currentUser.phoneNumber!!,
+                         it.toString()
+                     )
+                     userRepository.setUser(currentUser.uid!!, user)
+                 }
+         } else {
+             val user = FirestoreUser(
+                 data.fields.firstName,
+                 data.fields.lastName,
+                 currentUser.phoneNumber!!,
+                 data.fields.imageUrl.toString()
+             )
+             userRepository.setUser(currentUser.uid!!, user)
+         }
+         task.subscribe({
+             isLoading.set(false)
+         }, {
+             it.printStackTrace()
+         }).addTo(compositeDisposable)*/
     }
 
     fun loadEditedAvatar() {
@@ -87,9 +81,9 @@ class ProfileEditFragmentViewModel @Inject constructor(
     }
 
     fun createImageFile() = try {
-        createAvatarFile(appContext, "${currentUser.uid!!}.jpg")?.also {
-            localAvatarFile = it
-        }
+        /* createAvatarFile(appContext, "${currentUser.uid!!}.jpg")?.also {
+             localAvatarFile = it
+         }*/
     } catch (ex: IOException) {
         null
     }
