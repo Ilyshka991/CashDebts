@@ -1,18 +1,18 @@
-package com.pechuro.cashdebts.ui.activity.main.debtlist
+package com.pechuro.cashdebts.ui.fragment.debtlist
 
 import com.google.firebase.firestore.DocumentSnapshot
-import com.pechuro.cashdebts.data.repositories.FirestoreDebtRepository
+import com.pechuro.cashdebts.data.repositories.IDebtRepository
 import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.creditor
 import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.debtor
 import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.description
 import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.value
-import com.pechuro.cashdebts.ui.activity.main.debtlist.data.Debt
-import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.base.BaseViewModel
+import com.pechuro.cashdebts.ui.fragment.debtlist.data.Debt
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class DebtListFragmentViewModel @Inject constructor(
-    debtRepository: FirestoreDebtRepository
+    debtRepository: IDebtRepository
     /* private val user: CurrentUser*/
 ) : BaseViewModel() {
 

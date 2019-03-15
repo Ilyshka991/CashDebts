@@ -15,7 +15,6 @@ interface IAuthRepository {
     fun signOut()
 }
 
-
 sealed class AuthEvents {
     class OnError(val e: FirebaseException) : AuthEvents()
     object OnCodeSent : AuthEvents()

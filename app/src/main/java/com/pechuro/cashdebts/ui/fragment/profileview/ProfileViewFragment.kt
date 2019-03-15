@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentProfileViewBinding
-import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
 class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileViewFragmentViewModel>() {
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentProfileEditBinding
-import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog

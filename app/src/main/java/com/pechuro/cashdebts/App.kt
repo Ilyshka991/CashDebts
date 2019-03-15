@@ -2,6 +2,8 @@ package com.pechuro.cashdebts
 
 import android.app.Activity
 import android.app.Application
+import com.pechuro.cashdebts.di.component.DaggerAppComponent
+import com.pechuro.cashdebts.di.component.DaggerDataComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -13,17 +15,13 @@ class App : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-
-        /*if (LeakCanary.isInAnalyzerProcess(this)) return
-        LeakCanary.install(this)*/
-
         initDI()
     }
 
     override fun activityInjector() = activityDispatchingAndroidInjector
 
     private fun initDI() {
-        //  val dataComponent = DaggerDataComponent.create()
-        //  DaggerAppComponent.builder().application(this).dataComponent(dataComponent).build().inject(this)
+        val dataComponent = DaggerDataComponent.create()
+        DaggerAppComponent.builder().application(this).dataComponent(dataComponent).build().inject(this)
     }
 }

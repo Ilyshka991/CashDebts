@@ -5,9 +5,9 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.pechuro.cashdebts.data.repositories.FirebaseStorageRepository
-import com.pechuro.cashdebts.data.repositories.FirestoreUserRepository
-import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.data.repositories.IStorageRepository
+import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.utils.AVATAR_PATH
@@ -17,8 +17,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 class ProfileEditFragmentViewModel @Inject constructor(
-    private val userRepository: FirestoreUserRepository,
-    private val storageRepository: FirebaseStorageRepository,
+    private val userRepository: IUserRepository,
+    private val storageRepository: IStorageRepository,
     /*private val currentUser: CurrentUser,*/
     private val appContext: Context
 ) : BaseViewModel() {

@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
-import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
+import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
 
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {

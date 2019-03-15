@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.activity.main.debtlist
+package com.pechuro.cashdebts.ui.fragment.debtlist
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
@@ -6,8 +6,8 @@ import com.google.firebase.firestore.DocumentChange
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentDebtListBinding
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
-import com.pechuro.cashdebts.ui.activity.main.debtlist.adapter.DebtListAdapter
-import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.fragment.debtlist.adapter.DebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
 import javax.inject.Inject
 

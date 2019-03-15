@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAddDebtInfoBinding
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
-import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
 class AddDebtInfoFragment : BaseFragment<FragmentAddDebtInfoBinding, AddDebtActivityViewModel>() {
     override val viewModel: AddDebtActivityViewModel

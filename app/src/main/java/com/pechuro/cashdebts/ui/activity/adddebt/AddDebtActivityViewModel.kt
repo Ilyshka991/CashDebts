@@ -3,13 +3,13 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.data.model.FirestoreDebt
-import com.pechuro.cashdebts.data.repositories.FirestoreDebtRepository
-import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.data.repositories.IDebtRepository
+import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
-    private val debtRepository: FirestoreDebtRepository
+    private val debtRepository: IDebtRepository
 ) : BaseViewModel() {
     val debt = ObservableField<FirestoreDebt>(FirestoreDebt())
     val command = PublishSubject.create<Events>()

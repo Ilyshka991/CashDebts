@@ -11,7 +11,7 @@ import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAddDebtUserBinding
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
-import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
 class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActivityViewModel>() {
     override val viewModel: AddDebtActivityViewModel

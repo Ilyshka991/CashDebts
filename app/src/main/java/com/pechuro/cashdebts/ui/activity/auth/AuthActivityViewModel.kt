@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
-import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject

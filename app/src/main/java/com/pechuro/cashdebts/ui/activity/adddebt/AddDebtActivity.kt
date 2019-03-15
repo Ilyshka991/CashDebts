@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragment
-import com.pechuro.cashdebts.ui.activity.base.FragmentSwitcherBaseActivity
+import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
 

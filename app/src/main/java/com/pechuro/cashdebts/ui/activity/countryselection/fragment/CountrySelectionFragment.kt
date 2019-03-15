@@ -7,7 +7,7 @@ import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentCountrySelectBinding
 import com.pechuro.cashdebts.ui.activity.countryselection.fragment.adapter.CountrySelectionAdapter
-import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import javax.inject.Inject
 
 class CountrySelectionFragment : BaseFragment<FragmentCountrySelectBinding, CountrySelectionFragmentViewModel>() {

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.databinding.ItemCountryBinding
 import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
-import com.pechuro.cashdebts.ui.base.BaseViewHolder
+import com.pechuro.cashdebts.ui.base.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -9,7 +9,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class FirebaseModule {
+internal class FirebaseModule {
 
     @Provides
     @DataScope

@@ -11,7 +11,7 @@ import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
-import com.pechuro.cashdebts.ui.activity.main.debtlist.DebtListFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

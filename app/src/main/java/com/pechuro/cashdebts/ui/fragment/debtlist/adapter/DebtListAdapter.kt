@@ -1,11 +1,11 @@
-package com.pechuro.cashdebts.ui.activity.main.debtlist.adapter
+package com.pechuro.cashdebts.ui.fragment.debtlist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.databinding.ItemDebtBinding
-import com.pechuro.cashdebts.ui.activity.main.debtlist.data.Debt
-import com.pechuro.cashdebts.ui.base.BaseViewHolder
+import com.pechuro.cashdebts.ui.base.base.BaseViewHolder
+import com.pechuro.cashdebts.ui.fragment.debtlist.data.Debt
 
 class DebtListAdapter : RecyclerView.Adapter<BaseViewHolder<Debt>>() {
     private val debts = mutableListOf<Debt>()

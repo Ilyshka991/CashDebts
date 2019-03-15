@@ -1,15 +1,16 @@
-package com.pechuro.cashdebts.data.repositories
+package com.pechuro.cashdebts.data.repositories.impl
 
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
 import com.pechuro.cashdebts.data.exception.FirebaseStorageCommonException
+import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.structure.FirebaseStorageStructure
 import io.reactivex.Single
 import javax.inject.Inject
 
-class FirebaseStorageRepository @Inject constructor(private val storage: FirebaseStorage) {
+internal class StorageRepositoryImpl @Inject constructor(private val storage: FirebaseStorage) : IStorageRepository {
 
-    fun uploadAndGetUrl(fileUri: Uri, name: String) = Single.create<Uri> { emitter ->
+    override fun uploadAndGetUrl(fileUri: Uri, name: String) = Single.create<Uri> { emitter ->
         val avatarRef = storage.reference.child("${FirebaseStorageStructure.AVATARS_PATH}/$name")
         avatarRef.putFile(fileUri)
             .continueWithTask {

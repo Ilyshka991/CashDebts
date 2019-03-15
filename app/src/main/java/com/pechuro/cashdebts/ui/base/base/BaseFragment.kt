@@ -1,19 +1,21 @@
-package com.pechuro.cashdebts.ui.base
+package com.pechuro.cashdebts.ui.base.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatActivity(),
+abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(),
     HasSupportFragmentInjector {
     @Inject
     protected lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -35,7 +37,22 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
-        performDataBinding()
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewDataBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        return viewDataBinding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewDataBinding.executePendingBindings()
     }
 
     override fun onPause() {
@@ -50,11 +67,5 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
 
-    private fun performDI() = AndroidInjection.inject(this)
-
-    private fun performDataBinding() {
-        viewDataBinding = DataBindingUtil.setContentView(this, layoutId)
-        bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
-        viewDataBinding.executePendingBindings()
-    }
+    private fun performDI() = AndroidSupportInjection.inject(this)
 }

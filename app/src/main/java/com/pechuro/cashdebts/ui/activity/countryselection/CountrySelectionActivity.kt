@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityContainerBinding
 import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragment
-import com.pechuro.cashdebts.ui.base.BaseActivity
+import com.pechuro.cashdebts.ui.base.base.BaseActivity
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventBus

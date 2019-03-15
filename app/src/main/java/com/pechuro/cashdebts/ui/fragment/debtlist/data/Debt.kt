@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.activity.main.debtlist.data
+package com.pechuro.cashdebts.ui.fragment.debtlist.data
 
 data class Debt(
     val id: String,

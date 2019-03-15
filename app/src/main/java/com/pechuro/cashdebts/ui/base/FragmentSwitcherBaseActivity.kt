@@ -1,13 +1,13 @@
-package com.pechuro.cashdebts.ui.activity.base
+package com.pechuro.cashdebts.ui.base
 
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityContainerBinding
-import com.pechuro.cashdebts.ui.base.BaseActivity
-import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.base.BaseActivity
+import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
 abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<ActivityContainerBinding, VM>() {

@@ -1,11 +1,12 @@
-package com.pechuro.cashdebts.data.repositories
+package com.pechuro.cashdebts.data.repositories.impl
 
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
-import com.pechuro.cashdebts.data.CurrentUser
+import com.pechuro.cashdebts.data.model.CurrentUser
 import com.pechuro.cashdebts.data.model.FirestoreDebt
 import com.pechuro.cashdebts.data.model.FirestoreDebtStatus
+import com.pechuro.cashdebts.data.repositories.IDebtRepository
 import com.pechuro.cashdebts.data.structure.FirestoreStructure
 import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.creditor
 import com.pechuro.cashdebts.data.structure.FirestoreStructure.Debts.Structure.debtor
@@ -15,9 +16,12 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class FirestoreDebtRepository @Inject constructor(private val store: FirebaseFirestore, private val user: CurrentUser) {
+internal class DebtRepositoryImpl @Inject constructor(
+    private val store: FirebaseFirestore,
+    private val user: CurrentUser
+) : IDebtRepository {
 
-    fun getDataSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
+    override fun getDataSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
         store.collection(FirestoreStructure.Debts.TAG)
             .whereEqualTo(creditor, user.phoneNumber)
             .addSnapshotListener(MetadataChanges.INCLUDE) { querySnapshot, e ->
@@ -35,7 +39,7 @@ class FirestoreDebtRepository @Inject constructor(private val store: FirebaseFir
     }
         .subscribeOn(Schedulers.io())
 
-    fun add(debt: FirestoreDebt) = Completable.create { emitter ->
+    override fun add(debt: FirestoreDebt) = Completable.create { emitter ->
         debt.apply {
             creditorName = "ilya"
             creditorPhone = user.phoneNumber!!

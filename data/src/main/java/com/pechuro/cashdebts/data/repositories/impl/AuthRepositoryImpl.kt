@@ -11,7 +11,7 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(
+internal class AuthRepositoryImpl @Inject constructor(
     private val authClient: FirebaseAuth,
     private val phoneAuthProvider: PhoneAuthProvider
 ) : IAuthRepository {
