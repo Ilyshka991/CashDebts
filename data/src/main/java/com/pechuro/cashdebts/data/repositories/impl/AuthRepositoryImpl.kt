@@ -1,19 +1,22 @@
-package com.pechuro.cashdebts.data.repositories
+package com.pechuro.cashdebts.data.repositories.impl
 
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.pechuro.cashdebts.data.repositories.AuthEvents
+import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class FirebaseAuthRepository @Inject constructor(
+class AuthRepositoryImpl @Inject constructor(
     private val authClient: FirebaseAuth,
     private val phoneAuthProvider: PhoneAuthProvider
-) {
-    val eventEmitter = PublishSubject.create<AuthEvents>()
+) : IAuthRepository {
+    override val eventEmitter: PublishSubject<AuthEvents>
+        get() = PublishSubject.create<AuthEvents>()
 
     private lateinit var storedVerificationId: String
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -22,7 +25,7 @@ class FirebaseAuthRepository @Inject constructor(
     private val authCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            signInWithPhoneAuthCredential(credential)
+            signIn(credential)
         }
 
 
@@ -37,7 +40,7 @@ class FirebaseAuthRepository @Inject constructor(
         }
     }
 
-    fun startPhoneNumberVerification(phoneNumber: String) {
+    override fun startVerification(phoneNumber: String) {
         phoneAuthProvider.verifyPhoneNumber(
             phoneNumber,
             TIMEOUT,
@@ -47,7 +50,7 @@ class FirebaseAuthRepository @Inject constructor(
         )
     }
 
-    fun resendVerificationCode(phoneNumber: String) {
+    override fun resendCode(phoneNumber: String) {
         phoneAuthProvider.verifyPhoneNumber(
             phoneNumber,
             TIMEOUT,
@@ -59,16 +62,16 @@ class FirebaseAuthRepository @Inject constructor(
         isCodeResent = true
     }
 
-    fun verifyPhoneNumberWithCode(code: String) {
+    override fun verifyWithCode(code: String) {
         val credential = PhoneAuthProvider.getCredential(storedVerificationId, code)
-        signInWithPhoneAuthCredential(credential)
+        signIn(credential)
     }
 
-    fun signOut() {
+    override fun signOut() {
         authClient.signOut()
     }
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+    private fun signIn(credential: PhoneAuthCredential) {
         authClient.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 eventEmitter.onNext(if (task.isSuccessful) AuthEvents.OnSuccess else AuthEvents.OnIncorrectCode)
@@ -78,11 +81,4 @@ class FirebaseAuthRepository @Inject constructor(
     companion object {
         private const val TIMEOUT = 60L
     }
-}
-
-sealed class AuthEvents {
-    class OnError(val e: FirebaseException) : AuthEvents()
-    object OnCodeSent : AuthEvents()
-    object OnSuccess : AuthEvents()
-    object OnIncorrectCode : AuthEvents()
 }

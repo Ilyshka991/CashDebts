@@ -8,7 +8,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.repositories.AuthEvents
-import com.pechuro.cashdebts.data.repositories.FirebaseAuthRepository
+import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import io.reactivex.rxkotlin.addTo
@@ -16,7 +16,7 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AuthActivityViewModel @Inject constructor(
-    private val repository: FirebaseAuthRepository
+    private val repository: IAuthRepository
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -70,7 +70,7 @@ class AuthActivityViewModel @Inject constructor(
             return
         }
         isLoading.set(true)
-        repository.startPhoneNumberVerification(number)
+        repository.startVerification(number)
     }
 
     fun verifyPhoneNumberWithCode() {
@@ -79,7 +79,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
             return
         }
-        repository.verifyPhoneNumberWithCode(code)
+        repository.verifyWithCode(code)
     }
 
     fun resendVerificationCode() {
@@ -88,7 +88,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
             return
         }
-        repository.resendVerificationCode(number)
+        repository.resendCode(number)
     }
 }
 

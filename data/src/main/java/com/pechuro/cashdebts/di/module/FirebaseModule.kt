@@ -23,7 +23,7 @@ class FirebaseModule {
     @DataScope
     fun provideStorage() = FirebaseStorage.getInstance()
 
-   @Provides
-   @DataScope
-   fun providePhoneAuthProvider() = PhoneAuthProvider.getInstance()
+    @Provides
+    @DataScope
+    fun providePhoneAuthProvider() = PhoneAuthProvider.getInstance()
 }

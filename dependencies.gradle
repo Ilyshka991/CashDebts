@@ -14,7 +14,7 @@ def libraryVersions = [
         rxKotlin        : '2.3.0',
         rxAndroid       : '2.0.2',
 
-        dagger          : '2.16',
+        dagger          : '2.21',
 
         glide           : '4.9.0',
 
