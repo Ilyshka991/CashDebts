@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.ui.activity.auth.code
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
@@ -11,6 +10,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthCodeBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import io.reactivex.rxkotlin.addTo
 
 class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewModel>() {
     override val viewModel: AuthActivityViewModel
@@ -20,16 +20,6 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     override val layoutId: Int
         get() = R.layout.fragment_auth_code
 
-    private val timer = object : CountDownTimer(RESEND_TIMEOUT, TIMER_INTERVAL) {
-        override fun onFinish() {
-            onTimerFinish()
-        }
-
-        override fun onTick(millisUntilFinished: Long) {
-            updateTimeViews(millisUntilFinished)
-        }
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupView()
@@ -38,12 +28,7 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
 
     override fun onStart() {
         super.onStart()
-        timer.start()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        timer.cancel()
+        viewModel.timer.subscribe(this::updateTimeViews, {}, this::onTimerFinish).addTo(weakCompositeDisposable)
     }
 
     private fun setupView() {
@@ -59,12 +44,18 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     }
 
     private fun setListeners() {
-        viewDataBinding.buttonResend.setOnClickListener {
-            onResendButtonClick()
+        with(viewDataBinding) {
+            buttonResend.setOnClickListener {
+                onResendButtonClick()
+            }
+            buttonCodeConfirm.setOnClickListener {
+                this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
+            }
         }
     }
 
     private fun updateTimeViews(time: Long) {
+        println("AAAAAAAAAA $time")
         with(viewDataBinding) {
             textTime.text = getString(R.string.auth_code_time, time / 1000)
             progressTime.progress = ((RESEND_TIMEOUT - time) * 100F / RESEND_TIMEOUT).toInt()

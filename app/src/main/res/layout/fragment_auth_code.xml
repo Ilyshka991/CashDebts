@@ -44,8 +44,9 @@
                     android:textSize="18sp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_code_confirm"
                     tools:visibility="visible"/>
 
@@ -68,7 +69,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/auth_action_code_confirm"
-                    android:onClick="@{() -> viewModel.verifyPhoneNumberWithCode()}"
                     app:show_progress="@{viewModel.isLoading}"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"

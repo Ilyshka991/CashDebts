@@ -16,11 +16,13 @@ internal class AuthRepositoryImpl @Inject constructor(
     private val phoneAuthProvider: PhoneAuthProvider
 ) : IAuthRepository {
     override val eventEmitter: PublishSubject<AuthEvents>
-        get() = PublishSubject.create<AuthEvents>()
+        get() = _eventEmitter
 
     private lateinit var storedVerificationId: String
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private var isCodeResent = false
+
+    private val _eventEmitter = PublishSubject.create<AuthEvents>()
 
     private val authCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -30,15 +32,19 @@ internal class AuthRepositoryImpl @Inject constructor(
 
 
         override fun onVerificationFailed(e: FirebaseException) {
-            eventEmitter.onNext(AuthEvents.OnError(e))
+            _eventEmitter.onNext(AuthEvents.OnError(e))
         }
 
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-            if (!isCodeResent) eventEmitter.onNext(AuthEvents.OnCodeSent)
+            if (!isCodeResent) {
+                _eventEmitter.onNext(AuthEvents.OnCodeSent)
+            }
             storedVerificationId = verificationId
             resendToken = token
         }
     }
+
+    override fun isUserSignedIn() = authClient.currentUser != null
 
     override fun startVerification(phoneNumber: String) {
         phoneAuthProvider.verifyPhoneNumber(
@@ -74,7 +80,7 @@ internal class AuthRepositoryImpl @Inject constructor(
     private fun signIn(credential: PhoneAuthCredential) {
         authClient.signInWithCredential(credential)
             .addOnCompleteListener { task ->
-                eventEmitter.onNext(if (task.isSuccessful) AuthEvents.OnSuccess else AuthEvents.OnIncorrectCode)
+                _eventEmitter.onNext(if (task.isSuccessful) AuthEvents.OnSuccess else AuthEvents.OnIncorrectCode)
             }
     }
 

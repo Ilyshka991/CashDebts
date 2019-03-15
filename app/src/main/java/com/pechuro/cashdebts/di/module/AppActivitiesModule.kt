@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
+import com.pechuro.cashdebts.ui.activity.splash.SplashActivity
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import dagger.Module
@@ -22,13 +23,17 @@ import dagger.android.support.AndroidSupportInjectionModule
 interface AppActivitiesModule {
 
     @ActivityScope
+    @ContributesAndroidInjector
+    fun bindSplash(): SplashActivity
+
+    @ActivityScope
     @ContributesAndroidInjector(
         modules = [
             DebtListFragmentProvider::class,
             ProfileEditFragmentProvider::class
         ]
     )
-    fun bindMainActivity(): MainActivity
+    fun bindMain(): MainActivity
 
     @ActivityScope
     @ContributesAndroidInjector(
@@ -36,7 +41,7 @@ interface AppActivitiesModule {
             AddDebtInfoFragmentProvider::class,
             AddDebtUserFragmentProvider::class]
     )
-    fun bindAddActivity(): AddDebtActivity
+    fun bindAdd(): AddDebtActivity
 
     @ActivityScope
     @ContributesAndroidInjector(
@@ -45,12 +50,12 @@ interface AppActivitiesModule {
             AuthCodeFragmentProvider::class,
             AuthActivityModule::class]
     )
-    fun bindAuthActivity(): AuthActivity
+    fun bindAuth(): AuthActivity
 
     @ActivityScope
     @ContributesAndroidInjector(
         modules = [CountrySelectionFragmentProvider::class,
             AuthActivityModule::class]
     )
-    fun bindCountrySelectActivity(): CountrySelectionActivity
+    fun bindCountrySelect(): CountrySelectionActivity
 }

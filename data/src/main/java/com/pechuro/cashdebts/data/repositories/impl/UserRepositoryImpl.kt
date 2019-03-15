@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.data.repositories.impl
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pechuro.cashdebts.data.exception.FirestoreCommonException
 import com.pechuro.cashdebts.data.exception.FirestoreUserNotFoundException
@@ -11,7 +12,10 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-internal class UserRepositoryImpl @Inject constructor(private val store: FirebaseFirestore) : IUserRepository {
+internal class UserRepositoryImpl @Inject constructor(
+    private val store: FirebaseFirestore,
+    private val auth: FirebaseAuth
+) : IUserRepository {
 
     override fun get(uid: String) = Single.create<FirestoreUser> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)

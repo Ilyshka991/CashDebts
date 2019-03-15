@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.activity.auth
 
+import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -11,12 +12,15 @@ import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.custom.phone.CountryData
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthActivityViewModel @Inject constructor(
-    private val repository: IAuthRepository
+    private val repository: IAuthRepository,
+    private val telephonyManager: TelephonyManager
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -24,6 +28,9 @@ class AuthActivityViewModel @Inject constructor(
     val phoneNumber = ObservableField<String?>()
     val phoneCode = ObservableField<String?>()
     val countryData = ObservableField<CountryData?>()
+
+    val timer: Observable<Long> = Observable.intervalRange(60, 60, 0, 60, TimeUnit.SECONDS)
+        .map { 60 - it }
 
     init {
         subscribeToEvents()
@@ -90,6 +97,20 @@ class AuthActivityViewModel @Inject constructor(
         }
         repository.resendCode(number)
     }
+
+    fun getUserCountryCode(): String? {
+        val simCountry = telephonyManager.simCountryIso
+        if (simCountry != null && simCountry.length == 2) {
+            return simCountry.toUpperCase()
+        } else if (telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
+            val networkCountry = telephonyManager.networkCountryIso
+            if (networkCountry != null && networkCountry.length == 2) {
+                return networkCountry.toUpperCase()
+            }
+        }
+        return null
+    }
+
 }
 
 sealed class Events {

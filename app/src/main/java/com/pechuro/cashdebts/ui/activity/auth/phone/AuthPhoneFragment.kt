@@ -1,10 +1,8 @@
 package com.pechuro.cashdebts.ui.activity.auth.phone
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
@@ -36,17 +34,12 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) setCountry()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setupView()
+        if (savedInstanceState == null) setInitialCountry()
     }
 
     override fun onResume() {
         super.onResume()
-        viewDataBinding.textPhone.addListener(phoneTextWatcher)
+        setOnClickListeners()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -64,40 +57,35 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun setupView() {
-        viewDataBinding.textCountry.setOnClickListener {
-            openCountrySelection()
-        }
-        viewDataBinding.textPhone.onDoneClick = {
-            viewModel.startPhoneNumberVerification()
+    private fun setOnClickListeners() {
+        with(viewDataBinding) {
+            buttonVerify.setOnClickListener {
+                this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
+            }
+
+            textPhone.addListener(phoneTextWatcher)
+
+            textCountry.setOnClickListener {
+                openCountrySelectionActivity()
+            }
+
+            textPhone.onDoneClick = {
+                this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
+            }
         }
     }
 
-    private fun openCountrySelection() {
+    private fun openCountrySelectionActivity() {
         context?.let {
             val intent = CountrySelectionActivity.newIntent(it)
             startActivityForResult(intent, INTENT_REQUEST_COUNTRY_SELECT)
         }
     }
 
-    private fun setCountry() {
-        val countryCode = getUserCountryCode()
+    private fun setInitialCountry() {
+        val countryCode = viewModel.getUserCountryCode()
         val country = countryList.find { it.code == countryCode }
         viewModel.countryData.set(country)
-    }
-
-    private fun getUserCountryCode(): String? {
-        val tm = context?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val simCountry = tm.simCountryIso
-        if (simCountry != null && simCountry.length == 2) {
-            return simCountry.toUpperCase()
-        } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
-            val networkCountry = tm.networkCountryIso
-            if (networkCountry != null && networkCountry.length == 2) {
-                return networkCountry.toUpperCase()
-            }
-        }
-        return null
     }
 
     companion object {

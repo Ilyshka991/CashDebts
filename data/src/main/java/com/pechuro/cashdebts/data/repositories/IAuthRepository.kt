@@ -6,6 +6,8 @@ import io.reactivex.subjects.PublishSubject
 interface IAuthRepository {
     val eventEmitter: PublishSubject<AuthEvents>
 
+    fun isUserSignedIn(): Boolean
+
     fun startVerification(phoneNumber: String)
 
     fun resendCode(phoneNumber: String)
