@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="country"
-                  type="com.pechuro.cashdebts.ui.custom.phone.CountryData"/>
+                  type="com.pechuro.cashdebts.model.entity.CountryData"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

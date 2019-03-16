@@ -2,30 +2,23 @@ package com.pechuro.cashdebts.ui.activity.main
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.ActivityContainerBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
-import com.pechuro.cashdebts.ui.base.base.BaseActivity
+import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
-import com.pechuro.cashdebts.ui.utils.transaction
 
-class MainActivity : BaseActivity<ActivityContainerBinding, MainActivityViewModel>() {
+class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
 
     override val viewModel: MainActivityViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-    override val layoutId: Int
-        get() = R.layout.activity_container
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) homeFragment()
-    }
+    override val homeFragment: Fragment
+        get() = DebtListFragment.newInstance()
 
     override fun onResume() {
         super.onResume()
@@ -54,13 +47,6 @@ class MainActivity : BaseActivity<ActivityContainerBinding, MainActivityViewMode
         finish()
     }
 
-    private fun homeFragment() {
-        val fragment = DebtListFragment.newInstance()
-        supportFragmentManager.transaction {
-            replace(viewDataBinding.container.id, fragment)
-        }
-    }
-
     private fun subscribeToEvents() {
         EventBus.listen(MainActivityEvent::class.java).subscribe {
             when (it) {
@@ -72,10 +58,7 @@ class MainActivity : BaseActivity<ActivityContainerBinding, MainActivityViewMode
     private fun openAddActivity() {
         /*val intent = AddDebtActivity.newIntent(this)
         startActivity(intent)*/
-        val fragment = ProfileEditFragment.newInstance()
-        supportFragmentManager.transaction {
-            replace(viewDataBinding.container.id, fragment)
-        }
+        showFragment(ProfileEditFragment.newInstance())
     }
 
     companion object {

@@ -10,7 +10,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthCodeBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
-import io.reactivex.rxkotlin.addTo
+import com.pechuro.cashdebts.ui.utils.Timer
 
 class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewModel>() {
     override val viewModel: AuthActivityViewModel
@@ -20,25 +20,55 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     override val layoutId: Int
         get() = R.layout.fragment_auth_code
 
+    private var resendTimer: Timer? = null
+    private var resendErrorTimer: Timer? = null
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setupView()
+
+        val isCodeResent = savedInstanceState?.getBoolean(BUNDLE_IS_CODE_RESENT) ?: false
+        if (isCodeResent) {
+            val lastTick = savedInstanceState?.getLong(BUNDLE_RESEND_ERROR_TIMER_TICK) ?: RESEND_ERROR_TIMEOUT
+            startResendErrorTimer(lastTick)
+        } else {
+            val lastTick = savedInstanceState?.getLong(BUNDLE_RESEND_TIMER_TICK) ?: RESEND_TIMEOUT
+            startResendTimer(lastTick)
+        }
+
         setListeners()
+        setupView()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.timer.subscribe(this::updateTimeViews, {}, this::onTimerFinish).addTo(weakCompositeDisposable)
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTimers()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            resendTimer?.lastTick?.let { putLong(BUNDLE_RESEND_TIMER_TICK, it) }
+            resendErrorTimer?.lastTick?.let { putLong(BUNDLE_RESEND_ERROR_TIMER_TICK, it) }
+            putBoolean(BUNDLE_IS_CODE_RESENT, isCodeResent())
+        }
     }
 
     private fun setupView() {
-        viewDataBinding.textCode.apply {
-            setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    viewModel.verifyPhoneNumberWithCode()
-                    return@setOnEditorActionListener true
+        with(viewDataBinding) {
+            textCode.apply {
+                setOnEditorActionListener { _, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
+                        return@setOnEditorActionListener true
+                    }
+                    false
                 }
-                false
+            }
+
+            if (isCodeResent()) {
+                textNotReceive.visibility = GONE
+                buttonResend.visibility = GONE
+                textTime.visibility = GONE
             }
         }
     }
@@ -54,15 +84,31 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
         }
     }
 
+    private fun startResendTimer(startWith: Long = RESEND_TIMEOUT) {
+        resendTimer = Timer(RESEND_TIMEOUT, startWith).also {
+            it.start(::updateTimeViews, ::onResendTimerFinish)
+        }
+    }
+
+    private fun startResendErrorTimer(startWith: Long = RESEND_ERROR_TIMEOUT) {
+        resendErrorTimer = Timer(RESEND_ERROR_TIMEOUT, startWith).also {
+            it.start({}, ::onResendErrorTimerFinish)
+        }
+    }
+
+    private fun stopTimers() {
+        resendTimer?.stop()
+        resendErrorTimer?.stop()
+    }
+
     private fun updateTimeViews(time: Long) {
-        println("AAAAAAAAAA $time")
         with(viewDataBinding) {
-            textTime.text = getString(R.string.auth_code_time, time / 1000)
+            textTime.text = getString(R.string.auth_code_time, time)
             progressTime.progress = ((RESEND_TIMEOUT - time) * 100F / RESEND_TIMEOUT).toInt()
         }
     }
 
-    private fun onTimerFinish() {
+    private fun onResendTimerFinish() {
         with(viewDataBinding) {
             buttonResend.isEnabled = true
             textTime.visibility = GONE
@@ -70,21 +116,28 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
         }
     }
 
+    private fun onResendErrorTimerFinish() {
+        viewDataBinding.textResendError.visibility = VISIBLE
+    }
+
     private fun onResendButtonClick() {
+        startResendErrorTimer()
         viewModel.resendVerificationCode()
         with(viewDataBinding) {
             textNotReceive.visibility = GONE
             buttonResend.visibility = GONE
-            textResendError.postDelayed({
-                textResendError.visibility = VISIBLE
-            }, RESEND_ERROR)
         }
     }
 
+    private fun isCodeResent() = resendErrorTimer != null
+
     companion object {
-        private const val RESEND_TIMEOUT = 60 * 1000L
-        private const val TIMER_INTERVAL = 1 * 1000L
-        private const val RESEND_ERROR = 20 * 1000L
+        private const val RESEND_TIMEOUT = 60L
+        private const val RESEND_ERROR_TIMEOUT = 10L
+
+        private const val BUNDLE_RESEND_TIMER_TICK = "timer_tick"
+        private const val BUNDLE_RESEND_ERROR_TIMER_TICK = "error_timer_tick"
+        private const val BUNDLE_IS_CODE_RESENT = "is_code_resent"
 
         fun newInstance() = AuthCodeFragment().apply {
             arguments = Bundle().apply {

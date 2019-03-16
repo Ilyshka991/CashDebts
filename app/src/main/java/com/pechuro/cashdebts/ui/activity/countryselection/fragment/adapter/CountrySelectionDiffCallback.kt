@@ -1,7 +1,7 @@
 package com.pechuro.cashdebts.ui.activity.countryselection.fragment.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.pechuro.cashdebts.ui.custom.phone.CountryData
+import com.pechuro.cashdebts.model.entity.CountryData
 
 class CountrySelectionDiffCallback : DiffUtil.Callback() {
 
@@ -18,7 +18,7 @@ class CountrySelectionDiffCallback : DiffUtil.Callback() {
     override fun getNewListSize() = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldList[oldItemPosition].code == newList[newItemPosition].code
+        oldList[oldItemPosition] === newList[newItemPosition]
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
         oldList[oldItemPosition].code == newList[newItemPosition].code

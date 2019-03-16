@@ -9,5 +9,4 @@ class MainActivityViewModel @Inject constructor(private val authRepository: IAut
     fun logout() {
         authRepository.signOut()
     }
-
 }

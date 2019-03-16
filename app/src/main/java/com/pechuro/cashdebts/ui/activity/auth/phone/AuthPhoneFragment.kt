@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
+import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
-import com.pechuro.cashdebts.ui.custom.phone.CountryData
 import com.pechuro.cashdebts.ui.custom.phone.PhoneTextWatcher
 import javax.inject.Inject
 

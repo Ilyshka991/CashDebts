@@ -11,7 +11,6 @@ import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
 
-
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     override val viewModel: AuthActivityViewModel

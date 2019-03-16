@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.custom.phone
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.pechuro.cashdebts.model.entity.CountryData
 
 @BindingAdapter("country_data")
 fun setCountryData(view: PhoneNumberEditText, data: CountryData?) {

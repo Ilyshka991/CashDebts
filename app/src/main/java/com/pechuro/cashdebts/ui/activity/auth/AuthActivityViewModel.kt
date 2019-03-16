@@ -10,12 +10,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
+import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
-import com.pechuro.cashdebts.ui.custom.phone.CountryData
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthActivityViewModel @Inject constructor(
@@ -28,9 +26,6 @@ class AuthActivityViewModel @Inject constructor(
     val phoneNumber = ObservableField<String?>()
     val phoneCode = ObservableField<String?>()
     val countryData = ObservableField<CountryData?>()
-
-    val timer: Observable<Long> = Observable.intervalRange(60, 60, 0, 60, TimeUnit.SECONDS)
-        .map { 60 - it }
 
     init {
         subscribeToEvents()
@@ -48,6 +43,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onError(e: FirebaseException) {
+        isLoading.set(false)
         val error = when (e) {
             is FirebaseAuthInvalidCredentialsException -> R.string.error_auth_phone_validation
             is FirebaseTooManyRequestsException -> R.string.error_auth_too_many_requests
@@ -86,6 +82,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
             return
         }
+        isLoading.set(true)
         repository.verifyWithCode(code)
     }
 

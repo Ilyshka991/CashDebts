@@ -21,7 +21,7 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) homeFragment()
         setBackStackListener()
-        setupActionBar()
+        setupActionBar(supportFragmentManager.backStackEntryCount)
     }
 
     override fun onBackPressed() {
