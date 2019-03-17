@@ -6,8 +6,8 @@ import com.pechuro.cashdebts.di.annotations.ViewModelKey
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivityViewModel
-import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
+import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentViewModel

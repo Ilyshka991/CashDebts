@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.activity.countryselection.fragment.adapter
+package com.pechuro.cashdebts.ui.fragment.countyselection.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

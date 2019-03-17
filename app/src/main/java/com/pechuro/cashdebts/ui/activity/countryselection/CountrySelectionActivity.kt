@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragment
 import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
+import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragment
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
 

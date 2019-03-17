@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.activity.countryselection.fragment
+package com.pechuro.cashdebts.ui.fragment.countyselection
 
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import javax.inject.Inject

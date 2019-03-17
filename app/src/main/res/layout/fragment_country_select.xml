@@ -4,7 +4,7 @@
 
     <data>
         <variable name="viewModel"
-                  type="com.pechuro.cashdebts.ui.activity.countryselection.fragment.CountrySelectionFragmentViewModel"/>
+                  type="com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
