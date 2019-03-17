@@ -17,24 +17,34 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
     override val layoutId: Int
         get() = R.layout.activity_container
 
+    var isBackAllowed = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isBackAllowed = savedInstanceState?.getBoolean(BUNDLE_IS_BACK_ALLOWED) ?: isBackAllowed
+
         if (savedInstanceState == null) homeFragment()
         setBackStackListener()
         setupActionBar(supportFragmentManager.backStackEntryCount)
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
+        if (isBackAllowed && supportFragmentManager.backStackEntryCount > 0) {
             showPreviousFragment()
         } else {
-            super.onBackPressed()
+            finish()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putBoolean(BUNDLE_IS_BACK_ALLOWED, isBackAllowed)
     }
 
     protected fun <T : ViewDataBinding, V : BaseViewModel> showNextFragment(fragment: BaseFragment<T, V>) {
@@ -61,6 +71,11 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
     }
 
     private fun setupActionBar(backStackCount: Int = 0) {
+        if (!isBackAllowed) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            return
+        }
+
         if (isCloseButtonEnabled && backStackCount == 0) {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close_white)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -74,5 +89,9 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         supportFragmentManager.transaction {
             replace(viewDataBinding.container.id, homeFragment)
         }
+    }
+
+    companion object {
+        private const val BUNDLE_IS_BACK_ALLOWED = "isBackEnabled"
     }
 }

@@ -4,12 +4,13 @@ import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.google.firebase.FirebaseException
-import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.exception.AuthException
+import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
+import com.pechuro.cashdebts.data.exception.AuthNotAvailableException
 import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
+import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import io.reactivex.rxkotlin.addTo
@@ -17,7 +18,8 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AuthActivityViewModel @Inject constructor(
-    private val repository: IAuthRepository,
+    private val authRepository: IAuthRepository,
+    private val userRepository: IUserRepository,
     private val telephonyManager: TelephonyManager
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
@@ -32,7 +34,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun subscribeToEvents() {
-        repository.eventEmitter.subscribe {
+        authRepository.eventEmitter.subscribe {
             when (it) {
                 is AuthEvents.OnError -> onError(it.e)
                 is AuthEvents.OnCodeSent -> onCodeSent()
@@ -42,11 +44,11 @@ class AuthActivityViewModel @Inject constructor(
         }.addTo(compositeDisposable)
     }
 
-    private fun onError(e: FirebaseException) {
+    private fun onError(e: AuthException) {
         isLoading.set(false)
         val error = when (e) {
-            is FirebaseAuthInvalidCredentialsException -> R.string.error_auth_phone_validation
-            is FirebaseTooManyRequestsException -> R.string.error_auth_too_many_requests
+            is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
+            is AuthNotAvailableException -> R.string.error_auth_too_many_requests
             else -> R.string.error_auth_common
         }
         command.onNext(Events.ShowSnackBarError(error))
@@ -58,7 +60,14 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onSuccess() {
-        command.onNext(Events.OnSuccess)
+        userRepository.isUserExist()
+            .subscribe({
+                isLoading.set(false)
+                command.onNext(if (it) Events.OnComplete else Events.OpenProfileEdit)
+            }, {
+                isLoading.set(false)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun onIncorrectCode() {
@@ -73,7 +82,7 @@ class AuthActivityViewModel @Inject constructor(
             return
         }
         isLoading.set(true)
-        repository.startVerification(number)
+        authRepository.startVerification(number)
     }
 
     fun verifyPhoneNumberWithCode() {
@@ -83,7 +92,7 @@ class AuthActivityViewModel @Inject constructor(
             return
         }
         isLoading.set(true)
-        repository.verifyWithCode(code)
+        authRepository.verifyWithCode(code)
     }
 
     fun resendVerificationCode() {
@@ -92,7 +101,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
             return
         }
-        repository.resendCode(number)
+        authRepository.resendCode(number)
     }
 
     fun getUserCountryCode(): String? {
@@ -108,10 +117,10 @@ class AuthActivityViewModel @Inject constructor(
         return null
     }
 
-}
-
-sealed class Events {
-    object OnCodeSent : Events()
-    object OnSuccess : Events()
-    class ShowSnackBarError(@StringRes val id: Int) : Events()
+    sealed class Events {
+        object OnCodeSent : Events()
+        object OnComplete : Events()
+        object OpenProfileEdit : Events()
+        class ShowSnackBarError(@StringRes val id: Int) : Events()
+    }
 }

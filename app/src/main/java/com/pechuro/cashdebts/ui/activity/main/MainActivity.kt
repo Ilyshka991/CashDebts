@@ -10,7 +10,6 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
-import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 
 class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
@@ -58,7 +57,7 @@ class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
     private fun openAddActivity() {
         /*val intent = AddDebtActivity.newIntent(this)
         startActivity(intent)*/
-        showFragment(ProfileEditFragment.newInstance())
+        //showFragment(ProfileEditFragment.newInstance())
     }
 
     companion object {

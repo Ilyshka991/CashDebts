@@ -10,6 +10,10 @@ import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvents
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
+import com.pechuro.cashdebts.ui.utils.EventBus
+import io.reactivex.rxkotlin.addTo
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
@@ -28,11 +32,21 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     private fun subscribeToEvents() {
         viewModel.command.subscribe {
             when (it) {
-                is Events.OnCodeSent -> showNextFragment(AuthCodeFragment.newInstance())
-                is Events.OnSuccess -> openMainActivity()
-                is Events.ShowSnackBarError -> showSnackBar(it.id)
+                is AuthActivityViewModel.Events.OnCodeSent -> showNextFragment(AuthCodeFragment.newInstance())
+                is AuthActivityViewModel.Events.OnComplete -> openMainActivity()
+                is AuthActivityViewModel.Events.OpenProfileEdit -> {
+                    isBackAllowed = false
+                    showNextFragment(ProfileEditFragment.newInstance(true))
+                }
+                is AuthActivityViewModel.Events.ShowSnackBarError -> showSnackBar(it.id)
             }
-        }.let(weakCompositeDisposable::add)
+        }.addTo(weakCompositeDisposable)
+
+        EventBus.listen(ProfileEditEvents::class.java).subscribe {
+            when (it) {
+                is ProfileEditEvents.OnSaved -> openMainActivity()
+            }
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun showSnackBar(@StringRes id: Int) {

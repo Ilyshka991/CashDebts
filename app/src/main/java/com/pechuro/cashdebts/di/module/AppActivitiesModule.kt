@@ -29,8 +29,7 @@ interface AppActivitiesModule {
     @ActivityScope
     @ContributesAndroidInjector(
         modules = [
-            DebtListFragmentProvider::class,
-            ProfileEditFragmentProvider::class
+            DebtListFragmentProvider::class
         ]
     )
     fun bindMain(): MainActivity
@@ -48,6 +47,7 @@ interface AppActivitiesModule {
         modules = [
             AuthPhoneFragmentProvider::class,
             AuthCodeFragmentProvider::class,
+            ProfileEditFragmentProvider::class,
             AuthActivityModule::class]
     )
     fun bindAuth(): AuthActivity

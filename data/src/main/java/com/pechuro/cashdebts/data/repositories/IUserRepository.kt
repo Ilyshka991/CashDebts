@@ -1,13 +1,16 @@
 package com.pechuro.cashdebts.data.repositories
 
 import com.pechuro.cashdebts.data.model.FirestoreUser
+import com.pechuro.cashdebts.data.model.UserBaseInformation
 import io.reactivex.Completable
 import io.reactivex.Single
 
 interface IUserRepository {
-    fun get(uid: String): Single<FirestoreUser>
+    val currentUserBaseInformation: UserBaseInformation
 
-    fun isUserExist(uid: String): Single<Boolean>
+    fun get(uid: String = currentUserBaseInformation.uid): Single<FirestoreUser>
 
-    fun setUser(uid: String, user: FirestoreUser): Completable
+    fun isUserExist(uid: String = currentUserBaseInformation.uid): Single<Boolean>
+
+    fun setUser(user: FirestoreUser, uid: String = currentUserBaseInformation.uid): Completable
 }

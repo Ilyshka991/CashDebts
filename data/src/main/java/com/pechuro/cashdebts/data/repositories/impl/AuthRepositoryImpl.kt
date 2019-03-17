@@ -2,9 +2,12 @@ package com.pechuro.cashdebts.data.repositories.impl
 
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.*
+import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
+import com.pechuro.cashdebts.data.exception.AuthNotAvailableException
+import com.pechuro.cashdebts.data.exception.AuthUnknownException
+import com.pechuro.cashdebts.data.model.UserBaseInformation
 import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import io.reactivex.subjects.PublishSubject
@@ -32,7 +35,15 @@ internal class AuthRepositoryImpl @Inject constructor(
 
 
         override fun onVerificationFailed(e: FirebaseException) {
-            _eventEmitter.onNext(AuthEvents.OnError(e))
+            _eventEmitter.onNext(
+                AuthEvents.OnError(
+                    when (e) {
+                        is FirebaseAuthInvalidCredentialsException -> AuthInvalidCredentialsException()
+                        is FirebaseTooManyRequestsException -> AuthNotAvailableException()
+                        else -> AuthUnknownException()
+                    }
+                )
+            )
         }
 
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -77,12 +88,16 @@ internal class AuthRepositoryImpl @Inject constructor(
         authClient.signOut()
     }
 
+    override fun getCurrentUserBaseInformation() = authClient.currentUser?.getBaseInformation()
+
     private fun signIn(credential: PhoneAuthCredential) {
         authClient.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 _eventEmitter.onNext(if (task.isSuccessful) AuthEvents.OnSuccess else AuthEvents.OnIncorrectCode)
             }
     }
+
+    private fun FirebaseUser.getBaseInformation() = UserBaseInformation(uid, phoneNumber!!)
 
     companion object {
         private const val TIMEOUT = 60L
