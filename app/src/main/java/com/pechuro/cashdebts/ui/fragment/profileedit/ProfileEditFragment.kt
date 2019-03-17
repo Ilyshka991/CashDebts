@@ -19,7 +19,6 @@ import com.pechuro.cashdebts.utils.getBytes
 import io.reactivex.rxkotlin.addTo
 
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEditFragmentViewModel>() {
-
     override val viewModel: ProfileEditFragmentViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(ProfileEditFragmentViewModel::class.java)
     override val layoutId: Int
@@ -137,7 +136,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     }
 
     private fun onSaved() {
-        EventBus.publish(ProfileEditEvents.OnSaved)
+        EventBus.publish(ProfileEditEvent.OnSaved)
     }
 
     companion object {

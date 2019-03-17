@@ -29,6 +29,7 @@ interface AppActivitiesModule {
     @ActivityScope
     @ContributesAndroidInjector(
         modules = [
+            ProfileEditFragmentProvider::class,
             DebtListFragmentProvider::class
         ]
     )

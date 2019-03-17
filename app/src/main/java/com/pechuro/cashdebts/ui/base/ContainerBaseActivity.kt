@@ -49,7 +49,7 @@ abstract class ContainerBaseActivity<VM : BaseViewModel> : BaseActivity<Activity
         supportFragmentManager.popBackStack()
     }
 
-    private fun homeFragment() {
+    fun homeFragment() {
         supportFragmentManager.transaction {
             replace(viewDataBinding.container.id, homeFragment)
         }

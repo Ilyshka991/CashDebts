@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.activity.main
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
@@ -10,7 +11,10 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
+import io.reactivex.rxkotlin.addTo
 
 class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
 
@@ -18,6 +22,15 @@ class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
         get() = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
     override val homeFragment: Fragment
         get() = DebtListFragment.newInstance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            if (!viewModel.isUserAddInfo()) {
+                showFragment(ProfileEditFragment.newInstance(true), false)
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -51,7 +64,12 @@ class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
             when (it) {
                 is MainActivityEvent.OpenAddActivity -> openAddActivity()
             }
-        }.let(weakCompositeDisposable::add)
+        }.addTo(weakCompositeDisposable)
+        EventBus.listen(ProfileEditEvent::class.java).subscribe {
+            when (it) {
+                is ProfileEditEvent.OnSaved -> homeFragment()
+            }
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun openAddActivity() {

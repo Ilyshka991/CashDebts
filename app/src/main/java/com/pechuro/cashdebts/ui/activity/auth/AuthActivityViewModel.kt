@@ -1,7 +1,9 @@
 package com.pechuro.cashdebts.ui.activity.auth
 
+import android.content.SharedPreferences
 import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
+import androidx.core.content.edit
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.R
@@ -12,6 +14,7 @@ import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.entity.CountryData
+import com.pechuro.cashdebts.model.prefs.PrefsKey
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
@@ -20,7 +23,8 @@ import javax.inject.Inject
 class AuthActivityViewModel @Inject constructor(
     private val authRepository: IAuthRepository,
     private val userRepository: IUserRepository,
-    private val telephonyManager: TelephonyManager
+    private val telephonyManager: TelephonyManager,
+    private val prefs: SharedPreferences
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -63,7 +67,14 @@ class AuthActivityViewModel @Inject constructor(
         userRepository.isUserExist()
             .subscribe({
                 isLoading.set(false)
-                command.onNext(if (it) Events.OnComplete else Events.OpenProfileEdit)
+                if (it) {
+                    prefs.edit {
+                        putBoolean(PrefsKey.IS_USER_ADD_INFO, true)
+                    }
+                    command.onNext(Events.OnComplete)
+                } else {
+                    command.onNext(Events.OpenProfileEdit)
+                }
             }, {
                 isLoading.set(false)
             })

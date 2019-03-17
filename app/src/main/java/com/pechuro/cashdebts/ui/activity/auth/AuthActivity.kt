@@ -10,7 +10,7 @@ import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
-import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvents
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
@@ -42,9 +42,9 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
             }
         }.addTo(weakCompositeDisposable)
 
-        EventBus.listen(ProfileEditEvents::class.java).subscribe {
+        EventBus.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
-                is ProfileEditEvents.OnSaved -> openMainActivity()
+                is ProfileEditEvent.OnSaved -> openMainActivity()
             }
         }.addTo(weakCompositeDisposable)
     }
