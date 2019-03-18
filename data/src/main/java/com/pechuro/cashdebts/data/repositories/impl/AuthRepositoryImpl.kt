@@ -8,7 +8,6 @@ import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
 import com.pechuro.cashdebts.data.exception.AuthNotAvailableException
 import com.pechuro.cashdebts.data.exception.AuthUnknownException
 import com.pechuro.cashdebts.data.model.UserBaseInformation
-import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -18,14 +17,14 @@ internal class AuthRepositoryImpl @Inject constructor(
     private val authClient: FirebaseAuth,
     private val phoneAuthProvider: PhoneAuthProvider
 ) : IAuthRepository {
-    override val eventEmitter: PublishSubject<AuthEvents>
+    override val eventEmitter: PublishSubject<IAuthRepository.Event>
         get() = _eventEmitter
 
     private lateinit var storedVerificationId: String
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private var isCodeResent = false
 
-    private val _eventEmitter = PublishSubject.create<AuthEvents>()
+    private val _eventEmitter = PublishSubject.create<IAuthRepository.Event>()
 
     private val authCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -36,7 +35,7 @@ internal class AuthRepositoryImpl @Inject constructor(
 
         override fun onVerificationFailed(e: FirebaseException) {
             _eventEmitter.onNext(
-                AuthEvents.OnError(
+                IAuthRepository.Event.OnError(
                     when (e) {
                         is FirebaseAuthInvalidCredentialsException -> AuthInvalidCredentialsException()
                         is FirebaseTooManyRequestsException -> AuthNotAvailableException()
@@ -48,7 +47,7 @@ internal class AuthRepositoryImpl @Inject constructor(
 
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
             if (!isCodeResent) {
-                _eventEmitter.onNext(AuthEvents.OnCodeSent)
+                _eventEmitter.onNext(IAuthRepository.Event.OnCodeSent)
             }
             storedVerificationId = verificationId
             resendToken = token
@@ -93,7 +92,7 @@ internal class AuthRepositoryImpl @Inject constructor(
     private fun signIn(credential: PhoneAuthCredential) {
         authClient.signInWithCredential(credential)
             .addOnCompleteListener { task ->
-                _eventEmitter.onNext(if (task.isSuccessful) AuthEvents.OnSuccess else AuthEvents.OnIncorrectCode)
+                _eventEmitter.onNext(if (task.isSuccessful) IAuthRepository.Event.OnSuccess else IAuthRepository.Event.OnIncorrectCode)
             }
     }
 

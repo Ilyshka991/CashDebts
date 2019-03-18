@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthCodeBinding
+import com.pechuro.cashdebts.model.timer.Timer
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
-import com.pechuro.cashdebts.ui.utils.Timer
 
 class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewModel>() {
     override val viewModel: AuthActivityViewModel

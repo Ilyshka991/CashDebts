@@ -1,16 +1,14 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.net.Uri
-import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
-import com.pechuro.cashdebts.model.prefs.PrefsKey
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
@@ -26,7 +24,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     private val userRepository: IUserRepository,
     private val storageRepository: IStorageRepository,
     private val appContext: Context,
-    private val prefs: SharedPreferences
+    private val prefsManager: PrefsManager
 ) : BaseViewModel() {
 
     val command = PublishSubject.create<Events>()
@@ -110,9 +108,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     private fun onSaved() {
         isLoading.set(false)
         command.onNext(Events.OnSaved)
-        prefs.edit {
-            putBoolean(PrefsKey.IS_USER_ADD_INFO, true)
-        }
+        prefsManager.isUserAddInfo = true
     }
 
     sealed class Events : BaseEvent() {

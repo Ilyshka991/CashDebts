@@ -5,7 +5,7 @@ import com.pechuro.cashdebts.data.model.UserBaseInformation
 import io.reactivex.subjects.PublishSubject
 
 interface IAuthRepository {
-    val eventEmitter: PublishSubject<AuthEvents>
+    val eventEmitter: PublishSubject<Event>
 
     fun isUserSignedIn(): Boolean
 
@@ -18,11 +18,12 @@ interface IAuthRepository {
     fun signOut()
 
     fun getCurrentUserBaseInformation(): UserBaseInformation?
+
+    sealed class Event {
+        class OnError(val e: AuthException) : Event()
+        object OnCodeSent : Event()
+        object OnSuccess : Event()
+        object OnIncorrectCode : Event()
+    }
 }
 
-sealed class AuthEvents {
-    class OnError(val e: AuthException) : AuthEvents()
-    object OnCodeSent : AuthEvents()
-    object OnSuccess : AuthEvents()
-    object OnIncorrectCode : AuthEvents()
-}

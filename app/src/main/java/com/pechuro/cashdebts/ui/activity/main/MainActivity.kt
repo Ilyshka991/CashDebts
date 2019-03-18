@@ -8,20 +8,23 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.databinding.ActivityBottomNavigationBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
-import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
+import com.pechuro.cashdebts.ui.base.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
 
-class MainActivity : ContainerBaseActivity<MainActivityViewModel>() {
+class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainActivityViewModel>() {
 
     override val viewModel: MainActivityViewModel
         get() = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
     override val homeFragment: Fragment
         get() = DebtListFragment.newInstance()
+    override val layoutId: Int
+        get() = R.layout.activity_bottom_navigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

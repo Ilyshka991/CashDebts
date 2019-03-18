@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.utils
+package com.pechuro.cashdebts.model.timer
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

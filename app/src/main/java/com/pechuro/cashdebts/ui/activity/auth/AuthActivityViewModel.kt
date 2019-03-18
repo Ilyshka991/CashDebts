@@ -1,20 +1,17 @@
 package com.pechuro.cashdebts.ui.activity.auth
 
-import android.content.SharedPreferences
 import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
-import androidx.core.content.edit
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.exception.AuthException
 import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
 import com.pechuro.cashdebts.data.exception.AuthNotAvailableException
-import com.pechuro.cashdebts.data.repositories.AuthEvents
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.model.prefs.PrefsKey
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
@@ -24,7 +21,7 @@ class AuthActivityViewModel @Inject constructor(
     private val authRepository: IAuthRepository,
     private val userRepository: IUserRepository,
     private val telephonyManager: TelephonyManager,
-    private val prefs: SharedPreferences
+    private val prefsManager: PrefsManager
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -40,10 +37,10 @@ class AuthActivityViewModel @Inject constructor(
     private fun subscribeToEvents() {
         authRepository.eventEmitter.subscribe {
             when (it) {
-                is AuthEvents.OnError -> onError(it.e)
-                is AuthEvents.OnCodeSent -> onCodeSent()
-                is AuthEvents.OnSuccess -> onSuccess()
-                is AuthEvents.OnIncorrectCode -> onIncorrectCode()
+                is IAuthRepository.Event.OnError -> onError(it.e)
+                is IAuthRepository.Event.OnCodeSent -> onCodeSent()
+                is IAuthRepository.Event.OnSuccess -> onSuccess()
+                is IAuthRepository.Event.OnIncorrectCode -> onIncorrectCode()
             }
         }.addTo(compositeDisposable)
     }
@@ -68,9 +65,7 @@ class AuthActivityViewModel @Inject constructor(
             .subscribe({
                 isLoading.set(false)
                 if (it) {
-                    prefs.edit {
-                        putBoolean(PrefsKey.IS_USER_ADD_INFO, true)
-                    }
+                    prefsManager.isUserAddInfo = true
                     command.onNext(Events.OnComplete)
                 } else {
                     command.onNext(Events.OpenProfileEdit)
