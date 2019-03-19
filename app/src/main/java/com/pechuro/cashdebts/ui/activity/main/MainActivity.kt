@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.ActivityBottomNavigationBinding
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
@@ -19,24 +18,23 @@ import io.reactivex.rxkotlin.addTo
 
 class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainActivityViewModel>() {
 
-    override val viewModel: MainActivityViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
     override val homeFragment: Fragment
         get() = DebtListFragment.newInstance()
     override val layoutId: Int
         get() = R.layout.activity_bottom_navigation
+    override val containerId: Int
+        get() = viewDataBinding.container.id
+
+    override fun getViewModelClass() = MainActivityViewModel::class
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            if (!viewModel.isUserAddInfo()) {
-                showFragment(ProfileEditFragment.newInstance(true), false)
-            }
-        }
+        if (savedInstanceState == null) openProfileEditIfNecessary()
+        setListeners()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         subscribeToEvents()
     }
 
@@ -55,11 +53,16 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
         return super.onOptionsItemSelected(item)
     }
 
-    private fun logout() {
-        viewModel.logout()
-        val intent = AuthActivity.newIntent(this)
-        startActivity(intent)
-        finish()
+
+    private fun setListeners() {
+        viewDataBinding.bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.menu_nav_remote_debt -> showFragment(DebtListFragment.newInstance(), false)
+                R.id.menu_nav_local_debt -> showFragment(DebtListFragment.newInstance(), false)
+                R.id.menu_nav_profile -> showFragment(ProfileEditFragment.newInstance(), false)
+            }
+            true
+        }
     }
 
     private fun subscribeToEvents() {
@@ -75,10 +78,23 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
         }.addTo(weakCompositeDisposable)
     }
 
+    private fun logout() {
+        viewModel.logout()
+        val intent = AuthActivity.newIntent(this)
+        startActivity(intent)
+        finish()
+    }
+
     private fun openAddActivity() {
         /*val intent = AddDebtActivity.newIntent(this)
         startActivity(intent)*/
         //showFragment(ProfileEditFragment.newInstance())
+    }
+
+    private fun openProfileEditIfNecessary() {
+        if (!viewModel.isUserAddInfo()) {
+            showFragment(ProfileEditFragment.newInstance(true), false)
+        }
     }
 
     companion object {

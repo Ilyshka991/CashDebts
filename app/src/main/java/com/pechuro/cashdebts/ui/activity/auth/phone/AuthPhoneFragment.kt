@@ -3,7 +3,6 @@ package com.pechuro.cashdebts.ui.activity.auth.phone
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
@@ -15,12 +14,14 @@ import com.pechuro.cashdebts.ui.custom.phone.PhoneTextWatcher
 import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
-    override val viewModel: AuthActivityViewModel
-        get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AuthActivityViewModel::class.java)
     override val bindingVariables: Map<Int, Any>
         get() = mapOf(BR.viewModel to viewModel)
     override val layoutId: Int
         get() = R.layout.fragment_auth_phone
+    override val isViewModelShared: Boolean
+        get() = true
+
+    override fun getViewModelClass() = AuthActivityViewModel::class
 
     @Inject
     protected lateinit var countryList: List<CountryData>
@@ -37,8 +38,8 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
         if (savedInstanceState == null) setInitialCountry()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         setOnClickListeners()
     }
 

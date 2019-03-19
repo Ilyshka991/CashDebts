@@ -2,39 +2,22 @@ package com.pechuro.cashdebts.ui.base
 
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.ActivityContainerBinding
-import com.pechuro.cashdebts.ui.base.base.BaseActivity
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
-abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<ActivityContainerBinding, VM>() {
+abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : ContainerBaseActivity<VM>() {
     protected abstract val isCloseButtonEnabled: Boolean
-    protected abstract val homeFragment: Fragment
 
-    override val layoutId: Int
-        get() = R.layout.activity_container
-
-    var isBackAllowed = true
+    protected var isBackAllowed = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         isBackAllowed = savedInstanceState?.getBoolean(BUNDLE_IS_BACK_ALLOWED) ?: isBackAllowed
-
-        if (savedInstanceState == null) homeFragment()
         setBackStackListener()
         setupActionBar(supportFragmentManager.backStackEntryCount)
-    }
-
-    override fun onBackPressed() {
-        if (isBackAllowed && supportFragmentManager.backStackEntryCount > 0) {
-            showPreviousFragment()
-        } else {
-            finish()
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -47,7 +30,10 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         outState?.putBoolean(BUNDLE_IS_BACK_ALLOWED, isBackAllowed)
     }
 
-    protected fun <T : ViewDataBinding, V : BaseViewModel> showNextFragment(fragment: BaseFragment<T, V>) {
+    final override fun <T : ViewDataBinding, V : BaseViewModel> showFragment(
+        fragment: BaseFragment<T, V>,
+        isAddToBackStack: Boolean
+    ) {
         supportFragmentManager.transaction {
             setCustomAnimations(
                 R.anim.anim_slide_in_right,
@@ -58,10 +44,6 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
             replace(viewDataBinding.container.id, fragment)
             addToBackStack(null)
         }
-    }
-
-    private fun showPreviousFragment() {
-        supportFragmentManager.popBackStack()
     }
 
     private fun setBackStackListener() {
@@ -83,12 +65,6 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseActivity<A
         }
         if (isCloseButtonEnabled) supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_back_white)
         supportActionBar?.setDisplayHomeAsUpEnabled(backStackCount != 0)
-    }
-
-    private fun homeFragment() {
-        supportFragmentManager.transaction {
-            replace(viewDataBinding.container.id, homeFragment)
-        }
     }
 
     companion object {

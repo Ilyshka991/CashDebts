@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragment
 import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
@@ -15,8 +14,8 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         get() = AddDebtUserFragment.newInstance()
     override val isCloseButtonEnabled: Boolean
         get() = true
-    override val viewModel: AddDebtActivityViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(AddDebtActivityViewModel::class.java)
+
+    override fun getViewModelClass() = AddDebtActivityViewModel::class
 
     override fun onStart() {
         super.onStart()

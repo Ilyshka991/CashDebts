@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
@@ -17,12 +16,12 @@ import io.reactivex.rxkotlin.addTo
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
-    override val viewModel: AuthActivityViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(AuthActivityViewModel::class.java)
     override val homeFragment: Fragment
         get() = AuthPhoneFragment.newInstance()
     override val isCloseButtonEnabled: Boolean
         get() = false
+
+    override fun getViewModelClass() = AuthActivityViewModel::class
 
     override fun onStart() {
         super.onStart()
@@ -32,11 +31,11 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     private fun subscribeToEvents() {
         viewModel.command.subscribe {
             when (it) {
-                is AuthActivityViewModel.Events.OnCodeSent -> showNextFragment(AuthCodeFragment.newInstance())
+                is AuthActivityViewModel.Events.OnCodeSent -> showFragment(AuthCodeFragment.newInstance())
                 is AuthActivityViewModel.Events.OnComplete -> openMainActivity()
                 is AuthActivityViewModel.Events.OpenProfileEdit -> {
                     isBackAllowed = false
-                    showNextFragment(ProfileEditFragment.newInstance(true))
+                    showFragment(ProfileEditFragment.newInstance(true))
                 }
                 is AuthActivityViewModel.Events.ShowSnackBarError -> showSnackBar(it.id)
             }

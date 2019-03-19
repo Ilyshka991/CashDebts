@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.view.inputmethod.EditorInfo
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAddDebtUserBinding
@@ -14,12 +13,14 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
 class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActivityViewModel>() {
-    override val viewModel: AddDebtActivityViewModel
-        get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AddDebtActivityViewModel::class.java)
     override val layoutId: Int
         get() = R.layout.fragment_add_debt_user
     override val bindingVariables: Map<Int, Any>?
         get() = mapOf(BR.viewModel to viewModel)
+    override val isViewModelShared: Boolean
+        get() = true
+
+    override fun getViewModelClass() = AddDebtActivityViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
@@ -16,8 +15,8 @@ import com.pechuro.cashdebts.ui.utils.EventBus
 class CountrySelectionActivity : ContainerBaseActivity<CountrySelectionActivityViewModel>() {
     override val homeFragment: Fragment
         get() = CountrySelectionFragment.newInstance()
-    override val viewModel: CountrySelectionActivityViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(CountrySelectionActivityViewModel::class.java)
+
+    override fun getViewModelClass() = CountrySelectionActivityViewModel::class
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAuthCodeBinding
@@ -13,12 +12,14 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
 class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewModel>() {
-    override val viewModel: AuthActivityViewModel
-        get() = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AuthActivityViewModel::class.java)
     override val bindingVariables: Map<Int, Any>
         get() = mapOf(BR.viewModel to viewModel)
     override val layoutId: Int
         get() = R.layout.fragment_auth_code
+    override val isViewModelShared: Boolean
+        get() = true
+
+    override fun getViewModelClass() = AuthActivityViewModel::class
 
     private var resendTimer: Timer? = null
     private var resendErrorTimer: Timer? = null

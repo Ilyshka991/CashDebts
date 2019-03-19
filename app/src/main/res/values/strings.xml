@@ -35,4 +35,7 @@
     <string name="profile_edit_hint_last_name">Last name</string>
     <string name="profile_edit_hint_first_name">First name</string>
     <string name="item_county_empty_msg">Nothing found</string>
+    <string name="menu_nav_profile">Profile</string>
+    <string name="menu_nav_remote_debt">Remote debts</string>
+    <string name="menu_nav_local_debts">Local debts</string>
 </resources>

@@ -8,6 +8,7 @@ abstract class ContainerBaseActivity<VM : BaseViewModel> : BaseFragmentActivity<
 
     override val layoutId: Int
         get() = R.layout.activity_container
-    override val cointainerId: Int
+    override val containerId: Int
         get() = viewDataBinding.container.id
+
 }

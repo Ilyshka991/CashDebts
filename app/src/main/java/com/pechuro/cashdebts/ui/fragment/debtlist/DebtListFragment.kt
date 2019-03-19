@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.debtlist
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentDebtListBinding
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
@@ -14,10 +13,10 @@ class DebtListFragment : BaseFragment<FragmentDebtListBinding, DebtListFragmentV
     @Inject
     lateinit var adapter: DebtListAdapter
 
-    override val viewModel: DebtListFragmentViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(DebtListFragmentViewModel::class.java)
     override val layoutId: Int
         get() = R.layout.fragment_debt_list
+
+    override fun getViewModelClass() = DebtListFragmentViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

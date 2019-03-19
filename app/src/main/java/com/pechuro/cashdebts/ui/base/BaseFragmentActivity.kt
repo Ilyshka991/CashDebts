@@ -13,7 +13,7 @@ import com.pechuro.cashdebts.ui.utils.transaction
 abstract class BaseFragmentActivity<T : ViewDataBinding, VM : BaseViewModel> : BaseActivity<T, VM>() {
     protected abstract val homeFragment: Fragment
     @get:IdRes
-    protected abstract val cointainerId: Int
+    protected abstract val containerId: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,11 +24,11 @@ abstract class BaseFragmentActivity<T : ViewDataBinding, VM : BaseViewModel> : B
         if (supportFragmentManager.backStackEntryCount > 0) {
             showPreviousFragment()
         } else {
-            super.onBackPressed()
+            finish()
         }
     }
 
-    protected fun <T : ViewDataBinding, V : BaseViewModel> showFragment(
+    protected open fun <T : ViewDataBinding, V : BaseViewModel> showFragment(
         fragment: BaseFragment<T, V>,
         isAddToBackStack: Boolean = true
     ) {
@@ -39,7 +39,7 @@ abstract class BaseFragmentActivity<T : ViewDataBinding, VM : BaseViewModel> : B
                 R.anim.anim_fade_in,
                 R.anim.anim_fade_out
             )
-            replace(cointainerId, fragment)
+            replace(containerId, fragment)
             if (isAddToBackStack) addToBackStack(null)
         }
     }
@@ -48,9 +48,9 @@ abstract class BaseFragmentActivity<T : ViewDataBinding, VM : BaseViewModel> : B
         supportFragmentManager.popBackStack()
     }
 
-    fun homeFragment() {
+    protected fun homeFragment() {
         supportFragmentManager.transaction {
-            replace(cointainerId, homeFragment)
+            replace(containerId, homeFragment)
         }
     }
 }

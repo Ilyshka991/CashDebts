@@ -11,11 +11,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
+import kotlin.reflect.KClass
 
 abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragment(),
     HasSupportFragmentInjector {
@@ -24,7 +26,9 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
 
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
-    protected abstract val viewModel: V?
+    protected lateinit var viewModel: V
+    protected open val isViewModelShared
+        get() = false
 
     @get:LayoutRes
     protected abstract val layoutId: Int
@@ -39,8 +43,11 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
     @Inject
     protected lateinit var strongCompositeDisposable: CompositeDisposable
 
+    protected abstract fun getViewModelClass(): KClass<V>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
+        initViewModel()
         super.onCreate(savedInstanceState)
     }
 
@@ -58,8 +65,8 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
         viewDataBinding.executePendingBindings()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         weakCompositeDisposable.clear()
     }
 
@@ -71,4 +78,12 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
 
     private fun performDI() = AndroidSupportInjection.inject(this)
+
+    private fun initViewModel() {
+        viewModel = if (isViewModelShared) {
+            ViewModelProviders.of(requireActivity(), viewModelFactory).get(getViewModelClass().java)
+        } else {
+            ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass().java)
+        }
+    }
 }

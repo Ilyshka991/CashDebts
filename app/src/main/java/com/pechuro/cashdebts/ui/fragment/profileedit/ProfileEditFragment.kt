@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentProfileEditBinding
@@ -19,12 +18,12 @@ import com.pechuro.cashdebts.utils.getBytes
 import io.reactivex.rxkotlin.addTo
 
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEditFragmentViewModel>() {
-    override val viewModel: ProfileEditFragmentViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(ProfileEditFragmentViewModel::class.java)
     override val layoutId: Int
         get() = R.layout.fragment_profile_edit
     override val bindingVariables: Map<Int, Any>
         get() = mapOf(BR.viewModel to viewModel)
+
+    override fun getViewModelClass() = ProfileEditFragmentViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

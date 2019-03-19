@@ -2,7 +2,6 @@ package com.pechuro.cashdebts.ui.fragment.countyselection
 
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentCountrySelectBinding
@@ -14,12 +13,12 @@ class CountrySelectionFragment : BaseFragment<FragmentCountrySelectBinding, Coun
     @Inject
     protected lateinit var adapter: CountrySelectionAdapter
 
-    override val viewModel: CountrySelectionFragmentViewModel
-        get() = ViewModelProviders.of(this, viewModelFactory).get(CountrySelectionFragmentViewModel::class.java)
     override val bindingVariables: Map<Int, Any>
         get() = mapOf(BR.viewModel to viewModel)
     override val layoutId: Int
         get() = R.layout.fragment_country_select
+
+    override fun getViewModelClass() = CountrySelectionFragmentViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
