@@ -14,7 +14,6 @@ import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDi
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.transaction
-import com.pechuro.cashdebts.utils.getBytes
 import io.reactivex.rxkotlin.addTo
 
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEditFragmentViewModel>() {
@@ -34,17 +33,19 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     override fun onStart() {
         super.onStart()
         setEventListeners()
+        setViewModelListener()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when {
             requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK -> loadEditedAvatar()
             requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK -> {
-                val photoFile = viewModel.createImageFile() ?: return
                 val uri = data?.data
                 val inputStream = uri?.let { context?.contentResolver?.openInputStream(it) }
-                inputStream?.let { photoFile.writeBytes(it.getBytes()) }
-                loadEditedAvatar()
+                inputStream?.let {
+                    viewModel.writeToFile(it)
+                    loadEditedAvatar()
+                }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
@@ -61,19 +62,21 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
         }
     }
 
-    private fun setEventListeners() {
-        EventBus.listen(AddOptionsEvent::class.java).subscribe {
-            when (it) {
-                is AddOptionsEvent.TakePictureFromCamera -> dispatchTakePictureFromCameraIntent()
-                is AddOptionsEvent.TakePictureFromGallery -> dispatchTakePictureFromGalleryIntent()
-            }
-        }.addTo(weakCompositeDisposable)
-
+    private fun setViewModelListener() {
         viewModel.command.subscribe {
             when (it) {
                 is ProfileEditFragmentViewModel.Events.OnUserStartLoad -> showProgressDialog()
                 is ProfileEditFragmentViewModel.Events.OnUserStopLoad -> dismissProgressDialog()
                 is ProfileEditFragmentViewModel.Events.OnSaved -> onSaved()
+            }
+        }.addTo(weakCompositeDisposable)
+    }
+
+    private fun setEventListeners() {
+        EventBus.listen(AddOptionsEvent::class.java).subscribe {
+            when (it) {
+                is AddOptionsEvent.TakePictureFromCamera -> dispatchTakePictureFromCameraIntent()
+                is AddOptionsEvent.TakePictureFromGallery -> dispatchTakePictureFromGalleryIntent()
             }
         }.addTo(weakCompositeDisposable)
     }

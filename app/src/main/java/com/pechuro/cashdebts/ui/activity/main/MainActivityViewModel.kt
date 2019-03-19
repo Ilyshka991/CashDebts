@@ -15,9 +15,5 @@ class MainActivityViewModel @Inject constructor(
         prefsManager.isUserAddInfo = false
     }
 
-    fun a() {
-
-    }
-
     fun isUserAddInfo() = prefsManager.isUserAddInfo
 }

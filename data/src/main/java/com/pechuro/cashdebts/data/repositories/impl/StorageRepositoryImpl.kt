@@ -5,6 +5,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.pechuro.cashdebts.data.exception.FirebaseStorageCommonException
 import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.structure.FirebaseStorageStructure
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -26,5 +27,16 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
                     emitter.onError(FirebaseStorageCommonException())
                 }
             }
+    }
+
+    override fun deletePrevious(url: String) = Completable.create { emitter ->
+        val ref = storage.getReferenceFromUrl(url)
+        ref.delete().addOnCompleteListener {
+            if (it.isSuccessful) {
+                emitter.onComplete()
+            } else {
+                emitter.onError(it.exception!!)
+            }
+        }
     }
 }
