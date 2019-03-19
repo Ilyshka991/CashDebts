@@ -56,6 +56,9 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
 
     private fun setListeners() {
         viewDataBinding.bottomNavigation.setOnNavigationItemSelectedListener {
+            if (viewDataBinding.bottomNavigation.selectedItemId == it.itemId) {
+                return@setOnNavigationItemSelectedListener true
+            }
             when (it.itemId) {
                 R.id.menu_nav_remote_debt -> showFragment(DebtListFragment.newInstance(), false)
                 R.id.menu_nav_local_debt -> showFragment(DebtListFragment.newInstance(), false)

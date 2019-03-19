@@ -25,6 +25,7 @@ class ProgressDialog : DialogFragment() {
 
     companion object {
         const val TAG = "progressDialog"
+
         fun newInstance() = ProgressDialog()
     }
 }

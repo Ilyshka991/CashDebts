@@ -28,12 +28,12 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setViewListeners()
+        loadUserIfRequire()
     }
 
     override fun onStart() {
         super.onStart()
         setEventListeners()
-        loadUserIfRequire()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

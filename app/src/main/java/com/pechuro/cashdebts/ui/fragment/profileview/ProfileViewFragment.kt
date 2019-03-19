@@ -7,7 +7,6 @@ import com.pechuro.cashdebts.databinding.FragmentProfileViewBinding
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
 class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileViewFragmentViewModel>() {
-
     override val layoutId: Int
         get() = R.layout.fragment_profile_view
     override val bindingVariables: Map<Int, Any>
