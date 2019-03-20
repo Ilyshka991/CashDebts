@@ -1,6 +1,5 @@
 package com.pechuro.cashdebts.ui.utils
 
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -22,19 +21,6 @@ fun setError(inputLayout: TextInputLayout, errorId: Int?) {
     } else {
         inputLayout.error = inputLayout.context.getString(errorId)
     }
-}
-
-@BindingAdapter("image_avatar")
-fun loadImage(view: ImageView, imageUrl: Uri?) {
-    val crossFadeFactory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
-
-    Glide.with(view)
-        .load(imageUrl)
-        .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
-        .placeholder(R.drawable.avatar)
-        .error(R.drawable.avatar)
-        .circleCrop()
-        .into(view)
 }
 
 @BindingAdapter("image_avatar")

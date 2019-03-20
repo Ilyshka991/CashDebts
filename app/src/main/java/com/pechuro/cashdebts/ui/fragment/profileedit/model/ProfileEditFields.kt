@@ -1,9 +1,7 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
-import android.net.Uri
-
 data class ProfileEditFields(
-    var imageUrl: Uri?,
+    var imageUrl: String?,
     var firstName: String,
     var lastName: String
 ) {

@@ -12,6 +12,8 @@ import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
+import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import java.io.File
@@ -29,7 +31,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     val command = PublishSubject.create<Events>()
 
     val data = ProfileEditModel()
-    val localAvatarUri = ObservableField<Uri?>()
+    val localAvatarPath = ObservableField<String?>()
     val isLoading = ObservableBoolean()
 
     private var localAvatarFile: File? = null
@@ -53,47 +55,19 @@ class ProfileEditFragmentViewModel @Inject constructor(
     fun save() {
         if (!data.isValid()) return
         isLoading.set(true)
-        val task = if (localAvatarFile != null) {
+        val task = if (!localAvatarPath.get().isNullOrEmpty()) {
             if (data.fields.imageUrl != null) {
-                storageRepository.deletePrevious(data.fields.imageUrl.toString())
-                    .doOnComplete {
-                        storageRepository.uploadAndGetUrl(
-                            localAvatarFile!!.toUri(),
-                            localAvatarFile!!.name
-                        )
-                            .flatMapCompletable {
-                                val user = FirestoreUser(
-                                    data.fields.firstName,
-                                    data.fields.lastName,
-                                    userRepository.currentUserBaseInformation.phoneNumber,
-                                    it.toString()
-                                )
-                                userRepository.setUser(user)
-                            }
+                uploadPhoto()
+                    .flatMapCompletable {
+                        setUser(it.toString())
                     }
             } else {
-                storageRepository.uploadAndGetUrl(
-                    localAvatarFile!!.toUri(),
-                    localAvatarFile!!.name
-                )
-                    .flatMapCompletable {
-                        val user = FirestoreUser(
-                            data.fields.firstName,
-                            data.fields.lastName,
-                            userRepository.currentUserBaseInformation.phoneNumber,
-                            it.toString()
-                        )
-                        userRepository.setUser(user)
-                    }
+                uploadPhoto().flatMapCompletable {
+                    setUser(it.toString())
+                }
             }
         } else {
-            val user = FirestoreUser(
-                data.fields.firstName,
-                data.fields.lastName,
-                userRepository.currentUserBaseInformation.phoneNumber,
-                data.fields.imageUrl.toString()
-            )
-            userRepository.setUser(user)
+            setUser(data.fields.imageUrl)
         }
         task.subscribe({
             onSaved()
@@ -102,8 +76,29 @@ class ProfileEditFragmentViewModel @Inject constructor(
         }).addTo(compositeDisposable)
     }
 
+    private fun deletePreviousPhoto(): Completable {
+        return storageRepository.deletePrevious(data.fields.imageUrl!!)
+    }
+
+    private fun uploadPhoto(): Single<Uri> {
+        return storageRepository.uploadAndGetUrl(
+            localAvatarFile!!.toUri(),
+            localAvatarFile!!.name
+        )
+    }
+
+    private fun setUser(photoUrl: String?): Completable {
+        val user = FirestoreUser(
+            data.fields.firstName,
+            data.fields.lastName,
+            userRepository.currentUserBaseInformation.phoneNumber,
+            photoUrl
+        )
+        return userRepository.setUser(user)
+    }
+
     fun loadEditedAvatar() {
-        localAvatarUri.set(localAvatarFile?.toUri())
+        localAvatarPath.set(localAvatarFile?.path)
     }
 
     fun createImageFile() = try {

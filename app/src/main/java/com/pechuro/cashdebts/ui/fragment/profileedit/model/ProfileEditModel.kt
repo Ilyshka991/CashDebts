@@ -1,6 +1,5 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
-import androidx.core.net.toUri
 import androidx.databinding.BaseObservable
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.model.FirestoreUser
@@ -13,7 +12,7 @@ class ProfileEditModel : BaseObservable() {
         with(fields) {
             firstName = user.firstName
             lastName = user.lastName
-            imageUrl = user.photoUrl?.toUri()
+            imageUrl = user.photoUrl
         }
         notifyChange()
     }
