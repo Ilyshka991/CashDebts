@@ -34,6 +34,48 @@ class AuthActivityViewModel @Inject constructor(
         subscribeToEvents()
     }
 
+    fun startPhoneNumberVerification() {
+        val number = phoneNumber.get()
+        if (number.isNullOrEmpty()) {
+            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            return
+        }
+        isLoading.set(true)
+        authRepository.startVerification(number)
+    }
+
+    fun verifyPhoneNumberWithCode() {
+        val code = phoneCode.get()
+        if (code.isNullOrEmpty()) {
+            command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+            return
+        }
+        isLoading.set(true)
+        authRepository.verifyWithCode(code)
+    }
+
+    fun resendVerificationCode() {
+        val number = phoneNumber.get()
+        if (number.isNullOrEmpty()) {
+            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            return
+        }
+        authRepository.resendCode(number)
+    }
+
+    fun getUserCountryCode(): String? {
+        val simCountry = telephonyManager.simCountryIso
+        if (simCountry != null && simCountry.length == 2) {
+            return simCountry.toUpperCase()
+        } else if (telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
+            val networkCountry = telephonyManager.networkCountryIso
+            if (networkCountry != null && networkCountry.length == 2) {
+                return networkCountry.toUpperCase()
+            }
+        }
+        return null
+    }
+
     private fun subscribeToEvents() {
         authRepository.eventEmitter.subscribe {
             when (it) {
@@ -79,48 +121,6 @@ class AuthActivityViewModel @Inject constructor(
     private fun onIncorrectCode() {
         command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
         isLoading.set(false)
-    }
-
-    fun startPhoneNumberVerification() {
-        val number = phoneNumber.get()
-        if (number.isNullOrEmpty()) {
-            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
-            return
-        }
-        isLoading.set(true)
-        authRepository.startVerification(number)
-    }
-
-    fun verifyPhoneNumberWithCode() {
-        val code = phoneCode.get()
-        if (code.isNullOrEmpty()) {
-            command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
-            return
-        }
-        isLoading.set(true)
-        authRepository.verifyWithCode(code)
-    }
-
-    fun resendVerificationCode() {
-        val number = phoneNumber.get()
-        if (number.isNullOrEmpty()) {
-            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
-            return
-        }
-        authRepository.resendCode(number)
-    }
-
-    fun getUserCountryCode(): String? {
-        val simCountry = telephonyManager.simCountryIso
-        if (simCountry != null && simCountry.length == 2) {
-            return simCountry.toUpperCase()
-        } else if (telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
-            val networkCountry = telephonyManager.networkCountryIso
-            if (networkCountry != null && networkCountry.length == 2) {
-                return networkCountry.toUpperCase()
-            }
-        }
-        return null
     }
 
     sealed class Events {

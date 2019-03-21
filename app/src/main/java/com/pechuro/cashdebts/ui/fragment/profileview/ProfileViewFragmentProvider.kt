@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 interface ProfileViewFragmentProvider {
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     fun bind(): ProfileViewFragment
 }

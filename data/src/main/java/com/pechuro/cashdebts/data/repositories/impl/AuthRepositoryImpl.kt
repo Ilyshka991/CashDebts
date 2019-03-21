@@ -32,7 +32,6 @@ internal class AuthRepositoryImpl @Inject constructor(
             signIn(credential)
         }
 
-
         override fun onVerificationFailed(e: FirebaseException) {
             _eventEmitter.onNext(
                 IAuthRepository.Event.OnError(
