@@ -53,8 +53,8 @@ internal class UserRepositoryImpl @Inject constructor(
     }
         .subscribeOn(Schedulers.io())
 
-    override fun setUser(user: FirestoreUser, uid: String) = Completable.create { emitter ->
-        FirebaseFirestore.getInstance().collection(FirestoreStructure.Users.TAG)
+    override fun updateUser(user: FirestoreUser, uid: String) = Completable.create { emitter ->
+        store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
             .set(user)
             .addOnCompleteListener {
@@ -63,7 +63,6 @@ internal class UserRepositoryImpl @Inject constructor(
                 } else {
                     emitter.onError(FirestoreCommonException())
                 }
-
             }
     }
 }

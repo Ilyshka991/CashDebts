@@ -12,5 +12,5 @@ interface IUserRepository {
 
     fun isUserExist(uid: String = currentUserBaseInformation.uid): Single<Boolean>
 
-    fun setUser(user: FirestoreUser, uid: String = currentUserBaseInformation.uid): Completable
+    fun updateUser(user: FirestoreUser, uid: String = currentUserBaseInformation.uid): Completable
 }

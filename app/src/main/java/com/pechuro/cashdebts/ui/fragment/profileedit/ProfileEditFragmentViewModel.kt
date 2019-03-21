@@ -41,61 +41,65 @@ class ProfileEditFragmentViewModel @Inject constructor(
     fun loadExistingUser() {
         if (isUserAlreadyLoaded) return
         command.onNext(Events.OnUserStartLoad)
-        isUserAlreadyLoaded = true
         userRepository.get()
             .subscribe({
                 data.setUser(it)
+                isUserAlreadyLoaded = true
                 command.onNext(Events.OnUserStopLoad)
             }, {
                 command.onNext(Events.OnUserStopLoad)
-                it.printStackTrace()
+                command.onNext(Events.OnLoadError)
             }).addTo(compositeDisposable)
     }
 
     fun save() {
+        fun deletePreviousPhoto(): Completable {
+            return storageRepository.deletePrevious(data.fields.imageUrl!!)
+        }
+
+        fun uploadPhoto(): Single<Uri> {
+            return storageRepository.uploadAndGetUrl(
+                localAvatarFile!!.toUri(),
+                localAvatarFile!!.name
+            )
+        }
+
+        fun updateUser(photoUrl: String?): Completable {
+            val user = FirestoreUser(
+                data.fields.firstName,
+                data.fields.lastName,
+                userRepository.currentUserBaseInformation.phoneNumber,
+                photoUrl
+            )
+            return userRepository.updateUser(user)
+        }
+
         if (!data.isValid()) return
         isLoading.set(true)
+
         val task = if (!localAvatarPath.get().isNullOrEmpty()) {
             if (data.fields.imageUrl != null) {
                 uploadPhoto()
                     .flatMapCompletable {
-                        setUser(it.toString())
-                    }
+                        updateUser(it.toString())
+                    }.andThen(deletePreviousPhoto())
             } else {
                 uploadPhoto().flatMapCompletable {
-                    setUser(it.toString())
+                    updateUser(it.toString())
                 }
             }
         } else {
-            setUser(data.fields.imageUrl)
+            updateUser(data.fields.imageUrl)
         }
+
         task.subscribe({
             onSaved()
         }, {
-            it.printStackTrace()
+            isLoading.set(false)
+            command.onNext(Events.OnSaveError)
         }).addTo(compositeDisposable)
     }
 
-    private fun deletePreviousPhoto(): Completable {
-        return storageRepository.deletePrevious(data.fields.imageUrl!!)
-    }
-
-    private fun uploadPhoto(): Single<Uri> {
-        return storageRepository.uploadAndGetUrl(
-            localAvatarFile!!.toUri(),
-            localAvatarFile!!.name
-        )
-    }
-
-    private fun setUser(photoUrl: String?): Completable {
-        val user = FirestoreUser(
-            data.fields.firstName,
-            data.fields.lastName,
-            userRepository.currentUserBaseInformation.phoneNumber,
-            photoUrl
-        )
-        return userRepository.setUser(user)
-    }
 
     fun loadEditedAvatar() {
         localAvatarPath.set(localAvatarFile?.path)
@@ -124,5 +128,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
         object OnUserStopLoad : Events()
         object OnUserStartLoad : Events()
         object OnSaved : Events()
+        object OnSaveError : Events()
+        object OnLoadError : Events()
     }
 }

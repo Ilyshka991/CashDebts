@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentProfileEditBinding
@@ -59,6 +60,9 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
             buttonSave.setOnClickListener {
                 this@ProfileEditFragment.viewModel.save()
             }
+            fabTakePhoto.setOnClickListener {
+                showOptionsDialog()
+            }
         }
     }
 
@@ -68,6 +72,8 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
                 is ProfileEditFragmentViewModel.Events.OnUserStartLoad -> showProgressDialog()
                 is ProfileEditFragmentViewModel.Events.OnUserStopLoad -> dismissProgressDialog()
                 is ProfileEditFragmentViewModel.Events.OnSaved -> onSaved()
+                is ProfileEditFragmentViewModel.Events.OnSaveError -> showSnackbarErrorSave()
+                is ProfileEditFragmentViewModel.Events.OnLoadError -> showSnackbarErrorLoad()
             }
         }.addTo(weakCompositeDisposable)
     }
@@ -139,6 +145,22 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
 
     private fun onSaved() {
         EventBus.publish(ProfileEditEvent.OnSaved)
+    }
+
+    private fun showSnackbarErrorLoad() {
+        Snackbar.make(viewDataBinding.root, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.action_retry) {
+                viewModel.loadExistingUser()
+            }
+            .show()
+    }
+
+    private fun showSnackbarErrorSave() {
+        Snackbar.make(viewDataBinding.root, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.action_retry) {
+                viewModel.save()
+            }
+            .show()
     }
 
     companion object {

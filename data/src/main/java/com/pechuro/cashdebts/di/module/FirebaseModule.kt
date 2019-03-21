@@ -13,7 +13,12 @@ internal class FirebaseModule {
 
     @Provides
     @DataScope
-    fun provideFirestore() = FirebaseFirestore.getInstance()
+    fun provideFirestore(): FirebaseFirestore {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.apply {
+        }
+        return firestore
+    }
 
     @Provides
     @DataScope

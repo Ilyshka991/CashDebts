@@ -5,6 +5,7 @@ import android.app.Application
 import com.pechuro.cashdebts.di.component.AppComponent
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
 import com.pechuro.cashdebts.di.component.DaggerDataComponent
+import com.silvereskimo.l.connectivity.AppConnectivityStatusMonitor
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -25,6 +26,9 @@ class App : Application(), HasActivityInjector {
         val dataComponent = DaggerDataComponent.create()
         appComponent = DaggerAppComponent.builder().application(this).dataComponent(dataComponent).build()
         appComponent.inject(this)
+        AppConnectivityStatusMonitor.getInstance(this).registerInternetCallbacks {
+
+        }
     }
 
     companion object {
