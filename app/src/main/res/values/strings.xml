@@ -48,4 +48,5 @@
     <string name="profile_action_logout">Logout</string>
 
     <string name="action_retry">Retry</string>
+    <string name="error_no_connection">No internet connection</string>
 </resources>

@@ -2,9 +2,10 @@ package com.pechuro.cashdebts.di.module
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.telephony.TelephonyManager
+import android.net.ConnectivityManager
 import com.pechuro.cashdebts.App
 import com.pechuro.cashdebts.di.annotations.AppScope
+import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import dagger.Module
 import dagger.Provides
 
@@ -20,7 +21,6 @@ class ApplicationModule {
     fun providePrefs(context: Context) = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
 
     @Provides
-    fun provideTelephonyManager(context: Context): TelephonyManager {
-        return context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-    }
+    @AppScope
+    fun provideConnectivityListener(manager: ConnectivityManager) = ConnectivityListener(manager)
 }

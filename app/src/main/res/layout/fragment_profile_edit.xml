@@ -13,7 +13,8 @@
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -77,12 +78,16 @@
                     android:text="@string/profile_edit_action_save"
                     android:textSize="18sp"
                     app:show_progress="@{viewModel.isLoading}"
+                    android:enabled="@{viewModel.isConnectionAvailable}"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_last_name_layout"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintBottom_toTopOf="@+id/view_no_connection"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_take_photo"
@@ -93,6 +98,16 @@
                     app:srcCompat="@drawable/ic_add_photo"
                     app:layout_constraintEnd_toEndOf="@+id/image_photo"
                     app:layout_constraintBottom_toBottomOf="@+id/image_photo"/>
+
+            <include
+                    android:id="@+id/view_no_connection"
+                    layout="@layout/layout_no_connection"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:visibility="@{!viewModel.isConnectionAvailable}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

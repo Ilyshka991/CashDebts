@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.fragment.profileedit
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
@@ -18,6 +19,7 @@ import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo
 
 class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEditFragmentViewModel>() {
+
     override val layoutId: Int
         get() = R.layout.fragment_profile_edit
     override val bindingVariables: Map<Int, Any>
@@ -40,14 +42,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when {
             requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK -> loadEditedAvatar()
-            requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK -> {
-                val uri = data?.data
-                val inputStream = uri?.let { context?.contentResolver?.openInputStream(it) }
-                inputStream?.let {
-                    viewModel.writeToFile(it)
-                    loadEditedAvatar()
-                }
-            }
+            requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK -> data?.data?.let { onPhotoPick(it) }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -121,6 +116,14 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
                     startActivityForResult(pickPictureIntent, REQUEST_PICK_PHOTO)
                 }
             }
+        }
+    }
+
+    private fun onPhotoPick(uri: Uri) {
+        val inputStream = uri.let { context?.contentResolver?.openInputStream(it) }
+        inputStream?.let {
+            viewModel.writeToFile(it)
+            loadEditedAvatar()
         }
     }
 

@@ -58,6 +58,7 @@ internal class UserRepositoryImpl @Inject constructor(
             .document(uid)
             .set(user)
             .addOnCompleteListener {
+                if (emitter.isDisposed) return@addOnCompleteListener
                 if (it.isSuccessful) {
                     emitter.onComplete()
                 } else {

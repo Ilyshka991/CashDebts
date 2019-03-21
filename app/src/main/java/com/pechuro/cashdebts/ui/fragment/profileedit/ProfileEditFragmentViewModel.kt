@@ -7,6 +7,7 @@ import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.model.files.FileManager
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
@@ -14,6 +15,7 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import java.io.File
@@ -25,7 +27,8 @@ class ProfileEditFragmentViewModel @Inject constructor(
     private val userRepository: IUserRepository,
     private val storageRepository: IStorageRepository,
     private val prefsManager: PrefsManager,
-    private val fileManager: FileManager
+    private val fileManager: FileManager,
+    private val connectivityListener: ConnectivityListener
 ) : BaseViewModel() {
 
     val command = PublishSubject.create<Events>()
@@ -33,10 +36,16 @@ class ProfileEditFragmentViewModel @Inject constructor(
     val data = ProfileEditModel()
     val localAvatarPath = ObservableField<String?>()
     val isLoading = ObservableBoolean()
+    val isConnectionAvailable = ObservableBoolean()
 
     private var localAvatarFile: File? = null
-
     private var isUserAlreadyLoaded = false
+
+    private var updateTask: Disposable? = null
+
+    init {
+        setConnectivityListener()
+    }
 
     fun loadExistingUser() {
         if (isUserAlreadyLoaded) return
@@ -92,14 +101,13 @@ class ProfileEditFragmentViewModel @Inject constructor(
             updateUser(data.fields.imageUrl)
         }
 
-        task.subscribe({
+        updateTask = task.subscribe({
             onSaved()
         }, {
             isLoading.set(false)
             command.onNext(Events.OnSaveError)
-        }).addTo(compositeDisposable)
+        })
     }
-
 
     fun loadEditedAvatar() {
         localAvatarPath.set(localAvatarFile?.path)
@@ -122,6 +130,20 @@ class ProfileEditFragmentViewModel @Inject constructor(
         isLoading.set(false)
         command.onNext(Events.OnSaved)
         prefsManager.isUserAddInfo = true
+    }
+
+    private fun setConnectivityListener() {
+        connectivityListener.listen {
+            onConnectionChanged(it)
+        }.addTo(compositeDisposable)
+    }
+
+    private fun onConnectionChanged(isAvailable: Boolean) {
+        isConnectionAvailable.set(isAvailable)
+        if (!isAvailable) {
+            isLoading.set(false)
+            updateTask?.dispose()
+        }
     }
 
     sealed class Events : BaseEvent() {

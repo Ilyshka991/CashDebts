@@ -13,6 +13,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
 
     override fun uploadAndGetUrl(fileUri: Uri, name: String) = Single.create<Uri> { emitter ->
         val avatarRef = storage.reference.child("${FirebaseStorageStructure.AVATARS_PATH}/$name")
+
         avatarRef.putFile(fileUri)
             .continueWithTask {
                 if (!it.isSuccessful) {
@@ -22,7 +23,12 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
             }
             .addOnCompleteListener {
                 if (it.isSuccessful) {
+                    if (emitter.isDisposed) {
+                        deletePrevious(it.result!!.toString()).subscribe()
+                        return@addOnCompleteListener
+                    }
                     emitter.onSuccess(it.result!!)
+                    println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBb")
                 } else {
                     emitter.onError(FirebaseStorageCommonException())
                 }
@@ -32,6 +38,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
     override fun deletePrevious(url: String) = Completable.create { emitter ->
         val ref = storage.getReferenceFromUrl(url)
         ref.delete().addOnCompleteListener {
+            if (emitter.isDisposed) return@addOnCompleteListener
             if (it.isSuccessful) {
                 emitter.onComplete()
             } else {

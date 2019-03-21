@@ -32,6 +32,10 @@ class ProgressButton @JvmOverloads constructor(
         button.visibility = if (isShow) INVISIBLE else VISIBLE
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        button.isEnabled = enabled
+    }
+
     @SuppressLint("Recycle")
     private fun obtainAttrs(attrs: AttributeSet) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.ProgressButton)

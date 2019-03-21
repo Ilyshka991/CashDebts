@@ -2,10 +2,7 @@ package com.pechuro.cashdebts.di.component
 
 import com.pechuro.cashdebts.App
 import com.pechuro.cashdebts.di.annotations.AppScope
-import com.pechuro.cashdebts.di.module.AppActivitiesModule
-import com.pechuro.cashdebts.di.module.AppViewModelsModule
-import com.pechuro.cashdebts.di.module.ApplicationModule
-import com.pechuro.cashdebts.di.module.RxModule
+import com.pechuro.cashdebts.di.module.*
 import dagger.BindsInstance
 import dagger.Component
 
@@ -14,6 +11,7 @@ import dagger.Component
     dependencies = [DataComponent::class],
     modules = [
         ApplicationModule::class,
+        ManagerModule::class,
         AppActivitiesModule::class,
         AppViewModelsModule::class,
         RxModule::class]
