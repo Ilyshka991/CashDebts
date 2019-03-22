@@ -5,7 +5,7 @@ import android.text.Editable
 import android.util.AttributeSet
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import androidx.appcompat.widget.LinearLayoutCompat
+import android.widget.LinearLayout
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.custom.TextWatcher
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.layout_phone_edit_text.view.*
 
 class PhoneNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     var onDoneClick: () -> Unit = {}
 

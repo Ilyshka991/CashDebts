@@ -106,4 +106,3 @@ class HintEditText : EditText {
         if (length() > 0) textOffset += getPaint().measureText(text, 0, length())
     }
 }
-
