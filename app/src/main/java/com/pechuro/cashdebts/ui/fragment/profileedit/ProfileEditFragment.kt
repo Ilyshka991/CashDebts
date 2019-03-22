@@ -95,7 +95,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
                     photoFile.also {
                         val photoURI = FileProvider.getUriForFile(
                             context,
-                            "com.pechuro.fileprovider",
+                            "com.pechuro.cashdebts.fileprovider",
                             it
                         )
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

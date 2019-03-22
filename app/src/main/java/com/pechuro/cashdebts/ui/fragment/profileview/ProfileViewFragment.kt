@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
 import android.os.Bundle
+import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentProfileViewBinding
@@ -46,6 +47,7 @@ class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileView
             when (it) {
                 is ProfileViewFragmentViewModel.LoadingState.OnStart -> showProgressDialog()
                 is ProfileViewFragmentViewModel.LoadingState.OnStop -> dismissProgressDialog()
+                is ProfileViewFragmentViewModel.LoadingState.OnError -> showErrorSnackbar()
             }
         }.addTo(weakCompositeDisposable)
     }
@@ -67,6 +69,14 @@ class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileView
 
     private fun dismissProgressDialog() {
         childFragmentManager.popBackStack()
+    }
+
+    private fun showErrorSnackbar() {
+        Snackbar.make(viewDataBinding.coordinator, R.string.error_load, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.action_retry) {
+                viewModel.loadUser()
+            }
+            .show()
     }
 
     companion object {

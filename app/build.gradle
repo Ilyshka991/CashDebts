@@ -46,8 +46,6 @@ dependencies {
     implementation glideDependencies.values()
 
     implementation project(path: ':data')
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation project(path: ':connectivity')
 }
 
 apply plugin: 'com.google.gms.google-services'

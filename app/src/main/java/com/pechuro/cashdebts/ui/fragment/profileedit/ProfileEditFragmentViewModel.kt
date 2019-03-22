@@ -57,7 +57,9 @@ class ProfileEditFragmentViewModel @Inject constructor(
                 command.onNext(Events.OnUserStopLoad)
             }, {
                 command.onNext(Events.OnUserStopLoad)
-                command.onNext(Events.OnLoadError)
+                if (isConnectionAvailable.get()) {
+                    command.onNext(Events.OnLoadError)
+                }
             }).addTo(compositeDisposable)
     }
 
@@ -105,7 +107,9 @@ class ProfileEditFragmentViewModel @Inject constructor(
             onSaved()
         }, {
             isLoading.set(false)
-            command.onNext(Events.OnSaveError)
+            if (isConnectionAvailable.get()) {
+                command.onNext(Events.OnSaveError)
+            }
         })
     }
 
@@ -140,7 +144,9 @@ class ProfileEditFragmentViewModel @Inject constructor(
 
     private fun onConnectionChanged(isAvailable: Boolean) {
         isConnectionAvailable.set(isAvailable)
-        if (!isAvailable) {
+        if (isAvailable) {
+            loadExistingUser()
+        } else {
             isLoading.set(false)
             updateTask?.dispose()
         }
