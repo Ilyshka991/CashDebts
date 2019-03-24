@@ -52,4 +52,8 @@
     <string name="error_load">Something went wrong. Please, retry later</string>
 
     <string name="add_debt_error_invalid_name">Please, enter valid name</string>
+    <string name="add_debt_error_invalid_phone">Please, enter valid phone number</string>
+    <string name="add_debt_error_user_not_exist">Such user not exist</string>
+    <string name="add_debt_error_common">Something went wrong. Please, retry later</string>
+    <string name="add_debt_action_add_local">Add local</string>
 </resources>

@@ -3,17 +3,25 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
+import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragment
+import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragment
 import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean
         get() = true
 
-    override fun getHomeFragment() = AddDebtLocalUserFragment.newInstance()
+    private val isLocalDebt: Boolean
+        get() = intent.getBooleanExtra(INTENT_EXTRA_IS_LOCAL_DEBT, true)
+
+    override fun getHomeFragment() =
+        if (isLocalDebt) AddDebtLocalUserFragment.newInstance() else AddDebtRemoteUserFragment.newInstance()
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
@@ -22,13 +30,29 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         setupViewModel()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_activity_add, menu)
+        if (backStackSize > 0) {
+            menu?.findItem(R.id.menu_action_next)?.isVisible = false
+        } else {
+            menu?.findItem(R.id.menu_action_save)?.isVisible = false
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_action_next -> viewModel.openInfo()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onStart() {
         super.onStart()
         subscribeToEvents()
     }
 
     private fun setupViewModel() {
-        val isLocalDebt = intent.getBooleanExtra(INTENT_EXTRA_IS_LOCAL_DEBT, true)
         viewModel.setInitialData(isLocalDebt)
     }
 
@@ -36,8 +60,12 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         viewModel.command.subscribe {
             when (it) {
                 is AddDebtActivityViewModel.Events.OnSaved -> closeActivity()
-                is AddDebtActivityViewModel.Events.ShowSnackBarError -> showSnackBar(it.id)
-                is AddDebtActivityViewModel.Events.OpenInfo -> showFragment(AddDebtInfoFragment.newInstance())
+                is AddDebtActivityViewModel.Events.ShowSnackBarError -> showSnackBarError(it.id)
+                is AddDebtActivityViewModel.Events.OpenInfo -> {
+                    showFragment(AddDebtInfoFragment.newInstance())
+                    invalidateOptionsMenu()
+                }
+                is AddDebtActivityViewModel.Events.ShowSnackBarUserNotExist -> showSnackBarUserNotExist()
             }
         }.let(weakCompositeDisposable::add)
     }
@@ -46,8 +74,24 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         finish()
     }
 
-    private fun showSnackBar(@StringRes id: Int) {
+    private fun showSnackBarError(@StringRes id: Int) {
         Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showSnackBarUserNotExist() {
+        Snackbar.make(viewDataBinding.root, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.add_debt_action_add_local) {
+                restartWithLocalDebtFragment()
+            }
+            .show()
+    }
+
+    private fun restartWithLocalDebtFragment() {
+        intent.apply {
+            putExtra(INTENT_EXTRA_IS_LOCAL_DEBT, true)
+        }
+        finish()
+        startActivity(intent)
     }
 
     companion object {
@@ -55,7 +99,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
         fun newIntent(context: Context, isLocalDebt: Boolean) =
             Intent(context, AddDebtActivity::class.java).apply {
-                getBooleanExtra(INTENT_EXTRA_IS_LOCAL_DEBT, isLocalDebt)
+                putExtra(INTENT_EXTRA_IS_LOCAL_DEBT, isLocalDebt)
             }
     }
 }

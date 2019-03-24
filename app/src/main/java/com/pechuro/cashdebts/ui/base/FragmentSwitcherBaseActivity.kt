@@ -12,6 +12,9 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : ContainerBaseA
 
     protected var isBackAllowed = true
 
+    protected val backStackSize
+        get() = supportFragmentManager.backStackEntryCount
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +45,7 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : ContainerBaseA
                 R.anim.anim_slide_out_right
             )
             replace(viewDataBinding.container.id, fragment)
-            addToBackStack(null)
+            if (isAddToBackStack) addToBackStack(null)
         }
     }
 

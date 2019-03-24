@@ -10,7 +10,9 @@ interface IUserRepository {
 
     fun get(uid: String = currentUserBaseInformation.uid): Single<FirestoreUser>
 
-    fun isUserExist(uid: String = currentUserBaseInformation.uid): Single<Boolean>
+    fun isUserWithUidExist(uid: String = currentUserBaseInformation.uid): Single<Boolean>
+
+    fun isUserWithPhoneNumberExist(phoneNumber: String): Single<Boolean>
 
     fun updateUser(user: FirestoreUser, uid: String = currentUserBaseInformation.uid): Completable
 }

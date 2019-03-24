@@ -103,7 +103,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onSuccess() {
-        userRepository.isUserExist()
+        userRepository.isUserWithUidExist()
             .subscribe({
                 isLoading.set(false)
                 if (it) {

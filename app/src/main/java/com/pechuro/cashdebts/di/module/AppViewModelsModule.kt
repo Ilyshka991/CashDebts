@@ -9,9 +9,10 @@ import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivi
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivityViewModel
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentViewModel
-import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentViewModel
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentViewModel
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -50,8 +51,8 @@ interface AppViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DebtListFragmentViewModel::class)
-    fun debtListFragment(viewModel: DebtListFragmentViewModel): ViewModel
+    @ViewModelKey(LocalDebtListFragmentViewModel::class)
+    fun localDebtListFragment(viewModel: LocalDebtListFragmentViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -67,4 +68,9 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(ProfileEditActivityViewModel::class)
     fun profileEditActivity(viewModel: ProfileEditActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RemoteDebtListFragmentViewModel::class)
+    fun remoteDebtListFragment(viewModel: RemoteDebtListFragmentViewModel): ViewModel
 }

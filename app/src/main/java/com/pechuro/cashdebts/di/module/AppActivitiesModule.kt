@@ -14,9 +14,10 @@ import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.activity.splash.SplashActivity
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentProvider
-import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -33,7 +34,8 @@ interface AppActivitiesModule {
     @ContributesAndroidInjector(
         modules = [
             ProfileEditFragmentProvider::class,
-            DebtListFragmentProvider::class,
+            LocalDebtListFragmentProvider::class,
+            RemoteDebtListFragmentProvider::class,
             ProfileViewFragmentProvider::class
         ]
     )

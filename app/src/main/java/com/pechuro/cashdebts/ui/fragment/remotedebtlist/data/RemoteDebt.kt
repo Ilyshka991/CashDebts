@@ -1,6 +1,6 @@
-package com.pechuro.cashdebts.ui.fragment.debtlist.data
+package com.pechuro.cashdebts.ui.fragment.remotedebtlist.data
 
-data class Debt(
+data class RemoteDebt(
     val id: String,
     val person: String,
     val value: Double,

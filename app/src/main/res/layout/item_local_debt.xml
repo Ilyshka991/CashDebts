@@ -5,7 +5,7 @@
     <data>
 
         <variable name="debt"
-                  type="com.pechuro.cashdebts.ui.fragment.debtlist.data.Debt"/>
+                  type="com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt"/>
     </data>
 
     <androidx.cardview.widget.CardView

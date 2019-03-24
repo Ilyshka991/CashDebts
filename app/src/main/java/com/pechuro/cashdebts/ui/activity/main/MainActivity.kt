@@ -11,11 +11,12 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.base.BaseFragmentActivity
-import com.pechuro.cashdebts.ui.fragment.debtlist.DebtListFragment
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewEvent
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
 
@@ -28,7 +29,7 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
 
     override fun getViewModelClass() = MainActivityViewModel::class
 
-    override fun getHomeFragment() = DebtListFragment.newInstance()
+    override fun getHomeFragment() = RemoteDebtListFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +48,8 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
                 return@setOnNavigationItemSelectedListener true
             }
             when (it.itemId) {
-                R.id.menu_nav_remote_debt -> showFragment(DebtListFragment.newInstance(), false)
-                R.id.menu_nav_local_debt -> showFragment(DebtListFragment.newInstance(), false)
+                R.id.menu_nav_remote_debt -> showFragment(RemoteDebtListFragment.newInstance(), false)
+                R.id.menu_nav_local_debt -> showFragment(LocalDebtListFragment.newInstance(), false)
                 R.id.menu_nav_profile -> showFragment(ProfileViewFragment.newInstance(), false)
             }
             true
@@ -58,7 +59,7 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
     private fun subscribeToEvents() {
         EventBus.listen(MainActivityEvent::class.java).subscribe {
             when (it) {
-                is MainActivityEvent.OpenAddActivity -> openAddActivity()
+                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt)
             }
         }.addTo(weakCompositeDisposable)
         EventBus.listen(ProfileEditEvent::class.java).subscribe {
@@ -89,10 +90,9 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
         finish()
     }
 
-    private fun openAddActivity() {
-        val intent = AddDebtActivity.newIntent(this, true)
+    private fun openAddActivity(isLocalDebt: Boolean) {
+        val intent = AddDebtActivity.newIntent(this, isLocalDebt)
         startActivity(intent)
-        //showFragment(ProfileEditFragment.newInstance())
     }
 
     private fun openProfileEditIfNecessary() {

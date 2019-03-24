@@ -39,7 +39,7 @@ internal class UserRepositoryImpl @Inject constructor(
     }
         .subscribeOn(Schedulers.io())
 
-    override fun isUserExist(uid: String) = Single.create<Boolean> { emitter ->
+    override fun isUserWithUidExist(uid: String) = Single.create<Boolean> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
             .get()
@@ -50,8 +50,24 @@ internal class UserRepositoryImpl @Inject constructor(
                     emitter.onError(FirestoreCommonException())
                 }
             }
-    }
-        .subscribeOn(Schedulers.io())
+    }.subscribeOn(Schedulers.io())
+
+    override fun isUserWithPhoneNumberExist(phoneNumber: String) = Single.create<Boolean> { emitter ->
+        store.collection(FirestoreStructure.Users.TAG)
+            .whereEqualTo(FirestoreStructure.Users.Structure.phoneNumber, phoneNumber)
+            .get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    if (it.result?.metadata?.isFromCache == true) {
+                        emitter.onError(FirestoreCommonException())
+                        return@addOnCompleteListener
+                    }
+                    emitter.onSuccess(it.result?.documents?.isNotEmpty() == true)
+                } else {
+                    emitter.onError(FirestoreCommonException())
+                }
+            }
+    }.subscribeOn(Schedulers.io())
 
     override fun updateUser(user: FirestoreUser, uid: String) = Completable.create { emitter ->
         store.collection(FirestoreStructure.Users.TAG)

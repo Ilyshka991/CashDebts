@@ -17,17 +17,6 @@ class AddDebtLocalUserFragment : BaseFragment<FragmentAddDebtLocalUserBinding, A
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setViewListeners()
-    }
-
-    private fun setViewListeners() {
-        viewDataBinding.buttonOk.setOnClickListener {
-            viewModel.openInfo()
-        }
-    }
-
     companion object {
         const val TAG = "AddDebtLocalUserFragment"
 
