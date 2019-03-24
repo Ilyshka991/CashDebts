@@ -29,7 +29,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-           // minifyEnabled true
+            minifyEnabled true
         }
     }
 }
@@ -46,6 +46,7 @@ dependencies {
     implementation glideDependencies.values()
 
     implementation project(path: ':data')
+    implementation 'com.google.android.material:material:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

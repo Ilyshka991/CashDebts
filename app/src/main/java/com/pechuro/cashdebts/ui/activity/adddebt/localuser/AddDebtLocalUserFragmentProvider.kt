@@ -1,13 +1,13 @@
-package com.pechuro.cashdebts.ui.activity.adddebt.user
+package com.pechuro.cashdebts.ui.activity.adddebt.localuser
 
 import com.pechuro.cashdebts.di.annotations.FragmentScope
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-interface AddDebtUserFragmentProvider {
+interface AddDebtLocalUserFragmentProvider {
 
     @FragmentScope
     @ContributesAndroidInjector
-    fun bind(): AddDebtUserFragment
+    fun bind(): AddDebtLocalUserFragment
 }

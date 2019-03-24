@@ -1,8 +1,8 @@
 package com.pechuro.cashdebts.data.structure
 
 class FirestoreStructure {
-    object Debts {
-        const val TAG = "debts"
+    object RemoteDebt {
+        const val TAG = "remoteDebts"
 
         object Structure {
             const val creditor = "creditorPhone"
@@ -11,6 +11,19 @@ class FirestoreStructure {
             const val description = "description"
             const val date = "date"
             const val status = "status"
+        }
+    }
+
+    object LocalDebt {
+        const val TAG = "localDebts"
+
+        object Structure {
+            const val ownerUid = "ownerUid"
+            const val name = "name"
+            const val value = "value"
+            const val description = "description"
+            const val date = "date"
+            const val isPersonDebtor = "isOwnerDebtor"
         }
     }
 

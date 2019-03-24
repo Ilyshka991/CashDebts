@@ -3,7 +3,8 @@ package com.pechuro.cashdebts.di.module
 import com.pechuro.cashdebts.di.annotations.ActivityScope
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragmentProvider
-import com.pechuro.cashdebts.ui.activity.adddebt.user.AddDebtUserFragmentProvider
+import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragmentProvider
+import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityModule
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
@@ -42,7 +43,8 @@ interface AppActivitiesModule {
     @ContributesAndroidInjector(
         modules = [
             AddDebtInfoFragmentProvider::class,
-            AddDebtUserFragmentProvider::class]
+            AddDebtRemoteUserFragmentProvider::class,
+            AddDebtLocalUserFragmentProvider::class]
     )
     fun bindAdd(): AddDebtActivity
 

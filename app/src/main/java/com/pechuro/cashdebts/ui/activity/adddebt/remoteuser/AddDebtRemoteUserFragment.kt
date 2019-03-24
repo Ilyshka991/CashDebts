@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.activity.adddebt.user
+package com.pechuro.cashdebts.ui.activity.adddebt.remoteuser
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -8,13 +8,13 @@ import android.provider.ContactsContract
 import android.view.inputmethod.EditorInfo
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentAddDebtUserBinding
+import com.pechuro.cashdebts.databinding.FragmentAddDebtRemoteUserBinding
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 
-class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActivityViewModel>() {
+class AddDebtRemoteUserFragment : BaseFragment<FragmentAddDebtRemoteUserBinding, AddDebtActivityViewModel>() {
     override val layoutId: Int
-        get() = R.layout.fragment_add_debt_user
+        get() = R.layout.fragment_add_debt_remote_user
     override val bindingVariables: Map<Int, Any>?
         get() = mapOf(BR.viewModel to viewModel)
     override val isViewModelShared: Boolean
@@ -69,11 +69,11 @@ class AddDebtUserFragment : BaseFragment<FragmentAddDebtUserBinding, AddDebtActi
     }
 
     companion object {
-        const val TAG = "AddDebtUserFragment"
+        const val TAG = "AddDebtRemoteUserFragment"
 
         private const val REQUEST_PICK_CONTACT = 342
 
-        fun newInstance() = AddDebtUserFragment().apply {
+        fun newInstance() = AddDebtRemoteUserFragment().apply {
             arguments = Bundle().apply {
             }
         }

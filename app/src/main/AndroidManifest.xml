@@ -33,7 +33,9 @@
                 android:name=".ui.activity.auth.AuthActivity"
                 android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".ui.activity.adddebt.AddDebtActivity"/>
+        <activity
+                android:name=".ui.activity.adddebt.AddDebtActivity"
+                android:windowSoftInputMode="adjustResize"/>
 
         <activity
                 android:name=".ui.activity.countryselection.CountrySelectionActivity"

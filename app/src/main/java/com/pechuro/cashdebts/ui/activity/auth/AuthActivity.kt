@@ -3,7 +3,6 @@ package com.pechuro.cashdebts.ui.activity.auth
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
@@ -15,13 +14,12 @@ import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
-
-    override val homeFragment: Fragment
-        get() = AuthPhoneFragment.newInstance()
     override val isCloseButtonEnabled: Boolean
         get() = false
 
     override fun getViewModelClass() = AuthActivityViewModel::class
+
+    override fun getHomeFragment() = AuthPhoneFragment.newInstance()
 
     override fun onStart() {
         super.onStart()

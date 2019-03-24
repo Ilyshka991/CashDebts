@@ -11,9 +11,10 @@ import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
 abstract class BaseFragmentActivity<T : ViewDataBinding, VM : BaseViewModel> : BaseActivity<T, VM>() {
-    protected abstract val homeFragment: Fragment
     @get:IdRes
     protected abstract val containerId: Int
+
+    protected abstract fun getHomeFragment(): Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,7 @@ abstract class BaseFragmentActivity<T : ViewDataBinding, VM : BaseViewModel> : B
 
     protected fun homeFragment() {
         supportFragmentManager.transaction {
-            replace(containerId, homeFragment)
+            replace(containerId, getHomeFragment())
         }
     }
 }
