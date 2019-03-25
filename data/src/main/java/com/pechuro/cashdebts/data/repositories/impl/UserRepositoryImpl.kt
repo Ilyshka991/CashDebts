@@ -10,7 +10,6 @@ import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.data.structure.FirestoreStructure
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 internal class UserRepositoryImpl @Inject constructor(
@@ -37,7 +36,6 @@ internal class UserRepositoryImpl @Inject constructor(
                 }
             }
     }
-        .subscribeOn(Schedulers.io())
 
     override fun isUserWithUidExist(uid: String) = Single.create<Boolean> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
@@ -50,24 +48,28 @@ internal class UserRepositoryImpl @Inject constructor(
                     emitter.onError(FirestoreCommonException())
                 }
             }
-    }.subscribeOn(Schedulers.io())
+    }
 
-    override fun isUserWithPhoneNumberExist(phoneNumber: String) = Single.create<Boolean> { emitter ->
+    override fun getUidByPhone(phoneNumber: String) = Single.create<String> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .whereEqualTo(FirestoreStructure.Users.Structure.phoneNumber, phoneNumber)
             .get()
             .addOnCompleteListener {
+                if (it.result?.metadata?.isFromCache == true) {
+                    emitter.onError(FirestoreCommonException())
+                    return@addOnCompleteListener
+                }
                 if (it.isSuccessful) {
-                    if (it.result?.metadata?.isFromCache == true) {
-                        emitter.onError(FirestoreCommonException())
-                        return@addOnCompleteListener
+                    if (it.result?.documents?.size == 1) {
+                        emitter.onSuccess(it.result!!.documents[0]!!.id)
+                    } else {
+                        emitter.onError(FirestoreUserNotFoundException())
                     }
-                    emitter.onSuccess(it.result?.documents?.isNotEmpty() == true)
                 } else {
                     emitter.onError(FirestoreCommonException())
                 }
             }
-    }.subscribeOn(Schedulers.io())
+    }
 
     override fun updateUser(user: FirestoreUser, uid: String) = Completable.create { emitter ->
         store.collection(FirestoreStructure.Users.TAG)

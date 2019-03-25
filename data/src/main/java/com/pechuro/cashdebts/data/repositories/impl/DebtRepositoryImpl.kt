@@ -3,7 +3,8 @@ package com.pechuro.cashdebts.data.repositories.impl
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
-import com.pechuro.cashdebts.data.model.FirestoreDebtStatus
+import com.pechuro.cashdebts.data.exception.FirestoreCommonException
+import com.pechuro.cashdebts.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.repositories.IDebtRepository
 import com.pechuro.cashdebts.data.structure.FirestoreStructure
@@ -12,7 +13,6 @@ import com.pechuro.cashdebts.data.structure.FirestoreStructure.RemoteDebt.Struct
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
 internal class DebtRepositoryImpl @Inject constructor(private val store: FirebaseFirestore) : IDebtRepository {
@@ -36,15 +36,24 @@ internal class DebtRepositoryImpl @Inject constructor(private val store: Firebas
         .subscribeOn(Schedulers.io())
 
     override fun add(debt: FirestoreRemoteDebt) = Completable.create { emitter ->
-        debt.apply {
-            creditorName = "ilya"
-            creditorPhone = ""
-            date = Date()
-            status = FirestoreDebtStatus.WAIT_FOR_CONFIRMATION
-        }
         FirebaseFirestore.getInstance().collection(FirestoreStructure.RemoteDebt.TAG)
-            .add(debt).addOnSuccessListener {
-                emitter.onComplete()
+            .add(debt).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    emitter.onError(FirestoreCommonException())
+                }
+            }
+    }
+
+    override fun add(debt: FirestoreLocalDebt) = Completable.create { emitter ->
+        FirebaseFirestore.getInstance().collection(FirestoreStructure.LocalDebt.TAG)
+            .add(debt).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    emitter.onError(FirestoreCommonException())
+                }
             }
     }
 }

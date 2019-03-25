@@ -7,7 +7,7 @@ class LocalDebtInfo(
 ) : BaseDebtInfo() {
     constructor() : this("")
 
-    fun isValid(): Boolean {
+    override fun isValid(): Boolean {
         return name.isNotBlank()
     }
 }

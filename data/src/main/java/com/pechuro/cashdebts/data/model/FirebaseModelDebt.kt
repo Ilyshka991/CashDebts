@@ -1,6 +1,8 @@
 package com.pechuro.cashdebts.data.model
 
 import androidx.annotation.IntDef
+import com.pechuro.cashdebts.data.model.DebtRole.Companion.CREDITOR
+import com.pechuro.cashdebts.data.model.DebtRole.Companion.DEBTOR
 import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.COMPLETE
 import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_CREDITOR
 import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_DEBTOR
@@ -13,14 +15,12 @@ import com.pechuro.cashdebts.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_C
 import java.util.*
 
 data class FirestoreRemoteDebt(
-    var creditorPhone: String,
-    var creditorName: String,
-    var debtorPhone: String,
-    var debtorName: String,
-    var value: Double,
-    var description: String?,
-    var date: Date,
-    @FirestoreDebtStatus var status: Int
+    val creditorUid: String,
+    val debtorUid: String,
+    val value: Double,
+    val description: String?,
+    val date: Date,
+    @FirestoreDebtStatus val status: Int
 )
 
 data class FirestoreLocalDebt(
@@ -29,7 +29,7 @@ data class FirestoreLocalDebt(
     val value: Double,
     val description: String?,
     val date: Date,
-    val isOwnerDebtor: Boolean
+    @DebtRole val role: Int
 )
 
 @IntDef(
@@ -51,5 +51,14 @@ annotation class FirestoreDebtStatus {
         const val COMPLETION_REJECTED_BY_CREDITOR = 7
         const val COMPLETION_REJECTED_BY_DEBTOR = 8
         const val COMPLETE = 9
+    }
+}
+
+@IntDef(CREDITOR, DEBTOR)
+@Retention(AnnotationRetention.SOURCE)
+annotation class DebtRole {
+    companion object {
+        const val CREDITOR = 1
+        const val DEBTOR = 2
     }
 }

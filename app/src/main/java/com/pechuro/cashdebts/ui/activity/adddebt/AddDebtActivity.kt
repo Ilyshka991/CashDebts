@@ -43,6 +43,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_action_next -> viewModel.openInfo()
+            R.id.menu_action_save -> viewModel.save()
         }
         return super.onOptionsItemSelected(item)
     }

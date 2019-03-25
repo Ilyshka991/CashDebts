@@ -3,6 +3,12 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.exception.FirestoreUserNotFoundException
+import com.pechuro.cashdebts.data.model.DebtRole.Companion.CREDITOR
+import com.pechuro.cashdebts.data.model.DebtRole.Companion.DEBTOR
+import com.pechuro.cashdebts.data.model.FirestoreDebtStatus
+import com.pechuro.cashdebts.data.model.FirestoreLocalDebt
+import com.pechuro.cashdebts.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.repositories.IDebtRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
@@ -42,7 +48,7 @@ class AddDebtActivityViewModel @Inject constructor(
             }
             is RemoteDebtInfo -> {
                 if (data.isValid()) {
-                    checkUserExist(data.phone)
+                    checkUserExist(data)
                 } else {
                     command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_invalid_phone))
                 }
@@ -50,15 +56,80 @@ class AddDebtActivityViewModel @Inject constructor(
         }
     }
 
-    private fun checkUserExist(phone: String) {
+    fun save() {
         command.onNext(Events.ShowProgress)
-        userRepository.isUserWithPhoneNumberExist(phone).subscribe({
+        val debt = debt.get()
+        when {
+            debt == null -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_common))
+            !debt.isValid() -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_invalid_info))
+            debt is LocalDebtInfo -> addLocalDebt(debt)
+            debt is RemoteDebtInfo -> addRemoteDebt(debt)
+        }
+    }
+
+    private fun addRemoteDebt(debt: RemoteDebtInfo) {
+        val creditorUid: String
+        val debtorUid: String
+        when (debt.debtRole) {
+            CREDITOR -> {
+                creditorUid = userRepository.currentUserBaseInformation.uid
+                debtorUid = debt.personUid
+            }
+            DEBTOR -> {
+                debtorUid = userRepository.currentUserBaseInformation.uid
+                creditorUid = debt.personUid
+            }
+            else -> throw IllegalArgumentException()
+        }
+
+        val sendingDebt = FirestoreRemoteDebt(
+            creditorUid,
+            debtorUid,
+            debt.value,
+            debt.description,
+            debt.date,
+            FirestoreDebtStatus.NOT_SEND
+        )
+
+        debtRepository.add(sendingDebt).subscribe({
             command.onNext(Events.DismissProgress)
-            command.onNext(if (it) Events.OpenInfo else Events.ShowSnackBarUserNotExist)
+            command.onNext(Events.OnSaved)
+        }, {
+            command.onNext(Events.DismissProgress)
+        }).addTo(compositeDisposable)
+    }
+
+    private fun addLocalDebt(debt: LocalDebtInfo) {
+        val sendingDebt = FirestoreLocalDebt(
+            userRepository.currentUserBaseInformation.uid,
+            debt.name,
+            debt.value,
+            debt.description,
+            debt.date,
+            debt.debtRole
+        )
+        debtRepository.add(sendingDebt).subscribe({
+            command.onNext(Events.DismissProgress)
+            command.onNext(Events.OnSaved)
+        }, {
+            command.onNext(Events.DismissProgress)
+        }).addTo(compositeDisposable)
+
+    }
+
+    private fun checkUserExist(data: RemoteDebtInfo) {
+        command.onNext(Events.ShowProgress)
+        userRepository.getUidByPhone(data.phone).subscribe({
+            data.personUid = it
+            command.onNext(Events.DismissProgress)
+            command.onNext(Events.OpenInfo)
         }, {
             it.printStackTrace()
             command.onNext(Events.DismissProgress)
-            command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_common))
+            when (it) {
+                is FirestoreUserNotFoundException -> command.onNext(Events.ShowSnackBarUserNotExist)
+                else -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_common))
+            }
         }).addTo(compositeDisposable)
     }
 

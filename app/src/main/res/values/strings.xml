@@ -56,4 +56,5 @@
     <string name="add_debt_error_user_not_exist">Such user not exist</string>
     <string name="add_debt_error_common">Something went wrong. Please, retry later</string>
     <string name="add_debt_action_add_local">Add local</string>
+    <string name="add_debt_error_invalid_info">Please, enter valid info</string>
 </resources>
