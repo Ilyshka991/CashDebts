@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.databinding.FragmentAddDebtRemoteUserBinding
@@ -55,8 +56,16 @@ class AddDebtRemoteUserFragment : BaseFragment<FragmentAddDebtRemoteUserBinding,
             when (it) {
                 is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
                 is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
+                is AddDebtActivityViewModel.Events.ShowSnackBarUserNotExist -> showSnackBarUserNotExist()
             }
         }.addTo(weakCompositeDisposable)
+    }
+
+    private fun showSnackBarUserNotExist() {
+        Snackbar.make(viewDataBinding.coordinator, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.add_debt_action_add_local) {
+                viewModel.restartWithLocalDebtFragment()
+            }.show()
     }
 
     private fun startPickContactActivity() {

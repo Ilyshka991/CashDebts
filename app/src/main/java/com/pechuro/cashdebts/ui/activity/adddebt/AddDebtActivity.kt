@@ -62,11 +62,8 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
             when (it) {
                 is AddDebtActivityViewModel.Events.OnSaved -> closeActivity()
                 is AddDebtActivityViewModel.Events.ShowSnackBarError -> showSnackBarError(it.id)
-                is AddDebtActivityViewModel.Events.OpenInfo -> {
-                    showFragment(AddDebtInfoFragment.newInstance())
-                    invalidateOptionsMenu()
-                }
-                is AddDebtActivityViewModel.Events.ShowSnackBarUserNotExist -> showSnackBarUserNotExist()
+                is AddDebtActivityViewModel.Events.OpenInfo -> openInfo()
+                is AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment -> restartWithLocalDebtFragment()
             }
         }.let(weakCompositeDisposable::add)
     }
@@ -75,16 +72,13 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         finish()
     }
 
-    private fun showSnackBarError(@StringRes id: Int) {
-        Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
+    private fun openInfo() {
+        showFragment(AddDebtInfoFragment.newInstance())
+        invalidateOptionsMenu()
     }
 
-    private fun showSnackBarUserNotExist() {
-        Snackbar.make(viewDataBinding.root, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.add_debt_action_add_local) {
-                restartWithLocalDebtFragment()
-            }
-            .show()
+    private fun showSnackBarError(@StringRes id: Int) {
+        Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
     }
 
     private fun restartWithLocalDebtFragment() {

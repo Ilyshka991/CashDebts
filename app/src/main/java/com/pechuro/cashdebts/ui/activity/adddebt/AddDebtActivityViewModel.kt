@@ -67,6 +67,10 @@ class AddDebtActivityViewModel @Inject constructor(
         }
     }
 
+    fun restartWithLocalDebtFragment() {
+        command.onNext(AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment)
+    }
+
     private fun addRemoteDebt(debt: RemoteDebtInfo) {
         val creditorUid: String
         val debtorUid: String
@@ -140,5 +144,6 @@ class AddDebtActivityViewModel @Inject constructor(
         object DismissProgress : Events()
         class ShowSnackBarError(@StringRes val id: Int) : Events()
         object ShowSnackBarUserNotExist : Events()
+        object RestartWithLocalDebtFragment : Events()
     }
 }
