@@ -1,12 +1,11 @@
-package com.pechuro.cashdebts.ui.base
+package com.pechuro.cashdebts.ui.base.activity
 
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.base.base.BaseActivity
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
-import com.pechuro.cashdebts.ui.base.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
 
 abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
@@ -20,7 +19,7 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         if (savedInstanceState == null) homeFragment()
     }
 
-    override fun onBackPressed() {
+    final override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             showPreviousFragment()
         } else {

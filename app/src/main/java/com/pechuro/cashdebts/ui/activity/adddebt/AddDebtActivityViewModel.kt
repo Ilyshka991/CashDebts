@@ -13,7 +13,7 @@ import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
-import com.pechuro.cashdebts.ui.base.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject

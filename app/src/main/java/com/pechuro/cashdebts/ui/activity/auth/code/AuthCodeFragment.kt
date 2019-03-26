@@ -7,7 +7,7 @@ import android.view.inputmethod.EditorInfo
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.timer.Timer
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_auth_code.*
 
 class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
@@ -16,10 +16,10 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
     override val isViewModelShared: Boolean
         get() = true
 
-    override fun getViewModelClass() = AuthActivityViewModel::class
-
     private var resendTimer: Timer? = null
     private var resendErrorTimer: Timer? = null
+
+    override fun getViewModelClass() = AuthActivityViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -33,7 +33,7 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
             startResendTimer(lastTick)
         }
 
-        setListeners()
+        setViewListeners()
         setupView()
     }
 
@@ -55,7 +55,7 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
         text_code.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
+                    viewModel.verifyPhoneNumberWithCode()
                     return@setOnEditorActionListener true
                 }
                 false
@@ -69,12 +69,12 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
         }
     }
 
-    private fun setListeners() {
+    private fun setViewListeners() {
         button_resend.setOnClickListener {
             onResendButtonClick()
         }
         button_code_confirm.setOnClickListener {
-            this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
+            viewModel.verifyPhoneNumberWithCode()
         }
     }
 

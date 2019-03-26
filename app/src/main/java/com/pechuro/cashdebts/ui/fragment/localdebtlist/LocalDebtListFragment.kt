@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.fragment_local_debt_list.*

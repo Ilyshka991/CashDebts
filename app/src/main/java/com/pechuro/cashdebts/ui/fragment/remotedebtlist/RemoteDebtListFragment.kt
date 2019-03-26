@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.remotedebtlist
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.fragment_remote_debt_list.*

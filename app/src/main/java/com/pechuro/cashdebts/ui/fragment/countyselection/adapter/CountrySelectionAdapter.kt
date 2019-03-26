@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.ui.base.base.BaseViewHolder
+import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject

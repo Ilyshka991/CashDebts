@@ -9,7 +9,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
-import com.pechuro.cashdebts.ui.base.BaseFragmentActivity
+import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
@@ -20,7 +20,7 @@ import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
-class MainActivity : BaseFragmentActivity< MainActivityViewModel>() {
+class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     override val layoutId: Int
         get() = R.layout.activity_bottom_navigation

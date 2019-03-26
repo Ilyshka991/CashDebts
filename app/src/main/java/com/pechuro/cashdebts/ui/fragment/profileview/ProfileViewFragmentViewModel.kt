@@ -1,7 +1,7 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
 import com.pechuro.cashdebts.data.repositories.IUserRepository
-import com.pechuro.cashdebts.ui.base.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject

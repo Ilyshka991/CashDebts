@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.base.base.BaseViewHolder
+import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 
 class LocalDebtListAdapter : RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {

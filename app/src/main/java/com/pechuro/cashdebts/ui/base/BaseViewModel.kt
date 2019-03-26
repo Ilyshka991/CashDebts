@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.base.base
+package com.pechuro.cashdebts.ui.base
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable

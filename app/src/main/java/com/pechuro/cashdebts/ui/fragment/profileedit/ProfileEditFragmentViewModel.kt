@@ -1,18 +1,12 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit
 
-import android.net.Uri
-import androidx.core.net.toUri
-import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.model.files.FileManager
 import com.pechuro.cashdebts.model.prefs.PrefsManager
-import com.pechuro.cashdebts.ui.base.base.BaseViewModel
-import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
-import io.reactivex.Completable
-import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
@@ -47,16 +41,16 @@ class ProfileEditFragmentViewModel @Inject constructor(
 
     fun loadExistingUser() {
       /*  if (isUserAlreadyLoaded) return
-        command.onNext(Events.OnUserStartLoad)
+        _commandSource.onNext(Events.OnUserStartLoad)
         userRepository.get()
             .subscribe({
                 data.setUser(it)
                 isUserAlreadyLoaded = true
-                command.onNext(Events.OnUserStopLoad)
+                _commandSource.onNext(Events.OnUserStopLoad)
             }, {
-                command.onNext(Events.OnUserStopLoad)
+                _commandSource.onNext(Events.OnUserStopLoad)
                 if (isConnectionAvailable.get()) {
-                    command.onNext(Events.OnLoadError)
+                    _commandSource.onNext(Events.OnLoadError)
                 }
             }).addTo(compositeDisposable)*/
     }
@@ -106,7 +100,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
         }, {
             isLoading.set(false)
             if (isConnectionAvailable.get()) {
-                command.onNext(Events.OnSaveError)
+                _commandSource.onNext(Events.OnSaveError)
             }
         })*/
     }

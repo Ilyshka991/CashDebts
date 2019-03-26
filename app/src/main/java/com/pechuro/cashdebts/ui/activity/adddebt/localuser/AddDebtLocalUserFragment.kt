@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.activity.adddebt.localuser
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 
 class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     override val layoutId: Int

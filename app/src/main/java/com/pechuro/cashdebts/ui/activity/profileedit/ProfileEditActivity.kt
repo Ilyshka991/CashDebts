@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.activity.profileedit
 import android.content.Context
 import android.content.Intent
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.base.BaseFragmentActivity
+import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus

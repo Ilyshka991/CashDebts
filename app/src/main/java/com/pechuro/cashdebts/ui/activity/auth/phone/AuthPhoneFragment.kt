@@ -7,7 +7,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.custom.phone.PhoneTextWatcher
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
 import javax.inject.Inject
@@ -18,17 +18,17 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     override val isViewModelShared: Boolean
         get() = true
 
-    override fun getViewModelClass() = AuthActivityViewModel::class
-
     @Inject
     protected lateinit var countryList: List<CountryData>
 
     private val phoneTextWatcher = object : PhoneTextWatcher {
         override fun onCodeChanged(code: String?) {
             val country = countryList.findLast { it.phonePrefix == code }
-         //   viewModel.countryData.set(country)
+            viewModel.countryData = country
         }
     }
+
+    override fun getViewModelClass() = AuthActivityViewModel::class
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setOnClickListeners()
+        setViewListeners()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -47,7 +47,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
                     RESULT_OK -> {
                         val country =
                             data?.getParcelableExtra<CountryData>(CountrySelectionActivity.INTENT_DATA_SELECTED_COUNTRY)
-                    //    viewModel.countryData.set(country)
+                        viewModel.countryData = country
                     }
                 }
             }
@@ -55,15 +55,15 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun setOnClickListeners() {
+    private fun setViewListeners() {
         button_verify.setOnClickListener {
-            this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
+            viewModel.startPhoneNumberVerification()
         }
 
         text_phone.apply {
             addListener(phoneTextWatcher)
             onDoneClick = {
-                this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
+                viewModel.startPhoneNumberVerification()
             }
         }
 
@@ -72,17 +72,17 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
     }
 
+    private fun setInitialCountry() {
+        val countryCode = viewModel.getUserCountryCode()
+        val country = countryList.find { it.code == countryCode }
+        viewModel.countryData = country
+    }
+
     private fun openCountrySelectionActivity() {
         context?.let {
             val intent = CountrySelectionActivity.newIntent(it)
             startActivityForResult(intent, INTENT_REQUEST_COUNTRY_SELECT)
         }
-    }
-
-    private fun setInitialCountry() {
-        val countryCode = viewModel.getUserCountryCode()
-        val country = countryList.find { it.code == countryCode }
-      //  viewModel.countryData.set(country)
     }
 
     companion object {

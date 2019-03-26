@@ -10,8 +10,9 @@ import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.model.prefs.PrefsManager
-import com.pechuro.cashdebts.ui.base.base.BaseViewModel
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -23,44 +24,41 @@ class AuthActivityViewModel @Inject constructor(
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
-/*
-    val isLoading = ObservableBoolean()
-    val phoneNumber = ObservableField<String?>()
-    val phoneCode = ObservableField<String?>()
-    val countryData = ObservableField<CountryData?>()
-*/
+    var phoneNumber = BehaviorSubject.create<String>()
+    var phoneCode = BehaviorSubject.create<String>()
+    var countryData = BehaviorSubject.create<CountryData>()
 
     init {
         subscribeToEvents()
     }
 
     fun startPhoneNumberVerification() {
-    /*    val number = phoneNumber.get()
+        val number = phoneNumber.value
         if (number.isNullOrEmpty()) {
-            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            command.onNext(Events.OnError(R.string.error_auth_phone_validation))
             return
         }
-        isLoading.set(true)
-        authRepository.startVerification(number)*/
+        command.onNext(Events.OnStartLoading)
+        authRepository.startVerification(number)
     }
 
     fun verifyPhoneNumberWithCode() {
-      /*  val code = phoneCode.get()
+        val code = phoneCode.value
         if (code.isNullOrEmpty()) {
-            command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+            command.onNext(Events.OnError(R.string.error_auth_code_validation))
             return
         }
-        isLoading.set(true)
-        authRepository.verifyWithCode(code)*/
+        command.onNext(Events.OnStartLoading)
+        authRepository.verifyWithCode(code)
     }
 
     fun resendVerificationCode() {
-        /*val number = phoneNumber.get()
+        val number = phoneNumber.value
         if (number.isNullOrEmpty()) {
-            command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
+            command.onNext(Events.OnError(R.string.error_auth_phone_validation))
             return
         }
-        authRepository.resendCode(number)*/
+        authRepository.resendCode(number)
     }
 
     fun getUserCountryCode(): String? {
@@ -88,24 +86,24 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onError(e: AuthException) {
-     /*   isLoading.set(false)
+        command.onNext(Events.OnStopLoading)
         val error = when (e) {
             is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
             is AuthNotAvailableException -> R.string.error_auth_too_many_requests
             else -> R.string.error_auth_common
         }
-        command.onNext(Events.ShowSnackBarError(error))*/
+        command.onNext(Events.OnError(error))
     }
 
     private fun onCodeSent() {
-    /*    isLoading.set(false)
-        command.onNext(Events.OnCodeSent)*/
+        command.onNext(Events.OnStopLoading)
+        command.onNext(Events.OnCodeSent)
     }
 
     private fun onSuccess() {
-      /*  userRepository.isUserWithUidExist()
+        userRepository.isUserWithUidExist()
             .subscribe({
-                isLoading.set(false)
+                command.onNext(Events.OnStopLoading)
                 if (it) {
                     prefsManager.isUserAddInfo = true
                     command.onNext(Events.OnComplete)
@@ -113,20 +111,22 @@ class AuthActivityViewModel @Inject constructor(
                     command.onNext(Events.OpenProfileEdit)
                 }
             }, {
-                isLoading.set(false)
+                command.onNext(Events.OnStopLoading)
             })
-            .addTo(compositeDisposable)*/
+            .addTo(compositeDisposable)
     }
 
     private fun onIncorrectCode() {
-      /*  command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
-        isLoading.set(false)*/
+        command.onNext(Events.OnError(R.string.error_auth_code_validation))
+        command.onNext(Events.OnStopLoading)
     }
 
     sealed class Events {
         object OnCodeSent : Events()
         object OnComplete : Events()
         object OpenProfileEdit : Events()
-        class ShowSnackBarError(@StringRes val id: Int) : Events()
+        class OnError(@StringRes val id: Int) : Events()
+        object OnStartLoading : Events()
+        object OnStopLoading : Events()
     }
 }

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.ui.base.BaseFragmentActivity
+import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragment
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventBus

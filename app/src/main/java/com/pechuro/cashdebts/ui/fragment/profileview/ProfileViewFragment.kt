@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.profileview
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus

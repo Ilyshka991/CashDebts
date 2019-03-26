@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.base.base
+package com.pechuro.cashdebts.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

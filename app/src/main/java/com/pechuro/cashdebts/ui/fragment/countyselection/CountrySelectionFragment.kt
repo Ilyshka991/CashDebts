@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.countyselection
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
 import kotlinx.android.synthetic.main.fragment_country_select.*
 import javax.inject.Inject

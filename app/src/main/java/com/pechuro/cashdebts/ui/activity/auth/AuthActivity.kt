@@ -7,7 +7,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
-import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
+import com.pechuro.cashdebts.ui.base.activity.FragmentSwitcherBaseActivity
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
@@ -24,10 +24,11 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        subscribeToEvents()
+        setEventListener()
+        setViewModelListener()
     }
 
-    private fun subscribeToEvents() {
+    private fun setViewModelListener() {
         viewModel.command.subscribe {
             when (it) {
                 is AuthActivityViewModel.Events.OnCodeSent -> showFragment(AuthCodeFragment.newInstance())
@@ -36,10 +37,12 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
                     isBackAllowed = false
                     showFragment(ProfileEditFragment.newInstance(true))
                 }
-                is AuthActivityViewModel.Events.ShowSnackBarError -> showSnackBar(it.id)
+                is AuthActivityViewModel.Events.OnError -> showSnackBar(it.id)
             }
         }.addTo(weakCompositeDisposable)
+    }
 
+    private fun setEventListener() {
         EventBus.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
                 is ProfileEditEvent.OnSaved -> openMainActivity()

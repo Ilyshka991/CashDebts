@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.activity.adddebt.info
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo

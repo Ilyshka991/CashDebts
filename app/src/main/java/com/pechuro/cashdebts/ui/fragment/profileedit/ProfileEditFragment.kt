@@ -8,7 +8,7 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog

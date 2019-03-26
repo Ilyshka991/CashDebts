@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.base.base
+package com.pechuro.cashdebts.ui.base.activity
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.pechuro.cashdebts.ui.base.BaseViewModel
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -36,6 +37,7 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
         performDI()
         initViewModel()
         super.onCreate(savedInstanceState)
+        setContentView(layoutId)
     }
 
     override fun onStop() {
