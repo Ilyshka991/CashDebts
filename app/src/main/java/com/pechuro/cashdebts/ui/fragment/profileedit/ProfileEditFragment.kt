@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
-import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentProfileEditBinding
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
@@ -17,13 +15,12 @@ import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
-class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEditFragmentViewModel>() {
+class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_profile_edit
-    override val bindingVariables: Map<Int, Any>
-        get() = mapOf(BR.viewModel to viewModel)
 
     override fun getViewModelClass() = ProfileEditFragmentViewModel::class
 
@@ -48,16 +45,14 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     }
 
     private fun setViewListeners() {
-        with(viewDataBinding) {
-            imagePhoto.setOnClickListener {
-                showOptionsDialog()
-            }
-            buttonSave.setOnClickListener {
-                this@ProfileEditFragment.viewModel.save()
-            }
-            fabTakePhoto.setOnClickListener {
-                showOptionsDialog()
-            }
+        image_photo.setOnClickListener {
+            showOptionsDialog()
+        }
+        button_save.setOnClickListener {
+            this@ProfileEditFragment.viewModel.save()
+        }
+        fab_take_photo.setOnClickListener {
+            showOptionsDialog()
         }
     }
 
@@ -151,7 +146,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     }
 
     private fun showSnackbarErrorLoad() {
-        Snackbar.make(viewDataBinding.root, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(layout_coordinator, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.action_retry) {
                 viewModel.loadExistingUser()
             }
@@ -159,7 +154,7 @@ class ProfileEditFragment : BaseFragment<FragmentProfileEditBinding, ProfileEdit
     }
 
     private fun showSnackbarErrorSave() {
-        Snackbar.make(viewDataBinding.root, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(layout_coordinator, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.action_retry) {
                 viewModel.save()
             }

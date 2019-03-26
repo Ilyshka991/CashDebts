@@ -1,10 +1,9 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
-import androidx.databinding.BaseObservable
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.model.FirestoreUser
 
-class ProfileEditModel : BaseObservable() {
+class ProfileEditModel {
     val fields = ProfileEditFields()
     val errors = ProfileEditFieldsError()
 
@@ -14,12 +13,10 @@ class ProfileEditModel : BaseObservable() {
             lastName = user.lastName
             imageUrl = user.photoUrl
         }
-        notifyChange()
     }
 
     fun isValid(): Boolean {
         val isValid = isFirstNameValid() && isLastNameValid()
-        notifyChange()
         return isValid
     }
 

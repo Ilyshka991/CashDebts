@@ -1,11 +1,6 @@
 package com.pechuro.cashdebts.ui.custom.hintedittext
 
-import android.text.Editable
-import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
-import androidx.databinding.InverseBindingListener
-import com.pechuro.cashdebts.ui.custom.TextWatcher
-
+/*
 
 @InverseBindingAdapter(attribute = "hint_text")
 fun getPhoneNumber(view: HintEditText): String {
@@ -29,3 +24,4 @@ fun setListeners(
     }
     view.addTextChangedListener(listener)
 }
+*/

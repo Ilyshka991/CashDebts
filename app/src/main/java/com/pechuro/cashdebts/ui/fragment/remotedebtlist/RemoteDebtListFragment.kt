@@ -2,14 +2,14 @@ package com.pechuro.cashdebts.ui.fragment.remotedebtlist
 
 import android.os.Bundle
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentRemoteDebtListBinding
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
+import kotlinx.android.synthetic.main.fragment_remote_debt_list.*
 import javax.inject.Inject
 
-class RemoteDebtListFragment : BaseFragment<FragmentRemoteDebtListBinding, RemoteDebtListFragmentViewModel>() {
+class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     @Inject
     lateinit var adapter: RemoteDebtListAdapter
 
@@ -25,13 +25,13 @@ class RemoteDebtListFragment : BaseFragment<FragmentRemoteDebtListBinding, Remot
     }
 
     private fun setupView() {
-        viewDataBinding.recyclerView.apply {
+        recycler.apply {
             adapter = this@RemoteDebtListFragment.adapter
         }
     }
 
     private fun setListeners() {
-        viewDataBinding.fabAdd.setOnClickListener {
+        fab_add.setOnClickListener {
             EventBus.publish(MainActivityEvent.OpenAddActivity(false))
         }
     }

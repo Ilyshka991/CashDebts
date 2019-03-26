@@ -2,21 +2,18 @@ package com.pechuro.cashdebts.ui.fragment.profileview
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
-import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentProfileViewBinding
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.fragment_profile_view.*
 
-class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileViewFragmentViewModel>() {
+class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_profile_view
-    override val bindingVariables: Map<Int, Any>
-        get() = mapOf(BR.viewModel to viewModel)
 
     override fun getViewModelClass() = ProfileViewFragmentViewModel::class
 
@@ -32,13 +29,11 @@ class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileView
     }
 
     private fun setListeners() {
-        with(viewDataBinding) {
-            buttonEdit.setOnClickListener {
-                EventBus.publish(ProfileViewEvent.OpenEditProfile)
-            }
-            buttonLogout.setOnClickListener {
-                EventBus.publish(ProfileViewEvent.OnLogout)
-            }
+        button_edit.setOnClickListener {
+            EventBus.publish(ProfileViewEvent.OpenEditProfile)
+        }
+        button_logout.setOnClickListener {
+            EventBus.publish(ProfileViewEvent.OnLogout)
         }
     }
 
@@ -72,7 +67,7 @@ class ProfileViewFragment : BaseFragment<FragmentProfileViewBinding, ProfileView
     }
 
     private fun showErrorSnackbar() {
-        Snackbar.make(viewDataBinding.coordinator, R.string.error_load, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(layout_coordinator, R.string.error_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.action_retry) {
                 viewModel.loadUser()
             }

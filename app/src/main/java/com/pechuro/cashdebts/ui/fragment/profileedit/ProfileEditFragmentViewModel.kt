@@ -2,8 +2,6 @@ package com.pechuro.cashdebts.ui.fragment.profileedit
 
 import android.net.Uri
 import androidx.core.net.toUri
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
@@ -33,10 +31,10 @@ class ProfileEditFragmentViewModel @Inject constructor(
 
     val command = PublishSubject.create<Events>()
 
-    val data = ProfileEditModel()
+  /*  val data = ProfileEditModel()
     val localAvatarPath = ObservableField<String?>()
     val isLoading = ObservableBoolean()
-    val isConnectionAvailable = ObservableBoolean()
+    val isConnectionAvailable = ObservableBoolean()*/
 
     private var localAvatarFile: File? = null
     private var isUserAlreadyLoaded = false
@@ -48,7 +46,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     }
 
     fun loadExistingUser() {
-        if (isUserAlreadyLoaded) return
+      /*  if (isUserAlreadyLoaded) return
         command.onNext(Events.OnUserStartLoad)
         userRepository.get()
             .subscribe({
@@ -60,11 +58,11 @@ class ProfileEditFragmentViewModel @Inject constructor(
                 if (isConnectionAvailable.get()) {
                     command.onNext(Events.OnLoadError)
                 }
-            }).addTo(compositeDisposable)
+            }).addTo(compositeDisposable)*/
     }
 
     fun save() {
-        fun deletePreviousPhoto(): Completable {
+      /*  fun deletePreviousPhoto(): Completable {
             return storageRepository.deletePrevious(data.fields.imageUrl!!)
         }
 
@@ -110,11 +108,11 @@ class ProfileEditFragmentViewModel @Inject constructor(
             if (isConnectionAvailable.get()) {
                 command.onNext(Events.OnSaveError)
             }
-        })
+        })*/
     }
 
     fun loadEditedAvatar() {
-        localAvatarPath.set(localAvatarFile?.path)
+      //  localAvatarPath.set(localAvatarFile?.path)
     }
 
     fun createImageFile() = try {
@@ -131,7 +129,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     }
 
     private fun onSaved() {
-        isLoading.set(false)
+     //   isLoading.set(false)
         command.onNext(Events.OnSaved)
         prefsManager.isUserAddInfo = true
     }
@@ -143,11 +141,11 @@ class ProfileEditFragmentViewModel @Inject constructor(
     }
 
     private fun onConnectionChanged(isAvailable: Boolean) {
-        isConnectionAvailable.set(isAvailable)
+      //  isConnectionAvailable.set(isAvailable)
         if (isAvailable) {
             loadExistingUser()
         } else {
-            isLoading.set(false)
+    //        isLoading.set(false)
             updateTask?.dispose()
         }
     }

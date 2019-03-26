@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragment
 import com.pechuro.cashdebts.ui.base.FragmentSwitcherBaseActivity
+import kotlinx.android.synthetic.main.activity_container.*
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean
@@ -78,7 +79,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     }
 
     private fun showSnackBarError(@StringRes id: Int) {
-        Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(container, id, Snackbar.LENGTH_LONG).show()
     }
 
     private fun restartWithLocalDebtFragment() {

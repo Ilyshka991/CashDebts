@@ -1,7 +1,5 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
-import androidx.databinding.ObservableField
-import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
@@ -14,7 +12,7 @@ class ProfileViewFragmentViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val loadingState = BehaviorSubject.create<LoadingState>()
-    val user = ObservableField<FirestoreUser>()
+ //   val user = ObservableField<FirestoreUser>()
 
     init {
         loadUser()
@@ -24,7 +22,7 @@ class ProfileViewFragmentViewModel @Inject constructor(
         loadingState.onNext(LoadingState.OnStart)
         userRepository.get()
             .subscribe({
-                user.set(it)
+            //    user.set(it)
                 loadingState.onNext(LoadingState.OnStop)
             }, {
                 loadingState.onNext(LoadingState.OnStop)

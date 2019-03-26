@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.ActivityBottomNavigationBinding
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
@@ -19,13 +18,14 @@ import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
-class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainActivityViewModel>() {
+class MainActivity : BaseFragmentActivity< MainActivityViewModel>() {
 
     override val layoutId: Int
         get() = R.layout.activity_bottom_navigation
     override val containerId: Int
-        get() = viewDataBinding.container.id
+        get() = container.id
 
     override fun getViewModelClass() = MainActivityViewModel::class
 
@@ -43,8 +43,8 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
     }
 
     private fun setListeners() {
-        viewDataBinding.bottomNavigation.setOnNavigationItemSelectedListener {
-            if (viewDataBinding.bottomNavigation.selectedItemId == it.itemId) {
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            if (bottom_navigation.selectedItemId == it.itemId) {
                 return@setOnNavigationItemSelectedListener true
             }
             when (it.itemId) {
@@ -66,7 +66,7 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
             when (it) {
                 is ProfileEditEvent.OnSaved -> {
                     homeFragment()
-                    viewDataBinding.bottomNavigation.visibility = VISIBLE
+                    bottom_navigation.visibility = VISIBLE
                 }
             }
         }.addTo(weakCompositeDisposable)
@@ -97,7 +97,7 @@ class MainActivity : BaseFragmentActivity<ActivityBottomNavigationBinding, MainA
 
     private fun openProfileEditIfNecessary() {
         if (!viewModel.isUserAddInfo()) {
-            viewDataBinding.bottomNavigation.visibility = GONE
+            bottom_navigation.visibility = GONE
             showFragment(ProfileEditFragment.newInstance(true), false)
         }
     }

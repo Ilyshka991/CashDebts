@@ -1,41 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable name="country"
-                  type="com.pechuro.cashdebts.model.entity.CountryData"/>
-    </data>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/text_country_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground">
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name"/>
 
-        <TextView
-                android:id="@+id/text_country_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{country.name}"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Name"/>
-
-        <TextView
-                android:id="@+id/text_country_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{country.phonePrefix}"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_country_name"
-                app:layout_constraintHorizontal_bias="1.0"
-                tools:text="Prefix"
-                android:layout_marginStart="8dp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    <TextView
+            android:id="@+id/text_country_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_country_name"
+            app:layout_constraintHorizontal_bias="1.0"
+            tools:text="Prefix"
+            android:layout_marginStart="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

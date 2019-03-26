@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
-abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragment(),
+abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
     HasSupportFragmentInjector {
     @Inject
     protected lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -32,11 +30,6 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
 
     @get:LayoutRes
     protected abstract val layoutId: Int
-    protected lateinit var rootView: View
-
-    protected lateinit var viewDataBinding: T
-    protected open val bindingVariables: Map<Int, Any?>? = null
-
 
     @Inject
     protected lateinit var weakCompositeDisposable: CompositeDisposable
@@ -51,18 +44,10 @@ abstract class BaseDialog<T : ViewDataBinding, V : BaseViewModel> : DialogFragme
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewDataBinding = DataBindingUtil
-            .inflate(LayoutInflater.from(context), layoutId, null, false)
-        rootView = viewDataBinding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val view = inflater.inflate(layoutId, container, false)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        return rootView
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
-        viewDataBinding.executePendingBindings()
+        return view
     }
 
     override fun onStop() {

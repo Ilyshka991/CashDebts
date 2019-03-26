@@ -3,19 +3,16 @@ package com.pechuro.cashdebts.ui.activity.auth.phone
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentAuthPhoneBinding
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.custom.phone.PhoneTextWatcher
+import kotlinx.android.synthetic.main.fragment_auth_phone.*
 import javax.inject.Inject
 
-class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityViewModel>() {
-    override val bindingVariables: Map<Int, Any>
-        get() = mapOf(BR.viewModel to viewModel)
+class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_auth_phone
     override val isViewModelShared: Boolean
@@ -29,7 +26,7 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
     private val phoneTextWatcher = object : PhoneTextWatcher {
         override fun onCodeChanged(code: String?) {
             val country = countryList.findLast { it.phonePrefix == code }
-            viewModel.countryData.set(country)
+         //   viewModel.countryData.set(country)
         }
     }
 
@@ -50,7 +47,7 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
                     RESULT_OK -> {
                         val country =
                             data?.getParcelableExtra<CountryData>(CountrySelectionActivity.INTENT_DATA_SELECTED_COUNTRY)
-                        viewModel.countryData.set(country)
+                    //    viewModel.countryData.set(country)
                     }
                 }
             }
@@ -59,20 +56,19 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
     }
 
     private fun setOnClickListeners() {
-        with(viewDataBinding) {
-            buttonVerify.setOnClickListener {
+        button_verify.setOnClickListener {
+            this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
+        }
+
+        text_phone.apply {
+            addListener(phoneTextWatcher)
+            onDoneClick = {
                 this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
             }
+        }
 
-            textPhone.addListener(phoneTextWatcher)
-
-            textCountry.setOnClickListener {
-                openCountrySelectionActivity()
-            }
-
-            textPhone.onDoneClick = {
-                this@AuthPhoneFragment.viewModel.startPhoneNumberVerification()
-            }
+        text_country.setOnClickListener {
+            openCountrySelectionActivity()
         }
     }
 
@@ -86,7 +82,7 @@ class AuthPhoneFragment : BaseFragment<FragmentAuthPhoneBinding, AuthActivityVie
     private fun setInitialCountry() {
         val countryCode = viewModel.getUserCountryCode()
         val country = countryList.find { it.code == countryCode }
-        viewModel.countryData.set(country)
+      //  viewModel.countryData.set(country)
     }
 
     companion object {

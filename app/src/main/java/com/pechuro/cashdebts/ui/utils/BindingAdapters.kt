@@ -1,14 +1,6 @@
 package com.pechuro.cashdebts.ui.utils
 
-import android.view.View
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
-import com.google.android.material.textfield.TextInputLayout
-import com.pechuro.cashdebts.R
-
+/*
 @BindingAdapter("visibility")
 fun setVisibility(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
@@ -34,4 +26,4 @@ fun loadImageString(view: ImageView, imageUrl: String?) {
         .error(R.drawable.avatar)
         .circleCrop()
         .into(view)
-}
+}*/

@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.ui.activity.adddebt
 
 import androidx.annotation.StringRes
-import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.exception.FirestoreUserNotFoundException
 import com.pechuro.cashdebts.data.model.DebtRole.Companion.CREDITOR
@@ -16,6 +15,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -23,22 +23,21 @@ class AddDebtActivityViewModel @Inject constructor(
     private val debtRepository: IDebtRepository,
     private val userRepository: IUserRepository
 ) : BaseViewModel() {
-    val debt = ObservableField<BaseDebtInfo>()
+    val debt = BehaviorSubject.create<BaseDebtInfo>()
     val command = PublishSubject.create<Events>()
 
     fun setInitialData(isLocalDebt: Boolean) {
-        if (debt.get() == null) {
-            debt.set(if (isLocalDebt) LocalDebtInfo() else RemoteDebtInfo())
+        if (!debt.hasValue()) {
+            debt.onNext(if (isLocalDebt) LocalDebtInfo() else RemoteDebtInfo())
         }
     }
 
     fun setPhoneData(phoneNumber: String) {
-        (debt.get() as RemoteDebtInfo).phone = phoneNumber.replace(Regex("[ -]"), "")
-        debt.notifyChange()
+        (debt.value as RemoteDebtInfo).phone = phoneNumber.replace(Regex("[ -]"), "")
     }
 
     fun openInfo() {
-        when (val data = debt.get()) {
+        when (val data = debt.value) {
             is LocalDebtInfo -> {
                 if (data.isValid()) {
                     command.onNext(Events.OpenInfo)
@@ -58,7 +57,7 @@ class AddDebtActivityViewModel @Inject constructor(
 
     fun save() {
         command.onNext(Events.ShowProgress)
-        val debt = debt.get()
+        val debt = debt.value
         when {
             debt == null -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_common))
             !debt.isValid() -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_invalid_info))

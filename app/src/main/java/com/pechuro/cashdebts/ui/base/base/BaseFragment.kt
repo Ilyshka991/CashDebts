@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -17,7 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
-abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(), HasSupportFragmentInjector {
+abstract class BaseFragment<V : BaseViewModel> : Fragment(), HasSupportFragmentInjector {
     @Inject
     protected lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
@@ -29,8 +27,6 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
 
     @get:LayoutRes
     protected abstract val layoutId: Int
-    protected lateinit var viewDataBinding: T
-    protected open val bindingVariables: Map<Int, Any>? = null
 
     @Inject
     protected lateinit var weakCompositeDisposable: CompositeDisposable
@@ -46,19 +42,8 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewDataBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        return viewDataBinding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewDataBinding.executePendingBindings()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onStop() {

@@ -2,14 +2,14 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import android.os.Bundle
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentLocalDebtListBinding
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
+import kotlinx.android.synthetic.main.fragment_local_debt_list.*
 import javax.inject.Inject
 
-class LocalDebtListFragment : BaseFragment<FragmentLocalDebtListBinding, LocalDebtListFragmentViewModel>() {
+class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     @Inject
     lateinit var adapter: LocalDebtListAdapter
 
@@ -25,13 +25,13 @@ class LocalDebtListFragment : BaseFragment<FragmentLocalDebtListBinding, LocalDe
     }
 
     private fun setupView() {
-        viewDataBinding.recyclerView.apply {
+        recycler.apply {
             adapter = this@LocalDebtListFragment.adapter
         }
     }
 
     private fun setListeners() {
-        viewDataBinding.fabAdd.setOnClickListener {
+        fab_add.setOnClickListener {
             EventBus.publish(MainActivityEvent.OpenAddActivity(true))
         }
     }

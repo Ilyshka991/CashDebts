@@ -2,8 +2,6 @@ package com.pechuro.cashdebts.ui.activity.auth
 
 import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.exception.AuthException
 import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
@@ -25,42 +23,44 @@ class AuthActivityViewModel @Inject constructor(
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
+/*
     val isLoading = ObservableBoolean()
     val phoneNumber = ObservableField<String?>()
     val phoneCode = ObservableField<String?>()
     val countryData = ObservableField<CountryData?>()
+*/
 
     init {
         subscribeToEvents()
     }
 
     fun startPhoneNumberVerification() {
-        val number = phoneNumber.get()
+    /*    val number = phoneNumber.get()
         if (number.isNullOrEmpty()) {
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
             return
         }
         isLoading.set(true)
-        authRepository.startVerification(number)
+        authRepository.startVerification(number)*/
     }
 
     fun verifyPhoneNumberWithCode() {
-        val code = phoneCode.get()
+      /*  val code = phoneCode.get()
         if (code.isNullOrEmpty()) {
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
             return
         }
         isLoading.set(true)
-        authRepository.verifyWithCode(code)
+        authRepository.verifyWithCode(code)*/
     }
 
     fun resendVerificationCode() {
-        val number = phoneNumber.get()
+        /*val number = phoneNumber.get()
         if (number.isNullOrEmpty()) {
             command.onNext(Events.ShowSnackBarError(R.string.error_auth_phone_validation))
             return
         }
-        authRepository.resendCode(number)
+        authRepository.resendCode(number)*/
     }
 
     fun getUserCountryCode(): String? {
@@ -88,22 +88,22 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onError(e: AuthException) {
-        isLoading.set(false)
+     /*   isLoading.set(false)
         val error = when (e) {
             is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
             is AuthNotAvailableException -> R.string.error_auth_too_many_requests
             else -> R.string.error_auth_common
         }
-        command.onNext(Events.ShowSnackBarError(error))
+        command.onNext(Events.ShowSnackBarError(error))*/
     }
 
     private fun onCodeSent() {
-        isLoading.set(false)
-        command.onNext(Events.OnCodeSent)
+    /*    isLoading.set(false)
+        command.onNext(Events.OnCodeSent)*/
     }
 
     private fun onSuccess() {
-        userRepository.isUserWithUidExist()
+      /*  userRepository.isUserWithUidExist()
             .subscribe({
                 isLoading.set(false)
                 if (it) {
@@ -115,12 +115,12 @@ class AuthActivityViewModel @Inject constructor(
             }, {
                 isLoading.set(false)
             })
-            .addTo(compositeDisposable)
+            .addTo(compositeDisposable)*/
     }
 
     private fun onIncorrectCode() {
-        command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
-        isLoading.set(false)
+      /*  command.onNext(Events.ShowSnackBarError(R.string.error_auth_code_validation))
+        isLoading.set(false)*/
     }
 
     sealed class Events {

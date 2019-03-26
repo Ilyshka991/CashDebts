@@ -1,50 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <data>
+    <TextView
+            android:id="@+id/text_role"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="I am:"
+            android:textSize="24sp"/>
 
-        <variable
-                name="type"
-                type="Integer"/>
-    </data>
-
-    <LinearLayout
+    <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:singleLine="true"
+            app:chipSpacing="16dp"
+            app:singleSelection="true"
+            app:checkedChip="@+id/chip_creditor"
+            android:layout_marginStart="16dp">
 
-        <TextView
-                android:id="@+id/text_role"
+        <com.google.android.material.chip.Chip
+                android:id="@+id/chip_creditor"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="I am:"
-                android:textSize="24sp"/>
-
-        <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_container"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:debt_role="@={type}"
-                app:singleLine="true"
-                app:chipSpacing="16dp"
-                app:singleSelection="true"
-                app:checkedChip="@+id/chip_creditor"
-                android:layout_marginStart="16dp">
+                android:text="creditor"
+                android:checkable="true"/>
 
-            <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_creditor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="creditor"
-                    android:checkable="true"/>
-
-            <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_debtor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="debtor"
-                    android:checkable="true"/>
-        </com.google.android.material.chip.ChipGroup>
-    </LinearLayout>
-</layout>
+        <com.google.android.material.chip.Chip
+                android:id="@+id/chip_debtor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="debtor"
+                android:checkable="true"/>
+    </com.google.android.material.chip.ChipGroup>
+</LinearLayout>

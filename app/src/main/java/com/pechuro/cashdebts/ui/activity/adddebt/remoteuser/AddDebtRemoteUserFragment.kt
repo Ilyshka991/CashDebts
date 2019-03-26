@@ -6,20 +6,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import com.google.android.material.snackbar.Snackbar
-import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentAddDebtRemoteUserBinding
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
 
-class AddDebtRemoteUserFragment : BaseFragment<FragmentAddDebtRemoteUserBinding, AddDebtActivityViewModel>() {
+class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_add_debt_remote_user
-    override val bindingVariables: Map<Int, Any>?
-        get() = mapOf(BR.viewModel to viewModel)
     override val isViewModelShared: Boolean
         get() = true
 
@@ -46,7 +43,7 @@ class AddDebtRemoteUserFragment : BaseFragment<FragmentAddDebtRemoteUserBinding,
     }
 
     private fun setListeners() {
-        viewDataBinding.buttonPickContact.setOnClickListener {
+        button_pick_contact.setOnClickListener {
             startPickContactActivity()
         }
     }
@@ -62,7 +59,7 @@ class AddDebtRemoteUserFragment : BaseFragment<FragmentAddDebtRemoteUserBinding,
     }
 
     private fun showSnackBarUserNotExist() {
-        Snackbar.make(viewDataBinding.coordinator, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(layout_coordinator, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.add_debt_action_add_local) {
                 viewModel.restartWithLocalDebtFragment()
             }.show()

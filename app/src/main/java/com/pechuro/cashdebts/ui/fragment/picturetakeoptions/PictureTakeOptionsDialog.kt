@@ -4,22 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
-import kotlinx.android.synthetic.main.dialog_picture_take_options.view.*
+import kotlinx.android.synthetic.main.dialog_picture_take_options.*
 
 class PictureTakeOptionsDialog : BottomSheetDialogFragment() {
-    private lateinit var buttonCamera: Button
-    private lateinit var buttonGallery: Button
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_picture_take_options, container, false)
-        buttonCamera = view.button_camera
-        buttonGallery = view.button_gallery
-        return view
+        return inflater.inflate(R.layout.dialog_picture_take_options, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -28,11 +21,11 @@ class PictureTakeOptionsDialog : BottomSheetDialogFragment() {
     }
 
     private fun setListeners() {
-        buttonCamera.setOnClickListener {
+        button_camera.setOnClickListener {
             EventBus.publish(AddOptionsEvent.TakePictureFromCamera)
             dismiss()
         }
-        buttonGallery.setOnClickListener {
+        button_gallery.setOnClickListener {
             EventBus.publish(AddOptionsEvent.TakePictureFromGallery)
             dismiss()
         }

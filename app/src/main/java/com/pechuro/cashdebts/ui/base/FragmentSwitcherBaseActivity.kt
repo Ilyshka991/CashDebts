@@ -1,13 +1,18 @@
 package com.pechuro.cashdebts.ui.base
 
 import android.os.Bundle
-import androidx.databinding.ViewDataBinding
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.transaction
+import kotlinx.android.synthetic.main.activity_container.*
 
-abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : ContainerBaseActivity<VM>() {
+abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentActivity<VM>() {
+    override val layoutId: Int
+        get() = R.layout.activity_container
+    override val containerId: Int
+        get() = container.id
+
     protected abstract val isCloseButtonEnabled: Boolean
 
     protected var isBackAllowed = true
@@ -33,8 +38,8 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : ContainerBaseA
         outState?.putBoolean(BUNDLE_IS_BACK_ALLOWED, isBackAllowed)
     }
 
-    final override fun <T : ViewDataBinding, V : BaseViewModel> showFragment(
-        fragment: BaseFragment<T, V>,
+    final override fun <V : BaseViewModel> showFragment(
+        fragment: BaseFragment<V>,
         isAddToBackStack: Boolean
     ) {
         supportFragmentManager.transaction {
@@ -44,7 +49,7 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : ContainerBaseA
                 R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_right
             )
-            replace(viewDataBinding.container.id, fragment)
+            replace(containerId, fragment)
             if (isAddToBackStack) addToBackStack(null)
         }
     }

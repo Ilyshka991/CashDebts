@@ -6,12 +6,18 @@ import android.content.Intent
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.ui.base.ContainerBaseActivity
+import com.pechuro.cashdebts.ui.base.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragment
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
+import kotlinx.android.synthetic.main.activity_container.*
 
-class CountrySelectionActivity : ContainerBaseActivity<CountrySelectionActivityViewModel>() {
+class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityViewModel>() {
+
+    override val layoutId: Int
+        get() = R.layout.activity_container
+    override val containerId: Int
+        get() = container.id
 
     override fun getViewModelClass() = CountrySelectionActivityViewModel::class
 

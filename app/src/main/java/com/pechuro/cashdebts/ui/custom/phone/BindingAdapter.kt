@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.custom.phone
 
+/*
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
@@ -37,4 +38,4 @@ fun setListeners(
 
     }
     view.addListener(listener)
-}
+}*/

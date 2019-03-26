@@ -3,8 +3,6 @@ package com.pechuro.cashdebts.ui.base.base
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -15,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatActivity(),
+abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     HasSupportFragmentInjector {
     @Inject
     protected lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -26,8 +24,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
 
     @get:LayoutRes
     protected abstract val layoutId: Int
-    protected lateinit var viewDataBinding: T
-    protected open val bindingVariables: Map<Int, Any>? = null
 
     @Inject
     protected lateinit var weakCompositeDisposable: CompositeDisposable
@@ -40,12 +36,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
         performDI()
         initViewModel()
         super.onCreate(savedInstanceState)
-        performDataBinding()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewDataBinding.executePendingBindings()
     }
 
     override fun onStop() {
@@ -64,11 +54,5 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass().java)
-    }
-
-    private fun performDataBinding() {
-        viewDataBinding = DataBindingUtil.setContentView(this, layoutId)
-        bindingVariables?.forEach { (variable, obj) -> viewDataBinding.setVariable(variable, obj) }
-        viewDataBinding.executePendingBindings()
     }
 }

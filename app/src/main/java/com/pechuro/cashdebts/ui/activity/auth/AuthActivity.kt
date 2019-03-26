@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.activity_container.*
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean
@@ -47,7 +48,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     }
 
     private fun showSnackBar(@StringRes id: Int) {
-        Snackbar.make(viewDataBinding.root, id, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(container, id, Snackbar.LENGTH_LONG).show()
     }
 
     private fun openMainActivity() {

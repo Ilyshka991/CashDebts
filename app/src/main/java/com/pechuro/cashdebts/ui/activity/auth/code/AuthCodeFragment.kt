@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
-import com.pechuro.cashdebts.BR
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.databinding.FragmentAuthCodeBinding
 import com.pechuro.cashdebts.model.timer.Timer
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_auth_code.*
 
-class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewModel>() {
-    override val bindingVariables: Map<Int, Any>
-        get() = mapOf(BR.viewModel to viewModel)
+class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_auth_code
     override val isViewModelShared: Boolean
@@ -55,33 +52,29 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     }
 
     private fun setupView() {
-        with(viewDataBinding) {
-            textCode.apply {
-                setOnEditorActionListener { _, actionId, _ ->
-                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                        this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
-                        return@setOnEditorActionListener true
-                    }
-                    false
+        text_code.apply {
+            setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
+                    return@setOnEditorActionListener true
                 }
+                false
             }
+        }
 
-            if (isCodeResent()) {
-                textNotReceive.visibility = GONE
-                buttonResend.visibility = GONE
-                textTime.visibility = GONE
-            }
+        if (isCodeResent()) {
+            text_not_receive.visibility = GONE
+            button_resend.visibility = GONE
+            text_time.visibility = GONE
         }
     }
 
     private fun setListeners() {
-        with(viewDataBinding) {
-            buttonResend.setOnClickListener {
-                onResendButtonClick()
-            }
-            buttonCodeConfirm.setOnClickListener {
-                this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
-            }
+        button_resend.setOnClickListener {
+            onResendButtonClick()
+        }
+        button_code_confirm.setOnClickListener {
+            this@AuthCodeFragment.viewModel.verifyPhoneNumberWithCode()
         }
     }
 
@@ -103,31 +96,25 @@ class AuthCodeFragment : BaseFragment<FragmentAuthCodeBinding, AuthActivityViewM
     }
 
     private fun updateTimeViews(time: Long) {
-        with(viewDataBinding) {
-            textTime.text = getString(R.string.auth_code_time, time)
-            progressTime.progress = ((RESEND_TIMEOUT - time) * 100F / RESEND_TIMEOUT).toInt()
-        }
+        text_time.text = getString(R.string.auth_code_time, time)
+        progress_time.progress = ((RESEND_TIMEOUT - time) * 100F / RESEND_TIMEOUT).toInt()
     }
 
     private fun onResendTimerFinish() {
-        with(viewDataBinding) {
-            buttonResend.isEnabled = true
-            textTime.visibility = GONE
-            progressTime.visibility = GONE
-        }
+        button_resend.isEnabled = true
+        text_time.visibility = GONE
+        progress_time.visibility = GONE
     }
 
     private fun onResendErrorTimerFinish() {
-        viewDataBinding.textResendError.visibility = VISIBLE
+        text_resend_error.visibility = VISIBLE
     }
 
     private fun onResendButtonClick() {
         startResendErrorTimer()
         viewModel.resendVerificationCode()
-        with(viewDataBinding) {
-            textNotReceive.visibility = GONE
-            buttonResend.visibility = GONE
-        }
+        text_not_receive.visibility = GONE
+        button_resend.visibility = GONE
     }
 
     private fun isCodeResent() = resendErrorTimer != null
