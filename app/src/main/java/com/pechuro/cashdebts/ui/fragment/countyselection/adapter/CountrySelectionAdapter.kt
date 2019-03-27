@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
+import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.countyselection.model.SearchResult
+import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.item_country.view.*
 
 class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
@@ -44,8 +46,13 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
 
     private class ViewHolder(private val view: View) : BaseViewHolder<CountryData>(view) {
         override fun onBind(data: CountryData) {
-            view.text_country_name.text = data.name
-            view.text_country_code.text = data.phonePrefix
+            view.apply {
+                text_country_name.text = data.name
+                text_country_code.text = data.phonePrefix
+                setOnClickListener {
+                    EventBus.publish(CountySelectEvent.OnCountySelect(data))
+                }
+            }
         }
     }
 

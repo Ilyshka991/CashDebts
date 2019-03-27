@@ -71,7 +71,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
             val user = FirestoreUser(
                 data.fields.firstName,
                 data.fields.lastName,
-                userRepository.currentUserBaseInformation.phoneNumber,
+                userRepository.currentUserBaseInformation.fullPhoneNumber,
                 photoUrl
             )
             return userRepository.updateUser(user)

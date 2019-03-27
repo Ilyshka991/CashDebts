@@ -25,29 +25,24 @@ class AuthActivityViewModel @Inject constructor(
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
-    val phoneNumber = BehaviorSubject.createDefault("")
+    val fullPhoneNumber = BehaviorSubject.createDefault("")
+    val phonePrefix = BehaviorSubject.createDefault("")
     val phoneCode = BehaviorSubject.createDefault("")
-    val countryData = BehaviorSubject.createDefault(CountryData.EMPTY)
-
-    val countryDataObservable = countryData.mergeWith(phoneCode
-        .map { prefix ->
-            val country = countryList.findLast { it.phonePrefix == prefix }
-            country ?: CountryData.EMPTY
-        })
-        .distinctUntilChanged()
+    val countryData = BehaviorSubject.createDefault(getInitialCountry())
+    val loadingState = BehaviorSubject.createDefault(false)
 
     init {
-        subscribeToEvents()
-        setInitialCountry()
+        setAuthEventListener()
+        initRx()
     }
 
     fun startPhoneNumberVerification() {
-        val number = phoneNumber.value
+        val number = fullPhoneNumber.value
         if (number.isNullOrEmpty()) {
             command.onNext(Events.OnError(R.string.error_auth_phone_validation))
             return
         }
-        command.onNext(Events.OnStartLoading)
+        loadingState.onNext(true)
         authRepository.startVerification(number)
     }
 
@@ -57,12 +52,12 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.OnError(R.string.error_auth_code_validation))
             return
         }
-        command.onNext(Events.OnStartLoading)
+        loadingState.onNext(true)
         authRepository.verifyWithCode(code)
     }
 
     fun resendVerificationCode() {
-        val number = phoneNumber.value
+        val number = fullPhoneNumber.value
         if (number.isNullOrEmpty()) {
             command.onNext(Events.OnError(R.string.error_auth_phone_validation))
             return
@@ -70,10 +65,21 @@ class AuthActivityViewModel @Inject constructor(
         authRepository.resendCode(number)
     }
 
-    private fun setInitialCountry() {
+    private fun initRx() {
+        phonePrefix
+            .skip(1)
+            .map { prefix ->
+                val country = countryList.findLast { it.phonePrefix == prefix }
+                country ?: CountryData.EMPTY
+            }
+            .distinctUntilChanged()
+            .subscribe(countryData)
+    }
+
+    private fun getInitialCountry(): CountryData {
         val countryCode = getUserCountryCode()
         val country = countryList.find { it.code == countryCode }
-        countryData.onNext(country ?: CountryData.EMPTY)
+        return country ?: CountryData.EMPTY
     }
 
     private fun getUserCountryCode(): String? {
@@ -89,7 +95,7 @@ class AuthActivityViewModel @Inject constructor(
         return null
     }
 
-    private fun subscribeToEvents() {
+    private fun setAuthEventListener() {
         authRepository.eventEmitter.subscribe {
             when (it) {
                 is IAuthRepository.Event.OnError -> onError(it.e)
@@ -101,7 +107,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onError(e: AuthException) {
-        command.onNext(Events.OnStopLoading)
+        loadingState.onNext(false)
         val error = when (e) {
             is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
             is AuthNotAvailableException -> R.string.error_auth_too_many_requests
@@ -111,37 +117,32 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onCodeSent() {
-        command.onNext(Events.OnStopLoading)
+        loadingState.onNext(false)
         command.onNext(Events.OnCodeSent)
     }
 
     private fun onSuccess() {
         userRepository.isUserWithUidExist()
             .subscribe({
-                command.onNext(Events.OnStopLoading)
+                loadingState.onNext(false)
                 if (it) {
                     prefsManager.isUserAddInfo = true
-                    command.onNext(Events.OnComplete)
-                } else {
-                    command.onNext(Events.OpenProfileEdit)
                 }
+                command.onNext(Events.OnComplete(it))
             }, {
-                command.onNext(Events.OnStopLoading)
+                loadingState.onNext(false)
             })
             .addTo(compositeDisposable)
     }
 
     private fun onIncorrectCode() {
         command.onNext(Events.OnError(R.string.error_auth_code_validation))
-        command.onNext(Events.OnStopLoading)
+        loadingState.onNext(false)
     }
 
     sealed class Events {
         object OnCodeSent : Events()
-        object OnComplete : Events()
-        object OpenProfileEdit : Events()
+        class OnComplete(val isUserExist: Boolean) : Events()
         class OnError(@StringRes val id: Int) : Events()
-        object OnStartLoading : Events()
-        object OnStopLoading : Events()
     }
 }

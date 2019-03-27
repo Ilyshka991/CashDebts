@@ -8,6 +8,7 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.custom.phone.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
@@ -27,7 +28,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        subscribeToData()
+        subscribeToViewModel()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -51,7 +52,8 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
 
         text_phone.apply {
-            viewModel.phoneCode.receiveTextChangesFrom(textCode)
+            viewModel.fullPhoneNumber.receiveTextChangesFrom(this)
+            viewModel.phonePrefix.receiveTextChangesFrom(textCode)
             onDoneClick = viewModel::startPhoneNumberVerification
         }
 
@@ -60,14 +62,18 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
     }
 
-    private fun subscribeToData() {
-        viewModel.countryDataObservable.subscribe {
+    private fun subscribeToViewModel() {
+        viewModel.countryData.subscribe {
             text_phone.setCountryData(it)
             if (!it.isEmpty) {
                 text_country.setText(it.name)
             } else {
                 text_country.setText(R.string.auth_invalid_country)
             }
+        }.addTo(weakCompositeDisposable)
+
+        viewModel.loadingState.subscribe {
+            button_verify.setProgress(it)
         }.addTo(weakCompositeDisposable)
     }
 

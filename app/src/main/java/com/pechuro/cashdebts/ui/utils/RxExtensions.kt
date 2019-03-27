@@ -7,7 +7,7 @@ import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.subjects.Subject
 
 fun Subject<String>.receiveTextChangesFrom(view: EditText) {
-    view.textChanges().map(CharSequence::toString).subscribe(this)
+    view.textChanges().skipInitialValue().map(CharSequence::toString).subscribe(this)
 }
 
 fun Subject<String>.receiveQueryChangesFrom(view: SearchView) {

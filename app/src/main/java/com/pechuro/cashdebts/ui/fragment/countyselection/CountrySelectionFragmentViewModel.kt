@@ -15,8 +15,8 @@ import javax.inject.Inject
 class CountrySelectionFragmentViewModel @Inject constructor(
     private val countries: List<CountryData>,
     private val diffCallback: CountrySelectionDiffCallback
-) :
-    BaseViewModel() {
+) : BaseViewModel() {
+
     val searchQuery = PublishSubject.create<String>()
     val countriesList = BehaviorSubject.createDefault(SearchResult(null, countries))
 
@@ -33,7 +33,7 @@ class CountrySelectionFragmentViewModel @Inject constructor(
             }
             .map {
                 val filteredList = mutableListOf<CountryData>()
-                if (filteredList.isEmpty()) {
+                if (it.isEmpty()) {
                     filteredList += CountryData.EMPTY
                 } else {
                     filteredList += it

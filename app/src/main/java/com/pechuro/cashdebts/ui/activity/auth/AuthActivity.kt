@@ -32,10 +32,13 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
         viewModel.command.subscribe {
             when (it) {
                 is AuthActivityViewModel.Events.OnCodeSent -> showFragment(AuthCodeFragment.newInstance())
-                is AuthActivityViewModel.Events.OnComplete -> openMainActivity()
-                is AuthActivityViewModel.Events.OpenProfileEdit -> {
-                    isBackAllowed = false
-                    showFragment(ProfileEditFragment.newInstance(true))
+                is AuthActivityViewModel.Events.OnComplete -> {
+                    if (it.isUserExist) {
+                        openMainActivity()
+                    } else {
+                        isBackAllowed = false
+                        showFragment(ProfileEditFragment.newInstance(true))
+                    }
                 }
                 is AuthActivityViewModel.Events.OnError -> showSnackBar(it.id)
             }

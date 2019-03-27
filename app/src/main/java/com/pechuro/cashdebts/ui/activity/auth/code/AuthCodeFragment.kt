@@ -8,6 +8,8 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.timer.Timer
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.custom.hintedittext.receiveTextChangesFrom
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_code.*
 
 class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
@@ -35,6 +37,11 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
 
         setViewListeners()
         setupView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        subscribeToViewModel()
     }
 
     override fun onDestroy() {
@@ -76,6 +83,13 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
         button_code_confirm.setOnClickListener {
             viewModel.verifyPhoneNumberWithCode()
         }
+        viewModel.phoneCode.receiveTextChangesFrom(text_code)
+    }
+
+    private fun subscribeToViewModel() {
+        viewModel.loadingState.subscribe {
+            button_code_confirm.setProgress(it)
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun startResendTimer(startWith: Long = RESEND_TIMEOUT) {
