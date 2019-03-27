@@ -3,21 +3,16 @@ package com.pechuro.cashdebts.ui.fragment.countyselection.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
-import io.reactivex.subjects.PublishSubject
+import com.pechuro.cashdebts.ui.fragment.countyselection.model.SearchResult
 import kotlinx.android.synthetic.main.item_country.view.*
 
-class CountrySelectionAdapter(
-    private val diffCallback: CountrySelectionDiffCallback
-) : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
-    val searchSource = PublishSubject.create<CountryData>()
+class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
 
     private val countries = mutableListOf<CountryData>()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CountryData> = when (viewType) {
         VIEW_TYPE_EMPTY -> {
@@ -41,16 +36,10 @@ class CountrySelectionAdapter(
     override fun onBindViewHolder(holder: BaseViewHolder<CountryData>, position: Int) =
         holder.onBind(countries[position])
 
-    fun updateCountries(filteredCountries: List<CountryData>) {
-        diffCallback.setData(countries, filteredCountries)
-        val result = DiffUtil.calculateDiff(diffCallback)
+    fun updateCountries(result: SearchResult<CountryData>) {
         countries.clear()
-        if (filteredCountries.isEmpty()) {
-            countries += CountryData.EMPTY
-        } else {
-            countries += filteredCountries
-        }
-        result.dispatchUpdatesTo(this)
+        countries += result.dataList
+        result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
     private class ViewHolder(private val view: View) : BaseViewHolder<CountryData>(view) {

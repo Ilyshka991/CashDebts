@@ -2,8 +2,9 @@ package com.pechuro.cashdebts.ui.fragment.countyselection.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.model.entity.CountryData
+import javax.inject.Inject
 
-class CountrySelectionDiffCallback : DiffUtil.Callback() {
+class CountrySelectionDiffCallback @Inject constructor() : DiffUtil.Callback() {
 
     private var oldList: List<CountryData> = emptyList()
     private var newList: List<CountryData> = emptyList()

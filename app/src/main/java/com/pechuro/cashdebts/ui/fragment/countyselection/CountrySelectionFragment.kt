@@ -12,6 +12,7 @@ import javax.inject.Inject
 class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>() {
     @Inject
     protected lateinit var adapter: CountrySelectionAdapter
+
     override val layoutId: Int
         get() = R.layout.fragment_country_select
 
@@ -27,17 +28,17 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
         subscribeToData()
     }
 
-    private fun subscribeToData() {
-        viewModel.searchSubscriber.subscribe {
-            adapter.updateCountries(it)
-        }.addTo(weakCompositeDisposable)
-    }
-
     private fun setupView() {
         recycler.apply {
             adapter = this@CountrySelectionFragment.adapter
         }
-        viewModel.searchSource.receiveQueryChangesFrom(search)
+        viewModel.searchQuery.receiveQueryChangesFrom(search)
+    }
+
+    private fun subscribeToData() {
+        viewModel.countriesList.subscribe {
+            adapter.updateCountries(it)
+        }.addTo(weakCompositeDisposable)
     }
 
     companion object {
