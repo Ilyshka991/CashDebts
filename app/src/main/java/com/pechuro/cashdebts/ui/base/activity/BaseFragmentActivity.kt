@@ -27,6 +27,12 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         }
     }
 
+    protected fun homeFragment() {
+        supportFragmentManager.transaction {
+            replace(containerId, getHomeFragment())
+        }
+    }
+
     protected open fun <V : BaseViewModel> showFragment(
         fragment: BaseFragment<V>,
         isAddToBackStack: Boolean = true
@@ -45,11 +51,5 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
 
     private fun showPreviousFragment() {
         supportFragmentManager.popBackStack()
-    }
-
-    protected fun homeFragment() {
-        supportFragmentManager.transaction {
-            replace(containerId, getHomeFragment())
-        }
     }
 }

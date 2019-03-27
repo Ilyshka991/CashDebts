@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.countyselection
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionDiffCallback
+import com.pechuro.cashdebts.ui.fragment.countyselection.model.CountrySelectionDiffCallback
 import com.pechuro.cashdebts.ui.fragment.countyselection.model.SearchResult
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
