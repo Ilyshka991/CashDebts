@@ -23,6 +23,10 @@ class HintEditText : EditText {
     }
 
     var hintText: String? = null
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     private var isAlignCenter = false
     private var isAlreadyAligned = false

@@ -8,9 +8,9 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.custom.phone.PhoneTextWatcher
+import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
-import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     override val layoutId: Int
@@ -18,26 +18,16 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     override val isViewModelShared: Boolean
         get() = true
 
-    @Inject
-    protected lateinit var countryList: List<CountryData>
-
-    private val phoneTextWatcher = object : PhoneTextWatcher {
-        override fun onCodeChanged(code: String?) {
-            val country = countryList.findLast { it.phonePrefix == code }
-            viewModel.countryData = country
-        }
-    }
-
     override fun getViewModelClass() = AuthActivityViewModel::class
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) setInitialCountry()
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setViewListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        subscribeToData()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -47,7 +37,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
                     RESULT_OK -> {
                         val country =
                             data?.getParcelableExtra<CountryData>(CountrySelectionActivity.INTENT_DATA_SELECTED_COUNTRY)
-                        viewModel.countryData = country
+                        viewModel.countryData.onNext(country ?: CountryData.EMPTY)
                     }
                 }
             }
@@ -61,10 +51,8 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
 
         text_phone.apply {
-            addListener(phoneTextWatcher)
-            onDoneClick = {
-                viewModel.startPhoneNumberVerification()
-            }
+            viewModel.phoneCode.receiveTextChangesFrom(textCode)
+            onDoneClick = viewModel::startPhoneNumberVerification
         }
 
         text_country.setOnClickListener {
@@ -72,10 +60,15 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
     }
 
-    private fun setInitialCountry() {
-        val countryCode = viewModel.getUserCountryCode()
-        val country = countryList.find { it.code == countryCode }
-        viewModel.countryData = country
+    private fun subscribeToData() {
+        viewModel.countryDataObservable.subscribe {
+            text_phone.setCountryData(it)
+            if (!it.isEmpty) {
+                text_country.setText(it.name)
+            } else {
+                text_country.setText(R.string.auth_invalid_country)
+            }
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun openCountrySelectionActivity() {

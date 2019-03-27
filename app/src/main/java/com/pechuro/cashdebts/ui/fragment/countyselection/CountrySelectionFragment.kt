@@ -1,10 +1,11 @@
 package com.pechuro.cashdebts.ui.fragment.countyselection
 
 import android.os.Bundle
-import androidx.appcompat.widget.SearchView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
+import com.pechuro.cashdebts.ui.utils.receiveQueryChangesFrom
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_country_select.*
 import javax.inject.Inject
 
@@ -21,18 +22,22 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
         setupView()
     }
 
+    override fun onStart() {
+        super.onStart()
+        subscribeToData()
+    }
+
+    private fun subscribeToData() {
+        viewModel.searchSubscriber.subscribe {
+            adapter.updateCountries(it)
+        }.addTo(weakCompositeDisposable)
+    }
+
     private fun setupView() {
         recycler.apply {
             adapter = this@CountrySelectionFragment.adapter
         }
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?) = false
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                query?.let { adapter.filterCountries(it) }
-                return true
-            }
-        })
+        viewModel.searchSource.receiveQueryChangesFrom(search)
     }
 
     companion object {

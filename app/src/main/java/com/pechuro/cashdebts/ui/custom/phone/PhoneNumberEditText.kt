@@ -18,25 +18,14 @@ class PhoneNumberEditText @JvmOverloads constructor(
 
     var onDoneClick: () -> Unit = {}
 
-    private lateinit var textCode: EditText
-    private lateinit var textNumber: HintEditText
+    lateinit var textCode: EditText
+    lateinit var textNumber: HintEditText
 
-    private val listeners = mutableListOf<PhoneTextWatcher>()
     private val codeWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             if (s.isNullOrEmpty()) {
                 textCode.setText("+")
                 moveCodeCursorAtTheEnd()
-            }
-            listeners.forEach {
-                it.onCodeChanged(s.toString())
-            }
-        }
-    }
-    private val numberWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            listeners.forEach {
-                it.onNumberChanged(s?.toString())
             }
         }
     }
@@ -55,7 +44,6 @@ class PhoneNumberEditText @JvmOverloads constructor(
             }
         }
         textNumber = text_number.apply {
-            addTextChangedListener(numberWatcher)
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     onDoneClick()
@@ -66,16 +54,13 @@ class PhoneNumberEditText @JvmOverloads constructor(
         }
     }
 
-    fun addListener(listener: PhoneTextWatcher) {
-        listeners.add(listener)
-    }
-
-    fun setCountryData(data: CountryData?) {
-        data?.let {
-            textCode.setText(it.phonePrefix)
+    fun setCountryData(data: CountryData) {
+        if (!data.isEmpty) {
+            textCode.setText(data.phonePrefix)
             moveCodeCursorAtTheEnd()
         }
-        textNumber.hintText = data?.phonePattern
+        println(data.phonePattern)
+        textNumber.hintText = data.phonePattern
     }
 
     fun getPhoneNumber() = textCode.text.toString() + textNumber.getEnteredText()

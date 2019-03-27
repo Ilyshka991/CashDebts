@@ -20,16 +20,25 @@ class AuthActivityViewModel @Inject constructor(
     private val authRepository: IAuthRepository,
     private val userRepository: IUserRepository,
     private val telephonyManager: TelephonyManager,
-    private val prefsManager: PrefsManager
+    private val prefsManager: PrefsManager,
+    private val countryList: List<CountryData>
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
-    var phoneNumber = BehaviorSubject.create<String>()
-    var phoneCode = BehaviorSubject.create<String>()
-    var countryData = BehaviorSubject.create<CountryData>()
+    val phoneNumber = BehaviorSubject.createDefault("")
+    val phoneCode = BehaviorSubject.createDefault("")
+    val countryData = BehaviorSubject.createDefault(CountryData.EMPTY)
+
+    val countryDataObservable = countryData.mergeWith(phoneCode
+        .map { prefix ->
+            val country = countryList.findLast { it.phonePrefix == prefix }
+            country ?: CountryData.EMPTY
+        })
+        .distinctUntilChanged()
 
     init {
         subscribeToEvents()
+        setInitialCountry()
     }
 
     fun startPhoneNumberVerification() {
@@ -61,7 +70,13 @@ class AuthActivityViewModel @Inject constructor(
         authRepository.resendCode(number)
     }
 
-    fun getUserCountryCode(): String? {
+    private fun setInitialCountry() {
+        val countryCode = getUserCountryCode()
+        val country = countryList.find { it.code == countryCode }
+        countryData.onNext(country ?: CountryData.EMPTY)
+    }
+
+    private fun getUserCountryCode(): String? {
         val simCountry = telephonyManager.simCountryIso
         if (simCountry != null && simCountry.length == 2) {
             return simCountry.toUpperCase()
