@@ -4,15 +4,10 @@ import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.model.entity.CountryData
 import javax.inject.Inject
 
-class CountrySelectionDiffCallback @Inject constructor() : DiffUtil.Callback() {
+class CountrySelectionDiffCallback @Inject constructor(initialList: List<CountryData>) : DiffUtil.Callback() {
 
-    private var oldList: List<CountryData> = emptyList()
-    private var newList: List<CountryData> = emptyList()
-
-    fun setData(oldList: List<CountryData>, newList: List<CountryData>) {
-        this.oldList = oldList
-        this.newList = newList
-    }
+    var oldList: List<CountryData> = initialList
+    var newList: List<CountryData> = emptyList()
 
     override fun getOldListSize() = oldList.size
 

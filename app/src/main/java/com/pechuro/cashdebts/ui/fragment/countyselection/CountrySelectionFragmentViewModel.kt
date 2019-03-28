@@ -5,9 +5,9 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.countyselection.model.CountrySelectionDiffCallback
 import com.pechuro.cashdebts.ui.fragment.countyselection.model.SearchResult
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -18,14 +18,9 @@ class CountrySelectionFragmentViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val searchQuery = PublishSubject.create<String>()
-    val countriesList = BehaviorSubject.createDefault(SearchResult(null, countries))
 
-    init {
-        initSearch()
-    }
-
-    private fun initSearch() {
-        searchQuery
+    val countriesListSource: Observable<SearchResult<CountryData>> =
+        Observable.just(SearchResult(null, countries)).mergeWith(searchQuery
             .debounce(100, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .map { query ->
@@ -38,12 +33,16 @@ class CountrySelectionFragmentViewModel @Inject constructor(
                 } else {
                     filteredList += it
                 }
-                diffCallback.setData(countriesList.value!!.dataList, filteredList)
-                val diffResult = DiffUtil.calculateDiff(diffCallback)
-                SearchResult(diffResult, filteredList)
+                filteredList
             }
+            .map {
+                diffCallback.newList = it
+                val diffResult = DiffUtil.calculateDiff(diffCallback)
+                diffCallback.oldList = it
+                SearchResult(diffResult, it)
+            })
+            .replay(1)
+            .autoConnect()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(countriesList)
-    }
 }
