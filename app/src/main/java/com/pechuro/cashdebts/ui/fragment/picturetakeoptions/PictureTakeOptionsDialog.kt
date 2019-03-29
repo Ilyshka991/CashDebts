@@ -17,10 +17,10 @@ class PictureTakeOptionsDialog : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setListeners()
+        setViewListeners()
     }
 
-    private fun setListeners() {
+    private fun setViewListeners() {
         button_camera.setOnClickListener {
             EventBus.publish(AddOptionsEvent.TakePictureFromCamera)
             dismiss()

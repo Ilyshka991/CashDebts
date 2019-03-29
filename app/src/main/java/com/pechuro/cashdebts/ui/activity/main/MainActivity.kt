@@ -34,15 +34,15 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) openProfileEditIfNecessary()
-        setListeners()
+        setViewListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        subscribeToEvents()
+        setEventListeners()
     }
 
-    private fun setListeners() {
+    private fun setViewListeners() {
         bottom_navigation.setOnNavigationItemSelectedListener {
             if (bottom_navigation.selectedItemId == it.itemId) {
                 return@setOnNavigationItemSelectedListener true
@@ -56,7 +56,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }
     }
 
-    private fun subscribeToEvents() {
+    private fun setEventListeners() {
         EventBus.listen(MainActivityEvent::class.java).subscribe {
             when (it) {
                 is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt)

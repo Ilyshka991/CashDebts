@@ -1,8 +1,12 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
 import android.os.Bundle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
@@ -19,8 +23,8 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setListeners()
-        setEventListener()
+        setViewListeners()
+        setEventListeners()
     }
 
     override fun onStart() {
@@ -28,7 +32,7 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
         setViewModelListener()
     }
 
-    private fun setListeners() {
+    private fun setViewListeners() {
         button_edit.setOnClickListener {
             EventBus.publish(ProfileViewEvent.OpenEditProfile)
         }
@@ -45,14 +49,39 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
                 is ProfileViewFragmentViewModel.LoadingState.OnError -> showErrorSnackbar()
             }
         }.addTo(weakCompositeDisposable)
+
+        viewModel.user.subscribe {
+            setUser(it)
+        }.addTo(weakCompositeDisposable)
     }
 
-    private fun setEventListener() {
+    private fun setEventListeners() {
         EventBus.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
                 is ProfileEditEvent.OnSaved -> viewModel.loadUser()
             }
         }.addTo(strongCompositeDisposable)
+    }
+
+    private fun setUser(user: FirestoreUser) {
+        with(user) {
+            loadAvatar(photoUrl)
+            text_first_name.text = firstName
+            text_last_name.text = lastName
+            text_phone.text = phoneNumber
+        }
+    }
+
+    private fun loadAvatar(imageUrl: String?) {
+        val crossFadeFactory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
+
+        Glide.with(image_avatar)
+            .load(imageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+            .placeholder(R.drawable.avatar)
+            .error(R.drawable.avatar)
+            .circleCrop()
+            .into(image_avatar)
     }
 
     private fun showProgressDialog() {
