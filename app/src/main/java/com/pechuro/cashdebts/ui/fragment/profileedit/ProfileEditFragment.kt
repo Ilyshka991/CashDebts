@@ -8,12 +8,12 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
-import com.pechuro.cashdebts.ui.utils.EventBus
-import com.pechuro.cashdebts.ui.utils.transaction
+import com.pechuro.cashdebts.ui.utils.*
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
@@ -33,7 +33,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     override fun onStart() {
         super.onStart()
         setEventListeners()
-        setViewModelListener()
+        setViewModelListeners()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -49,23 +49,53 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
             showOptionsDialog()
         }
         button_save.setOnClickListener {
-            this@ProfileEditFragment.viewModel.save()
+            viewModel.save()
         }
         fab_take_photo.setOnClickListener {
             showOptionsDialog()
         }
     }
 
-    private fun setViewModelListener() {
-        viewModel.command.subscribe {
-            when (it) {
-                is ProfileEditFragmentViewModel.Events.OnUserStartLoad -> showProgressDialog()
-                is ProfileEditFragmentViewModel.Events.OnUserStopLoad -> dismissProgressDialog()
-                is ProfileEditFragmentViewModel.Events.OnSaved -> onSaved()
-                is ProfileEditFragmentViewModel.Events.OnSaveError -> showSnackbarErrorSave()
-                is ProfileEditFragmentViewModel.Events.OnLoadError -> showSnackbarErrorLoad()
+    private fun setViewModelListeners() {
+        with(viewModel) {
+            command.subscribe {
+                when (it) {
+                    is ProfileEditFragmentViewModel.Events.OnUserStartLoad -> showProgressDialog()
+                    is ProfileEditFragmentViewModel.Events.OnUserStopLoad -> dismissProgressDialog()
+                    is ProfileEditFragmentViewModel.Events.OnSaved -> onSaved()
+                    is ProfileEditFragmentViewModel.Events.OnSaveError -> showSnackbarErrorSave()
+                    is ProfileEditFragmentViewModel.Events.OnLoadError -> showSnackbarErrorLoad()
+                }
+            }.addTo(weakCompositeDisposable)
+
+            initialUser.subscribe {
+                setInitialUser(it)
+            }.addTo(weakCompositeDisposable)
+            isLoading.subscribe {
+                setLoading(it)
+            }.addTo(weakCompositeDisposable)
+            isConnectionAvailable.subscribe {
+                onConnectionChanged(it)
+            }.addTo(weakCompositeDisposable)
+            imageUrl.subscribe {
+                image_photo.loadAvatar(it)
+            }.addTo(weakCompositeDisposable)
+
+            with(inputData) {
+                with(fields) {
+                    firstName.receiveTextChangesFrom(text_first_name)
+                    lastName.receiveTextChangesFrom(text_last_name)
+                }
+                with(errors) {
+                    firstNameError.subscribe {
+                        text_first_name_layout.setError(it)
+                    }.addTo(weakCompositeDisposable)
+                    lastNameError.subscribe {
+                        text_first_name_layout.setError(it)
+                    }.addTo(weakCompositeDisposable)
+                }
             }
-        }.addTo(weakCompositeDisposable)
+        }
     }
 
     private fun setEventListeners() {
@@ -80,6 +110,22 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     private fun loadUserIfRequire() {
         val isFirstTime = arguments?.getBoolean(ARG_IS_FIRST_TIME)
         if (isFirstTime == false) viewModel.loadExistingUser()
+    }
+
+    private fun setInitialUser(user: FirestoreUser) {
+        with(user) {
+            text_first_name.setText(firstName)
+            text_last_name.setText(lastName)
+        }
+    }
+
+    private fun onConnectionChanged(isAvailable: Boolean) {
+        button_save.isEnabled = isAvailable
+        view_no_connection.isVisible(!isAvailable)
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        button_save.setProgress(isLoading)
     }
 
     private fun dispatchTakePictureFromCameraIntent() {

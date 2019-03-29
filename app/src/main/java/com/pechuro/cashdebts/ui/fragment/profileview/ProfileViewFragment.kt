@@ -1,9 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
 import android.os.Bundle
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.model.FirestoreUser
@@ -11,6 +8,7 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.loadAvatar
 import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_view.*
@@ -65,23 +63,11 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
 
     private fun setUser(user: FirestoreUser) {
         with(user) {
-            loadAvatar(photoUrl)
+            image_avatar.loadAvatar(photoUrl)
             text_first_name.text = firstName
             text_last_name.text = lastName
             text_phone.text = phoneNumber
         }
-    }
-
-    private fun loadAvatar(imageUrl: String?) {
-        val crossFadeFactory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
-
-        Glide.with(image_avatar)
-            .load(imageUrl)
-            .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
-            .placeholder(R.drawable.avatar)
-            .error(R.drawable.avatar)
-            .circleCrop()
-            .into(image_avatar)
     }
 
     private fun showProgressDialog() {

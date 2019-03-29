@@ -1,8 +1,8 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
-data class ProfileEditFieldsError(
-    var firstNameError: Int?,
-    var lastNameError: Int?
-) {
-    constructor() : this(null, null)
+import io.reactivex.subjects.BehaviorSubject
+
+class ProfileEditFieldsError {
+    val firstNameError = BehaviorSubject.createDefault(-1)
+    val lastNameError = BehaviorSubject.createDefault(-1)
 }

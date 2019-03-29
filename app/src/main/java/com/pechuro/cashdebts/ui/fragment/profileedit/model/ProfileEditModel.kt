@@ -8,33 +8,28 @@ class ProfileEditModel {
     val errors = ProfileEditFieldsError()
 
     fun setUser(user: FirestoreUser) {
-        with(fields) {
-            firstName = user.firstName
-            lastName = user.lastName
-            imageUrl = user.photoUrl
-        }
+        fields.setUser(user)
     }
 
     fun isValid(): Boolean {
-        val isValid = isFirstNameValid() && isLastNameValid()
-        return isValid
+        return isFirstNameValid() && isLastNameValid()
     }
 
     private fun isFirstNameValid(): Boolean =
-        if (fields.firstName.matches(NAME_REGEX)) {
-            errors.firstNameError = null
+        if (fields.firstName.value!!.matches(NAME_REGEX)) {
+            errors.firstNameError.onNext(-1)
             true
         } else {
-            errors.firstNameError = R.string.profile_edit_error_first_name
+            errors.firstNameError.onNext(R.string.profile_edit_error_first_name)
             false
         }
 
     private fun isLastNameValid(): Boolean =
-        if (fields.lastName.matches(NAME_REGEX)) {
-            errors.lastNameError = null
+        if (fields.lastName.value!!.matches(NAME_REGEX)) {
+            errors.lastNameError.onNext(-1)
             true
         } else {
-            errors.lastNameError = R.string.profile_edit_error_last_name
+            errors.lastNameError.onNext(R.string.profile_edit_error_last_name)
             false
         }
 
