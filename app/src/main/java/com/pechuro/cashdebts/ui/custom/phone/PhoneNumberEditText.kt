@@ -59,7 +59,6 @@ class PhoneNumberEditText @JvmOverloads constructor(
             textCode.setText(data.phonePrefix)
             moveCodeCursorAtTheEnd()
         }
-        println(data.phonePattern)
         textNumber.hintText = data.phonePattern
     }
 

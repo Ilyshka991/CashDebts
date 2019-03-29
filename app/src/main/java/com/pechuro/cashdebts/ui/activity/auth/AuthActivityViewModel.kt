@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -28,12 +29,21 @@ class AuthActivityViewModel @Inject constructor(
     val fullPhoneNumber = BehaviorSubject.createDefault("")
     val phonePrefix = BehaviorSubject.createDefault("")
     val phoneCode = BehaviorSubject.createDefault("")
-    val countryData = BehaviorSubject.createDefault(getInitialCountry())
-    val loadingState = BehaviorSubject.createDefault(false)
+
+    val countryDataInput = BehaviorSubject.createDefault(getInitialCountry())
+    val countryDataOutput: Observable<CountryData> = countryDataInput.mergeWith(phonePrefix
+        .skip(1)
+        .map { prefix ->
+            val country = countryList.findLast { it.phonePrefix == prefix }
+            country ?: CountryData.EMPTY
+        }
+        .distinctUntilChanged())
+
+    private val _loadingState = BehaviorSubject.createDefault(false)
+    val loadingState: Observable<Boolean> = _loadingState
 
     init {
         setAuthEventListener()
-        initRx()
     }
 
     fun startPhoneNumberVerification() {
@@ -42,7 +52,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.OnError(R.string.error_auth_phone_validation))
             return
         }
-        loadingState.onNext(true)
+        _loadingState.onNext(true)
         authRepository.startVerification(number)
     }
 
@@ -52,7 +62,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.OnError(R.string.error_auth_code_validation))
             return
         }
-        loadingState.onNext(true)
+        _loadingState.onNext(true)
         authRepository.verifyWithCode(code)
     }
 
@@ -63,17 +73,6 @@ class AuthActivityViewModel @Inject constructor(
             return
         }
         authRepository.resendCode(number)
-    }
-
-    private fun initRx() {
-        phonePrefix
-            .skip(1)
-            .map { prefix ->
-                val country = countryList.findLast { it.phonePrefix == prefix }
-                country ?: CountryData.EMPTY
-            }
-            .distinctUntilChanged()
-            .subscribe(countryData)
     }
 
     private fun getInitialCountry(): CountryData {
@@ -107,7 +106,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onError(e: AuthException) {
-        loadingState.onNext(false)
+        _loadingState.onNext(false)
         val error = when (e) {
             is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
             is AuthNotAvailableException -> R.string.error_auth_too_many_requests
@@ -117,27 +116,27 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onCodeSent() {
-        loadingState.onNext(false)
+        _loadingState.onNext(false)
         command.onNext(Events.OnCodeSent)
     }
 
     private fun onSuccess() {
         userRepository.isUserWithUidExist()
             .subscribe({
-                loadingState.onNext(false)
+                _loadingState.onNext(false)
                 if (it) {
                     prefsManager.isUserAddInfo = true
                 }
                 command.onNext(Events.OnComplete(it))
             }, {
-                loadingState.onNext(false)
+                _loadingState.onNext(false)
             })
             .addTo(compositeDisposable)
     }
 
     private fun onIncorrectCode() {
         command.onNext(Events.OnError(R.string.error_auth_code_validation))
-        loadingState.onNext(false)
+        _loadingState.onNext(false)
     }
 
     sealed class Events {

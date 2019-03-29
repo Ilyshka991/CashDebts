@@ -38,7 +38,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
                     RESULT_OK -> {
                         val country =
                             data?.getParcelableExtra<CountryData>(CountrySelectionActivity.INTENT_DATA_SELECTED_COUNTRY)
-                        viewModel.countryData.onNext(country ?: CountryData.EMPTY)
+                        viewModel.countryDataInput.onNext(country ?: CountryData.EMPTY)
                     }
                 }
             }
@@ -63,7 +63,8 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     }
 
     private fun subscribeToViewModel() {
-        viewModel.countryData.subscribe {
+        viewModel.countryDataOutput.subscribe {
+            println(it)
             text_phone.setCountryData(it)
             if (!it.isEmpty) {
                 text_country.setText(it.name)
