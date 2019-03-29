@@ -1,16 +1,11 @@
 package com.pechuro.cashdebts.ui.utils
 
-import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.google.android.material.textfield.TextInputLayout
 import com.pechuro.cashdebts.R
-
-fun View.isVisible(isVisible: Boolean) {
-    visibility = if (isVisible) View.VISIBLE else View.GONE
-}
 
 fun ImageView.loadAvatar(url: String?) {
     val crossFadeFactory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()

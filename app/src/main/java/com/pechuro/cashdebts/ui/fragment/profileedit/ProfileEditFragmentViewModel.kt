@@ -48,8 +48,12 @@ class ProfileEditFragmentViewModel @Inject constructor(
         setConnectivityListener()
     }
 
-    fun loadExistingUser() {
+    fun loadUser(isExist: Boolean = false) {
         if (isUserAlreadyLoaded) return
+        if (!isExist) {
+            isUserAlreadyLoaded = true
+            return
+        }
         command.onNext(Events.OnUserStartLoad)
         userRepository.get()
             .subscribe({
@@ -148,7 +152,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     private fun onConnectionChanged(isAvailable: Boolean) {
         isConnectionAvailable.onNext(isAvailable)
         if (isAvailable) {
-            loadExistingUser()
+            loadUser()
         } else {
             loadingState.onNext(false)
             updateTask?.dispose()

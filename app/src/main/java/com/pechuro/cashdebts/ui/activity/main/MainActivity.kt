@@ -3,8 +3,7 @@ package com.pechuro.cashdebts.ui.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
@@ -27,6 +26,12 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     override val containerId: Int
         get() = container.id
 
+    private var isBottomNavVisible = true
+        set(value) {
+            field = value
+            bottom_navigation.isVisible = value
+        }
+
     override fun getViewModelClass() = MainActivityViewModel::class
 
     override fun getHomeFragment() = RemoteDebtListFragment.newInstance()
@@ -40,6 +45,18 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     override fun onStart() {
         super.onStart()
         setEventListeners()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, isBottomNavVisible)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState?.getBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE)?.let {
+            isBottomNavVisible = it
+        }
     }
 
     private fun setViewListeners() {
@@ -66,7 +83,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             when (it) {
                 is ProfileEditEvent.OnSaved -> {
                     homeFragment()
-                    bottom_navigation.visibility = VISIBLE
+                    isBottomNavVisible = true
                 }
             }
         }.addTo(weakCompositeDisposable)
@@ -97,12 +114,14 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun openProfileEditIfNecessary() {
         if (!viewModel.isUserAddInfo()) {
-            bottom_navigation.visibility = GONE
+            isBottomNavVisible = false
             showFragment(ProfileEditFragment.newInstance(true), false)
         }
     }
 
     companion object {
+        private const val BUNDLE_IS_BOTTOM_NAV_VISIBLE = "isBottomNavVisible"
+
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 }

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.model.FirestoreUser
@@ -106,8 +107,8 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun loadUserIfRequire() {
-        val isFirstTime = arguments?.getBoolean(ARG_IS_FIRST_TIME)
-        if (isFirstTime == false) viewModel.loadExistingUser()
+        val isFirstTime = arguments?.getBoolean(ARG_IS_FIRST_TIME) ?: false
+        viewModel.loadUser(!isFirstTime)
     }
 
     private fun setInitialUser(user: FirestoreUser) {
@@ -119,7 +120,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
 
     private fun onConnectionChanged(isAvailable: Boolean) {
         button_save.isEnabled = isAvailable
-        view_no_connection.isVisible(!isAvailable)
+        view_no_connection.isVisible = !isAvailable
     }
 
     private fun setLoading(isLoading: Boolean) {
@@ -192,7 +193,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     private fun showSnackbarErrorLoad() {
         Snackbar.make(layout_coordinator, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.action_retry) {
-                viewModel.loadExistingUser()
+                viewModel.loadUser()
             }
             .show()
     }
