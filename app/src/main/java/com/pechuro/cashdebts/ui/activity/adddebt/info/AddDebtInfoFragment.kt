@@ -4,9 +4,11 @@ import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
-import com.pechuro.cashdebts.ui.utils.transaction
+import com.pechuro.cashdebts.ui.utils.receiveDateChangesFrom
+import com.pechuro.cashdebts.ui.utils.receiveDecimalChangesFrom
+import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.fragment_add_debt_info.*
 
 class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     override val layoutId: Int
@@ -16,9 +18,22 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setViewListeners()
+    }
+
     override fun onStart() {
         super.onStart()
         setViewModelListeners()
+    }
+
+    private fun setViewListeners() {
+        with(viewModel.debt) {
+            value.receiveDecimalChangesFrom(text_value)
+            description.receiveTextChangesFrom(text_description)
+            date.receiveDateChangesFrom(text_date)
+        }
     }
 
     private fun setViewModelListeners() {
@@ -28,17 +43,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
                 is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
             }
         }.addTo(weakCompositeDisposable)
-    }
-
-    private fun showProgressDialog() {
-        childFragmentManager.transaction {
-            add(ProgressDialog.newInstance(), ProgressDialog.TAG)
-            addToBackStack(ProgressDialog.TAG)
-        }
-    }
-
-    private fun dismissProgressDialog() {
-        childFragmentManager.popBackStack()
     }
 
     companion object {

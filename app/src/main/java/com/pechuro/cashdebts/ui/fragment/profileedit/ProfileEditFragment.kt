@@ -13,8 +13,10 @@ import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
-import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
-import com.pechuro.cashdebts.ui.utils.*
+import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.loadAvatar
+import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.utils.setError
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
@@ -169,17 +171,6 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
 
     private fun showOptionsDialog() {
         PictureTakeOptionsDialog.newInstance().show(childFragmentManager, PictureTakeOptionsDialog.TAG)
-    }
-
-    private fun showProgressDialog() {
-        childFragmentManager.transaction {
-            add(ProgressDialog.newInstance(), ProgressDialog.TAG)
-            addToBackStack(ProgressDialog.TAG)
-        }
-    }
-
-    private fun dismissProgressDialog() {
-        childFragmentManager.popBackStack()
     }
 
     private fun loadEditedAvatar() {

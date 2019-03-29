@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.ui.utils.requireValue
 
 class ProfileEditModel {
     val fields = ProfileEditFields()
@@ -11,7 +12,7 @@ class ProfileEditModel {
     }
 
     private fun isFirstNameValid(): Boolean =
-        if (fields.firstName.value!!.matches(NAME_REGEX)) {
+        if (fields.firstName.requireValue.matches(NAME_REGEX)) {
             errors.firstNameError.onNext(ID_NO_ERROR)
             true
         } else {
@@ -20,7 +21,7 @@ class ProfileEditModel {
         }
 
     private fun isLastNameValid(): Boolean =
-        if (fields.lastName.value!!.matches(NAME_REGEX)) {
+        if (fields.lastName.requireValue.matches(NAME_REGEX)) {
             errors.lastNameError.onNext(ID_NO_ERROR)
             true
         } else {

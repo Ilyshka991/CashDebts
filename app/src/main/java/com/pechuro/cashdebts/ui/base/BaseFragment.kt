@@ -8,6 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
+import com.pechuro.cashdebts.ui.utils.transaction
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
@@ -57,6 +59,17 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment(), HasSupportFragmentI
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
+
+    protected fun showProgressDialog() {
+        childFragmentManager.transaction {
+            add(ProgressDialog.newInstance(), ProgressDialog.TAG)
+            addToBackStack(ProgressDialog.TAG)
+        }
+    }
+
+    protected fun dismissProgressDialog() {
+        childFragmentManager.popBackStack()
+    }
 
     private fun performDI() = AndroidSupportInjection.inject(this)
 

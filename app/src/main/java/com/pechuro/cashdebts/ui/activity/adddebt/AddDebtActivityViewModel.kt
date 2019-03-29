@@ -14,8 +14,8 @@ import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.utils.requireValue
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -23,46 +23,47 @@ class AddDebtActivityViewModel @Inject constructor(
     private val debtRepository: IDebtRepository,
     private val userRepository: IUserRepository
 ) : BaseViewModel() {
-    val debt = BehaviorSubject.create<BaseDebtInfo>()
     val command = PublishSubject.create<Events>()
+    lateinit var debt: BaseDebtInfo
 
     fun setInitialData(isLocalDebt: Boolean) {
-        if (!debt.hasValue()) {
-            debt.onNext(if (isLocalDebt) LocalDebtInfo() else RemoteDebtInfo())
+        if (!::debt.isInitialized) {
+            debt = if (isLocalDebt) LocalDebtInfo() else RemoteDebtInfo()
         }
     }
 
     fun setPhoneData(phoneNumber: String) {
-        (debt.value as RemoteDebtInfo).phone = phoneNumber.replace(Regex("[ -]"), "")
+        (debt as RemoteDebtInfo).phone.onNext(phoneNumber)
     }
 
     fun openInfo() {
-        when (val data = debt.value) {
+        when (val data = debt) {
             is LocalDebtInfo -> {
                 if (data.isValid()) {
                     command.onNext(Events.OpenInfo)
                 } else {
-                    command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_invalid_name))
+                    command.onNext(Events.OnError(R.string.add_debt_error_invalid_name))
                 }
             }
             is RemoteDebtInfo -> {
                 if (data.isValid()) {
                     checkUserExist(data)
                 } else {
-                    command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_invalid_phone))
+                    command.onNext(Events.OnError(R.string.add_debt_error_invalid_phone))
                 }
             }
         }
     }
 
     fun save() {
+        if (!debt.isInfoValid()) {
+            command.onNext(Events.OnError(R.string.add_debt_error_invalid_info))
+            return
+        }
         command.onNext(Events.ShowProgress)
-        val debt = debt.value
-        when {
-            debt == null -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_common))
-            !debt.isValid() -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_invalid_info))
-            debt is LocalDebtInfo -> addLocalDebt(debt)
-            debt is RemoteDebtInfo -> addRemoteDebt(debt)
+        when (val debt = debt) {
+            is LocalDebtInfo -> addLocalDebt(debt)
+            is RemoteDebtInfo -> addRemoteDebt(debt)
         }
     }
 
@@ -73,14 +74,18 @@ class AddDebtActivityViewModel @Inject constructor(
     private fun addRemoteDebt(debt: RemoteDebtInfo) {
         val creditorUid: String
         val debtorUid: String
-        when (debt.debtRole) {
+        when (debt.debtRole.value) {
+            null -> {
+                command.onNext(Events.OnError(R.string.add_debt_error_common))
+                return
+            }
             CREDITOR -> {
                 creditorUid = userRepository.currentUserBaseInformation.uid
-                debtorUid = debt.personUid
+                debtorUid = debt.personUid.requireValue
             }
             DEBTOR -> {
                 debtorUid = userRepository.currentUserBaseInformation.uid
-                creditorUid = debt.personUid
+                creditorUid = debt.personUid.requireValue
             }
             else -> throw IllegalArgumentException()
         }
@@ -88,9 +93,9 @@ class AddDebtActivityViewModel @Inject constructor(
         val sendingDebt = FirestoreRemoteDebt(
             creditorUid,
             debtorUid,
-            debt.value,
-            debt.description,
-            debt.date,
+            debt.value.requireValue,
+            debt.description.requireValue,
+            debt.date.requireValue,
             FirestoreDebtStatus.NOT_SEND
         )
 
@@ -105,11 +110,11 @@ class AddDebtActivityViewModel @Inject constructor(
     private fun addLocalDebt(debt: LocalDebtInfo) {
         val sendingDebt = FirestoreLocalDebt(
             userRepository.currentUserBaseInformation.uid,
-            debt.name,
-            debt.value,
-            debt.description,
-            debt.date,
-            debt.debtRole
+            debt.name.requireValue,
+            debt.value.requireValue,
+            debt.description.requireValue,
+            debt.date.requireValue,
+            debt.debtRole.requireValue
         )
         debtRepository.add(sendingDebt).subscribe({
             command.onNext(Events.DismissProgress)
@@ -117,21 +122,20 @@ class AddDebtActivityViewModel @Inject constructor(
         }, {
             command.onNext(Events.DismissProgress)
         }).addTo(compositeDisposable)
-
     }
 
     private fun checkUserExist(data: RemoteDebtInfo) {
         command.onNext(Events.ShowProgress)
-        userRepository.getUidByPhone(data.phone).subscribe({
-            data.personUid = it
+        userRepository.getUidByPhone(data.phone.requireValue).subscribe({
+            data.personUid.onNext(it)
             command.onNext(Events.DismissProgress)
             command.onNext(Events.OpenInfo)
         }, {
             it.printStackTrace()
             command.onNext(Events.DismissProgress)
             when (it) {
-                is FirestoreUserNotFoundException -> command.onNext(Events.ShowSnackBarUserNotExist)
-                else -> command.onNext(Events.ShowSnackBarError(R.string.add_debt_error_common))
+                is FirestoreUserNotFoundException -> command.onNext(Events.OnErrorUserNotExist)
+                else -> command.onNext(Events.OnError(R.string.add_debt_error_common))
             }
         }).addTo(compositeDisposable)
     }
@@ -141,8 +145,8 @@ class AddDebtActivityViewModel @Inject constructor(
         object OpenInfo : Events()
         object ShowProgress : Events()
         object DismissProgress : Events()
-        class ShowSnackBarError(@StringRes val id: Int) : Events()
-        object ShowSnackBarUserNotExist : Events()
+        object OnErrorUserNotExist : Events()
         object RestartWithLocalDebtFragment : Events()
+        class OnError(@StringRes val id: Int) : Events()
     }
 }

@@ -8,11 +8,13 @@ import android.provider.ContactsContract
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
+import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
-import com.pechuro.cashdebts.ui.utils.transaction
+import com.pechuro.cashdebts.ui.utils.receiveDebtRole
+import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
+import kotlinx.android.synthetic.main.layout_debt_role_chooser.*
 
 class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     override val layoutId: Int
@@ -24,7 +26,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setListeners()
+        setViewListeners()
     }
 
     override fun onStart() {
@@ -35,17 +37,25 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when {
             requestCode == REQUEST_PICK_CONTACT && resultCode == RESULT_OK -> {
-                data?.data?.let { getContact(it) }
+                data?.data?.let {
+                    val number = getContact(it)
+                    number?.let {
+                        viewModel.setPhoneData(number.replace(Regex("[ -]"), ""))
+                        text_phone.setText(number)
+                    }
+                }
                 return
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun setListeners() {
+    private fun setViewListeners() {
         button_pick_contact.setOnClickListener {
             startPickContactActivity()
         }
+        viewModel.debt.debtRole.receiveDebtRole(chip_container)
+        (viewModel.debt as RemoteDebtInfo).phone.receiveTextChangesFrom(text_phone)
     }
 
     private fun setViewModelListeners() {
@@ -53,7 +63,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
             when (it) {
                 is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
                 is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
-                is AddDebtActivityViewModel.Events.ShowSnackBarUserNotExist -> showSnackBarUserNotExist()
+                is AddDebtActivityViewModel.Events.OnErrorUserNotExist -> showSnackBarUserNotExist()
             }
         }.addTo(weakCompositeDisposable)
     }
@@ -70,24 +80,13 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
         startActivityForResult(intent, REQUEST_PICK_CONTACT)
     }
 
-    private fun getContact(uri: Uri) {
+    private fun getContact(uri: Uri): String? {
         context?.contentResolver?.query(uri, null, null, null, null).use {
             if (it?.moveToFirst() == true) {
-                val number = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                viewModel.setPhoneData(number)
+                return it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             }
         }
-    }
-
-    private fun showProgressDialog() {
-        childFragmentManager.transaction {
-            add(ProgressDialog.newInstance(), ProgressDialog.TAG)
-            addToBackStack(ProgressDialog.TAG)
-        }
-    }
-
-    private fun dismissProgressDialog() {
-        childFragmentManager.popBackStack()
+        return null
     }
 
     companion object {

@@ -6,10 +6,8 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
-import com.pechuro.cashdebts.ui.fragment.progressdialog.ProgressDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.loadAvatar
-import com.pechuro.cashdebts.ui.utils.transaction
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_view.*
 
@@ -68,17 +66,6 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
             text_last_name.text = lastName
             text_phone.text = phoneNumber
         }
-    }
-
-    private fun showProgressDialog() {
-        childFragmentManager.transaction {
-            add(ProgressDialog.newInstance(), ProgressDialog.TAG)
-            addToBackStack(ProgressDialog.TAG)
-        }
-    }
-
-    private fun dismissProgressDialog() {
-        childFragmentManager.popBackStack()
     }
 
     private fun showErrorSnackbar() {

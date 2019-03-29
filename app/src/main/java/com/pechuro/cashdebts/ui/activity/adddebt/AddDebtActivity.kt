@@ -62,7 +62,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         viewModel.command.subscribe {
             when (it) {
                 is AddDebtActivityViewModel.Events.OnSaved -> closeActivity()
-                is AddDebtActivityViewModel.Events.ShowSnackBarError -> showSnackBarError(it.id)
+                is AddDebtActivityViewModel.Events.OnError -> showSnackBarError(it.id)
                 is AddDebtActivityViewModel.Events.OpenInfo -> openInfo()
                 is AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment -> restartWithLocalDebtFragment()
             }
