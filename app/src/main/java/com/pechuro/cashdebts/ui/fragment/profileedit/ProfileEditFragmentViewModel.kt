@@ -1,5 +1,7 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit
 
+import android.net.Uri
+import androidx.core.net.toUri
 import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
@@ -9,6 +11,8 @@ import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
+import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
@@ -31,12 +35,12 @@ class ProfileEditFragmentViewModel @Inject constructor(
     val inputData = ProfileEditModel()
 
     val imageUrl = BehaviorSubject.createDefault("")
-    val initialUser = PublishSubject.create<FirestoreUser>()
-    val isLoading = BehaviorSubject.create<Boolean>()
+    val loadingState = BehaviorSubject.create<Boolean>()
     val isConnectionAvailable = BehaviorSubject.create<Boolean>()
 
     private var localAvatarFile: File? = null
     private var isUserAlreadyLoaded = false
+    private var initialImageUrl = ""
 
     private var updateTask: Disposable? = null
 
@@ -49,7 +53,8 @@ class ProfileEditFragmentViewModel @Inject constructor(
         command.onNext(Events.OnUserStartLoad)
         userRepository.get()
             .subscribe({
-                initialUser.onNext(it)
+                command.onNext(Events.OnUserLoaded(it))
+                initialImageUrl = it.photoUrl ?: ""
                 imageUrl.onNext(it.photoUrl ?: "")
                 isUserAlreadyLoaded = true
                 command.onNext(Events.OnUserStopLoad)
@@ -62,8 +67,8 @@ class ProfileEditFragmentViewModel @Inject constructor(
     }
 
     fun save() {
-      /*  fun deletePreviousPhoto(): Completable {
-            return storageRepository.deletePrevious(imageUrl.value!!)
+        fun deletePreviousPhoto(): Completable {
+            return storageRepository.deletePrevious(initialImageUrl)
         }
 
         fun uploadPhoto(): Single<Uri> {
@@ -84,10 +89,10 @@ class ProfileEditFragmentViewModel @Inject constructor(
         }
 
         if (!inputData.isValid()) return
-        isLoading.onNext(true)
+        loadingState.onNext(true)
 
-        val task = if (imageUrl.value!!.isNotEmpty()) {
-            if (inputData.fields.imageUrl != null) {
+        val task = if (imageUrl.value != initialImageUrl) {
+            if (initialImageUrl.isNotEmpty()) {
                 uploadPhoto()
                     .flatMapCompletable {
                         updateUser(it.toString())
@@ -98,17 +103,17 @@ class ProfileEditFragmentViewModel @Inject constructor(
                 }
             }
         } else {
-            updateUser(inputData.fields.imageUrl)
+            updateUser(initialImageUrl)
         }
 
         updateTask = task.subscribe({
             onSaved()
         }, {
-            isLoading.set(false)
-            if (isConnectionAvailable.get()) {
-                _commandSource.onNext(Events.OnSaveError)
+            loadingState.onNext(false)
+            if (isConnectionAvailable.value == true) {
+                command.onNext(Events.OnSaveError)
             }
-        })*/
+        })
     }
 
     fun loadEditedAvatar() {
@@ -129,7 +134,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
     }
 
     private fun onSaved() {
-        isLoading.onNext(false)
+        loadingState.onNext(false)
         command.onNext(Events.OnSaved)
         prefsManager.isUserAddInfo = true
     }
@@ -145,7 +150,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
         if (isAvailable) {
             loadExistingUser()
         } else {
-            isLoading.onNext(false)
+            loadingState.onNext(false)
             updateTask?.dispose()
         }
     }
@@ -156,5 +161,6 @@ class ProfileEditFragmentViewModel @Inject constructor(
         object OnSaved : Events()
         object OnSaveError : Events()
         object OnLoadError : Events()
+        class OnUserLoaded(val user: FirestoreUser) : Events()
     }
 }

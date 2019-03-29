@@ -65,13 +65,11 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
                     is ProfileEditFragmentViewModel.Events.OnSaved -> onSaved()
                     is ProfileEditFragmentViewModel.Events.OnSaveError -> showSnackbarErrorSave()
                     is ProfileEditFragmentViewModel.Events.OnLoadError -> showSnackbarErrorLoad()
+                    is ProfileEditFragmentViewModel.Events.OnUserLoaded -> setInitialUser(it.user)
                 }
             }.addTo(weakCompositeDisposable)
 
-            initialUser.subscribe {
-                setInitialUser(it)
-            }.addTo(weakCompositeDisposable)
-            isLoading.subscribe {
+            loadingState.subscribe {
                 setLoading(it)
             }.addTo(weakCompositeDisposable)
             isConnectionAvailable.subscribe {
@@ -91,7 +89,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
                         text_first_name_layout.setError(it)
                     }.addTo(weakCompositeDisposable)
                     lastNameError.subscribe {
-                        text_first_name_layout.setError(it)
+                        text_last_name_layout.setError(it)
                     }.addTo(weakCompositeDisposable)
                 }
             }

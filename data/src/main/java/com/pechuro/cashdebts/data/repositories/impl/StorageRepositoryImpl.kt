@@ -28,7 +28,6 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
                         return@addOnCompleteListener
                     }
                     emitter.onSuccess(it.result!!)
-                    println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBb")
                 } else {
                     emitter.onError(FirebaseStorageCommonException())
                 }
