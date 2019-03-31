@@ -37,5 +37,6 @@ class ConnectivityListener @Inject constructor(private val connectivityManager: 
     private fun initService() {
         val request = NetworkRequest.Builder().addCapability(NET_CAPABILITY_INTERNET).build()
         connectivityManager.registerNetworkCallback(request, networkCallback)
+        emitter.onNext(connectivityManager.activeNetworkInfo?.isConnected ?: false)
     }
 }
