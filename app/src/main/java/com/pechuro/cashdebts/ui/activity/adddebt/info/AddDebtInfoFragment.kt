@@ -16,6 +16,10 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     override val isViewModelShared: Boolean
         get() = true
 
+    private val isInternetRequired by lazy {
+        arguments?.getBoolean(ARG_IS_INTERNET_REQUERED) ?: false
+    }
+
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -37,19 +41,26 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.command.subscribe {
-            when (it) {
-                is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
-                is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
+        with(viewModel) {
+            command.subscribe {
+                when (it) {
+                    is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
+                    is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
+                }
+            }.addTo(weakCompositeDisposable)
+            isConnectionAvailable.subscribe {
+
             }
-        }.addTo(weakCompositeDisposable)
+        }
     }
 
     companion object {
         const val TAG = "AddDebtInfoFragment"
+        private const val ARG_IS_INTERNET_REQUERED = "isInternetRequired"
 
-        fun newInstance() = AddDebtInfoFragment().apply {
+        fun newInstance(isInternetRequired: Boolean = false) = AddDebtInfoFragment().apply {
             arguments = Bundle().apply {
+                putBoolean(ARG_IS_INTERNET_REQUERED, isInternetRequired)
             }
         }
     }

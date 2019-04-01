@@ -10,21 +10,30 @@ import com.pechuro.cashdebts.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.repositories.IDebtRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.requireValue
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
     private val debtRepository: IDebtRepository,
-    private val userRepository: IUserRepository
+    private val userRepository: IUserRepository,
+    private val connectivityListener: ConnectivityListener
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
+    val isConnectionAvailable = BehaviorSubject.create<Boolean>()
+
     lateinit var debt: BaseDebtInfo
+
+    init {
+        setConnectivityListener()
+    }
 
     fun setInitialData(isLocalDebt: Boolean) {
         if (!::debt.isInitialized) {
@@ -69,6 +78,10 @@ class AddDebtActivityViewModel @Inject constructor(
 
     fun restartWithLocalDebtFragment() {
         command.onNext(AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment)
+    }
+
+    private fun setConnectivityListener() {
+        connectivityListener.listen(isConnectionAvailable)
     }
 
     private fun addRemoteDebt(debt: RemoteDebtInfo) {
