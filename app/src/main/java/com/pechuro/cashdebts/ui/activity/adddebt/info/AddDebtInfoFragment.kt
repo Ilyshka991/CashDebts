@@ -64,7 +64,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     companion object {
-        const val TAG = "AddDebtInfoFragment"
         private const val ARG_IS_INTERNET_REQUIRED = "isInternetRequired"
 
         fun newInstance(isInternetRequired: Boolean = false) = AddDebtInfoFragment().apply {

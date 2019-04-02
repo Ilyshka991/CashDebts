@@ -29,8 +29,6 @@ class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     companion object {
-        const val TAG = "AddDebtLocalUserFragment"
-
         fun newInstance() = AddDebtLocalUserFragment().apply {
             arguments = Bundle().apply {
             }

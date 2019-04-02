@@ -101,8 +101,6 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     companion object {
-        const val TAG = "AddDebtRemoteUserFragment"
-
         private const val REQUEST_PICK_CONTACT = 342
 
         fun newInstance() = AddDebtRemoteUserFragment().apply {
