@@ -55,10 +55,6 @@ internal class UserRepositoryImpl @Inject constructor(
             .whereEqualTo(FirestoreStructure.Users.Structure.phoneNumber, phoneNumber)
             .get()
             .addOnCompleteListener {
-                if (it.result?.metadata?.isFromCache == true) {
-                    emitter.onError(FirestoreCommonException())
-                    return@addOnCompleteListener
-                }
                 if (it.isSuccessful) {
                     if (it.result?.documents?.size == 1) {
                         emitter.onSuccess(it.result!!.documents[0]!!.id)

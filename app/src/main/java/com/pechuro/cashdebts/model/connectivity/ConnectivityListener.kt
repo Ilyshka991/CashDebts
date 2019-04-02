@@ -12,6 +12,8 @@ import javax.inject.Inject
 class ConnectivityListener @Inject constructor(private val connectivityManager: ConnectivityManager) {
 
     private val emitter = BehaviorSubject.create<Boolean>()
+    private val isConnectionAvailable: Boolean
+        get() = connectivityManager.activeNetworkInfo?.isConnected ?: false
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
@@ -19,11 +21,11 @@ class ConnectivityListener @Inject constructor(private val connectivityManager: 
         }
 
         override fun onUnavailable() {
-            emitter.onNext(false)
+            if (!isConnectionAvailable) emitter.onNext(false)
         }
 
         override fun onLost(network: Network?) {
-            emitter.onNext(false)
+            if (!isConnectionAvailable) emitter.onNext(false)
         }
     }
 
@@ -40,8 +42,9 @@ class ConnectivityListener @Inject constructor(private val connectivityManager: 
         .subscribe(observer)
 
     private fun initService() {
-        val request = NetworkRequest.Builder().addCapability(NET_CAPABILITY_INTERNET).build()
+        val request =
+            NetworkRequest.Builder().addCapability(NET_CAPABILITY_INTERNET).build()
         connectivityManager.registerNetworkCallback(request, networkCallback)
-        emitter.onNext(connectivityManager.activeNetworkInfo?.isConnected ?: false)
+        emitter.onNext(isConnectionAvailable)
     }
 }

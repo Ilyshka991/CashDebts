@@ -20,6 +20,11 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     private val isLocalDebt: Boolean
         get() = intent.getBooleanExtra(INTENT_EXTRA_IS_LOCAL_DEBT, true)
+    private var isOptionsMenuEnabled = true
+        set(value) {
+            field = value
+            invalidateOptionsMenu()
+        }
 
     override fun getHomeFragment() =
         if (isLocalDebt) AddDebtLocalUserFragment.newInstance() else AddDebtRemoteUserFragment.newInstance()
@@ -35,8 +40,10 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         menuInflater.inflate(R.menu.menu_activity_add, menu)
         if (backStackSize > 0) {
             menu?.findItem(R.id.menu_action_next)?.isVisible = false
+            menu?.findItem(R.id.menu_action_save)?.isEnabled = isOptionsMenuEnabled
         } else {
             menu?.findItem(R.id.menu_action_save)?.isVisible = false
+            menu?.findItem(R.id.menu_action_next)?.isEnabled = isOptionsMenuEnabled
         }
         return true
     }
@@ -51,20 +58,21 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     override fun onStart() {
         super.onStart()
-        subscribeToEvents()
+        setViewModelEventListener()
     }
 
     private fun setupViewModel() {
         viewModel.setInitialData(isLocalDebt)
     }
 
-    private fun subscribeToEvents() {
+    private fun setViewModelEventListener() {
         viewModel.command.subscribe {
             when (it) {
                 is AddDebtActivityViewModel.Events.OnSaved -> closeActivity()
                 is AddDebtActivityViewModel.Events.OnError -> showSnackBarError(it.id)
-                is AddDebtActivityViewModel.Events.OpenInfo -> openInfo()
+                is AddDebtActivityViewModel.Events.OpenInfo -> openInfo(it.isInternetRequired)
                 is AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment -> restartWithLocalDebtFragment()
+                is AddDebtActivityViewModel.Events.SetOptionsMenuEnabled -> setOptionMenuEnabled(it.isEnabled)
             }
         }.let(weakCompositeDisposable::add)
     }
@@ -73,8 +81,12 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         finish()
     }
 
-    private fun openInfo() {
-        showFragment(AddDebtInfoFragment.newInstance())
+    private fun setOptionMenuEnabled(isEnabled: Boolean) {
+        isOptionsMenuEnabled = isEnabled
+    }
+
+    private fun openInfo(isInternetRequired: Boolean) {
+        showFragment(AddDebtInfoFragment.newInstance(isInternetRequired))
         invalidateOptionsMenu()
     }
 

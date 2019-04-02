@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
@@ -59,13 +60,23 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.command.subscribe {
-            when (it) {
-                is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
-                is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
-                is AddDebtActivityViewModel.Events.OnErrorUserNotExist -> showSnackBarUserNotExist()
-            }
-        }.addTo(weakCompositeDisposable)
+        with(viewModel) {
+            command.subscribe {
+                when (it) {
+                    is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
+                    is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
+                    is AddDebtActivityViewModel.Events.OnErrorUserNotExist -> showSnackBarUserNotExist()
+                }
+            }.addTo(weakCompositeDisposable)
+            isConnectionAvailable.subscribe {
+                onConnectionChanged(it)
+            }.addTo(weakCompositeDisposable)
+        }
+    }
+
+    private fun onConnectionChanged(isAvailable: Boolean) {
+        view_no_connection.isVisible = !isAvailable
+        viewModel.command.onNext(AddDebtActivityViewModel.Events.SetOptionsMenuEnabled(isAvailable))
     }
 
     private fun showSnackBarUserNotExist() {

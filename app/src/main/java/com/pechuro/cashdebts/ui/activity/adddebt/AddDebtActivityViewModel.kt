@@ -49,7 +49,7 @@ class AddDebtActivityViewModel @Inject constructor(
         when (val data = debt) {
             is LocalDebtInfo -> {
                 if (data.isValid()) {
-                    command.onNext(Events.OpenInfo)
+                    command.onNext(Events.OpenInfo(false))
                 } else {
                     command.onNext(Events.OnError(R.string.add_debt_error_invalid_name))
                 }
@@ -142,7 +142,7 @@ class AddDebtActivityViewModel @Inject constructor(
         userRepository.getUidByPhone(data.phone.requireValue).subscribe({
             data.personUid.onNext(it)
             command.onNext(Events.DismissProgress)
-            command.onNext(Events.OpenInfo)
+            command.onNext(Events.OpenInfo(true))
         }, {
             it.printStackTrace()
             command.onNext(Events.DismissProgress)
@@ -155,11 +155,12 @@ class AddDebtActivityViewModel @Inject constructor(
 
     sealed class Events {
         object OnSaved : Events()
-        object OpenInfo : Events()
+        class OpenInfo(val isInternetRequired: Boolean) : Events()
         object ShowProgress : Events()
         object DismissProgress : Events()
         object OnErrorUserNotExist : Events()
         object RestartWithLocalDebtFragment : Events()
         class OnError(@StringRes val id: Int) : Events()
+        class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
     }
 }
