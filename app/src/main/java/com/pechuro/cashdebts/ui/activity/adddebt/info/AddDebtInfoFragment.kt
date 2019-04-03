@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialog
 import com.pechuro.cashdebts.ui.utils.receiveDateChangesFrom
 import com.pechuro.cashdebts.ui.utils.receiveDecimalChangesFrom
 import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
@@ -40,6 +41,9 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
             description.receiveTextChangesFrom(text_description)
             date.receiveDateChangesFrom(text_date)
         }
+        text_date.setOnClickListener {
+            showDateTimePicker()
+        }
     }
 
     private fun setViewModelListeners() {
@@ -61,6 +65,11 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     private fun onConnectionChanged(isAvailable: Boolean) {
         view_no_connection.isVisible = !isAvailable
         viewModel.command.onNext(AddDebtActivityViewModel.Events.SetOptionsMenuEnabled(isAvailable))
+    }
+
+    private fun showDateTimePicker() {
+        val dialog = DateTimePickerDialog.newInstance()
+        dialog.show(childFragmentManager, DateTimePickerDialog.TAG)
     }
 
     companion object {

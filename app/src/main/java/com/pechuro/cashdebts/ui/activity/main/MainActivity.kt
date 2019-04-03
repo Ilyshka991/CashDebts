@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
+import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialog
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
@@ -108,8 +108,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun openAddActivity(isLocalDebt: Boolean) {
-        val intent = AddDebtActivity.newIntent(this, isLocalDebt)
-        startActivity(intent)
+        /* val intent = AddDebtActivity.newIntent(this, isLocalDebt)
+         startActivity(intent)*/
+
+        val dialog = DateTimePickerDialog.newInstance()
+        dialog.show(supportFragmentManager, DateTimePickerDialog.TAG)
     }
 
     private fun openProfileEditIfNecessary() {
