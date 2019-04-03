@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 interface AddDebtInfoFragmentProvider {
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [AddDebtInfoModule::class])
     fun bind(): AddDebtInfoFragment
 }
