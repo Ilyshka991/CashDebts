@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.activity.adddebt.info
 
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
@@ -57,10 +58,18 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
         with(viewModel.debt) {
             value.receiveDecimalChangesFrom(text_value)
             description.receiveTextChangesFrom(text_description)
-            date.receiveDateChangesFrom(text_date)
+            date.receiveDateChangesFrom(text_date, dateFormatter)
         }
         text_date.setOnClickListener {
             showDateTimePicker()
+        }
+        
+        text_description.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.save()
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 

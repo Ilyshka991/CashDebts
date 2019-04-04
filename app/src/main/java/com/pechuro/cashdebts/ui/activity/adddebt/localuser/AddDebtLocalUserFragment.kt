@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.activity.adddebt.localuser
 
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
@@ -26,6 +27,14 @@ class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     private fun setViewListeners() {
         viewModel.debt.debtRole.receiveDebtRole(chip_container)
         (viewModel.debt as LocalDebtInfo).name.receiveTextChangesFrom(text_name)
+
+        text_name.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                viewModel.openInfo()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     }
 
     companion object {

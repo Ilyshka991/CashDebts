@@ -17,21 +17,49 @@ class PhoneNumberEditText @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     var onDoneClick: () -> Unit = {}
+    var onCountryChanged: ((CountryData) -> Unit)? = null
+
+    var countryList: List<CountryData>? = null
 
     lateinit var textCode: EditText
-    lateinit var textNumber: HintEditText
+    val textNumber: HintEditText
+
+    var countryData = CountryData.EMPTY
+        set(value) {
+            field = value
+            onCountryChanged?.invoke(value)
+            if (!value.isEmpty) {
+                textCode.setText(value.phonePrefix)
+                moveCodeCursorAtTheEnd()
+            }
+            textNumber.hintText = value.phonePattern
+        }
 
     private val codeWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             if (s.isNullOrEmpty()) {
                 textCode.setText("+")
                 moveCodeCursorAtTheEnd()
+            } else {
+                val country = countryList?.findLast { it.phonePrefix == s.toString() }
+                if (countryData != country) {
+                    countryData = country ?: CountryData.EMPTY
+                }
             }
         }
     }
 
     init {
         inflate(context, R.layout.layout_phone_edit_text, this)
+        textNumber = text_number.apply {
+            setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onDoneClick()
+                    return@setOnEditorActionListener true
+                }
+                false
+            }
+        }
         textCode = text_code.apply {
             addTextChangedListener(codeWatcher)
             setText("+")
@@ -43,23 +71,6 @@ class PhoneNumberEditText @JvmOverloads constructor(
                 false
             }
         }
-        textNumber = text_number.apply {
-            setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onDoneClick()
-                    return@setOnEditorActionListener true
-                }
-                false
-            }
-        }
-    }
-
-    fun setCountryData(data: CountryData) {
-        if (!data.isEmpty) {
-            textCode.setText(data.phonePrefix)
-            moveCodeCursorAtTheEnd()
-        }
-        textNumber.hintText = data.phonePattern
     }
 
     fun getPhoneNumber() = textCode.text.toString() + textNumber.getEnteredText()

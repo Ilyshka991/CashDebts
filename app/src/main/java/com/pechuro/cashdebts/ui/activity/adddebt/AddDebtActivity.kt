@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragment
 import com.pechuro.cashdebts.ui.base.activity.FragmentSwitcherBaseActivity
+import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.activity_container.*
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
@@ -68,7 +69,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     private fun setViewModelEventListener() {
         viewModel.command.subscribe {
             when (it) {
-                is AddDebtActivityViewModel.Events.OnSaved -> closeActivity()
+                is AddDebtActivityViewModel.Events.OnSaved -> onFinish()
                 is AddDebtActivityViewModel.Events.OnError -> showSnackBarError(it.id)
                 is AddDebtActivityViewModel.Events.OpenInfo -> openInfo(it.isInternetRequired)
                 is AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment -> restartWithLocalDebtFragment()
@@ -77,8 +78,9 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
         }.let(weakCompositeDisposable::add)
     }
 
-    private fun closeActivity() {
+    private fun onFinish() {
         finish()
+        EventBus.publish(AddDebtEvent.OnSuccess)
     }
 
     private fun setOptionMenuEnabled(isEnabled: Boolean) {

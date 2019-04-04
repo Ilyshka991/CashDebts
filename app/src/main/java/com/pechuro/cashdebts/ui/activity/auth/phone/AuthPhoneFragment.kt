@@ -9,9 +9,9 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.custom.phone.receiveTextChangesFrom
-import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
+import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     override val layoutId: Int
@@ -19,11 +19,16 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     override val isViewModelShared: Boolean
         get() = true
 
+    @Inject
+    protected lateinit var countryList: List<CountryData>
+
     override fun getViewModelClass() = AuthActivityViewModel::class
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setViewListeners()
+        setupView()
+        if (savedInstanceState == null) setInitialCountry()
     }
 
     override fun onStart() {
@@ -38,7 +43,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
                     RESULT_OK -> {
                         val country =
                             data?.getParcelableExtra<CountryData>(CountrySelectionActivity.INTENT_DATA_SELECTED_COUNTRY)
-                        viewModel.countryDataInput.onNext(country ?: CountryData.EMPTY)
+                        text_phone.countryData = country ?: CountryData.EMPTY
                     }
                 }
             }
@@ -53,8 +58,8 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
 
         text_phone.apply {
             viewModel.fullPhoneNumber.receiveTextChangesFrom(this)
-            viewModel.phonePrefix.receiveTextChangesFrom(textCode)
             onDoneClick = viewModel::startPhoneNumberVerification
+            onCountryChanged = ::onCountryChanged
         }
 
         text_country.setOnClickListener {
@@ -63,19 +68,31 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     }
 
     private fun subscribeToViewModel() {
-        viewModel.countryDataOutput.subscribe {
-            println(it)
-            text_phone.setCountryData(it)
-            if (!it.isEmpty) {
-                text_country.setText(it.name)
-            } else {
-                text_country.setText(R.string.auth_invalid_country)
-            }
-        }.addTo(weakCompositeDisposable)
-
         viewModel.loadingState.subscribe {
             button_verify.setProgress(it)
         }.addTo(weakCompositeDisposable)
+    }
+
+    private fun onCountryChanged(country: CountryData) {
+        if (country.isEmpty) {
+            text_country.setText(R.string.auth_invalid_country)
+        } else {
+            text_country.setText(country.name)
+        }
+    }
+
+    private fun setupView() {
+        text_phone.countryList = countryList
+    }
+
+    private fun setInitialCountry() {
+        text_phone.countryData = getInitialCountry()
+    }
+
+    private fun getInitialCountry(): CountryData {
+        val countryCode = viewModel.getUserCountryCode()
+        val country = countryList.find { it.code == countryCode }
+        return country ?: CountryData.EMPTY
     }
 
     private fun openCountrySelectionActivity() {

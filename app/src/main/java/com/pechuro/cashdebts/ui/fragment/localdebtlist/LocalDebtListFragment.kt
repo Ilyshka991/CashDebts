@@ -1,11 +1,15 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import android.os.Bundle
+import androidx.annotation.StringRes
+import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_local_debt_list.*
 import javax.inject.Inject
 
@@ -22,6 +26,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         super.onActivityCreated(savedInstanceState)
         setupView()
         setListeners()
+        setEventListeners()
     }
 
     private fun setupView() {
@@ -36,7 +41,24 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         }
     }
 
+    private fun setEventListeners() {
+        EventBus.listen(AddDebtEvent::class.java).subscribe {
+            when (it) {
+                is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
+            }
+        }.addTo(strongCompositeDisposable)
+    }
+
+    private fun showSnackbar(@StringRes msgId: Int) {
+        coordinator.postDelayed(
+            { Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show() },
+            SNACKBAR_SHOW_DELAY
+        )
+    }
+
     companion object {
+        private const val SNACKBAR_SHOW_DELAY = 250L
+
         fun newInstance() = LocalDebtListFragment().apply {
             arguments = Bundle().apply {
             }

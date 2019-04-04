@@ -11,9 +11,9 @@ class AddDebtInfoModule {
 
     @Provides
     @FragmentScope
-    fun provideDateFormatter() = SimpleDateFormat(DATE_FORMATE_PATTERN, Locale.getDefault())
+    fun provideDateFormatter() = SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault())
 
     companion object {
-        private const val DATE_FORMATE_PATTERN = "dd-MM-yyyy HH:mm"
+        const val DATE_FORMAT_PATTERN = "dd-MM-yyyy HH:mm"
     }
 }

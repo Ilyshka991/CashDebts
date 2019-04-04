@@ -8,6 +8,7 @@ import com.jakewharton.rxbinding3.widget.textChanges
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.model.DebtRole
 import io.reactivex.subjects.Subject
+import java.text.SimpleDateFormat
 import java.util.*
 
 fun Subject<String>.receiveTextChangesFrom(view: EditText) {
@@ -19,11 +20,13 @@ fun Subject<String>.receiveQueryChangesFrom(view: SearchView) {
 }
 
 fun Subject<Double>.receiveDecimalChangesFrom(view: EditText) {
-    view.textChanges().skipInitialValue().map(CharSequence::toString).map(String::toDouble).subscribe(this)
+    view.textChanges().skipInitialValue().map(CharSequence::toString).map {
+        it.toDoubleOrNull() ?: 0.0
+    }.subscribe(this)
 }
 
-fun Subject<Date>.receiveDateChangesFrom(view: EditText) {
-    view.textChanges().skipInitialValue().map(CharSequence::toString).map(::Date).subscribe(this)
+fun Subject<Date>.receiveDateChangesFrom(view: EditText, formatter: SimpleDateFormat) {
+    view.textChanges().skipInitialValue().map(CharSequence::toString).map(formatter::parse).subscribe(this)
 }
 
 fun Subject<Int>.receiveDebtRole(view: ChipGroup) {

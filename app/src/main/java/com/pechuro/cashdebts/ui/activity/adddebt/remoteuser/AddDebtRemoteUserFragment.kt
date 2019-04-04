@@ -11,8 +11,8 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.custom.phone.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.receiveDebtRole
-import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
 import kotlinx.android.synthetic.main.layout_debt_role_chooser.*
@@ -42,7 +42,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
                     val number = getContact(it)
                     number?.let {
                         viewModel.setPhoneData(number.replace(Regex("[ -]"), ""))
-                        text_phone.setText(number)
+                        //    text_phone.setText(number)
                     }
                 }
                 return
@@ -56,7 +56,9 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
             startPickContactActivity()
         }
         viewModel.debt.debtRole.receiveDebtRole(chip_container)
-        (viewModel.debt as RemoteDebtInfo).phone.receiveTextChangesFrom(text_phone)
+        text_phone.apply {
+            (viewModel.debt as RemoteDebtInfo).phone.receiveTextChangesFrom(text_phone)
+        }
     }
 
     private fun setViewModelListeners() {

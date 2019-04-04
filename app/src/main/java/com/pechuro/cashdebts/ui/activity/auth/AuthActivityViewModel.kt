@@ -8,7 +8,6 @@ import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
 import com.pechuro.cashdebts.data.exception.AuthNotAvailableException
 import com.pechuro.cashdebts.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.repositories.IUserRepository
-import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -21,23 +20,12 @@ class AuthActivityViewModel @Inject constructor(
     private val authRepository: IAuthRepository,
     private val userRepository: IUserRepository,
     private val telephonyManager: TelephonyManager,
-    private val prefsManager: PrefsManager,
-    private val countryList: List<CountryData>
+    private val prefsManager: PrefsManager
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
     val fullPhoneNumber = BehaviorSubject.createDefault("")
-    val phonePrefix = BehaviorSubject.createDefault("")
     val phoneCode = BehaviorSubject.createDefault("")
-
-    val countryDataInput = BehaviorSubject.createDefault(getInitialCountry())
-    val countryDataOutput: Observable<CountryData> = countryDataInput.mergeWith(phonePrefix
-        .skip(1)
-        .map { prefix ->
-            val country = countryList.findLast { it.phonePrefix == prefix }
-            country ?: CountryData.EMPTY
-        }
-        .distinctUntilChanged())
 
     private val _loadingState = BehaviorSubject.createDefault(false)
     val loadingState: Observable<Boolean> = _loadingState
@@ -75,13 +63,7 @@ class AuthActivityViewModel @Inject constructor(
         authRepository.resendCode(number)
     }
 
-    private fun getInitialCountry(): CountryData {
-        val countryCode = getUserCountryCode()
-        val country = countryList.find { it.code == countryCode }
-        return country ?: CountryData.EMPTY
-    }
-
-    private fun getUserCountryCode(): String? {
+    fun getUserCountryCode(): String? {
         val simCountry = telephonyManager.simCountryIso
         if (simCountry != null && simCountry.length == 2) {
             return simCountry.toUpperCase()
