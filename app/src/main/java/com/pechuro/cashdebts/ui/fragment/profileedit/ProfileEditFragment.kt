@@ -127,6 +127,8 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
 
     private fun setLoading(isLoading: Boolean) {
         button_save.setProgress(isLoading)
+        image_photo.isEnabled = !isLoading
+        fab_take_photo.isEnabled = !isLoading
     }
 
     private fun dispatchTakePictureFromCameraIntent() {
