@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.utils
 
+import android.telephony.TelephonyManager
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
@@ -25,4 +26,17 @@ inline fun FragmentManager.transaction(
             transaction.commit()
         }
     }
+}
+
+fun TelephonyManager.getUserCountryCode(): String? {
+    val simCountry = simCountryIso
+    if (simCountry != null && simCountry.length == 2) {
+        return simCountry.toUpperCase()
+    } else if (phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
+        val networkCountry = networkCountryIso
+        if (networkCountry != null && networkCountry.length == 2) {
+            return networkCountry.toUpperCase()
+        }
+    }
+    return null
 }

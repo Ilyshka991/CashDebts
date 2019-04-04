@@ -1,6 +1,5 @@
 package com.pechuro.cashdebts.ui.activity.auth
 
-import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.exception.AuthException
@@ -19,7 +18,6 @@ import javax.inject.Inject
 class AuthActivityViewModel @Inject constructor(
     private val authRepository: IAuthRepository,
     private val userRepository: IUserRepository,
-    private val telephonyManager: TelephonyManager,
     private val prefsManager: PrefsManager
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
@@ -61,19 +59,6 @@ class AuthActivityViewModel @Inject constructor(
             return
         }
         authRepository.resendCode(number)
-    }
-
-    fun getUserCountryCode(): String? {
-        val simCountry = telephonyManager.simCountryIso
-        if (simCountry != null && simCountry.length == 2) {
-            return simCountry.toUpperCase()
-        } else if (telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
-            val networkCountry = telephonyManager.networkCountryIso
-            if (networkCountry != null && networkCountry.length == 2) {
-                return networkCountry.toUpperCase()
-            }
-        }
-        return null
     }
 
     private fun setAuthEventListener() {

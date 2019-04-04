@@ -75,7 +75,39 @@ class PhoneNumberEditText @JvmOverloads constructor(
 
     fun getPhoneNumber() = textCode.text.toString() + textNumber.getEnteredText()
 
+    fun setPhoneNumber(number: String): Boolean {
+        val pattern = PHONE_REGEX.toRegex()
+        if (!pattern.matches(number)) return false
+
+        var countryData: CountryData? = null
+        for (i in 4 downTo 1) {
+            val possiblePrefix = number.slice(0..i)
+            val possibleData = countryList?.findLast { possiblePrefix == it.phonePrefix }
+            if (possibleData != null) {
+                countryData = possibleData
+                break
+            }
+        }
+
+        if (countryData == null) {
+            return false
+        } else {
+            this.countryData = countryData
+            val numberWithoutPrefix = number.removePrefix(countryData.phonePrefix)
+            textNumber.text.clear()
+            numberWithoutPrefix.forEach {
+                textNumber.text.append(it)
+            }
+        }
+
+        return true
+    }
+
     private fun moveCodeCursorAtTheEnd() {
         textCode.setSelection(textCode.text.length)
+    }
+
+    companion object {
+        private const val PHONE_REGEX = """\+[0-9]{3,}"""
     }
 }

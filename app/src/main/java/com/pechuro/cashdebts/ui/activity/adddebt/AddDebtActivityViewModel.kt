@@ -38,9 +38,6 @@ class AddDebtActivityViewModel @Inject constructor(
     fun setInitialData(isLocalDebt: Boolean) {
         if (!::debt.isInitialized) {
             debt = if (isLocalDebt) LocalDebtInfo() else RemoteDebtInfo()
-            debt.value.subscribe {
-                println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA $it")
-            }.addTo(compositeDisposable)
         }
     }
 
