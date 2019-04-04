@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.utils
 
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.chip.ChipGroup
@@ -21,7 +22,11 @@ fun Subject<String>.receiveQueryChangesFrom(view: SearchView) {
 
 fun Subject<Double>.receiveDecimalChangesFrom(view: EditText) {
     view.textChanges().skipInitialValue().map(CharSequence::toString).map {
-        it.toDoubleOrNull() ?: 0.0
+        try {
+            it.toDouble()
+        } catch (e: NumberFormatException) {
+            0.0
+        }
     }.subscribe(this)
 }
 
@@ -30,6 +35,7 @@ fun Subject<Date>.receiveDateChangesFrom(view: EditText, formatter: SimpleDateFo
 }
 
 fun Subject<Int>.receiveDebtRole(view: ChipGroup) {
+    view.findViewById<View>(view.checkedChipId).isClickable = false
     val listener = ChipGroup.OnCheckedChangeListener { _, id ->
         for (i in 0 until view.childCount) {
             val chip = view.getChildAt(i)
@@ -38,7 +44,7 @@ fun Subject<Int>.receiveDebtRole(view: ChipGroup) {
         val role = when (id) {
             R.id.chip_creditor -> DebtRole.CREDITOR
             R.id.chip_debtor -> DebtRole.DEBTOR
-            else -> throw IllegalArgumentException()
+            else -> DebtRole.CREDITOR
         }
         onNext(role)
     }

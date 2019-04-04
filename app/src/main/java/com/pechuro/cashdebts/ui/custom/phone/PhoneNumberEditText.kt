@@ -91,13 +91,13 @@ class PhoneNumberEditText @JvmOverloads constructor(
 
         if (countryData == null) {
             return false
-        } else {
-            this.countryData = countryData
-            val numberWithoutPrefix = number.removePrefix(countryData.phonePrefix)
-            textNumber.text.clear()
-            numberWithoutPrefix.forEach {
-                textNumber.text.append(it)
-            }
+        }
+
+        this.countryData = countryData
+        val numberWithoutPrefix = number.removePrefix(countryData.phonePrefix)
+        textNumber.text.clear()
+        numberWithoutPrefix.forEach {
+            textNumber.text.append(it)
         }
 
         return true
