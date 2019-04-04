@@ -26,6 +26,11 @@ class ProfileEditActivity : BaseFragmentActivity<ProfileEditActivityViewModel>()
         subscribeToEvents()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun subscribeToEvents() {
         EventBus.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
