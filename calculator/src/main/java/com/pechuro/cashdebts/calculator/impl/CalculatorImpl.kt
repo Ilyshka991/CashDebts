@@ -4,6 +4,7 @@ import com.pechuro.cashdebts.calculator.Calculator
 import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.calculator.Result.Error
 import com.pechuro.cashdebts.calculator.model.mutableStackOf
+import java.math.BigDecimal
 import javax.inject.Inject
 
 internal class CalculatorImpl @Inject constructor(
@@ -11,9 +12,11 @@ internal class CalculatorImpl @Inject constructor(
 ) : Calculator {
 
     override fun evaluate(expr: String): Result {
-        val stack = mutableStackOf<Double>()
+        val stack = mutableStackOf<BigDecimal>()
+
         val exprInPolishNotation = polishInterpreter.interpret(expr) ?: return Error
         val exprList = parse(exprInPolishNotation) ?: return Error
+
         exprList.forEach {
             try {
                 it.interpret(stack)
@@ -34,7 +37,14 @@ internal class CalculatorImpl @Inject constructor(
                     "-" -> MathMinus
                     "*" -> MathMultiply
                     "/" -> MathDivide
-                    else -> MathNumber(it.toDoubleOrNull() ?: return null)
+                    else -> {
+                        val number = try {
+                            BigDecimal(it)
+                        } catch (e: NumberFormatException) {
+                            return null
+                        }
+                        MathNumber(number)
+                    }
                 }
             )
         }
