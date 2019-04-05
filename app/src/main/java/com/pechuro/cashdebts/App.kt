@@ -23,7 +23,12 @@ class App : Application(), HasActivityInjector {
 
     private fun initDI() {
         val dataComponent = DaggerDataComponent.create()
-        appComponent = DaggerAppComponent.builder().application(this).dataComponent(dataComponent).build()
+        val calculatorComponent = DaggerCalculatorComponent.create()
+        appComponent = DaggerAppComponent.builder()
+            .application(this)
+            .dataComponent(dataComponent)
+            .calculatorComponent(calculatorComponent)
+            .build()
         appComponent.inject(this)
     }
 

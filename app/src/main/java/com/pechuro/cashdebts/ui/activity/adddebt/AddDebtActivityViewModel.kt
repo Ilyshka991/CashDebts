@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.calculator.Calculator
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
 import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class AddDebtActivityViewModel @Inject constructor(
     private val debtRepository: IDebtRepository,
     private val userRepository: IUserRepository,
-    private val connectivityListener: ConnectivityListener
+    private val connectivityListener: ConnectivityListener,
+    private val calculator: Calculator
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
     val isConnectionAvailable = BehaviorSubject.create<Boolean>()
@@ -29,6 +31,7 @@ class AddDebtActivityViewModel @Inject constructor(
 
     init {
         setConnectivityListener()
+        println("AAAAAAAAAAAAAAAAAAAAA ${calculator.evaluate("")}")
     }
 
     fun setInitialData(isLocalDebt: Boolean) {
