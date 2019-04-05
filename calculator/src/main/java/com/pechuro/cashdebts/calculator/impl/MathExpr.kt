@@ -32,6 +32,9 @@ internal object MathMultiply : MathExpr() {
 
 internal object MathDivide : MathExpr() {
     override fun interpret(stack: Stack<Double>) {
-        stack.push(1 / stack.pop() / stack.pop())
+        val second = stack.pop()
+        if (second == 0.0) throw IllegalArgumentException()
+        val first = stack.pop()
+        stack.push(first / second)
     }
 }

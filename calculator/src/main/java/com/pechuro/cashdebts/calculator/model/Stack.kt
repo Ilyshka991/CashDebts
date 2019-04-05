@@ -17,4 +17,4 @@ class Stack<T : Any> {
     fun peek() = values.peek()
 }
 
-fun <T : Any> emptyStackOf() = Stack<T>()
+fun <T : Any> mutableStackOf() = Stack<T>()
