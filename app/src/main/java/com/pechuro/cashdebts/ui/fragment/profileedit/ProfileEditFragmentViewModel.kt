@@ -2,9 +2,8 @@ package com.pechuro.cashdebts.ui.fragment.profileedit
 
 import android.net.Uri
 import androidx.core.net.toUri
-import com.pechuro.cashdebts.data.model.FirestoreUser
-import com.pechuro.cashdebts.data.repositories.IStorageRepository
-import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.data.data.repositories.IStorageRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.model.files.FileManager
 import com.pechuro.cashdebts.model.prefs.PrefsManager
@@ -84,7 +83,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
         }
 
         fun updateUser(photoUrl: String?): Completable {
-            val user = FirestoreUser(
+            val user = com.pechuro.cashdebts.data.data.model.FirestoreUser(
                 inputData.fields.firstName.requireValue,
                 inputData.fields.lastName.requireValue,
                 userRepository.currentUserBaseInformation.phoneNumber,
@@ -166,6 +165,6 @@ class ProfileEditFragmentViewModel @Inject constructor(
         object OnSaved : Events()
         object OnSaveError : Events()
         object OnLoadError : Events()
-        class OnUserLoaded(val user: FirestoreUser) : Events()
+        class OnUserLoaded(val user: com.pechuro.cashdebts.data.data.model.FirestoreUser) : Events()
     }
 }

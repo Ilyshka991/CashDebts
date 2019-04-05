@@ -2,14 +2,10 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.exception.FirestoreUserNotFoundException
-import com.pechuro.cashdebts.data.model.DebtRole.Companion.CREDITOR
-import com.pechuro.cashdebts.data.model.DebtRole.Companion.DEBTOR
-import com.pechuro.cashdebts.data.model.FirestoreDebtStatus
-import com.pechuro.cashdebts.data.model.FirestoreLocalDebt
-import com.pechuro.cashdebts.data.model.FirestoreRemoteDebt
-import com.pechuro.cashdebts.data.repositories.IDebtRepository
-import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
+import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
+import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
@@ -103,13 +99,13 @@ class AddDebtActivityViewModel @Inject constructor(
             else -> throw IllegalArgumentException()
         }
 
-        val sendingDebt = FirestoreRemoteDebt(
+        val sendingDebt = com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt(
             creditorUid,
             debtorUid,
             debt.value.requireValue,
             debt.description.requireValue,
             debt.date.requireValue,
-            FirestoreDebtStatus.NOT_SEND
+            com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.NOT_SEND
         )
 
         debtRepository.add(sendingDebt).subscribe({
@@ -121,7 +117,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     private fun addLocalDebt(debt: LocalDebtInfo) {
-        val sendingDebt = FirestoreLocalDebt(
+        val sendingDebt = com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt(
             userRepository.currentUserBaseInformation.uid,
             debt.name.requireValue,
             debt.value.requireValue,
@@ -147,7 +143,7 @@ class AddDebtActivityViewModel @Inject constructor(
             it.printStackTrace()
             command.onNext(Events.DismissProgress)
             when (it) {
-                is FirestoreUserNotFoundException -> command.onNext(Events.OnErrorUserNotExist)
+                is com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException -> command.onNext(Events.OnErrorUserNotExist)
                 else -> command.onNext(Events.OnError(R.string.add_debt_error_common))
             }
         }).addTo(compositeDisposable)

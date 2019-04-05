@@ -9,7 +9,6 @@ import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
@@ -113,7 +112,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
         viewModel.loadUser(!isFirstTime)
     }
 
-    private fun setInitialUser(user: FirestoreUser) {
+    private fun setInitialUser(user: com.pechuro.cashdebts.data.data.model.FirestoreUser) {
         with(user) {
             text_first_name.setText(firstName)
             text_last_name.setText(lastName)

@@ -42,7 +42,8 @@ dependencies {
     implementation glideDependencies.values()
     implementation rxBinding.values()
 
-    implementation project(path: ':data')
+    implementation project(':data')
+    implementation project(':calculator')
 }
 
 apply plugin: 'com.google.gms.google-services'

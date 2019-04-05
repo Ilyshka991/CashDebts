@@ -1,6 +1,6 @@
 package com.pechuro.cashdebts.ui.activity.main
 
-import com.pechuro.cashdebts.data.repositories.IAuthRepository
+import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import javax.inject.Inject

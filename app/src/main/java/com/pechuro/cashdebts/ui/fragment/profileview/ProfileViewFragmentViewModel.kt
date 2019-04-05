@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
-import com.pechuro.cashdebts.data.model.FirestoreUser
-import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import io.reactivex.Observable
@@ -15,8 +14,8 @@ class ProfileViewFragmentViewModel @Inject constructor(
 
     val loadingState = BehaviorSubject.create<LoadingState>()
 
-    private val _user = BehaviorSubject.create<FirestoreUser>()
-    val user: Observable<FirestoreUser> = _user
+    private val _user = BehaviorSubject.create<com.pechuro.cashdebts.data.data.model.FirestoreUser>()
+    val user: Observable<com.pechuro.cashdebts.data.data.model.FirestoreUser> = _user
 
     init {
         loadUser()

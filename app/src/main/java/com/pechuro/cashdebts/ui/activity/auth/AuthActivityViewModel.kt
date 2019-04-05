@@ -2,11 +2,8 @@ package com.pechuro.cashdebts.ui.activity.auth
 
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.exception.AuthException
-import com.pechuro.cashdebts.data.exception.AuthInvalidCredentialsException
-import com.pechuro.cashdebts.data.exception.AuthNotAvailableException
-import com.pechuro.cashdebts.data.repositories.IAuthRepository
-import com.pechuro.cashdebts.data.repositories.IUserRepository
+import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -72,11 +69,11 @@ class AuthActivityViewModel @Inject constructor(
         }.addTo(compositeDisposable)
     }
 
-    private fun onError(e: AuthException) {
+    private fun onError(e: com.pechuro.cashdebts.data.data.exception.AuthException) {
         _loadingState.onNext(false)
         val error = when (e) {
-            is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
-            is AuthNotAvailableException -> R.string.error_auth_too_many_requests
+            is com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
+            is com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException -> R.string.error_auth_too_many_requests
             else -> R.string.error_auth_common
         }
         command.onNext(Events.OnError(error))

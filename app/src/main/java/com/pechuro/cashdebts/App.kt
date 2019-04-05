@@ -2,9 +2,9 @@ package com.pechuro.cashdebts
 
 import android.app.Activity
 import android.app.Application
+import com.pechuro.cashdebts.data.di.component.DaggerDataComponent
 import com.pechuro.cashdebts.di.component.AppComponent
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
-import com.pechuro.cashdebts.di.component.DaggerDataComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject

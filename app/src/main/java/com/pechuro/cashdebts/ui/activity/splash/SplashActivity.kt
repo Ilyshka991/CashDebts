@@ -2,7 +2,7 @@ package com.pechuro.cashdebts.ui.activity.splash
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.pechuro.cashdebts.data.repositories.IAuthRepository
+import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import dagger.android.AndroidInjection

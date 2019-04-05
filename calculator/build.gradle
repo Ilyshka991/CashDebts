@@ -1,0 +1,14 @@
+apply plugin: 'java-library'
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+
+apply from: '../dependencies.gradle'
+apply from: '../configuration.gradle'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation kotlin
+    implementation daggerDependencies.dagger
+    kapt daggerProcessorDependencies.daggerProcessor
+}

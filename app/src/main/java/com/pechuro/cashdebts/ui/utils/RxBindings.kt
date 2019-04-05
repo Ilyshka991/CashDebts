@@ -4,10 +4,11 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.chip.ChipGroup.OnCheckedChangeListener
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.model.DebtRole
+import com.pechuro.cashdebts.data.data.model.DebtRole
 import io.reactivex.subjects.Subject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +37,7 @@ fun Subject<Date>.receiveDateChangesFrom(view: EditText, formatter: SimpleDateFo
 
 fun Subject<Int>.receiveDebtRole(view: ChipGroup) {
     view.findViewById<View>(view.checkedChipId).isClickable = false
-    val listener = ChipGroup.OnCheckedChangeListener { _, id ->
+    val listener = OnCheckedChangeListener { _, id ->
         for (i in 0 until view.childCount) {
             val chip = view.getChildAt(i)
             chip.isClickable = chip.id != id
