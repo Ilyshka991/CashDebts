@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialog
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.receiveDateChangesFrom
-import com.pechuro.cashdebts.ui.utils.receiveDecimalChangesFrom
 import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_info.*
@@ -55,15 +55,15 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun setViewListeners() {
-        with(viewModel.debt) {
-            value.receiveDecimalChangesFrom(text_value)
-            description.receiveTextChangesFrom(text_description)
-            date.receiveDateChangesFrom(text_date, dateFormatter)
+        with(viewModel) {
+            mathExpression.receiveTextChangesFrom(text_value)
+            debt.description.receiveTextChangesFrom(text_description)
+            debt.date.receiveDateChangesFrom(text_date, dateFormatter)
         }
         text_date.setOnClickListener {
             showDateTimePicker()
         }
-        
+
         text_description.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.save()
@@ -86,6 +86,16 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
                     onConnectionChanged(it)
                 }.addTo(weakCompositeDisposable)
             }
+            debtValue.subscribe {
+                text_sum.text = if (it.first) {
+                    ""
+                } else {
+                    when (val result = it.second) {
+                        is Result.Success -> getString(R.string.add_debt_msg_sum, result.result)
+                        is Result.Error -> getString(R.string.add_debt_msg_sum_error)
+                    }
+                }
+            }.addTo(weakCompositeDisposable)
         }
     }
 

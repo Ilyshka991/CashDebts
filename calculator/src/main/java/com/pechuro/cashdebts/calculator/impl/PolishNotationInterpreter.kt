@@ -72,7 +72,6 @@ internal class PolishNotationInterpreter @Inject constructor() {
     }
 
     private fun isValid(expr: String): Boolean {
-        println(expr)
         expr.forEachIndexed { index, char ->
             if ((index == 0 && char in OPERATORS) ||
                 (index == expr.lastIndex && char in OPERATORS) ||

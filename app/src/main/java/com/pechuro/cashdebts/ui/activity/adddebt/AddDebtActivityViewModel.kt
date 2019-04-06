@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.activity.adddebt
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Calculator
+import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
 import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
@@ -13,7 +14,10 @@ import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.requireValue
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -25,13 +29,31 @@ class AddDebtActivityViewModel @Inject constructor(
     private val calculator: Calculator
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
+
     val isConnectionAvailable = BehaviorSubject.create<Boolean>()
+    val mathExpression = BehaviorSubject.createDefault("0.0")
+
+    val debtValue: Observable<Pair<Boolean, Result>> by lazy {
+        mathExpression
+            .map { isNotMathExpression(it) to calculator.evaluate(it) }
+            .subscribeOn(Schedulers.computation())
+            .also { observable ->
+                observable
+                    .map {
+                        when (val result = it.second) {
+                            is Result.Success -> result.result.toDouble()
+                            is Result.Error -> 0.0
+                        }
+                    }
+                    .subscribe(debt.value)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 
     lateinit var debt: BaseDebtInfo
 
     init {
         setConnectivityListener()
-        println("AAAAAAAAAAAAAAAAAAAAA ${calculator.evaluate("")}")
     }
 
     fun setInitialData(isLocalDebt: Boolean) {
@@ -152,6 +174,8 @@ class AddDebtActivityViewModel @Inject constructor(
         }).addTo(compositeDisposable)
     }
 
+    private fun isNotMathExpression(expr: String) = expr.matches(NUMBER_REGEX)
+
     sealed class Events {
         object OnSaved : Events()
         class OpenInfo(val isInternetRequired: Boolean) : Events()
@@ -161,5 +185,9 @@ class AddDebtActivityViewModel @Inject constructor(
         object RestartWithLocalDebtFragment : Events()
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
+    }
+
+    companion object {
+        private val NUMBER_REGEX = "-?\\d+(\\.\\d+)?".toRegex()
     }
 }

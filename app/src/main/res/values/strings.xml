@@ -67,6 +67,8 @@
     <string name="add_debt_hint_value">Value</string>
     <string name="add_debt_hint_description">Description</string>
     <string name="add_debt_hint_date">Date</string>
+    <string name="add_debt_msg_sum">= %1$.2f</string>
+    <string name="add_debt_msg_sum_error">= ERROR</string>
 
     <string name="msg_success">Success</string>
 </resources>

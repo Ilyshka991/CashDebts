@@ -12,17 +12,26 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/add_debt_hint_value"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
+            android:digits="0123456789.+-*/()"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+            style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+            app:layout_constraintEnd_toStartOf="@+id/text_sum">
 
         <requestFocus/>
     </EditText>
+
+    <TextView
+            android:id="@+id/text_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_value"/>
 
     <EditText
             android:id="@+id/text_description"
@@ -35,7 +44,8 @@
             app:layout_constraintTop_toBottomOf="@+id/text_value"
             app:layout_constraintStart_toStartOf="@+id/text_value"
             style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
-            app:layout_constraintEnd_toEndOf="@+id/text_value"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
 
     <EditText
             android:id="@+id/text_date"
@@ -65,4 +75,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
