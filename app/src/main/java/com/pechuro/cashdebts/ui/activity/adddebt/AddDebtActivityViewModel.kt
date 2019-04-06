@@ -41,7 +41,7 @@ class AddDebtActivityViewModel @Inject constructor(
                 observable
                     .map {
                         when (val result = it.second) {
-                            is Result.Success -> result.result.toDouble()
+                            is Result.Success -> result.result
                             is Result.Error -> 0.0
                         }
                     }

@@ -14,5 +14,5 @@ abstract class BaseDebtInfo {
 
     abstract fun isValid(): Boolean
 
-    fun isInfoValid() = value.requireValue != 0.0
+    fun isInfoValid() = value.requireValue > 0.0
 }

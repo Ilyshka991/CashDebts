@@ -5,6 +5,7 @@ import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.calculator.Result.Error
 import com.pechuro.cashdebts.calculator.model.mutableStackOf
 import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 internal class CalculatorImpl @Inject constructor(
@@ -16,7 +17,6 @@ internal class CalculatorImpl @Inject constructor(
 
         val exprInPolishNotation = polishInterpreter.interpret(expr) ?: return Error
         val exprList = parse(exprInPolishNotation) ?: return Error
-
         exprList.forEach {
             try {
                 it.interpret(stack)
@@ -25,7 +25,8 @@ internal class CalculatorImpl @Inject constructor(
             }
         }
 
-        return Result.Success(stack.pop())
+        val result = stack.pop().setScale(2, RoundingMode.HALF_UP)
+        return Result.Success(result.toDouble())
     }
 
     private fun parse(exprInPolishNotation: String): List<MathExpr>? {

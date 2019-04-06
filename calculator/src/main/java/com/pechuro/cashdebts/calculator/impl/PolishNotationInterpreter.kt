@@ -75,7 +75,7 @@ internal class PolishNotationInterpreter @Inject constructor() {
         expr.forEachIndexed { index, char ->
             if ((index == 0 && char in OPERATORS) ||
                 (index == expr.lastIndex && char in OPERATORS) ||
-                (index != 0 && char in OPERATORS && expr[index - 1] in OPERATORS + PARENTHESES) ||
+                (index != 0 && char in OPERATORS && expr[index - 1] in "$OPERATORS(") ||
                 (index != expr.lastIndex && char in OPERATORS && expr[index + 1] == ')') ||
                 (index != expr.lastIndex && char.isDigit() && expr[index + 1] == '(')
             ) return false
