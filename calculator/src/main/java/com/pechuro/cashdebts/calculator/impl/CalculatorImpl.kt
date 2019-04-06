@@ -39,7 +39,7 @@ internal class CalculatorImpl @Inject constructor(
                     "/" -> MathDivide
                     else -> {
                         val number = try {
-                            BigDecimal(it)
+                            BigDecimal(it.replace('~', '-'))
                         } catch (e: NumberFormatException) {
                             return null
                         }

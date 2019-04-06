@@ -7,6 +7,8 @@ class Stack<T : Any> {
 
     val isEmpty: Boolean
         get() = values.isEmpty()
+    val isNotEmpty: Boolean
+        get() = !isEmpty
 
     fun push(value: T) {
         values.push(value)
