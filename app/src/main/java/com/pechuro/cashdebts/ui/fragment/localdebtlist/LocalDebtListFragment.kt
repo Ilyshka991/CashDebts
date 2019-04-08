@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
@@ -44,6 +45,12 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         fab_add.setOnClickListener {
             EventBus.publish(MainActivityEvent.OpenAddActivity(true))
         }
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) fab_add.hide() else fab_add.show()
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 
     private fun setEventListeners() {
@@ -55,9 +62,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.debtSource.subscribe {
-            println(it)
-        }.addTo(weakCompositeDisposable)
+        viewModel.debtSource.subscribe(adapter::update).addTo(weakCompositeDisposable)
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {

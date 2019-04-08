@@ -38,18 +38,21 @@ internal class DebtRepositoryImpl @Inject constructor(
     }
         .subscribeOn(Schedulers.io())
 
-    override fun getLocalDebtSource(): Observable<FirestoreLocalDebt> = Observable.create { emitter ->
+    override fun getLocalDebtSource() = Observable.create<List<FirestoreLocalDebt>> { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG)
             .whereEqualTo(
                 FirestoreStructure.LocalDebt.Structure.ownerUid,
                 userRepository.currentUserBaseInformation.uid
             )
             .addSnapshotListener { snapshot, exception ->
-                snapshot?.documents?.forEach {
-                    if (!emitter.isDisposed) {
-                        emitter.onNext(it.toObject(FirestoreLocalDebt::class.java)!!)
+                if (snapshot == null) return@addSnapshotListener
+                snapshot.documents
+                    .mapNotNull {
+                        it.toObject(FirestoreLocalDebt::class.java)
                     }
-                }
+                    .let {
+                        if (!emitter.isDisposed) emitter.onNext(it)
+                    }
             }
     }
 

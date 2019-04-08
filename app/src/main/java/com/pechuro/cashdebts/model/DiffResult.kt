@@ -1,8 +1,8 @@
-package com.pechuro.cashdebts.ui.fragment.countyselection.model
+package com.pechuro.cashdebts.model
 
 import androidx.recyclerview.widget.DiffUtil
 
-class SearchResult<E : Any>(
+class DiffResult<E : Any>(
     val diffResult: DiffUtil.DiffResult?,
     val dataList: List<E>
 )

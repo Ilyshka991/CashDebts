@@ -71,4 +71,5 @@
     <string name="add_debt_msg_sum_error">= ERROR</string>
 
     <string name="msg_success">Success</string>
+    <string name="item_local_debt_msg_empty">There are nothing</string>
 </resources>

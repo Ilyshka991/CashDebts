@@ -36,9 +36,7 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
     }
 
     private fun subscribeToData() {
-        viewModel.countriesListSource.subscribe {
-            adapter.updateCountries(it)
-        }.addTo(weakCompositeDisposable)
+        viewModel.countriesListSource.subscribe(adapter::updateCountries).addTo(weakCompositeDisposable)
     }
 
     companion object {

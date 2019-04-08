@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
-import com.pechuro.cashdebts.ui.fragment.countyselection.model.SearchResult
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.item_country.view.*
 
@@ -38,7 +38,7 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
     override fun onBindViewHolder(holder: BaseViewHolder<CountryData>, position: Int) =
         holder.onBind(countries[position])
 
-    fun updateCountries(result: SearchResult<CountryData>) {
+    fun updateCountries(result: DiffResult<CountryData>) {
         countries.clear()
         countries += result.dataList
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
