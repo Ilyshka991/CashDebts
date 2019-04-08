@@ -20,7 +20,7 @@ data class FirestoreRemoteDebt(
     val value: Double,
     val description: String?,
     val date: Date,
-    @com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus val status: Int
+    @FirestoreDebtStatus val status: Int
 )
 
 data class FirestoreLocalDebt(
@@ -29,8 +29,10 @@ data class FirestoreLocalDebt(
     val value: Double,
     val description: String?,
     val date: Date,
-    @com.pechuro.cashdebts.data.data.model.DebtRole val role: Int
-)
+    @DebtRole val role: Int
+) {
+    constructor() : this("", "", 0.0, null, Date(), DebtRole.CREDITOR)
+}
 
 @IntDef(
     NOT_SEND,

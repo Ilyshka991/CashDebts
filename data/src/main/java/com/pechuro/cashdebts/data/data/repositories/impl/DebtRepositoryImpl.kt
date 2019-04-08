@@ -3,7 +3,9 @@ package com.pechuro.cashdebts.data.data.repositories.impl
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
+import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.creditor
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.debtor
@@ -12,9 +14,13 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-internal class DebtRepositoryImpl @Inject constructor(private val store: FirebaseFirestore) : IDebtRepository {
+internal class DebtRepositoryImpl @Inject constructor(
+    private val store: FirebaseFirestore,
+    private val userRepository: IUserRepository
+) : IDebtRepository {
 
-    override fun getDataSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
+    //TODO: remake this
+    override fun getRemoteDebtSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .whereEqualTo(creditor, "")
             .addSnapshotListener(MetadataChanges.INCLUDE) { querySnapshot, e ->
@@ -31,6 +37,21 @@ internal class DebtRepositoryImpl @Inject constructor(private val store: Firebas
             }
     }
         .subscribeOn(Schedulers.io())
+
+    override fun getLocalDebtSource(): Observable<FirestoreLocalDebt> = Observable.create { emitter ->
+        store.collection(FirestoreStructure.LocalDebt.TAG)
+            .whereEqualTo(
+                FirestoreStructure.LocalDebt.Structure.ownerUid,
+                userRepository.currentUserBaseInformation.uid
+            )
+            .addSnapshotListener { snapshot, exception ->
+                snapshot?.documents?.forEach {
+                    if (!emitter.isDisposed) {
+                        emitter.onNext(it.toObject(FirestoreLocalDebt::class.java)!!)
+                    }
+                }
+            }
+    }
 
     override fun add(debt: com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt) = Completable.create { emitter ->
         FirebaseFirestore.getInstance().collection(FirestoreStructure.RemoteDebt.TAG)

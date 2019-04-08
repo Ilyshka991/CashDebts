@@ -1,8 +1,10 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist.data
 
+import java.util.*
+
 data class LocalDebt(
-    val id: String,
-    val person: String,
+    val personName: String,
     val value: Double,
-    val description: String?
+    val description: String?,
+    val date: Date
 )

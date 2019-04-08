@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.activity.auth
 
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.data.exception.AuthException
 import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.prefs.PrefsManager
@@ -69,7 +70,7 @@ class AuthActivityViewModel @Inject constructor(
         }.addTo(compositeDisposable)
     }
 
-    private fun onError(e: com.pechuro.cashdebts.data.data.exception.AuthException) {
+    private fun onError(e: AuthException) {
         _loadingState.onNext(false)
         val error = when (e) {
             is com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException -> R.string.error_auth_phone_validation

@@ -25,8 +25,13 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupView()
-        setListeners()
+        setViewListeners()
         setEventListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setViewModelListeners()
     }
 
     private fun setupView() {
@@ -35,7 +40,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         }
     }
 
-    private fun setListeners() {
+    private fun setViewListeners() {
         fab_add.setOnClickListener {
             EventBus.publish(MainActivityEvent.OpenAddActivity(true))
         }
@@ -47,6 +52,12 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
                 is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
             }
         }.addTo(strongCompositeDisposable)
+    }
+
+    private fun setViewModelListeners() {
+        viewModel.debtSource.subscribe {
+            println(it)
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {

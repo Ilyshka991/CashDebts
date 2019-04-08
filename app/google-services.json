@@ -31,8 +31,12 @@
           }
         },
         {
-          "client_id": "1064028971909-79475kgoer6eko5pjkmb0jrkgs5lncln.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "1064028971909-qcmadqfhu7s9shic2mrv7djl03k1kh4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pechuro.cashdebts",
+            "certificate_hash": "1ff5a39c27b4a3f4afae25a774b4b9675ec771a1"
+          }
         }
       ],
       "api_key": [
@@ -41,20 +45,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1064028971909-79475kgoer6eko5pjkmb0jrkgs5lncln.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
