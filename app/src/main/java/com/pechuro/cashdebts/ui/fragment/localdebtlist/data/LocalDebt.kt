@@ -8,7 +8,8 @@ data class LocalDebt(
     val value: Double,
     val description: String?,
     val date: Date,
-    @DebtRole val role: Int
+    @DebtRole val role: Int,
+    var isExpanded: Boolean = false
 ) {
     fun isEmpty() = personName.isEmpty() && value == 0.0
 

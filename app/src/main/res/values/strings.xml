@@ -72,4 +72,6 @@
 
     <string name="msg_success">Success</string>
     <string name="item_local_debt_msg_empty">There are nothing</string>
+    <string name="item_local_debt_msg_debtor">I owe: %1$.2f</string>
+    <string name="item_local_debt_msg_creditor">Owe me: %1.2f</string>
 </resources>
