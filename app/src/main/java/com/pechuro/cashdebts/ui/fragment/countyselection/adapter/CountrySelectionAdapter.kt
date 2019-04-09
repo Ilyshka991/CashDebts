@@ -36,7 +36,7 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
     override fun getItemCount() = countries.size
 
     override fun onBindViewHolder(holder: BaseViewHolder<CountryData>, position: Int) =
-        holder.onBind(countries[position])
+        holder.onBind(countries[position], position)
 
     fun updateCountries(result: DiffResult<CountryData>) {
         countries.clear()
@@ -45,7 +45,7 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
     }
 
     private class ViewHolder(private val view: View) : BaseViewHolder<CountryData>(view) {
-        override fun onBind(data: CountryData) {
+        override fun onBind(data: CountryData, position: Int) {
             view.apply {
                 text_country_name.text = data.name
                 text_country_code.text = data.phonePrefix
@@ -57,7 +57,7 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
     }
 
     private class EmptyViewHolder(view: View) : BaseViewHolder<CountryData>(view) {
-        override fun onBind(data: CountryData) {}
+        override fun onBind(data: CountryData, position: Int) {}
     }
 
     companion object ViewTypes {

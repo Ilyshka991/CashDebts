@@ -18,11 +18,17 @@ class RemoteDebtListAdapter : RecyclerView.Adapter<BaseViewHolder<RemoteDebt>>()
 
     override fun getItemCount() = debts.size
 
-    override fun onBindViewHolder(holder: BaseViewHolder<RemoteDebt>, position: Int) = holder.onBind(debts[position])
+    override fun onBindViewHolder(holder: BaseViewHolder<RemoteDebt>, position: Int) = holder.onBind(
+        debts[position],
+        position
+    )
 
 
     class ViewHolder(view: View) : BaseViewHolder<RemoteDebt>(view) {
-        override fun onBind(data: RemoteDebt) {
+        override fun onBind(
+            data: RemoteDebt,
+            position: Int
+        ) {
         }
     }
 }

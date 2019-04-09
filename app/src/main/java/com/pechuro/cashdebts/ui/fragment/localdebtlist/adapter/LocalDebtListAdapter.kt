@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class LocalDebtListAdapter @Inject constructor(private val dateFormatter: SimpleDateFormat) :
     RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {
-    private val debts = mutableListOf<LocalDebt>()
+    private var debts: List<LocalDebt> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
         VIEW_TYPE_COMMON -> {
@@ -38,21 +38,15 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) =
-        holder.onBind(debts[position])
+        holder.onBind(debts[position], position)
 
     fun update(result: DiffResult<LocalDebt>) {
-        debts.clear()
-        debts += result.dataList
+        debts = result.dataList
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
-    private fun updateItem(itemData: LocalDebt) {
-        val index = debts.indexOf(itemData)
-        notifyItemChanged(index)
-    }
-
     inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
-        override fun onBind(data: LocalDebt) {
+        override fun onBind(data: LocalDebt, position: Int) {
             view.apply {
                 text_debtor.text = data.personName
 
@@ -67,23 +61,25 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 text_description.apply {
                     isVisible = data.isExpanded
                     if (data.description.isNullOrEmpty()) isVisible = false else text = data.description
-
                 }
                 text_date.apply {
                     text = dateFormatter.format(data.date)
+                    println(data.isExpanded)
                     isVisible = data.isExpanded
                 }
 
                 setOnClickListener {
+                    println(data.isExpanded)
                     data.isExpanded = !data.isExpanded
-                    updateItem(data)
+                    println(data.isExpanded)
+                    notifyItemChanged(position)
                 }
             }
         }
     }
 
     class EmptyViewHolder(view: View) : BaseViewHolder<LocalDebt>(view) {
-        override fun onBind(data: LocalDebt) {}
+        override fun onBind(data: LocalDebt, position: Int) {}
     }
 
     companion object ViewTypes {

@@ -5,12 +5,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="4dp">
+        app:cardElevation="0dp"
+        app:cardCornerRadius="8dp"
+        app:contentPadding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp">
+            android:layout_height="match_parent">
 
         <TextView
                 android:id="@+id/text_debtor"
