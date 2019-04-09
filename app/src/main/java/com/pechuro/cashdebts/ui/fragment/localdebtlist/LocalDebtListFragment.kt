@@ -62,7 +62,10 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.debtSource.subscribe(adapter::update).addTo(weakCompositeDisposable)
+        viewModel.debtSource.subscribe {
+            adapter.update(it)
+        }.addTo(weakCompositeDisposable)
+
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {

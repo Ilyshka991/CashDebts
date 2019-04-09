@@ -46,7 +46,7 @@ abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(layoutId, container, false)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         return view
     }
 

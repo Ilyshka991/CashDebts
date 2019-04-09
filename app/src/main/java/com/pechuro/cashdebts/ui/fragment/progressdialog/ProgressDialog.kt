@@ -15,7 +15,7 @@ class ProgressDialog : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dialog.apply {
+        dialog?.apply {
             window?.setBackgroundDrawableResource(android.R.color.transparent)
             val size = resources.getDimensionPixelSize(R.dimen.progress_dialog_size)
             window?.setLayout(size, size)

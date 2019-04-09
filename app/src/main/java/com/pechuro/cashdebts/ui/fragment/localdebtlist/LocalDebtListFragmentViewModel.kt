@@ -39,5 +39,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
             diffCallback.oldList = it
             DiffResult(diffResult, it)
         }
+        .replay(1)
+        .autoConnect()
         .observeOn(AndroidSchedulers.mainThread())
 }

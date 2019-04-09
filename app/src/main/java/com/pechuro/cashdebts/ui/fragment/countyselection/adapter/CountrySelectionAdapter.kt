@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_country.view.*
 
 class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
 
-    private val countries = mutableListOf<CountryData>()
+    private var countries = emptyList<CountryData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CountryData> = when (viewType) {
         VIEW_TYPE_EMPTY -> {
@@ -36,16 +36,15 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
     override fun getItemCount() = countries.size
 
     override fun onBindViewHolder(holder: BaseViewHolder<CountryData>, position: Int) =
-        holder.onBind(countries[position], position)
+        holder.onBind(countries[position])
 
     fun updateCountries(result: DiffResult<CountryData>) {
-        countries.clear()
-        countries += result.dataList
+        countries = result.dataList
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
     private class ViewHolder(private val view: View) : BaseViewHolder<CountryData>(view) {
-        override fun onBind(data: CountryData, position: Int) {
+        override fun onBind(data: CountryData) {
             view.apply {
                 text_country_name.text = data.name
                 text_country_code.text = data.phonePrefix
@@ -57,7 +56,7 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
     }
 
     private class EmptyViewHolder(view: View) : BaseViewHolder<CountryData>(view) {
-        override fun onBind(data: CountryData, position: Int) {}
+        override fun onBind(data: CountryData) {}
     }
 
     companion object ViewTypes {

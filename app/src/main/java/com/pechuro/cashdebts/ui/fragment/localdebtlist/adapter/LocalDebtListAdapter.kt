@@ -18,6 +18,11 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {
     private var debts: List<LocalDebt> = emptyList()
 
+    private val onClickListener = View.OnClickListener {
+        val viewHolder = it.tag as ViewHolder
+        viewHolder.isExpanded = !viewHolder.isExpanded
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
         VIEW_TYPE_COMMON -> {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_local_debt, parent, false)
@@ -38,7 +43,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) =
-        holder.onBind(debts[position], position)
+        holder.onBind(debts[position])
 
     fun update(result: DiffResult<LocalDebt>) {
         debts = result.dataList
@@ -46,7 +51,14 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 
     inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
-        override fun onBind(data: LocalDebt, position: Int) {
+        var isExpanded = false
+            set(value) {
+                field = value
+                view.text_description.isVisible = if (view.text_description.text.isNullOrEmpty()) false else value
+                view.text_date.isVisible = value
+            }
+
+        override fun onBind(data: LocalDebt) {
             view.apply {
                 text_debtor.text = data.personName
 
@@ -58,28 +70,19 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 val textValue = view.context.getString(textValueStringRes, data.value)
                 text_value.text = textValue
 
-                text_description.apply {
-                    isVisible = data.isExpanded
-                    if (data.description.isNullOrEmpty()) isVisible = false else text = data.description
-                }
-                text_date.apply {
-                    text = dateFormatter.format(data.date)
-                    println(data.isExpanded)
-                    isVisible = data.isExpanded
-                }
+                text_description.text = data.description
 
-                setOnClickListener {
-                    println(data.isExpanded)
-                    data.isExpanded = !data.isExpanded
-                    println(data.isExpanded)
-                    notifyItemChanged(position)
-                }
+                text_date.text = dateFormatter.format(data.date)
+
+                view.tag = this@ViewHolder
+                isExpanded = false
+                setOnClickListener(onClickListener)
             }
         }
     }
 
     class EmptyViewHolder(view: View) : BaseViewHolder<LocalDebt>(view) {
-        override fun onBind(data: LocalDebt, position: Int) {}
+        override fun onBind(data: LocalDebt) {}
     }
 
     companion object ViewTypes {

@@ -33,9 +33,9 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentAc
         return true
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putBoolean(BUNDLE_IS_BACK_ALLOWED, isBackAllowed)
+        outState.putBoolean(BUNDLE_IS_BACK_ALLOWED, isBackAllowed)
     }
 
     final override fun <V : BaseViewModel> showFragment(

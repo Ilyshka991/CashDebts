@@ -69,8 +69,7 @@ interface AppActivitiesModule {
 
     @ActivityScope
     @ContributesAndroidInjector(
-        modules = [CountrySelectionFragmentProvider::class,
-            AuthActivityModule::class]
+        modules = [CountrySelectionFragmentProvider::class]
     )
     fun bindCountrySelect(): CountrySelectionActivity
 }
