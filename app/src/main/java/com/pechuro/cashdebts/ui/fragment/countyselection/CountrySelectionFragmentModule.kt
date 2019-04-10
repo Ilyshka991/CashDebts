@@ -16,6 +16,6 @@ class CountrySelectionFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideLayoutManager(fragment: CountrySelectionFragment) =
+    fun provideLayoutManager(fragment: CountrySelectionFragment): RecyclerView.LayoutManager =
         LinearLayoutManager(fragment.context, RecyclerView.VERTICAL, false)
 }

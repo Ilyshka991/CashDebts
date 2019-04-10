@@ -2,21 +2,20 @@ package com.pechuro.cashdebts.ui.fragment.countyselection
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
 import com.pechuro.cashdebts.ui.utils.receiveQueryChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_country_select.*
-import kotlinx.android.synthetic.main.fragment_country_select.view.*
 import javax.inject.Inject
 
 class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>() {
     @Inject
     protected lateinit var adapter: CountrySelectionAdapter
     @Inject
-    protected lateinit var layoutManager: LinearLayoutManager
+    protected lateinit var layoutManager: RecyclerView.LayoutManager
 
     override val layoutId: Int
         get() = R.layout.fragment_country_select
@@ -34,17 +33,18 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
     }
 
     private fun setupView() {
-        if (view == null) {
-            view!!.recycler.apply {
-                layoutManager = this@CountrySelectionFragment.layoutManager
-                adapter = this@CountrySelectionFragment.adapter
-            }
+        recycler.apply {
+            layoutManager = this@CountrySelectionFragment.layoutManager
+            adapter = this@CountrySelectionFragment.adapter
         }
         viewModel.searchQuery.receiveQueryChangesFrom(search)
     }
 
     private fun subscribeToData() {
-        viewModel.countriesListSource.subscribe(adapter::updateCountries).addTo(weakCompositeDisposable)
+        viewModel.countriesListSource.apply {
+            subscribe(adapter::updateCountries).addTo(weakCompositeDisposable)
+            connect()
+        }
     }
 
     companion object {

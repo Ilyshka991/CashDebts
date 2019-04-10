@@ -18,7 +18,7 @@ fun Subject<String>.receiveTextChangesFrom(view: EditText) {
 }
 
 fun Subject<String>.receiveQueryChangesFrom(view: SearchView) {
-    view.queryTextChanges().map(CharSequence::toString).subscribe(this)
+    view.queryTextChanges().skipInitialValue().skip(1).map(CharSequence::toString).subscribe(this)
 }
 
 fun Subject<Double>.receiveDecimalChangesFrom(view: EditText) {
