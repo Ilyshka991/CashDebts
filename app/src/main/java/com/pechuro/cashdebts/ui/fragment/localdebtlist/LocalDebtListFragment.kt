@@ -62,10 +62,10 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.debtSource.subscribe {
-            adapter.update(it)
-        }.addTo(weakCompositeDisposable)
-
+        viewModel.debtSource.apply {
+            subscribe(adapter::update).addTo(weakCompositeDisposable)
+            connect()
+        }
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {
@@ -78,9 +78,6 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     companion object {
         private const val SNACKBAR_SHOW_DELAY = 250L
 
-        fun newInstance() = LocalDebtListFragment().apply {
-            arguments = Bundle().apply {
-            }
-        }
+        fun newInstance() = LocalDebtListFragment()
     }
 }

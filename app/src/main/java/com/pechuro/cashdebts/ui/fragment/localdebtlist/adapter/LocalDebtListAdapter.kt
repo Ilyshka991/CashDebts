@@ -19,8 +19,9 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     private var debts: List<LocalDebt> = emptyList()
 
     private val onClickListener = View.OnClickListener {
-        val viewHolder = it.tag as ViewHolder
-        viewHolder.isExpanded = !viewHolder.isExpanded
+        val itemInfo = it.tag as ItemInfo
+        itemInfo.data.isExpanded = !itemInfo.data.isExpanded
+        updateItem(itemInfo.position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
@@ -50,14 +51,11 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
-    inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
-        var isExpanded = false
-            set(value) {
-                field = value
-                view.text_description.isVisible = if (view.text_description.text.isNullOrEmpty()) false else value
-                view.text_date.isVisible = value
-            }
+    private fun updateItem(position: Int) {
+        notifyItemChanged(position)
+    }
 
+    inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
         override fun onBind(data: LocalDebt) {
             view.apply {
                 text_debtor.text = data.personName
@@ -70,12 +68,18 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 val textValue = view.context.getString(textValueStringRes, data.value)
                 text_value.text = textValue
 
-                text_description.text = data.description
+                text_description.apply {
+                    isVisible = data.isExpanded
+                    if (data.description.isNullOrEmpty()) isVisible = false else text = data.description
 
-                text_date.text = dateFormatter.format(data.date)
+                }
 
-                view.tag = this@ViewHolder
-                isExpanded = false
+                text_date.apply {
+                    text = dateFormatter.format(data.date)
+                    isVisible = data.isExpanded
+                }
+
+                itemView.tag = ItemInfo(data, adapterPosition)
                 setOnClickListener(onClickListener)
             }
         }
@@ -90,3 +94,5 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         private const val VIEW_TYPE_EMPTY = 2
     }
 }
+
+private data class ItemInfo(val data: LocalDebt, val position: Int)
