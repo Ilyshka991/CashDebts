@@ -59,13 +59,13 @@ class ItemSwipeToDeleteCallback @Inject constructor() :
         }
 
         val iconMargin = (itemView.height - icon.intrinsicHeight) / 2
-        val iconTop = itemView.top + (itemView.height - icon.intrinsicHeight) / 2
+        val iconTop = itemView.top + iconMargin
         val iconBottom = iconTop + icon.intrinsicHeight
 
         when {
             dX > 0 -> {
-                val iconLeft = itemView.left + iconMargin + icon.intrinsicWidth
-                val iconRight = itemView.left + iconMargin
+                val iconLeft = itemView.left + iconMargin
+                val iconRight = iconLeft + icon.intrinsicWidth
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
                 backgroundColor.setBounds(
