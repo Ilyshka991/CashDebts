@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
@@ -16,7 +17,9 @@ import javax.inject.Inject
 
 class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     @Inject
-    lateinit var adapter: LocalDebtListAdapter
+    protected lateinit var adapter: LocalDebtListAdapter
+    @Inject
+    protected lateinit var swipeToDeleteHelper: ItemTouchHelper
 
     override val layoutId: Int
         get() = R.layout.fragment_local_debt_list
@@ -39,6 +42,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         recycler.apply {
             adapter = this@LocalDebtListFragment.adapter
         }
+        swipeToDeleteHelper.attachToRecyclerView(recycler)
     }
 
     private fun setViewListeners() {
