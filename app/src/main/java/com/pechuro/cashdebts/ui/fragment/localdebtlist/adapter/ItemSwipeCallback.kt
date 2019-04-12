@@ -7,11 +7,18 @@ import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.ui.base.BaseItemTouchCallback
+import com.pechuro.cashdebts.ui.utils.px
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
+class ItemSwipeCallback @Inject constructor() :
+    BaseItemTouchCallback<ItemSwipeCallback.SwipeAction>(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+    private val _actionEmitter = PublishSubject.create<SwipeAction>()
 
-class ItemSwipeToDeleteCallback @Inject constructor() :
-    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+    override val actionEmitter: Observable<SwipeAction>
+        get() = _actionEmitter
 
     override fun onMove(
         recyclerView: RecyclerView,
@@ -21,12 +28,8 @@ class ItemSwipeToDeleteCallback @Inject constructor() :
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.RIGHT -> {
-
-            }
-            ItemTouchHelper.LEFT -> {
-
-            }
+            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.SwipedToRight(viewHolder.adapterPosition))
+            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToLeft(viewHolder.adapterPosition))
         }
     }
 
@@ -42,7 +45,7 @@ class ItemSwipeToDeleteCallback @Inject constructor() :
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
         val itemView = viewHolder.itemView
-        val backgroundCornerOffset = 20
+        val backgroundCornerOffset = 10.px
 
         val icon: Drawable
         val backgroundColor: ColorDrawable
@@ -58,13 +61,14 @@ class ItemSwipeToDeleteCallback @Inject constructor() :
             else -> throw IllegalArgumentException()
         }
 
-        val iconMargin = (itemView.height - icon.intrinsicHeight) / 2
-        val iconTop = itemView.top + iconMargin
+
+        val iconTop = itemView.top + ((itemView.height - icon.intrinsicHeight) / 2)
         val iconBottom = iconTop + icon.intrinsicHeight
+        val iconPadding = 16.px
 
         when {
             dX > 0 -> {
-                val iconLeft = itemView.left + iconMargin
+                val iconLeft = itemView.left + iconPadding
                 val iconRight = iconLeft + icon.intrinsicWidth
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
@@ -74,8 +78,8 @@ class ItemSwipeToDeleteCallback @Inject constructor() :
                 )
             }
             dX < 0 -> {
-                val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
-                val iconRight = itemView.right - iconMargin
+                val iconLeft = itemView.right - iconPadding - icon.intrinsicWidth
+                val iconRight = itemView.right - iconPadding
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
                 backgroundColor.setBounds(
@@ -88,5 +92,10 @@ class ItemSwipeToDeleteCallback @Inject constructor() :
 
         backgroundColor.draw(canvas)
         icon.draw(canvas)
+    }
+
+    sealed class SwipeAction : BaseItemTouchCallback.TouchActions() {
+        class SwipedToRight(val position: Int) : SwipeAction()
+        class SwipedToLeft(val position: Int) : SwipeAction()
     }
 }

@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.utils
 
+import android.content.res.Resources
 import android.telephony.TelephonyManager
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -40,3 +41,6 @@ fun TelephonyManager.getUserCountryCode(): String? {
     }
     return null
 }
+
+val Int.px: Int
+    get() = Math.round(this * Resources.getSystem().displayMetrics.density)

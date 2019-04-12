@@ -2,13 +2,14 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import android.os.Bundle
 import androidx.annotation.StringRes
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.base.ItemTouchHelper
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.ItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
@@ -19,7 +20,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     @Inject
     protected lateinit var adapter: LocalDebtListAdapter
     @Inject
-    protected lateinit var swipeToDeleteHelper: ItemTouchHelper
+    protected lateinit var swipeToDeleteHelper: ItemTouchHelper<ItemSwipeCallback.SwipeAction>
 
     override val layoutId: Int
         get() = R.layout.fragment_local_debt_list
@@ -43,6 +44,16 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
             adapter = this@LocalDebtListFragment.adapter
         }
         swipeToDeleteHelper.attachToRecyclerView(recycler)
+        swipeToDeleteHelper.actionEmitter.subscribe {
+            when (it) {
+                is ItemSwipeCallback.SwipeAction.SwipedToRight -> {
+
+                }
+                is ItemSwipeCallback.SwipeAction.SwipedToLeft -> {
+
+                }
+            }
+        }.addTo(strongCompositeDisposable)
     }
 
     private fun setViewListeners() {

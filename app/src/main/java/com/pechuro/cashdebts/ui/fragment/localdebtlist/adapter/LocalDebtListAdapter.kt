@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class LocalDebtListAdapter @Inject constructor(private val dateFormatter: SimpleDateFormat) :
     RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {
-    private var debts: List<LocalDebt> = emptyList()
+    private var debtList: List<LocalDebt> = emptyList()
 
     private val onClickListener = View.OnClickListener {
         val itemInfo = it.tag as ItemInfo
@@ -36,18 +36,21 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         else -> throw IllegalArgumentException()
     }
 
-    override fun getItemCount() = debts.size
+    override fun getItemCount() = debtList.size
 
     override fun getItemViewType(position: Int) = when {
-        debts[position].isEmpty() -> VIEW_TYPE_EMPTY
+        debtList[position].isEmpty() -> VIEW_TYPE_EMPTY
         else -> VIEW_TYPE_COMMON
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) =
-        holder.onBind(debts[position])
+        holder.onBind(debtList[position])
 
     fun update(result: DiffResult<LocalDebt>) {
-        debts = result.dataList
+        if (debtList === result.dataList) {
+            return
+        }
+        debtList = result.dataList
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
@@ -71,7 +74,6 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 text_description.apply {
                     isVisible = data.isExpanded
                     if (data.description.isNullOrEmpty()) isVisible = false else text = data.description
-
                 }
 
                 text_date.apply {
