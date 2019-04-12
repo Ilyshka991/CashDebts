@@ -19,6 +19,8 @@ class LocalDebtListFragmentViewModel @Inject constructor(
     private val diffCallback: LocalDebtDiffCallback
 ) : BaseViewModel() {
 
+    private var previousDeletedDebt: LocalDebt? = null
+
     val debtSource = debtRepository.getLocalDebtSource()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.computation())
@@ -57,12 +59,17 @@ class LocalDebtListFragmentViewModel @Inject constructor(
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
 
-    fun deleteDebt(id: String) {
-        debtRepository.deleteLocalDebt(id).subscribe().addTo(compositeDisposable)
+    init {
+        debtSource.connect().addTo(compositeDisposable)
     }
 
-    fun restoreDebt(debt: LocalDebt) {
-        val firestoreDebt = with(debt) {
+    fun deleteDebt(debt: LocalDebt) {
+        previousDeletedDebt = debt
+        debtRepository.deleteLocalDebt(debt.id).subscribe().addTo(compositeDisposable)
+    }
+
+    fun restoreDebt() {
+        val firestoreDebt = with(previousDeletedDebt!!) {
             FirestoreLocalDebt(
                 userRepository.currentUserBaseInformation.uid,
                 personName,
@@ -72,6 +79,6 @@ class LocalDebtListFragmentViewModel @Inject constructor(
                 role
             )
         }
-        debtRepository.add(firestoreDebt, debt.id).subscribe().addTo(compositeDisposable)
+        debtRepository.add(firestoreDebt, previousDeletedDebt!!.id).subscribe().addTo(compositeDisposable)
     }
 }

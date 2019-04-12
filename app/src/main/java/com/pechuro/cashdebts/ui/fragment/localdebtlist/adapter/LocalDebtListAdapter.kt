@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class LocalDebtListAdapter @Inject constructor(private val dateFormatter: SimpleDateFormat) :
     RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {
-    private val debtList = mutableListOf<LocalDebt>()
+    private var debtList = emptyList<LocalDebt>()
 
     private val onClickListener = View.OnClickListener {
         val itemInfo = it.tag as ItemInfo
@@ -43,24 +43,17 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         else -> VIEW_TYPE_COMMON
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) =
-        holder.onBind(debtList[position])
+    override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) = holder.onBind(debtList[position])
 
     fun update(result: DiffResult<LocalDebt>) {
-        if (debtList == result.dataList) {
+        if (debtList === result.dataList) {
             return
         }
-        debtList.clear()
-        debtList.addAll(result.dataList)
+        debtList = result.dataList
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
     fun getItemByPosition(position: Int) = debtList[position]
-
-    fun deleteItem(position: Int) {
-        debtList.removeAt(position)
-        notifyItemRemoved(position)
-    }
 
     private fun updateItem(position: Int) {
         notifyItemChanged(position)
