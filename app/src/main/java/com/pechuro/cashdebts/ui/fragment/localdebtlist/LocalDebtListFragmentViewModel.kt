@@ -1,25 +1,40 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import androidx.recyclerview.widget.DiffUtil
+import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class LocalDebtListFragmentViewModel @Inject constructor(
     private val debtRepository: IDebtRepository,
+    private val userRepository: IUserRepository,
     private val diffCallback: LocalDebtDiffCallback
 ) : BaseViewModel() {
 
     val debtSource = debtRepository.getLocalDebtSource()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.computation())
-        .map {
-            it.map { LocalDebt(it.name, it.value, it.description, it.date, it.role) }
+        .map { map ->
+            map
+                .toList()
+                .map {
+                    LocalDebt(
+                        it.first,
+                        it.second.name,
+                        it.second.value,
+                        it.second.description,
+                        it.second.date,
+                        it.second.role
+                    )
+                }
         }
         .map {
             val resultList = mutableListOf<LocalDebt>()
@@ -41,4 +56,22 @@ class LocalDebtListFragmentViewModel @Inject constructor(
         }
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
+
+    fun deleteDebt(id: String) {
+        debtRepository.deleteLocalDebt(id).subscribe().addTo(compositeDisposable)
+    }
+
+    fun restoreDebt(debt: LocalDebt) {
+        val firestoreDebt = with(debt) {
+            FirestoreLocalDebt(
+                userRepository.currentUserBaseInformation.uid,
+                personName,
+                value,
+                description,
+                date,
+                role
+            )
+        }
+        debtRepository.add(firestoreDebt, debt.id).subscribe().addTo(compositeDisposable)
+    }
 }

@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.ItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_local_debt_list.*
@@ -46,10 +47,8 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         swipeToDeleteHelper.attachToRecyclerView(recycler)
         swipeToDeleteHelper.actionEmitter.subscribe {
             when (it) {
-                is ItemSwipeCallback.SwipeAction.SwipedToRight -> {
-
-                }
-                is ItemSwipeCallback.SwipeAction.SwipedToLeft -> {
+                is ItemSwipeCallback.SwipeAction.SwipedToDelete -> deleteDebt(it.position)
+                is ItemSwipeCallback.SwipeAction.SwipedToComplete -> {
 
                 }
             }
@@ -83,11 +82,26 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         }
     }
 
+    private fun deleteDebt(position: Int) {
+        val item = adapter.getItemByPosition(position)
+        adapter.deleteItem(position)
+        showUndoDeletionSnackbar(item)
+        viewModel.deleteDebt(item.id)
+    }
+
     private fun showSnackbar(@StringRes msgId: Int) {
         coordinator.postDelayed(
             { Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show() },
             SNACKBAR_SHOW_DELAY
         )
+    }
+
+    private fun showUndoDeletionSnackbar(debt: LocalDebt) {
+        Snackbar.make(coordinator, R.string.msg_deleted, Snackbar.LENGTH_LONG)
+            .setAction(R.string.action_undo) {
+                viewModel.restoreDebt(debt)
+            }
+            .show()
     }
 
     companion object {

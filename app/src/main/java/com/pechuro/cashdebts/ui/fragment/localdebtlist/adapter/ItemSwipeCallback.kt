@@ -28,8 +28,8 @@ class ItemSwipeCallback @Inject constructor() :
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.SwipedToRight(viewHolder.adapterPosition))
-            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToLeft(viewHolder.adapterPosition))
+            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.SwipedToDelete(viewHolder.adapterPosition))
+            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToComplete(viewHolder.adapterPosition))
         }
     }
 
@@ -60,7 +60,6 @@ class ItemSwipeCallback @Inject constructor() :
             }
             else -> throw IllegalArgumentException()
         }
-
 
         val iconTop = itemView.top + ((itemView.height - icon.intrinsicHeight) / 2)
         val iconBottom = iconTop + icon.intrinsicHeight
@@ -95,7 +94,7 @@ class ItemSwipeCallback @Inject constructor() :
     }
 
     sealed class SwipeAction : BaseItemTouchCallback.TouchActions() {
-        class SwipedToRight(val position: Int) : SwipeAction()
-        class SwipedToLeft(val position: Int) : SwipeAction()
+        class SwipedToDelete(val position: Int) : SwipeAction()
+        class SwipedToComplete(val position: Int) : SwipeAction()
     }
 }

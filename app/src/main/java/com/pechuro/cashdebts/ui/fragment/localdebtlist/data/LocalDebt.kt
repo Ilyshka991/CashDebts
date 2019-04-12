@@ -4,6 +4,7 @@ import com.pechuro.cashdebts.data.data.model.DebtRole
 import java.util.*
 
 data class LocalDebt(
+    val id: String,
     val personName: String,
     val value: Double,
     val description: String?,
@@ -14,6 +15,6 @@ data class LocalDebt(
     fun isEmpty() = personName.isEmpty() && value == 0.0
 
     companion object {
-        val EMPTY = LocalDebt("", 0.0, null, Date(), DebtRole.CREDITOR)
+        val EMPTY = LocalDebt("", "", 0.0, null, Date(), DebtRole.CREDITOR)
     }
 }

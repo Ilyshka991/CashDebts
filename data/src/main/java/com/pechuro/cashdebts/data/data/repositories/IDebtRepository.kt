@@ -9,9 +9,11 @@ import io.reactivex.Observable
 interface IDebtRepository {
     fun getRemoteDebtSource(): Observable<DocumentChange>
 
-    fun getLocalDebtSource(): Observable<List<FirestoreLocalDebt>>
+    fun getLocalDebtSource(): Observable<Map<String, FirestoreLocalDebt>>
 
     fun add(debt: FirestoreRemoteDebt): Completable
 
-    fun add(debt: FirestoreLocalDebt): Completable
+    fun add(debt: FirestoreLocalDebt, id: String? = null): Completable
+
+    fun deleteLocalDebt(id: String): Completable
 }

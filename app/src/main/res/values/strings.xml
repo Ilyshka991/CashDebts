@@ -48,6 +48,8 @@
     <string name="profile_action_logout">Logout</string>
 
     <string name="action_retry">Retry</string>
+    <string name="action_undo">Undo</string>
+    <string name="msg_deleted">Deleted</string>
     <string name="error_no_connection">No internet connection</string>
     <string name="error_load">Something went wrong. Please, retry later</string>
 
