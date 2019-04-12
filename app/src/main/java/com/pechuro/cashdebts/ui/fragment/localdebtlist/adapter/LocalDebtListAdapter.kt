@@ -19,7 +19,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     private var debtList = emptyList<LocalDebt>()
 
     private val onClickListener = View.OnClickListener {
-        val itemInfo = it.tag as ItemInfo
+        val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
         itemInfo.data.isExpanded = !itemInfo.data.isExpanded
         updateItem(itemInfo.position)
     }
@@ -46,11 +46,13 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) = holder.onBind(debtList[position])
 
     fun update(result: DiffResult<LocalDebt>) {
-        if (debtList === result.dataList) {
-            return
+        if (debtList.isEmpty()) {
+            debtList = result.dataList
+            notifyDataSetChanged()
+        } else {
+            debtList = result.dataList
+            result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
         }
-        debtList = result.dataList
-        result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
     fun getItemByPosition(position: Int) = debtList[position]
@@ -60,6 +62,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 
     inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
+
         override fun onBind(data: LocalDebt) {
             view.apply {
                 text_debtor.text = data.personName

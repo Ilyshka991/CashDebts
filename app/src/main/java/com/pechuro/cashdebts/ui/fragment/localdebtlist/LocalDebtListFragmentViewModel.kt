@@ -50,6 +50,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
         .map { list ->
             list.sortedByDescending { it.date }
         }
+        .filter { diffCallback.oldList != it }
         .map {
             diffCallback.newList = it
             val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -65,11 +66,12 @@ class LocalDebtListFragmentViewModel @Inject constructor(
 
     fun deleteDebt(debt: LocalDebt) {
         previousDeletedDebt = debt
-        debtRepository.deleteLocalDebt(debt.id).subscribe().addTo(compositeDisposable)
+        debtRepository.deleteLocalDebt(debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
     }
 
     fun restoreDebt() {
-        val firestoreDebt = with(previousDeletedDebt!!) {
+        val debt = previousDeletedDebt ?: return
+        val firestoreDebt = with(debt) {
             FirestoreLocalDebt(
                 userRepository.currentUserBaseInformation.uid,
                 personName,
@@ -79,6 +81,6 @@ class LocalDebtListFragmentViewModel @Inject constructor(
                 role
             )
         }
-        debtRepository.add(firestoreDebt, previousDeletedDebt!!.id).subscribe().addTo(compositeDisposable)
+        debtRepository.add(firestoreDebt, debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
     }
 }

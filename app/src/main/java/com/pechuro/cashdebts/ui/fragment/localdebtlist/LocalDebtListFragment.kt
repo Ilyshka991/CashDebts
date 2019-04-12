@@ -82,8 +82,8 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun deleteDebt(position: Int) {
-        val item = adapter.getItemByPosition(position)
         showUndoDeletionSnackbar()
+        val item = adapter.getItemByPosition(position)
         viewModel.deleteDebt(item)
     }
 
