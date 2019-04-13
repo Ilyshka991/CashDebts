@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_local_debt.view.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -18,10 +21,18 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {
     private var debtList = emptyList<LocalDebt>()
 
+    private val _longClickEmitter = PublishSubject.create<String>()
+    val longClickEmitter: Observable<String> = _longClickEmitter
+
     private val onClickListener = View.OnClickListener {
         val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
         itemInfo.data.isExpanded = !itemInfo.data.isExpanded
         updateItem(itemInfo.position)
+    }
+    private val onLongClickListener = View.OnLongClickListener {
+        val itemInfo = it.tag as? ItemInfo ?: return@OnLongClickListener true
+        _longClickEmitter.onNext(itemInfo.data.id)
+        true
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
@@ -46,12 +57,16 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) = holder.onBind(debtList[position])
 
     fun update(result: DiffResult<LocalDebt>) {
-        if (debtList.isEmpty()) {
-            debtList = result.dataList
-            notifyDataSetChanged()
-        } else {
-            debtList = result.dataList
-            result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
+        when {
+            debtList.isEmpty() -> {
+                debtList = result.dataList
+                notifyDataSetChanged()
+            }
+            debtList == result.dataList -> return
+            else -> {
+                debtList = result.dataList
+                result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
+            }
         }
     }
 
@@ -85,8 +100,13 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                     isVisible = data.isExpanded
                 }
 
+                if (data.isCompleted) {
+                    container.setCardBackgroundColor(Color.GRAY)
+                }
+
                 itemView.tag = ItemInfo(data, adapterPosition)
                 setOnClickListener(onClickListener)
+                setOnLongClickListener(onLongClickListener)
             }
         }
     }

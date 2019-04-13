@@ -21,6 +21,9 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     private val isLocalDebt: Boolean
         get() = intent.getBooleanExtra(INTENT_EXTRA_IS_LOCAL_DEBT, true)
+    private val debtId: String?
+        get() = intent.getStringExtra(INTENT_EXTRA_DEBT_ID)
+
     private var isOptionsMenuEnabled = true
         set(value) {
             field = value
@@ -64,6 +67,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     private fun setupViewModel() {
         viewModel.setInitialData(isLocalDebt)
+        debtId?.let { viewModel.loadExistingDebt(it) }
     }
 
     private fun setViewModelEventListener() {
@@ -106,10 +110,12 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     companion object {
         private const val INTENT_EXTRA_IS_LOCAL_DEBT = "isLocalDebt"
+        private const val INTENT_EXTRA_DEBT_ID = "debtId"
 
-        fun newIntent(context: Context, isLocalDebt: Boolean) =
+        fun newIntent(context: Context, isLocalDebt: Boolean, id: String?) =
             Intent(context, AddDebtActivity::class.java).apply {
                 putExtra(INTENT_EXTRA_IS_LOCAL_DEBT, isLocalDebt)
+                id?.let { putExtra(INTENT_EXTRA_DEBT_ID, it) }
             }
     }
 }

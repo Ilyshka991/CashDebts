@@ -10,6 +10,7 @@ data class LocalDebt(
     val description: String?,
     val date: Date,
     @DebtRole val role: Int,
+    val isCompleted: Boolean,
     var isExpanded: Boolean = false
 ) {
     fun isEmpty() = personName.isEmpty() && value == 0.0
@@ -26,6 +27,7 @@ data class LocalDebt(
         if (description != other.description) return false
         if (date != other.date) return false
         if (role != other.role) return false
+        if (isCompleted != other.isCompleted) return false
 
         return true
     }
@@ -37,10 +39,11 @@ data class LocalDebt(
         result = 31 * result + (description?.hashCode() ?: 0)
         result = 31 * result + date.hashCode()
         result = 31 * result + role
+        result = 31 * result + isCompleted.hashCode()
         return result
     }
 
     companion object {
-        val EMPTY = LocalDebt("", "", 0.0, null, Date(), DebtRole.CREDITOR)
+        val EMPTY = LocalDebt("", "", 0.0, null, Date(), DebtRole.CREDITOR, false)
     }
 }

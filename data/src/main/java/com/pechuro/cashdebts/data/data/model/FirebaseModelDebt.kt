@@ -14,24 +14,31 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRMATION
 import java.util.*
 
-data class FirestoreRemoteDebt(
-    val creditorUid: String,
-    val debtorUid: String,
+abstract class FirestoreBaseDebt(
     val value: Double,
     val description: String?,
-    val date: Date,
-    @FirestoreDebtStatus val status: Int
+    val date: Date
 )
 
-data class FirestoreLocalDebt(
+class FirestoreRemoteDebt(
+    val creditorUid: String,
+    val debtorUid: String,
+    value: Double,
+    description: String?,
+    date: Date,
+    @FirestoreDebtStatus val status: Int
+) : FirestoreBaseDebt(value, description, date)
+
+class FirestoreLocalDebt(
     val ownerUid: String,
     val name: String,
-    val value: Double,
-    val description: String?,
-    val date: Date,
-    @DebtRole val role: Int
-) {
-    constructor() : this("", "", 0.0, null, Date(), DebtRole.CREDITOR)
+    value: Double,
+    description: String?,
+    date: Date,
+    @DebtRole val role: Int,
+    val completed: Boolean
+) : FirestoreBaseDebt(value, description, date) {
+    constructor() : this("", "", 0.0, null, Date(), DebtRole.CREDITOR, false)
 }
 
 @IntDef(

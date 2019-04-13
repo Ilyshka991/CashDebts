@@ -76,7 +76,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     private fun setEventListeners() {
         EventBus.listen(MainActivityEvent::class.java).subscribe {
             when (it) {
-                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt)
+                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
             }
         }.addTo(weakCompositeDisposable)
         EventBus.listen(ProfileEditEvent::class.java).subscribe {
@@ -107,8 +107,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         finish()
     }
 
-    private fun openAddActivity(isLocalDebt: Boolean) {
-        val intent = AddDebtActivity.newIntent(this, isLocalDebt)
+    private fun openAddActivity(isLocalDebt: Boolean, id: String?) {
+        val intent = AddDebtActivity.newIntent(this, isLocalDebt, id)
         startActivity(intent)
     }
 

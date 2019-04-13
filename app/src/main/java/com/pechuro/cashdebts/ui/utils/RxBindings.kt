@@ -9,12 +9,24 @@ import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.DebtRole
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.Subject
 import java.text.SimpleDateFormat
 import java.util.*
 
 fun Subject<String>.receiveTextChangesFrom(view: EditText) {
     view.textChanges().skipInitialValue().map(CharSequence::toString).subscribe(this)
+        .also {
+            this.distinctUntilChanged()
+                .filter { view.text.toString() != it }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    view.setText(it)
+                    view.setSelection(it.length)
+                }
+        }
 }
 
 fun Subject<String>.receiveQueryChangesFrom(view: SearchView) {

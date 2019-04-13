@@ -49,6 +49,8 @@
 
     <string name="action_retry">Retry</string>
     <string name="action_undo">Undo</string>
+    <string name="msg_complete">Completed</string>
+    <string name="msg_undo_complete">Undo completion</string>
     <string name="msg_deleted">Deleted</string>
     <string name="error_no_connection">No internet connection</string>
     <string name="error_load">Something went wrong. Please, retry later</string>

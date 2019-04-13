@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.activity.adddebt.localuser
 
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
@@ -19,8 +20,8 @@ class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setViewListeners()
     }
 

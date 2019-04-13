@@ -4,8 +4,13 @@ import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Calculator
 import com.pechuro.cashdebts.calculator.Result
+import com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
+import com.pechuro.cashdebts.data.data.model.FirestoreBaseDebt
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
+import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
+import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
@@ -20,6 +25,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
@@ -60,6 +66,27 @@ class AddDebtActivityViewModel @Inject constructor(
         if (!::debt.isInitialized) {
             debt = if (isLocalDebt) LocalDebtInfo() else RemoteDebtInfo()
         }
+    }
+
+    fun loadExistingDebt(id: String) {
+        command.onNext(Events.ShowProgress)
+        val debtInfo = debt
+        val source = when (debtInfo) {
+            is LocalDebtInfo -> debtRepository.getLocalDebt(id)
+            is RemoteDebtInfo -> debtRepository.getRemoteDebt(id)
+            else -> throw  IllegalArgumentException()
+        }
+        source.subscribe({
+            //command.onNext(Events.OnDebtLoaded(it))
+            (debt as LocalDebtInfo).name.onNext("dsf")
+            command.onNext(Events.DismissProgress)
+        }, {
+            command.onNext(Events.DismissProgress)
+        }).addTo(compositeDisposable)
+        Observable.just("sg").delay(4, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                (debt as LocalDebtInfo).name.onNext(it)
+            }
     }
 
     fun setPhoneData(phoneNumber: String) {
@@ -124,13 +151,13 @@ class AddDebtActivityViewModel @Inject constructor(
             else -> throw IllegalArgumentException()
         }
 
-        val sendingDebt = com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt(
+        val sendingDebt = FirestoreRemoteDebt(
             creditorUid,
             debtorUid,
             debt.value.requireValue,
             debt.description.requireValue,
             debt.date.requireValue,
-            com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.NOT_SEND
+            FirestoreDebtStatus.NOT_SEND
         )
 
         debtRepository.add(sendingDebt).subscribe({
@@ -142,13 +169,14 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     private fun addLocalDebt(debt: LocalDebtInfo) {
-        val sendingDebt = com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt(
+        val sendingDebt = FirestoreLocalDebt(
             userRepository.currentUserBaseInformation.uid,
             debt.name.requireValue,
             debt.value.requireValue,
             debt.description.requireValue,
             debt.date.requireValue,
-            debt.debtRole.requireValue
+            debt.debtRole.requireValue,
+            false
         )
         debtRepository.add(sendingDebt).subscribe({
             command.onNext(Events.DismissProgress)
@@ -168,7 +196,7 @@ class AddDebtActivityViewModel @Inject constructor(
             it.printStackTrace()
             command.onNext(Events.DismissProgress)
             when (it) {
-                is com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException -> command.onNext(Events.OnErrorUserNotExist)
+                is FirestoreUserNotFoundException -> command.onNext(Events.OnErrorUserNotExist)
                 else -> command.onNext(Events.OnError(R.string.add_debt_error_common))
             }
         }).addTo(compositeDisposable)
@@ -185,6 +213,7 @@ class AddDebtActivityViewModel @Inject constructor(
         object RestartWithLocalDebtFragment : Events()
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
+        class OnDebtLoaded(val debt: FirestoreBaseDebt) : Events()
     }
 
     companion object {

@@ -13,6 +13,7 @@ import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.S
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.debtor
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -99,6 +100,34 @@ internal class DebtRepositoryImpl @Inject constructor(
                 if (!emitter.isDisposed) emitter.onComplete()
             } else {
                 if (!emitter.isDisposed) emitter.onError(FirestoreCommonException())
+            }
+        }
+    }
+
+    override fun getLocalDebt(id: String) = Single.create<FirestoreLocalDebt> { emitter ->
+        store.collection(FirestoreStructure.LocalDebt.TAG).document(id).get().addOnCompleteListener {
+            if (it.isSuccessful && it.result != null) {
+                if (!emitter.isDisposed) {
+                    emitter.onSuccess(it.result!!.toObject(FirestoreLocalDebt::class.java)!!)
+                }
+            } else {
+                if (!emitter.isDisposed) {
+                    emitter.onError(FirestoreCommonException())
+                }
+            }
+        }
+    }
+
+    override fun getRemoteDebt(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
+        store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get().addOnCompleteListener {
+            if (it.isSuccessful && it.result != null) {
+                if (!emitter.isDisposed) {
+                    emitter.onSuccess(it.result!!.toObject(FirestoreRemoteDebt::class.java)!!)
+                }
+            } else {
+                if (!emitter.isDisposed) {
+                    emitter.onError(FirestoreCommonException())
+                }
             }
         }
     }
