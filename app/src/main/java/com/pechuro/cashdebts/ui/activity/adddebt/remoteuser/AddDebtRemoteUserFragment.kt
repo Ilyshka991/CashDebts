@@ -72,7 +72,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     private fun setupView() {
         text_phone.apply {
-            onDoneClick = viewModel::openInfo
+            onDoneClick = viewModel::validatePersonInfo
             countryList = this@AddDebtRemoteUserFragment.countryList
         }
     }

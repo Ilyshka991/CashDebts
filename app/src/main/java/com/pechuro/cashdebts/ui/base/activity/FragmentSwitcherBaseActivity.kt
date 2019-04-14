@@ -36,11 +36,6 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentAc
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(BUNDLE_IS_BACK_ALLOWED, isBackAllowed)

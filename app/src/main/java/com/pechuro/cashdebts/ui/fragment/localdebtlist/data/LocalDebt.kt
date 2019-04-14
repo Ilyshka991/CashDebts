@@ -7,7 +7,7 @@ data class LocalDebt(
     val id: String,
     val personName: String,
     val value: Double,
-    val description: String?,
+    val description: String,
     val date: Date,
     @DebtRole val role: Int,
     val isCompleted: Boolean,
@@ -36,7 +36,7 @@ data class LocalDebt(
         var result = id.hashCode()
         result = 31 * result + personName.hashCode()
         result = 31 * result + value.hashCode()
-        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + description.hashCode()
         result = 31 * result + date.hashCode()
         result = 31 * result + role
         result = 31 * result + isCompleted.hashCode()
@@ -44,6 +44,6 @@ data class LocalDebt(
     }
 
     companion object {
-        val EMPTY = LocalDebt("", "", 0.0, null, Date(), DebtRole.CREDITOR, false)
+        val EMPTY = LocalDebt("", "", 0.0, "", Date(), DebtRole.CREDITOR, false)
     }
 }

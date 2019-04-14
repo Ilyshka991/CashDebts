@@ -16,7 +16,6 @@ import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewEvent
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
-import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
 class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
@@ -74,25 +73,27 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventBus.listen(MainActivityEvent::class.java).subscribe {
-            when (it) {
-                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
-            }
-        }.addTo(weakCompositeDisposable)
-        EventBus.listen(ProfileEditEvent::class.java).subscribe {
-            when (it) {
-                is ProfileEditEvent.OnSaved -> {
-                    homeFragment()
-                    isBottomNavVisible = true
+        weakCompositeDisposable.addAll(
+            EventBus.listen(MainActivityEvent::class.java).subscribe {
+                when (it) {
+                    is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
+                }
+            },
+            EventBus.listen(ProfileEditEvent::class.java).subscribe {
+                when (it) {
+                    is ProfileEditEvent.OnSaved -> {
+                        homeFragment()
+                        isBottomNavVisible = true
+                    }
+                }
+            },
+            EventBus.listen(ProfileViewEvent::class.java).subscribe {
+                when (it) {
+                    is ProfileViewEvent.OnLogout -> logout()
+                    is ProfileViewEvent.OpenEditProfile -> openEditProfile()
                 }
             }
-        }.addTo(weakCompositeDisposable)
-        EventBus.listen(ProfileViewEvent::class.java).subscribe {
-            when (it) {
-                is ProfileViewEvent.OnLogout -> logout()
-                is ProfileViewEvent.OpenEditProfile -> openEditProfile()
-            }
-        }.addTo(weakCompositeDisposable)
+        )
     }
 
     private fun openEditProfile() {

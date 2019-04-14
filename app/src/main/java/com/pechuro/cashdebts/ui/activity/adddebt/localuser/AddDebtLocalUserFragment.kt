@@ -26,22 +26,33 @@ class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
         setViewListeners()
     }
 
+    override fun onStart() {
+        super.onStart()
+        setViewModelListeners()
+    }
+
     private fun setViewListeners() {
         viewModel.debt.debtRole.receiveDebtRoleChangesFrom(chip_container).addTo(strongCompositeDisposable)
         (viewModel.debt as LocalDebtInfo).name.receiveTextChangesFrom(text_name).addTo(strongCompositeDisposable)
         text_name.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                viewModel.openInfo()
+                viewModel.validatePersonInfo()
                 return@setOnEditorActionListener true
             }
             false
         }
     }
 
-    companion object {
-        fun newInstance() = AddDebtLocalUserFragment().apply {
-            arguments = Bundle().apply {
+    private fun setViewModelListeners() {
+        viewModel.command.subscribe {
+            when (it) {
+                is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
+                is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
             }
-        }
+        }.addTo(weakCompositeDisposable)
+    }
+
+    companion object {
+        fun newInstance() = AddDebtLocalUserFragment()
     }
 }

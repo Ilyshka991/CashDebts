@@ -84,7 +84,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
     private fun LocalDebt.firestoreDebt(
         personName: String = this.personName,
         value: Double = this.value,
-        description: String? = this.description,
+        description: String = this.description,
         date: Date = this.date,
         role: Int = this.role,
         isCompleted: Boolean = this.isCompleted

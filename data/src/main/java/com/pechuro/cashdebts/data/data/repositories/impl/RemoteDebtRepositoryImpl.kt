@@ -40,10 +40,10 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
         .subscribeOn(Schedulers.io())
 
     override fun get(id: String): Single<FirestoreRemoteDebt> {
-        return Single.just(FirestoreRemoteDebt("", "", 0.4, null, Date(), 3))
+        return Single.just(FirestoreRemoteDebt("", "", 0.4, "", Date(), 3))
     }
 
-    override fun add(debt: FirestoreRemoteDebt) = Completable.create { emitter ->
+    override fun add(debt: FirestoreRemoteDebt, id: String?) = Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .add(debt).addOnCompleteListener {
                 if (it.isSuccessful) {

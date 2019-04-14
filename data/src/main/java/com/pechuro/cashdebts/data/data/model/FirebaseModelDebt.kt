@@ -16,7 +16,7 @@ import java.util.*
 
 abstract class FirestoreBaseDebt(
     val value: Double,
-    val description: String?,
+    val description: String,
     val date: Date
 )
 
@@ -24,7 +24,7 @@ class FirestoreRemoteDebt(
     val creditorUid: String,
     val debtorUid: String,
     value: Double,
-    description: String?,
+    description: String,
     date: Date,
     @FirestoreDebtStatus val status: Int
 ) : FirestoreBaseDebt(value, description, date)
@@ -33,12 +33,12 @@ class FirestoreLocalDebt(
     val ownerUid: String,
     val name: String,
     value: Double,
-    description: String?,
+    description: String,
     date: Date,
     @DebtRole val role: Int,
     val completed: Boolean
 ) : FirestoreBaseDebt(value, description, date) {
-    constructor() : this("", "", 0.0, null, Date(), DebtRole.CREDITOR, false)
+    constructor() : this("", "", 0.0, "", Date(), DebtRole.CREDITOR, false)
 }
 
 @IntDef(

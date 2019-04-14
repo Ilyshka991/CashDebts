@@ -27,6 +27,11 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     protected fun homeFragment() {
         supportFragmentManager.transaction {
             replace(containerId, getHomeFragment())

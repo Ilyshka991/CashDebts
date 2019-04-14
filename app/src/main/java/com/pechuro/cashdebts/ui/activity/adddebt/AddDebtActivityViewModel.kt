@@ -5,12 +5,9 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Calculator
 import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException
+import com.pechuro.cashdebts.data.data.model.*
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
-import com.pechuro.cashdebts.data.data.model.FirestoreBaseDebt
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
-import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
-import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
@@ -58,7 +55,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     lateinit var debt: BaseDebtInfo
-    private var isUserLoaded = false
+    private var isUserAlreadyLoaded = false
 
     init {
         setConnectivityListener()
@@ -71,19 +68,22 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     fun loadExistingDebt(id: String) {
-        if (isUserLoaded) return
+        if (isUserAlreadyLoaded) return
         command.onNext(Events.ShowProgress)
+
         val debtInfo = debt
         val source = when (debtInfo) {
             is LocalDebtInfo -> localDebtRepository.get(id)
             is RemoteDebtInfo -> remoteDebtRepository.get(id)
             else -> throw  IllegalArgumentException()
         }
+
+        debtInfo.id = id
+
         source.subscribe({
-            //command.onNext(Events.OnDebtLoaded(it))
-            (debt as LocalDebtInfo).name.onNext("dsf")
+            onDebtLoaded(it)
+            isUserAlreadyLoaded = true
             command.onNext(Events.DismissProgress)
-            isUserLoaded = true
         }, {
             command.onNext(Events.DismissProgress)
         }).addTo(compositeDisposable)
@@ -93,7 +93,7 @@ class AddDebtActivityViewModel @Inject constructor(
         (debt as RemoteDebtInfo).phone.onNext(phoneNumber)
     }
 
-    fun openInfo() {
+    fun validatePersonInfo() {
         when (val data = debt) {
             is LocalDebtInfo -> {
                 if (data.isValid()) {
@@ -128,6 +128,31 @@ class AddDebtActivityViewModel @Inject constructor(
         command.onNext(AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment)
     }
 
+    private fun onDebtLoaded(firestoreDebt: FirestoreBaseDebt) {
+        when (firestoreDebt) {
+            is FirestoreLocalDebt -> {
+                val localDebt = debt as LocalDebtInfo
+                localDebt.name.onNext(firestoreDebt.name)
+                localDebt.debtRole.onNext(firestoreDebt.role)
+            }
+            is FirestoreRemoteDebt -> {
+                val localDebt = debt as RemoteDebtInfo
+                if (userRepository.currentUserBaseInformation.uid == firestoreDebt.creditorUid) {
+                    localDebt.personUid.onNext(firestoreDebt.debtorUid)
+                    localDebt.debtRole.onNext(DebtRole.CREDITOR)
+                } else {
+                    localDebt.personUid.onNext(firestoreDebt.creditorUid)
+                    localDebt.debtRole.onNext(DebtRole.DEBTOR)
+                }
+            }
+        }
+        with(debt) {
+            mathExpression.onNext(firestoreDebt.value.toString())
+            description.onNext(firestoreDebt.description)
+            date.onNext(firestoreDebt.date)
+        }
+    }
+
     private fun setConnectivityListener() {
         connectivityListener.listen(isConnectionAvailable)
     }
@@ -160,7 +185,7 @@ class AddDebtActivityViewModel @Inject constructor(
             FirestoreDebtStatus.NOT_SEND
         )
 
-        remoteDebtRepository.add(sendingDebt).subscribe({
+        remoteDebtRepository.add(sendingDebt, debt.id).subscribe({
             command.onNext(Events.DismissProgress)
             command.onNext(Events.OnSaved)
         }, {
@@ -169,16 +194,18 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     private fun addLocalDebt(debt: LocalDebtInfo) {
-        val sendingDebt = FirestoreLocalDebt(
-            userRepository.currentUserBaseInformation.uid,
-            debt.name.requireValue,
-            debt.value.requireValue,
-            debt.description.requireValue,
-            debt.date.requireValue,
-            debt.debtRole.requireValue,
-            false
-        )
-        localDebtRepository.add(sendingDebt).subscribe({
+        val sendingDebt = with(debt) {
+            FirestoreLocalDebt(
+                userRepository.currentUserBaseInformation.uid,
+                name.requireValue,
+                value.requireValue,
+                description.requireValue,
+                date.requireValue,
+                debtRole.requireValue,
+                false
+            )
+        }
+        localDebtRepository.add(sendingDebt, debt.id).subscribe({
             command.onNext(Events.DismissProgress)
             command.onNext(Events.OnSaved)
         }, {
@@ -213,7 +240,6 @@ class AddDebtActivityViewModel @Inject constructor(
         object RestartWithLocalDebtFragment : Events()
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
-        class OnDebtLoaded(val debt: FirestoreBaseDebt) : Events()
     }
 
     companion object {

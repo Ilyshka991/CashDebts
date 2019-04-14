@@ -37,7 +37,7 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setViewListeners()
-        setupView()
+        setupView(savedInstanceState == null)
     }
 
     override fun onStart() {
@@ -56,9 +56,11 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     private fun setViewListeners() {
         with(viewModel) {
-            mathExpression.receiveTextChangesFrom(text_value).addTo(strongCompositeDisposable)
-            debt.description.receiveTextChangesFrom(text_description).addTo(strongCompositeDisposable)
-            debt.date.receiveDateChangesFrom(text_date, dateFormatter).addTo(strongCompositeDisposable)
+            strongCompositeDisposable.addAll(
+                mathExpression.receiveTextChangesFrom(text_value),
+                debt.description.receiveTextChangesFrom(text_description),
+                debt.date.receiveDateChangesFrom(text_date, dateFormatter)
+            )
         }
         text_date.setOnClickListener {
             showDateTimePicker()
@@ -99,8 +101,8 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
         }
     }
 
-    private fun setupView() {
-        onDateSelected(Date())
+    private fun setupView(isFirstTime: Boolean) {
+        if (isFirstTime) text_value.selectAll()
     }
 
     private fun onDateSelected(date: Date) {
