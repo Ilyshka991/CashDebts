@@ -28,6 +28,14 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentAc
         setupActionBar(supportFragmentManager.backStackEntryCount)
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0 && isBackAllowed) {
+            showPreviousFragment()
+        } else {
+            finish()
+        }
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

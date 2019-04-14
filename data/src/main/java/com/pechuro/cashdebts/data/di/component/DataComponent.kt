@@ -1,9 +1,6 @@
 package com.pechuro.cashdebts.data.di.component
 
-import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
-import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
-import com.pechuro.cashdebts.data.data.repositories.IStorageRepository
-import com.pechuro.cashdebts.data.data.repositories.IUserRepository
+import com.pechuro.cashdebts.data.data.repositories.*
 import com.pechuro.cashdebts.data.di.module.FirebaseModule
 import com.pechuro.cashdebts.data.di.module.RepositoriesModule
 import com.pechuro.cashdebts.data.di.scopes.DataScope
@@ -17,7 +14,9 @@ interface DataComponent {
 
     fun storageRepository(): IStorageRepository
 
-    fun debtRepository(): IDebtRepository
+    fun localDebtRepository(): ILocalDebtRepository
+
+    fun remoteDebtRepository(): IRemoteDebtRepository
 
     fun userRepository(): IUserRepository
 }

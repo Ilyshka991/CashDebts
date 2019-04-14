@@ -19,7 +19,7 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         if (savedInstanceState == null) homeFragment()
     }
 
-    final override fun onBackPressed() {
+    override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             showPreviousFragment()
         } else {
@@ -49,7 +49,7 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         }
     }
 
-    private fun showPreviousFragment() {
+    protected fun showPreviousFragment() {
         supportFragmentManager.popBackStack()
     }
 }

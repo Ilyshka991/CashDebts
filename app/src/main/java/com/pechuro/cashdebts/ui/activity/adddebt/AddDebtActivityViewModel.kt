@@ -11,7 +11,8 @@ import com.pechuro.cashdebts.data.data.model.FirestoreBaseDebt
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
-import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
@@ -28,7 +29,8 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
-    private val debtRepository: IDebtRepository,
+    private val localDebtRepository: ILocalDebtRepository,
+    private val remoteDebtRepository: IRemoteDebtRepository,
     private val userRepository: IUserRepository,
     private val connectivityListener: ConnectivityListener,
     private val calculator: Calculator
@@ -73,8 +75,8 @@ class AddDebtActivityViewModel @Inject constructor(
         command.onNext(Events.ShowProgress)
         val debtInfo = debt
         val source = when (debtInfo) {
-            is LocalDebtInfo -> debtRepository.getLocalDebt(id)
-            is RemoteDebtInfo -> debtRepository.getRemoteDebt(id)
+            is LocalDebtInfo -> localDebtRepository.get(id)
+            is RemoteDebtInfo -> remoteDebtRepository.get(id)
             else -> throw  IllegalArgumentException()
         }
         source.subscribe({
@@ -158,7 +160,7 @@ class AddDebtActivityViewModel @Inject constructor(
             FirestoreDebtStatus.NOT_SEND
         )
 
-        debtRepository.add(sendingDebt).subscribe({
+        remoteDebtRepository.add(sendingDebt).subscribe({
             command.onNext(Events.DismissProgress)
             command.onNext(Events.OnSaved)
         }, {
@@ -176,7 +178,7 @@ class AddDebtActivityViewModel @Inject constructor(
             debt.debtRole.requireValue,
             false
         )
-        debtRepository.add(sendingDebt).subscribe({
+        localDebtRepository.add(sendingDebt).subscribe({
             command.onNext(Events.DismissProgress)
             command.onNext(Events.OnSaved)
         }, {

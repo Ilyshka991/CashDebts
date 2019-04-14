@@ -6,7 +6,6 @@ import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragmentProvide
 import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragmentProvider
 import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
-import com.pechuro.cashdebts.ui.activity.auth.AuthActivityModule
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragmentProvider
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
@@ -62,8 +61,7 @@ interface AppActivitiesModule {
         modules = [
             AuthPhoneFragmentProvider::class,
             AuthCodeFragmentProvider::class,
-            ProfileEditFragmentProvider::class,
-            AuthActivityModule::class]
+            ProfileEditFragmentProvider::class]
     )
     fun bindAuth(): AuthActivity
 

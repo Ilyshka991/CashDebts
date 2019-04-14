@@ -2,7 +2,7 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
-import com.pechuro.cashdebts.data.data.repositories.IDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewModel
@@ -15,14 +15,14 @@ import java.util.*
 import javax.inject.Inject
 
 class LocalDebtListFragmentViewModel @Inject constructor(
-    private val debtRepository: IDebtRepository,
+    private val debtRepository: ILocalDebtRepository,
     private val userRepository: IUserRepository,
     private val diffCallback: LocalDebtDiffCallback
 ) : BaseViewModel() {
 
     private var previousDeletedDebt: LocalDebt? = null
 
-    val debtSource = debtRepository.getLocalDebtSource()
+    val debtSource = debtRepository.getSource()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.computation())
         .map { map ->
@@ -68,7 +68,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
 
     fun deleteDebt(debt: LocalDebt) {
         previousDeletedDebt = debt
-        debtRepository.deleteLocalDebt(debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
+        debtRepository.delete(debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
     }
 
     fun completeDebt(debt: LocalDebt) {
