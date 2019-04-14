@@ -78,12 +78,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     private fun setViewModelListeners() {
         with(viewModel) {
-            command.subscribe {
-                when (it) {
-                    is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
-                    is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
-                }
-            }.addTo(weakCompositeDisposable)
             if (isInternetRequired) {
                 isConnectionAvailable.subscribe {
                     onConnectionChanged(it)

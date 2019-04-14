@@ -69,7 +69,6 @@ class AddDebtActivityViewModel @Inject constructor(
 
     fun loadExistingDebt(id: String) {
         if (isUserAlreadyLoaded) return
-        command.onNext(Events.ShowProgress)
 
         val debtInfo = debt
         val source = when (debtInfo) {
@@ -83,10 +82,7 @@ class AddDebtActivityViewModel @Inject constructor(
         source.subscribe({
             onDebtLoaded(it)
             isUserAlreadyLoaded = true
-            command.onNext(Events.DismissProgress)
-        }, {
-            command.onNext(Events.DismissProgress)
-        }).addTo(compositeDisposable)
+        }, {}).addTo(compositeDisposable)
     }
 
     fun setPhoneData(phoneNumber: String) {

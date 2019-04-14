@@ -10,8 +10,6 @@ import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_local_debt.view.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -20,13 +18,12 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     RecyclerView.Adapter<BaseViewHolder<LocalDebt>>() {
     private var debtList = emptyList<LocalDebt>()
 
-    private val _longClickEmitter = PublishSubject.create<String>()
-    val longClickEmitter: Observable<String> = _longClickEmitter
-
     private val onClickListener = View.OnClickListener {
         val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
-        itemInfo.data.isExpanded = !itemInfo.data.isExpanded
-        updateItem(itemInfo.position)
+        with(itemInfo) {
+            data.isExpanded = !data.isExpanded
+            view.layout_expandable_items.isExpanded = data.isExpanded
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
@@ -85,16 +82,13 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 text_value.text = textValue
 
                 text_description.apply {
-                    isVisible = data.isExpanded
                     if (data.description.isEmpty()) isVisible = false else text = data.description
                 }
 
-                text_date.apply {
-                    text = dateFormatter.format(data.date)
-                    isVisible = data.isExpanded
-                }
+                layout_expandable_items.isExpanded = data.isExpanded
+                text_date.text = dateFormatter.format(data.date)
 
-                itemView.tag = ItemInfo(data, adapterPosition)
+                itemView.tag = ItemInfo(data, itemView)
                 setOnClickListener(onClickListener)
             }
         }
@@ -110,4 +104,4 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 }
 
-private data class ItemInfo(val data: LocalDebt, val position: Int)
+private data class ItemInfo(val data: LocalDebt, val view: View)

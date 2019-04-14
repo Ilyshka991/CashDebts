@@ -30,27 +30,32 @@
                 android:textSize="18sp"
                 tools:text="Value"
                 app:layout_constraintTop_toTopOf="@+id/text_debtor"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-                android:id="@+id/text_description"
+        <com.pechuro.cashdebts.ui.custom.ExpandableLinearLayout
+                android:id="@+id/layout_expandable_items"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@+id/text_date"
-                app:layout_constraintStart_toStartOf="@+id/text_date"
-                tools:text="Description"/>
-
-        <TextView
-                android:id="@+id/text_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/text_debtor"
+                android:visibility="gone"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/text_debtor"
-                tools:text="Date"/>
+                app:layout_constraintStart_toStartOf="@+id/text_debtor"
+                android:layout_marginTop="8dp">
+
+            <TextView
+                    android:id="@+id/text_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    tools:text="Description"/>
+
+            <TextView
+                    android:id="@+id/text_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"
+                    tools:text="Date"/>
+        </com.pechuro.cashdebts.ui.custom.ExpandableLinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
