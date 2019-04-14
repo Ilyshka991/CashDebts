@@ -21,7 +21,9 @@ def libraryVersions = [
         firestore       : '18.1.0',
         core            : '16.0.7',
         auth            : '16.1.0',
-        storage         : '16.1.0'
+        storage         : '16.1.0',
+
+        leakCanary      : '1.6.3'
 ]
 
 
@@ -71,5 +73,10 @@ ext {
             core     : "com.google.firebase:firebase-core:${libraryVersions.core}",
             auth     : "com.google.firebase:firebase-auth:${libraryVersions.auth}",
             storage  : "com.google.firebase:firebase-storage:${libraryVersions.storage}"
+    ]
+
+    leakCanaryDependencies = [
+            leakCanary         : "com.squareup.leakcanary:leakcanary-android:${libraryVersions.leakCanary}",
+            leakCanaryFragments: "com.squareup.leakcanary:leakcanary-support-fragment:${libraryVersions.leakCanary}"
     ]
 }

@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
+import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.binding.receiveQueryChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_country_select.*
@@ -37,21 +39,18 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
             layoutManager = this@CountrySelectionFragment.layoutManager
             adapter = this@CountrySelectionFragment.adapter
         }
+        adapter.clickEmitter.subscribe {
+            EventBus.publish(CountySelectEvent.OnCountySelect(it))
+        }.addTo(strongCompositeDisposable)
         viewModel.searchQuery.receiveQueryChangesFrom(search).addTo(strongCompositeDisposable)
     }
 
     private fun subscribeToData() {
-        viewModel.countriesListSource.apply {
-            subscribe(adapter::updateCountries).addTo(weakCompositeDisposable)
-            connect()
-        }
+        viewModel.countriesListSource.subscribe(adapter::updateCountries).addTo(weakCompositeDisposable)
     }
 
     companion object {
-        fun newInstance() = CountrySelectionFragment().apply {
-            arguments = Bundle().apply {
-            }
-        }
+        fun newInstance() = CountrySelectionFragment()
     }
 }
 

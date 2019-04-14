@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.activity.auth.code
 
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
@@ -23,8 +24,8 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
 
     override fun getViewModelClass() = AuthActivityViewModel::class
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val isCodeResent = savedInstanceState?.getBoolean(BUNDLE_IS_CODE_RESENT) ?: false
         if (isCodeResent) {
@@ -35,13 +36,13 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
             startResendTimer(lastTick)
         }
 
-        setViewListeners()
         setupView()
+        setViewListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        subscribeToViewModel()
+        setViewModelListeners()
     }
 
     override fun onDestroy() {
@@ -83,10 +84,10 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
         button_code_confirm.setOnClickListener {
             viewModel.verifyPhoneNumberWithCode()
         }
-        viewModel.phoneCode.receiveTextChangesFrom(text_code)
+        viewModel.phoneCode.receiveTextChangesFrom(text_code).addTo(strongCompositeDisposable)
     }
 
-    private fun subscribeToViewModel() {
+    private fun setViewModelListeners() {
         viewModel.loadingState.subscribe {
             button_code_confirm.setProgress(it)
         }.addTo(weakCompositeDisposable)

@@ -8,6 +8,7 @@ import com.pechuro.cashdebts.ui.fragment.countyselection.model.CountrySelectionD
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observables.ConnectableObservable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -46,4 +47,8 @@ class CountrySelectionFragmentViewModel @Inject constructor(
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .replay(1)
+
+    init {
+        countriesListSource.connect().addTo(compositeDisposable)
+    }
 }

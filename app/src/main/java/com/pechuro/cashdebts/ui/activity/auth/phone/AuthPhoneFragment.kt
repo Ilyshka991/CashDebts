@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.TelephonyManager
+import android.view.View
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
@@ -28,8 +29,8 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
 
     override fun getViewModelClass() = AuthActivityViewModel::class
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setViewListeners()
         setupView()
         if (savedInstanceState == null) setInitialCountry()
@@ -37,7 +38,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        subscribeToViewModel()
+        setViewModelListeners()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -61,7 +62,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
 
         text_phone.apply {
-            viewModel.fullPhoneNumber.receiveTextChangesFrom(this)
+            viewModel.fullPhoneNumber.receiveTextChangesFrom(this).addTo(strongCompositeDisposable)
             onDoneClick = viewModel::startPhoneNumberVerification
             onCountryChanged = ::onCountryChanged
         }
@@ -71,7 +72,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         }
     }
 
-    private fun subscribeToViewModel() {
+    private fun setViewModelListeners() {
         viewModel.loadingState.subscribe {
             button_verify.setProgress(it)
         }.addTo(weakCompositeDisposable)

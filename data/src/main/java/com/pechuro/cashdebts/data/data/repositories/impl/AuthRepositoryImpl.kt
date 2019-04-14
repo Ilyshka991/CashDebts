@@ -4,6 +4,10 @@ import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException
+import com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException
+import com.pechuro.cashdebts.data.data.exception.AuthUnknownException
+import com.pechuro.cashdebts.data.data.model.UserBaseInformation
 import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -32,9 +36,9 @@ internal class AuthRepositoryImpl @Inject constructor(
             _eventEmitter.onNext(
                 IAuthRepository.Event.OnError(
                     when (e) {
-                        is FirebaseAuthInvalidCredentialsException -> com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException()
-                        is FirebaseTooManyRequestsException -> com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException()
-                        else -> com.pechuro.cashdebts.data.data.exception.AuthUnknownException()
+                        is FirebaseAuthInvalidCredentialsException -> AuthInvalidCredentialsException()
+                        is FirebaseTooManyRequestsException -> AuthNotAvailableException()
+                        else -> AuthUnknownException()
                     }
                 )
             )
@@ -92,7 +96,7 @@ internal class AuthRepositoryImpl @Inject constructor(
     }
 
     private fun FirebaseUser.getBaseInformation() =
-        com.pechuro.cashdebts.data.data.model.UserBaseInformation(uid, phoneNumber!!)
+        UserBaseInformation(uid, phoneNumber!!)
 
     companion object {
         private const val TIMEOUT = 60L

@@ -53,8 +53,8 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment(), HasSupportFragmentI
         weakCompositeDisposable.clear()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         strongCompositeDisposable.clear()
     }
 

@@ -1,6 +1,10 @@
 package com.pechuro.cashdebts.data.data.repositories.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.pechuro.cashdebts.data.data.exception.FirestoreCommonException
+import com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException
+import com.pechuro.cashdebts.data.data.model.FirestoreUser
+import com.pechuro.cashdebts.data.data.model.UserBaseInformation
 import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure
@@ -13,22 +17,22 @@ internal class UserRepositoryImpl @Inject constructor(
     private val auth: IAuthRepository
 ) : IUserRepository {
 
-    override val currentUserBaseInformation: com.pechuro.cashdebts.data.data.model.UserBaseInformation
+    override val currentUserBaseInformation: UserBaseInformation
         get() = auth.getCurrentUserBaseInformation() ?: throw IllegalStateException("User not sign in")
 
-    override fun get(uid: String) = Single.create<com.pechuro.cashdebts.data.data.model.FirestoreUser> { emitter ->
+    override fun get(uid: String) = Single.create<FirestoreUser> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
             .get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     if (it.result?.data != null) {
-                        emitter.onSuccess(it.result!!.toObject(com.pechuro.cashdebts.data.data.model.FirestoreUser::class.java)!!)
+                        emitter.onSuccess(it.result!!.toObject(FirestoreUser::class.java)!!)
                     } else {
-                        emitter.onError(com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException())
+                        emitter.onError(FirestoreUserNotFoundException())
                     }
                 } else {
-                    emitter.onError(com.pechuro.cashdebts.data.data.exception.FirestoreCommonException())
+                    emitter.onError(FirestoreCommonException())
                 }
             }
     }
@@ -41,7 +45,7 @@ internal class UserRepositoryImpl @Inject constructor(
                 if (it.isSuccessful) {
                     emitter.onSuccess(it.result?.data != null)
                 } else {
-                    emitter.onError(com.pechuro.cashdebts.data.data.exception.FirestoreCommonException())
+                    emitter.onError(FirestoreCommonException())
                 }
             }
     }
@@ -55,15 +59,15 @@ internal class UserRepositoryImpl @Inject constructor(
                     if (it.result?.documents?.size == 1) {
                         emitter.onSuccess(it.result!!.documents[0]!!.id)
                     } else {
-                        emitter.onError(com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException())
+                        emitter.onError(FirestoreUserNotFoundException())
                     }
                 } else {
-                    emitter.onError(com.pechuro.cashdebts.data.data.exception.FirestoreCommonException())
+                    emitter.onError(FirestoreCommonException())
                 }
             }
     }
 
-    override fun updateUser(user: com.pechuro.cashdebts.data.data.model.FirestoreUser, uid: String) =
+    override fun updateUser(user: FirestoreUser, uid: String) =
         Completable.create { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
@@ -73,7 +77,7 @@ internal class UserRepositoryImpl @Inject constructor(
                 if (it.isSuccessful) {
                     emitter.onComplete()
                 } else {
-                    emitter.onError(com.pechuro.cashdebts.data.data.exception.FirestoreCommonException())
+                    emitter.onError(FirestoreCommonException())
                 }
             }
     }

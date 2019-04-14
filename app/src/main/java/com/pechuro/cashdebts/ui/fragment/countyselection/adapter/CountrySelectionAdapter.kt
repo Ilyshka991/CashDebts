@@ -7,14 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
-import com.pechuro.cashdebts.ui.utils.EventBus
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_country.view.*
 
 class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>>() {
 
     private var countries = emptyList<CountryData>()
+
+    private val _clicksEmitter = PublishSubject.create<CountryData>()
+    val clickEmitter: Observable<CountryData> = _clicksEmitter
+
+    private val onClickListener = View.OnClickListener {
+        val data = it.tag as CountryData
+        _clicksEmitter.onNext(data)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CountryData> = when (viewType) {
         VIEW_TYPE_EMPTY -> {
@@ -39,18 +47,18 @@ class CountrySelectionAdapter : RecyclerView.Adapter<BaseViewHolder<CountryData>
         holder.onBind(countries[position])
 
     fun updateCountries(result: DiffResult<CountryData>) {
+        if (result.dataList == countries) return
         countries = result.dataList
         result.diffResult?.dispatchUpdatesTo(this) ?: notifyDataSetChanged()
     }
 
-    private class ViewHolder(private val view: View) : BaseViewHolder<CountryData>(view) {
+    private inner class ViewHolder(private val view: View) : BaseViewHolder<CountryData>(view) {
         override fun onBind(data: CountryData) {
             view.apply {
                 text_country_name.text = data.name
                 text_country_code.text = data.phonePrefix
-                setOnClickListener {
-                    EventBus.publish(CountySelectEvent.OnCountySelect(data))
-                }
+                itemView.tag = data
+                setOnClickListener(onClickListener)
             }
         }
     }
