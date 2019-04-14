@@ -22,7 +22,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
         with(itemInfo) {
             data.isExpanded = !data.isExpanded
-            view.layout_expandable_items.isExpanded = data.isExpanded
+            notifyItemChanged(viewHolder.adapterPosition)
         }
     }
 
@@ -63,11 +63,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
     fun getItemByPosition(position: Int) = debtList[position]
 
-    fun updateItem(position: Int) {
-        notifyItemChanged(position)
-    }
-
-    inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
+    private inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
 
         override fun onBind(data: LocalDebt) {
             view.apply {
@@ -82,21 +78,29 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 text_value.text = textValue
 
                 text_description.apply {
+                    isVisible = data.isExpanded
                     if (data.description.isEmpty()) isVisible = false else text = data.description
                 }
 
-                layout_expandable_items.isExpanded = data.isExpanded
-                text_date.text = dateFormatter.format(data.date)
+                text_date.apply {
+                    text = dateFormatter.format(data.date)
+                    isVisible = data.isExpanded
+                }
 
-                itemView.tag = ItemInfo(data, itemView)
+                itemView.tag = ItemInfo(data, this@ViewHolder)
                 setOnClickListener(onClickListener)
             }
         }
     }
 
-    class EmptyViewHolder(view: View) : BaseViewHolder<LocalDebt>(view) {
+    private class EmptyViewHolder(view: View) : BaseViewHolder<LocalDebt>(view) {
         override fun onBind(data: LocalDebt) {}
     }
+
+    private class ItemInfo(
+        val data: LocalDebt,
+        val viewHolder: LocalDebtListAdapter.ViewHolder
+    )
 
     companion object ViewTypes {
         private const val VIEW_TYPE_COMMON = 1
@@ -104,4 +108,3 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 }
 
-private data class ItemInfo(val data: LocalDebt, val view: View)

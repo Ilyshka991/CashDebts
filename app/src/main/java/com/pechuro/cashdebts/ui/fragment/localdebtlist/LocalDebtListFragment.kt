@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
@@ -46,6 +47,8 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         recycler.apply {
             adapter = this@LocalDebtListFragment.adapter
             layoutManager = this@LocalDebtListFragment.layoutManager
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+            setHasFixedSize(true)
         }
         swipeToDeleteHelper.attachToRecyclerView(recycler)
     }
@@ -86,7 +89,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun editDebt(position: Int) {
-        adapter.updateItem(position)
+        adapter.notifyDataSetChanged()
         val item = adapter.getItemByPosition(position)
         EventBus.publish(MainActivityEvent.OpenAddActivity(true, item.id))
     }
