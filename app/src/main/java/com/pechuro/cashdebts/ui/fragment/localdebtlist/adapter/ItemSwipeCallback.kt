@@ -29,7 +29,7 @@ class ItemSwipeCallback @Inject constructor() :
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
             ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.SwipedToDelete(viewHolder.adapterPosition))
-            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToComplete(viewHolder.adapterPosition))
+            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToEdit(viewHolder.adapterPosition))
         }
     }
 
@@ -42,7 +42,7 @@ class ItemSwipeCallback @Inject constructor() :
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        var drawingDx = dX
 
         val itemView = viewHolder.itemView
         val backgroundCornerOffset = 10.px
@@ -51,12 +51,13 @@ class ItemSwipeCallback @Inject constructor() :
         val backgroundColor: ColorDrawable
         when {
             dX >= 0 -> {
-                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_delete)
+                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_delete_white)
                 backgroundColor = ColorDrawable(Color.RED)
             }
             dX < 0 -> {
-                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_done)
+                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_edit_white)
                 backgroundColor = ColorDrawable(Color.BLUE)
+                drawingDx /= 4
             }
             else -> throw IllegalArgumentException()
         }
@@ -91,10 +92,12 @@ class ItemSwipeCallback @Inject constructor() :
 
         backgroundColor.draw(canvas)
         icon.draw(canvas)
+
+        super.onChildDraw(canvas, recyclerView, viewHolder, drawingDx, dY, actionState, isCurrentlyActive)
     }
 
     sealed class SwipeAction : BaseItemTouchCallback.TouchActions() {
         class SwipedToDelete(val position: Int) : SwipeAction()
-        class SwipedToComplete(val position: Int) : SwipeAction()
+        class SwipedToEdit(val position: Int) : SwipeAction()
     }
 }

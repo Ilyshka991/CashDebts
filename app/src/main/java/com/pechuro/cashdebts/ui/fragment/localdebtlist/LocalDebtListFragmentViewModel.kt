@@ -11,7 +11,6 @@ import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallbac
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
 class LocalDebtListFragmentViewModel @Inject constructor(
@@ -35,8 +34,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
                         it.second.value,
                         it.second.description,
                         it.second.date,
-                        it.second.role,
-                        it.second.completed
+                        it.second.role
                     )
                 }
         }
@@ -71,30 +69,17 @@ class LocalDebtListFragmentViewModel @Inject constructor(
         debtRepository.delete(debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
     }
 
-    fun completeDebt(debt: LocalDebt) {
-        val firestoreDebt = debt.firestoreDebt(isCompleted = !debt.isCompleted)
-        debtRepository.add(firestoreDebt, debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
-    }
-
     fun restoreDebt() {
         val debt = previousDeletedDebt ?: return
         debtRepository.add(debt.firestoreDebt(), debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
     }
 
-    private fun LocalDebt.firestoreDebt(
-        personName: String = this.personName,
-        value: Double = this.value,
-        description: String = this.description,
-        date: Date = this.date,
-        role: Int = this.role,
-        isCompleted: Boolean = this.isCompleted
-    ) = FirestoreLocalDebt(
+    private fun LocalDebt.firestoreDebt() = FirestoreLocalDebt(
         userRepository.currentUserBaseInformation.uid,
         personName,
         value,
         description,
         date,
-        role,
-        isCompleted
+        role
     )
 }

@@ -16,6 +16,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
+                android:importantForAutofill="no"
                 android:ems="10"
                 android:hint="@string/add_debt_hint_name"
                 android:imeOptions="actionNext"

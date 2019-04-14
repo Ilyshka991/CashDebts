@@ -62,11 +62,8 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         swipeToDeleteHelper.actionEmitter.subscribe {
             when (it) {
                 is ItemSwipeCallback.SwipeAction.SwipedToDelete -> deleteDebt(it.position)
-                is ItemSwipeCallback.SwipeAction.SwipedToComplete -> completeDebt(it.position)
+                is ItemSwipeCallback.SwipeAction.SwipedToEdit -> editDebt(it.position)
             }
-        }.addTo(strongCompositeDisposable)
-        adapter.longClickEmitter.subscribe {
-            EventBus.publish(MainActivityEvent.OpenAddActivity(true, it))
         }.addTo(strongCompositeDisposable)
     }
 
@@ -88,10 +85,10 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         viewModel.deleteDebt(item)
     }
 
-    private fun completeDebt(position: Int) {
+    private fun editDebt(position: Int) {
+        adapter.updateItem(position)
         val item = adapter.getItemByPosition(position)
-        showSnackbar(if (item.isCompleted) R.string.msg_undo_complete else R.string.msg_complete)
-        viewModel.completeDebt(item)
+        EventBus.publish(MainActivityEvent.OpenAddActivity(true, item.id))
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {

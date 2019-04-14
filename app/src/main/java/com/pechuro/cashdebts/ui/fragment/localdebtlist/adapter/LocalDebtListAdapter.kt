@@ -1,6 +1,5 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,11 +27,6 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
         itemInfo.data.isExpanded = !itemInfo.data.isExpanded
         updateItem(itemInfo.position)
-    }
-    private val onLongClickListener = View.OnLongClickListener {
-        val itemInfo = it.tag as? ItemInfo ?: return@OnLongClickListener true
-        _longClickEmitter.onNext(itemInfo.data.id)
-        true
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
@@ -72,7 +66,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
     fun getItemByPosition(position: Int) = debtList[position]
 
-    private fun updateItem(position: Int) {
+    fun updateItem(position: Int) {
         notifyItemChanged(position)
     }
 
@@ -92,7 +86,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
                 text_description.apply {
                     isVisible = data.isExpanded
-                    if (data.description.isNullOrEmpty()) isVisible = false else text = data.description
+                    if (data.description.isEmpty()) isVisible = false else text = data.description
                 }
 
                 text_date.apply {
@@ -100,13 +94,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                     isVisible = data.isExpanded
                 }
 
-                if (data.isCompleted) {
-                    container.setCardBackgroundColor(Color.GRAY)
-                }
-
                 itemView.tag = ItemInfo(data, adapterPosition)
                 setOnClickListener(onClickListener)
-                setOnLongClickListener(onLongClickListener)
             }
         }
     }

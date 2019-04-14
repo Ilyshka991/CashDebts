@@ -201,8 +201,7 @@ class AddDebtActivityViewModel @Inject constructor(
                 value.requireValue,
                 description.requireValue,
                 date.requireValue,
-                debtRole.requireValue,
-                false
+                debtRole.requireValue
             )
         }
         localDebtRepository.add(sendingDebt, debt.id).subscribe({

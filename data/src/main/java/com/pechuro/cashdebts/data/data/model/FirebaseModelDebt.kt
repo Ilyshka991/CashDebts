@@ -35,10 +35,9 @@ class FirestoreLocalDebt(
     value: Double,
     description: String,
     date: Date,
-    @DebtRole val role: Int,
-    val completed: Boolean
+    @DebtRole val role: Int
 ) : FirestoreBaseDebt(value, description, date) {
-    constructor() : this("", "", 0.0, "", Date(), DebtRole.CREDITOR, false)
+    constructor() : this("", "", 0.0, "", Date(), DebtRole.CREDITOR)
 }
 
 @IntDef(
