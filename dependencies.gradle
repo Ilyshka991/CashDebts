@@ -14,8 +14,6 @@ def libraryVersions = [
         rxKotlin        : '2.3.0',
         rxAndroid       : '2.0.2',
 
-        rxBinding       : '3.0.0-alpha2',
-
         dagger          : '2.21',
 
         glide           : '4.9.0',
@@ -53,14 +51,6 @@ ext {
             rxKotlin : "io.reactivex.rxjava2:rxkotlin:${libraryVersions.rxKotlin}",
             rxAndroid: "io.reactivex.rxjava2:rxandroid:${libraryVersions.rxAndroid}",
 
-    ]
-
-    rxBinding = [
-            platform : "com.jakewharton.rxbinding3:rxbinding:${libraryVersions.rxBinding}",
-            material : "com.jakewharton.rxbinding3:rxbinding-material:${libraryVersions.rxBinding}",
-            core     : "com.jakewharton.rxbinding3:rxbinding-core:${libraryVersions.rxBinding}",
-            appCompat: "com.jakewharton.rxbinding3:rxbinding-appcompat:${libraryVersions.rxBinding}",
-            recycler : "com.jakewharton.rxbinding3:rxbinding-recyclerview:${libraryVersions.rxBinding}"
     ]
 
     daggerDependencies = [

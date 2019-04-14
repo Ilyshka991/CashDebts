@@ -1,10 +1,25 @@
 package com.pechuro.cashdebts.ui.custom.phone
 
-import com.jakewharton.rxbinding3.widget.textChanges
+import com.pechuro.cashdebts.ui.custom.TextWatcher
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.Subject
 
-fun Subject<String>.receiveTextChangesFrom(view: PhoneNumberEditText) {
-    view.textCode.textChanges().mergeWith(view.textNumber.textChanges()).map {
-        view.getPhoneNumber()
-    }.subscribe(this)
+fun Subject<String>.receiveTextChangesFrom(view: PhoneNumberEditText): Disposable {
+    val codeListener = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            onNext(view.getPhoneNumber())
+        }
+    }
+    val numberListener = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            onNext(view.getPhoneNumber())
+        }
+    }
+    view.textCode.addTextChangedListener(codeListener)
+    view.textNumber.addTextChangedListener(numberListener)
+
+    return doOnDispose {
+        view.textCode.removeTextChangedListener(codeListener)
+        view.textNumber.removeTextChangedListener(numberListener)
+    }.subscribe()
 }

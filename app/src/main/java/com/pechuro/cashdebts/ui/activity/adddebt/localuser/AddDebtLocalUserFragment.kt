@@ -7,8 +7,9 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.utils.receiveDebtRole
-import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.utils.binding.receiveDebtRoleChangesFrom
+import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_local_user.*
 import kotlinx.android.synthetic.main.layout_debt_role_chooser.*
 
@@ -26,9 +27,8 @@ class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun setViewListeners() {
-        viewModel.debt.debtRole.receiveDebtRole(chip_container)
-        (viewModel.debt as LocalDebtInfo).name.receiveTextChangesFrom(text_name)
-
+        viewModel.debt.debtRole.receiveDebtRoleChangesFrom(chip_container).addTo(strongCompositeDisposable)
+        (viewModel.debt as LocalDebtInfo).name.receiveTextChangesFrom(text_name).addTo(strongCompositeDisposable)
         text_name.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 viewModel.openInfo()

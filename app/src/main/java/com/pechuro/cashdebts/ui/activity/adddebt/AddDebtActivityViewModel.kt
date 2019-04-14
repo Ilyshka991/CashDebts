@@ -25,7 +25,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
@@ -57,6 +56,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     lateinit var debt: BaseDebtInfo
+    private var isUserLoaded = false
 
     init {
         setConnectivityListener()
@@ -69,6 +69,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     fun loadExistingDebt(id: String) {
+        if (isUserLoaded) return
         command.onNext(Events.ShowProgress)
         val debtInfo = debt
         val source = when (debtInfo) {
@@ -80,13 +81,10 @@ class AddDebtActivityViewModel @Inject constructor(
             //command.onNext(Events.OnDebtLoaded(it))
             (debt as LocalDebtInfo).name.onNext("dsf")
             command.onNext(Events.DismissProgress)
+            isUserLoaded = true
         }, {
             command.onNext(Events.DismissProgress)
         }).addTo(compositeDisposable)
-        Observable.just("sg").delay(4, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                (debt as LocalDebtInfo).name.onNext(it)
-            }
     }
 
     fun setPhoneData(phoneNumber: String) {

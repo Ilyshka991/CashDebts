@@ -13,8 +13,8 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.loadAvatar
-import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.setError
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
@@ -83,8 +83,8 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
 
             with(inputData) {
                 with(fields) {
-                    firstName.receiveTextChangesFrom(text_first_name)
-                    lastName.receiveTextChangesFrom(text_last_name)
+                    firstName.receiveTextChangesFrom(text_first_name).addTo(weakCompositeDisposable)
+                    lastName.receiveTextChangesFrom(text_last_name).addTo(weakCompositeDisposable)
                 }
                 with(errors) {
                     firstNameError.subscribe {

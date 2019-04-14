@@ -10,8 +10,8 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialog
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
-import com.pechuro.cashdebts.ui.utils.receiveDateChangesFrom
-import com.pechuro.cashdebts.ui.utils.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.utils.binding.receiveDateChangesFrom
+import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_info.*
 import java.text.SimpleDateFormat
@@ -56,9 +56,9 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     private fun setViewListeners() {
         with(viewModel) {
-            mathExpression.receiveTextChangesFrom(text_value)
-            debt.description.receiveTextChangesFrom(text_description)
-            debt.date.receiveDateChangesFrom(text_date, dateFormatter)
+            mathExpression.receiveTextChangesFrom(text_value).addTo(strongCompositeDisposable)
+            debt.description.receiveTextChangesFrom(text_description).addTo(strongCompositeDisposable)
+            debt.date.receiveDateChangesFrom(text_date, dateFormatter).addTo(strongCompositeDisposable)
         }
         text_date.setOnClickListener {
             showDateTimePicker()

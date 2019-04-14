@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
-import com.pechuro.cashdebts.ui.utils.receiveQueryChangesFrom
+import com.pechuro.cashdebts.ui.utils.binding.receiveQueryChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_country_select.*
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
             layoutManager = this@CountrySelectionFragment.layoutManager
             adapter = this@CountrySelectionFragment.adapter
         }
-        viewModel.searchQuery.receiveQueryChangesFrom(search)
+        viewModel.searchQuery.receiveQueryChangesFrom(search).addTo(strongCompositeDisposable)
     }
 
     private fun subscribeToData() {
