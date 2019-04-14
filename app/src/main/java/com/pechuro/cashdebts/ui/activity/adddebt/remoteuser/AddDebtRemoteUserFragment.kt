@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
@@ -36,8 +37,8 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setViewListeners()
         setupView()
         if (savedInstanceState == null) setInitialCountry()
@@ -74,6 +75,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
         text_phone.apply {
             onDoneClick = viewModel::validatePersonInfo
             countryList = this@AddDebtRemoteUserFragment.countryList
+            textNumber.requestFocus()
         }
     }
 

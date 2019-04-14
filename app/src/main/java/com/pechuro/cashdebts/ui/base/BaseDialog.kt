@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.ui.base
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,8 @@ abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
     @Inject
     protected lateinit var strongCompositeDisposable: CompositeDisposable
 
+    private val handler = Handler()
+
     protected abstract fun getViewModelClass(): KClass<V>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,11 @@ abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
         val view = inflater.inflate(layoutId, container, false)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        handler.post { }
     }
 
     override fun onStop() {

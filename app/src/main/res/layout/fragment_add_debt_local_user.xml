@@ -25,7 +25,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"/>
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+
+            <requestFocus/>
+        </EditText>
 
         <include
                 android:id="@+id/role_chooser"

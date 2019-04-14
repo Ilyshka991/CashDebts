@@ -30,8 +30,6 @@ class DateTimePickerDialog : BaseDialog<DateTimePickerDialogViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setViewListeners()
-
-
         val isDateSet = savedInstanceState?.getBoolean(BUNDLE_IS_DATE_SET) ?: false
         this.isDateSet = isDateSet
     }
