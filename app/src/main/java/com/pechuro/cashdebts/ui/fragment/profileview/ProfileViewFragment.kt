@@ -1,8 +1,10 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
@@ -16,15 +18,15 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
 
     override fun getViewModelClass() = ProfileViewFragmentViewModel::class
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setViewListeners()
         setEventListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        setViewModelListener()
+        setViewModelListeners()
     }
 
     private fun setViewListeners() {
@@ -36,7 +38,7 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
         }
     }
 
-    private fun setViewModelListener() {
+    private fun setViewModelListeners() {
         viewModel.loadingState.subscribe {
             when (it) {
                 is ProfileViewFragmentViewModel.LoadingState.OnStart -> showProgressDialog()
@@ -58,7 +60,7 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
         }.addTo(strongCompositeDisposable)
     }
 
-    private fun setUser(user: com.pechuro.cashdebts.data.data.model.FirestoreUser) {
+    private fun setUser(user: FirestoreUser) {
         with(user) {
             image_avatar.loadAvatar(photoUrl)
             text_first_name.text = firstName
@@ -76,10 +78,7 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     }
 
     companion object {
-        fun newInstance() = ProfileViewFragment().apply {
-            arguments = Bundle().apply {
-            }
-        }
+        fun newInstance() = ProfileViewFragment()
     }
 }
 

@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.fragment.profileedit
 
 import android.net.Uri
 import androidx.core.net.toUri
+import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
@@ -57,9 +58,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
         command.onNext(Events.OnUserStartLoad)
         userRepository.get()
             .subscribe({
-                command.onNext(Events.OnUserLoaded(it))
-                initialImageUrl = it.photoUrl ?: ""
-                imageUrl.onNext(it.photoUrl ?: "")
+                onUserLoaded(it)
                 isUserAlreadyLoaded = true
                 command.onNext(Events.OnUserStopLoad)
             }, {
@@ -69,6 +68,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
                 }
             }).addTo(compositeDisposable)
     }
+
 
     fun save() {
         fun deletePreviousPhoto(): Completable {
@@ -137,6 +137,16 @@ class ProfileEditFragmentViewModel @Inject constructor(
         fileManager.writeToFile(photoFile, stream)
     }
 
+    private fun onUserLoaded(user: FirestoreUser) {
+        with(inputData.fields) {
+            firstName.onNext(user.firstName)
+            lastName.onNext(user.lastName)
+        }
+
+        initialImageUrl = user.photoUrl ?: ""
+        imageUrl.onNext(user.photoUrl ?: "")
+    }
+
     private fun onSaved() {
         loadingState.onNext(false)
         command.onNext(Events.OnSaved)
@@ -165,6 +175,5 @@ class ProfileEditFragmentViewModel @Inject constructor(
         object OnSaved : Events()
         object OnSaveError : Events()
         object OnLoadError : Events()
-        class OnUserLoaded(val user: com.pechuro.cashdebts.data.data.model.FirestoreUser) : Events()
     }
 }

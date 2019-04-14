@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
+import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel.Events.*
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.loadAvatar
@@ -60,26 +61,26 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
 
     private fun setViewModelListeners() {
         with(viewModel) {
-            command.subscribe {
-                when (it) {
-                    is ProfileEditFragmentViewModel.Events.OnUserStartLoad -> showProgressDialog()
-                    is ProfileEditFragmentViewModel.Events.OnUserStopLoad -> dismissProgressDialog()
-                    is ProfileEditFragmentViewModel.Events.OnSaved -> onSaved()
-                    is ProfileEditFragmentViewModel.Events.OnSaveError -> showSnackbarErrorSave()
-                    is ProfileEditFragmentViewModel.Events.OnLoadError -> showSnackbarErrorLoad()
-                    is ProfileEditFragmentViewModel.Events.OnUserLoaded -> setInitialUser(it.user)
+            weakCompositeDisposable.addAll(
+                command.subscribe {
+                    when (it) {
+                        is OnUserStartLoad -> showProgressDialog()
+                        is OnUserStopLoad -> dismissProgressDialog()
+                        is OnSaved -> onSaved()
+                        is OnSaveError -> showSnackbarErrorSave()
+                        is OnLoadError -> showSnackbarErrorLoad()
+                    }
+                },
+                loadingState.subscribe {
+                    setLoading(it)
+                },
+                isConnectionAvailable.subscribe {
+                    onConnectionChanged(it)
+                },
+                imageUrl.subscribe {
+                    image_photo.loadAvatar(it)
                 }
-            }.addTo(weakCompositeDisposable)
-
-            loadingState.subscribe {
-                setLoading(it)
-            }.addTo(weakCompositeDisposable)
-            isConnectionAvailable.subscribe {
-                onConnectionChanged(it)
-            }.addTo(weakCompositeDisposable)
-            imageUrl.subscribe {
-                image_photo.loadAvatar(it)
-            }.addTo(weakCompositeDisposable)
+            )
 
             with(inputData) {
                 with(fields) {
@@ -110,13 +111,6 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     private fun loadUserIfRequire() {
         val isFirstTime = arguments?.getBoolean(ARG_IS_FIRST_TIME) ?: false
         viewModel.loadUser(!isFirstTime)
-    }
-
-    private fun setInitialUser(user: com.pechuro.cashdebts.data.data.model.FirestoreUser) {
-        with(user) {
-            text_first_name.setText(firstName)
-            text_last_name.setText(lastName)
-        }
     }
 
     private fun onConnectionChanged(isAvailable: Boolean) {
