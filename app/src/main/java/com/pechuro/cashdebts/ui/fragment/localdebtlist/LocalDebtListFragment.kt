@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
@@ -51,6 +52,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
             setHasFixedSize(true)
         }
         swipeToDeleteHelper.attachToRecyclerView(recycler)
+        progress.isVisible = true
     }
 
     private fun setViewListeners() {
@@ -79,7 +81,10 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.debtSource.subscribe(adapter::update).addTo(weakCompositeDisposable)
+        viewModel.debtSource.subscribe {
+            adapter.update(it)
+            if (progress.isVisible) progress.isVisible = false
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun deleteDebt(position: Int) {

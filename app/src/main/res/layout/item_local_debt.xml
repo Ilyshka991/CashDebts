@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/text_date"
                 app:layout_constraintStart_toStartOf="@+id/text_date"
                 tools:text="Description"/>
@@ -48,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="@+id/text_debtor"
                 app:layout_constraintTop_toBottomOf="@+id/text_debtor"

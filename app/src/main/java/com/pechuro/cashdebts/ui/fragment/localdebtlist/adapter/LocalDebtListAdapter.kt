@@ -67,6 +67,12 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
         override fun onBind(data: LocalDebt) {
             view.apply {
+                if ((itemView.tag as? ItemInfo)?.data === data) {
+                    if (data.description.isNotEmpty()) text_description.isVisible = data.isExpanded
+                    text_date.isVisible = data.isExpanded
+                    return
+                }
+
                 text_debtor.text = data.personName
 
                 val textValueStringRes = when (data.role) {
@@ -86,6 +92,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                     text = dateFormatter.format(data.date)
                     isVisible = data.isExpanded
                 }
+
+                text_date.text = dateFormatter.format(data.date)
 
                 itemView.tag = ItemInfo(data, this@ViewHolder)
                 setOnClickListener(onClickListener)

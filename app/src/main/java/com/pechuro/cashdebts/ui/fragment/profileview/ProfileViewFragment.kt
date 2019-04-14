@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.fragment.profileview
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.FirestoreUser
@@ -41,8 +42,14 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     private fun setViewModelListeners() {
         viewModel.loadingState.subscribe {
             when (it) {
-                is ProfileViewFragmentViewModel.LoadingState.OnStart -> showProgressDialog()
-                is ProfileViewFragmentViewModel.LoadingState.OnStop -> dismissProgressDialog()
+                is ProfileViewFragmentViewModel.LoadingState.OnStart -> {
+                    container_auth_phone.isVisible = false
+                    progress.isVisible = true
+                }
+                is ProfileViewFragmentViewModel.LoadingState.OnStop -> {
+                    container_auth_phone.isVisible = true
+                    progress.isVisible = false
+                }
                 is ProfileViewFragmentViewModel.LoadingState.OnError -> showErrorSnackbar()
             }
         }.addTo(weakCompositeDisposable)

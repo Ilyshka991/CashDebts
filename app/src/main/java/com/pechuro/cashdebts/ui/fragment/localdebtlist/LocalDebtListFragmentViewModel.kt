@@ -38,6 +38,10 @@ class LocalDebtListFragmentViewModel @Inject constructor(
                     )
                 }
         }
+        .scan { first: List<LocalDebt>, second: List<LocalDebt> ->
+            val mergedList = first.filter { it in second } + second
+            mergedList.toSet().toList()
+        }
         .map {
             val resultList = mutableListOf<LocalDebt>()
             if (it.isEmpty()) {

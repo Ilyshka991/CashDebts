@@ -91,5 +91,13 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     style="@style/Widget.MaterialComponents.Button.TextButton"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                tools:visibility="visible"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </ScrollView>
