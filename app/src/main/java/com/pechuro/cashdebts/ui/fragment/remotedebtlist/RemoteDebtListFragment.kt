@@ -51,7 +51,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             setHasFixedSize(true)
         }
-        swipeHelper.attachToRecyclerView(recycler)
+        // swipeHelper.attachToRecyclerView(recycler)
         progress.isVisible = true
     }
 

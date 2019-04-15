@@ -32,7 +32,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
             ViewHolder(view)
         }
         VIEW_TYPE_EMPTY -> {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_local_debt_empty, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_debt_empty, parent, false)
             EmptyViewHolder(view)
         }
         else -> throw IllegalArgumentException()

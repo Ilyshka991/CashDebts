@@ -110,9 +110,11 @@ class ProfileEditFragmentViewModel @Inject constructor(
             updateUser(initialImageUrl)
         }
 
+        updateTask?.dispose()
         updateTask = task.subscribe({
             onSaved()
         }, {
+            it.printStackTrace()
             loadingState.onNext(false)
             if (isConnectionAvailable.value == true) {
                 command.onNext(Events.OnSaveError)
