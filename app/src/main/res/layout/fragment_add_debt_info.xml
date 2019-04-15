@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/add_debt_hint_value"
-            android:inputType="numberDecimal|numberSigned"
+            android:inputType="number|numberDecimal|numberSigned"
             android:digits="0123456789.+-*/()"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"

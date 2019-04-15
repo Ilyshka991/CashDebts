@@ -15,7 +15,7 @@ fun Subject<String>.receiveTextChangesFrom(view: HintEditText): Disposable {
     return doOnDispose {
         view.removeTextChangedListener(listener)
     }
-        .filter { view.text.toString() != it }
+        .filter { view.getEnteredText() != it }
         .subscribe {
             view.setText(it)
             view.setSelection(it.length)

@@ -23,7 +23,7 @@ class FirestoreStructure {
             const val value = "value"
             const val description = "description"
             const val date = "date"
-            const val isPersonDebtor = "isOwnerDebtor"
+            const val role = "role"
         }
     }
 
