@@ -13,8 +13,8 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class ItemSwipeCallback @Inject constructor() :
-    BaseItemTouchCallback<ItemSwipeCallback.SwipeAction>(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+class LocalDebtItemSwipeCallback @Inject constructor() :
+    BaseItemTouchCallback<LocalDebtItemSwipeCallback.SwipeAction>(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
     private val _actionEmitter = PublishSubject.create<SwipeAction>()
 
     override val actionEmitter: Observable<SwipeAction>

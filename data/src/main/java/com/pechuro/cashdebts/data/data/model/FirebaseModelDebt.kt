@@ -27,7 +27,9 @@ class FirestoreRemoteDebt(
     description: String,
     date: Date,
     @FirestoreDebtStatus val status: Int
-) : FirestoreBaseDebt(value, description, date)
+) : FirestoreBaseDebt(value, description, date) {
+    constructor() : this("", "", 0.0, "", Date(), FirestoreDebtStatus.NOT_SEND)
+}
 
 class FirestoreLocalDebt(
     val ownerUid: String,

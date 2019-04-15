@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.di.annotations.FragmentScope
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
-import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.ItemSwipeCallback
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtItemSwipeCallback
 import dagger.Module
 import dagger.Provides
 import java.text.SimpleDateFormat
@@ -24,11 +24,7 @@ class LocalDebtListFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideItemSwipeToDeleteCallback() = ItemSwipeCallback()
-
-    @Provides
-    @FragmentScope
-    fun provideItemSwipeToDeleteHelper(callback: ItemSwipeCallback) = ItemTouchHelper(callback)
+    fun provideItemSwipeToDeleteHelper(callback: LocalDebtItemSwipeCallback) = ItemTouchHelper(callback)
 
     companion object {
         const val DATE_FORMAT_PATTERN = "dd-MM-yyyy HH:mm"

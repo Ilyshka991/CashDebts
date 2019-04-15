@@ -5,8 +5,8 @@ class FirestoreStructure {
         const val TAG = "remoteDebts"
 
         object Structure {
-            const val creditor = "creditorPhone"
-            const val debtor = "debtorPhone"
+            const val creditorUid = "creditorUid"
+            const val debtorUid = "debtorUid"
             const val value = "value"
             const val description = "description"
             const val date = "date"

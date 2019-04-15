@@ -1,43 +1,53 @@
 package com.pechuro.cashdebts.data.data.repositories.impl
 
-import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
 import com.pechuro.cashdebts.data.data.exception.FirestoreCommonException
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure
-import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.creditor
-import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.debtor
+import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.creditorUid
+import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.debtorUid
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
 internal class RemoteDebtRepositoryImpl @Inject constructor(
-    private val store: FirebaseFirestore
+    private val store: FirebaseFirestore,
+    private val userRepository: IUserRepository
 ) : IRemoteDebtRepository {
 
-    //TODO: remake this
-    override fun getSource(): Observable<DocumentChange> = Observable.create<DocumentChange> { emitter ->
+    override fun getSource() = Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
-            .whereEqualTo(creditor, "")
-            .addSnapshotListener(MetadataChanges.INCLUDE) { querySnapshot, e ->
-                querySnapshot?.documentChanges?.forEach {
-                    emitter.onNext(it)
-                }
+            .whereEqualTo(creditorUid, userRepository.currentUserBaseInformation.uid)
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
+                if (snapshot == null) return@addSnapshotListener
+                snapshot.documents
+                    .mapNotNull {
+                        it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
+                    }
+                    .toMap()
+                    .let {
+                        if (!emitter.isDisposed) emitter.onNext(it)
+                    }
             }
         store.collection(FirestoreStructure.RemoteDebt.TAG)
-            .whereEqualTo(debtor, "")
-            .addSnapshotListener(MetadataChanges.INCLUDE) { querySnapshot, e ->
-                querySnapshot?.documentChanges?.forEach {
-                    emitter.onNext(it)
-                }
+            .whereEqualTo(debtorUid, userRepository.currentUserBaseInformation.uid)
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
+                if (snapshot == null) return@addSnapshotListener
+                snapshot.documents
+                    .mapNotNull {
+                        it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
+                    }
+                    .toMap()
+                    .let {
+                        if (!emitter.isDisposed) emitter.onNext(it)
+                    }
             }
     }
-        .subscribeOn(Schedulers.io())
 
     override fun get(id: String): Single<FirestoreRemoteDebt> {
         return Single.just(FirestoreRemoteDebt("", "", 0.4, "", Date(), 3))

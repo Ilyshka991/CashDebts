@@ -12,7 +12,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
-import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.ItemSwipeCallback
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
@@ -25,7 +25,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     @Inject
     protected lateinit var layoutManager: RecyclerView.LayoutManager
     @Inject
-    protected lateinit var swipeToDeleteHelper: ItemTouchHelper<ItemSwipeCallback.SwipeAction>
+    protected lateinit var swipeToDeleteHelper: ItemTouchHelper<LocalDebtItemSwipeCallback.SwipeAction>
 
     override val layoutId: Int
         get() = R.layout.fragment_local_debt_list
@@ -66,8 +66,8 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         })
         swipeToDeleteHelper.actionEmitter.subscribe {
             when (it) {
-                is ItemSwipeCallback.SwipeAction.SwipedToDelete -> deleteDebt(it.position)
-                is ItemSwipeCallback.SwipeAction.SwipedToEdit -> editDebt(it.position)
+                is LocalDebtItemSwipeCallback.SwipeAction.SwipedToDelete -> deleteDebt(it.position)
+                is LocalDebtItemSwipeCallback.SwipeAction.SwipedToEdit -> editDebt(it.position)
             }
         }.addTo(strongCompositeDisposable)
     }
