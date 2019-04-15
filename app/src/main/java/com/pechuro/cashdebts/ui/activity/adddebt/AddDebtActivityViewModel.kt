@@ -37,8 +37,39 @@ class AddDebtActivityViewModel @Inject constructor(
     val isConnectionAvailable = BehaviorSubject.create<Boolean>()
     val mathExpression = BehaviorSubject.createDefault("0.0")
 
+    val loadingState = BehaviorSubject.createDefault<LoadingState>(LoadingState.OnStop)
+
     val debtValue: Observable<Pair<Boolean, Result>> by lazy {
         mathExpression
+            .distinctUntilChanged()
+            .map { expr ->
+                val builder = StringBuilder(expr)
+
+                when {
+                    expr.isEmpty() -> builder.append(0)
+                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" -> builder.append(
+                        0
+                    )
+                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" -> builder.append(
+                        1
+                    )
+                    expr.length > 1 && expr[expr.lastIndex] in ".+-" -> builder.append(0)
+                    expr.length > 1 && expr[expr.lastIndex] in "*/" -> builder.append(1)
+                    expr.length > 2 && expr[expr.lastIndex] == '(' && expr[expr.lastIndex - 1] in "+-/*"
+                    -> builder.delete(builder.length - 2, builder.length)
+                }
+
+
+                val openStapleCount = builder.count { it == '(' }
+                val closeStapleCount = builder.count { it == ')' }
+                if (openStapleCount > closeStapleCount) {
+                    repeat(openStapleCount - closeStapleCount) {
+                        builder.append(')')
+                    }
+                }
+
+                builder.toString()
+            }
             .map { isNotMathExpression(it) to calculator.evaluate(it) }
             .subscribeOn(Schedulers.computation())
             .also { observable ->
@@ -113,7 +144,7 @@ class AddDebtActivityViewModel @Inject constructor(
             command.onNext(Events.OnError(R.string.add_debt_error_invalid_info))
             return
         }
-        command.onNext(Events.ShowProgress)
+        loadingState.onNext(LoadingState.OnStart)
         when (val debt = debt) {
             is LocalDebtInfo -> addLocalDebt(debt)
             is RemoteDebtInfo -> addRemoteDebt(debt)
@@ -121,7 +152,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     fun restartWithLocalDebtFragment() {
-        command.onNext(AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment)
+        command.onNext(Events.RestartWithLocalDebtFragment)
     }
 
     private fun onDebtLoaded(firestoreDebt: FirestoreBaseDebt) {
@@ -182,10 +213,10 @@ class AddDebtActivityViewModel @Inject constructor(
         )
 
         remoteDebtRepository.add(sendingDebt, debt.id).subscribe({
-            command.onNext(Events.DismissProgress)
+            loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OnSaved)
         }, {
-            command.onNext(Events.DismissProgress)
+            loadingState.onNext(LoadingState.OnStop)
         }).addTo(compositeDisposable)
     }
 
@@ -201,24 +232,24 @@ class AddDebtActivityViewModel @Inject constructor(
             )
         }
         localDebtRepository.add(sendingDebt, debt.id).subscribe({
-            command.onNext(Events.DismissProgress)
+            loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OnSaved)
         }, {
-            command.onNext(Events.DismissProgress)
+            loadingState.onNext(LoadingState.OnStop)
         }).addTo(compositeDisposable)
     }
 
     private fun checkUserExist(data: RemoteDebtInfo) {
-        command.onNext(Events.ShowProgress)
+        loadingState.onNext(LoadingState.OnStart)
         userRepository.getUidByPhone(data.phone.requireValue).subscribe({
             data.personUid.onNext(it)
-            command.onNext(Events.DismissProgress)
+            loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OpenInfo(true))
         }, {
             it.printStackTrace()
-            command.onNext(Events.DismissProgress)
+            loadingState.onNext(LoadingState.OnStop)
             when (it) {
-                is FirestoreUserNotFoundException -> command.onNext(Events.OnErrorUserNotExist)
+                is FirestoreUserNotFoundException -> loadingState.onNext(LoadingState.OnError)
                 else -> command.onNext(Events.OnError(R.string.add_debt_error_common))
             }
         }).addTo(compositeDisposable)
@@ -229,12 +260,15 @@ class AddDebtActivityViewModel @Inject constructor(
     sealed class Events {
         object OnSaved : Events()
         class OpenInfo(val isInternetRequired: Boolean) : Events()
-        object ShowProgress : Events()
-        object DismissProgress : Events()
-        object OnErrorUserNotExist : Events()
         object RestartWithLocalDebtFragment : Events()
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
+    }
+
+    sealed class LoadingState {
+        object OnStart : LoadingState()
+        object OnStop : LoadingState()
+        object OnError : LoadingState()
     }
 
     companion object {

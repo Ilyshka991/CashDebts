@@ -93,6 +93,12 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
                     }
                 }
             }.addTo(weakCompositeDisposable)
+            loadingState.subscribe {
+                when (it) {
+                    is AddDebtActivityViewModel.LoadingState.OnStart -> showProgressDialog()
+                    is AddDebtActivityViewModel.LoadingState.OnStop -> dismissProgressDialog()
+                }
+            }.addTo(weakCompositeDisposable)
         }
     }
 

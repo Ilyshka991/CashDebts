@@ -16,31 +16,33 @@ internal class MathNumber(private val value: BigDecimal) : MathExpr() {
 
 internal object MathPlus : MathExpr() {
     override fun interpret(stack: Stack<BigDecimal>) {
-        val second = stack.pop()
-        val first = stack.pop()
+        val second = stack.popIfExist() ?: BigDecimal.ZERO
+        val first = stack.popIfExist() ?: BigDecimal.ZERO
         stack.push(first.add(second, MathContext.DECIMAL128))
     }
 }
 
 internal object MathMinus : MathExpr() {
     override fun interpret(stack: Stack<BigDecimal>) {
-        val second = stack.pop()
-        val first = stack.pop()
+        val second = stack.popIfExist() ?: BigDecimal.ZERO
+        val first = stack.popIfExist() ?: BigDecimal.ZERO
         stack.push(first.subtract(second, MathContext.DECIMAL128))
     }
 }
 
 internal object MathMultiply : MathExpr() {
     override fun interpret(stack: Stack<BigDecimal>) {
-        stack.push(stack.pop().multiply(stack.pop(), MathContext.DECIMAL128))
+        val second = stack.popIfExist() ?: BigDecimal.ONE
+        val first = stack.popIfExist() ?: BigDecimal.ONE
+        stack.push(second.multiply(first, MathContext.DECIMAL128))
     }
 }
 
 internal object MathDivide : MathExpr() {
     override fun interpret(stack: Stack<BigDecimal>) {
-        val second = stack.pop()
+        val second = stack.popIfExist() ?: BigDecimal.ONE
         if (second == BigDecimal.ZERO) throw IllegalArgumentException()
-        val first = stack.pop()
+        val first = stack.popIfExist() ?: BigDecimal.ONE
         stack.push(first.divide(second, MathContext.DECIMAL128))
     }
 }

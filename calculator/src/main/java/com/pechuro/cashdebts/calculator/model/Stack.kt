@@ -16,6 +16,8 @@ class Stack<T : Any> {
 
     fun pop() = values.pop()
 
+    fun popIfExist() = if (isNotEmpty) pop() else null
+
     fun peek() = values.peek()
 }
 

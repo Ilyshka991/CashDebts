@@ -89,11 +89,11 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     private fun setViewModelListeners() {
         with(viewModel) {
-            command.subscribe {
+            loadingState.subscribe {
                 when (it) {
-                    is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
-                    is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
-                    is AddDebtActivityViewModel.Events.OnErrorUserNotExist -> showSnackBarUserNotExist()
+                    is AddDebtActivityViewModel.LoadingState.OnStart -> showProgressDialog()
+                    is AddDebtActivityViewModel.LoadingState.OnStop -> dismissProgressDialog()
+                    is AddDebtActivityViewModel.LoadingState.OnError -> showSnackBarUserNotExist()
                 }
             }.addTo(weakCompositeDisposable)
             isConnectionAvailable.subscribe {

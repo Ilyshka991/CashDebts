@@ -44,10 +44,10 @@ class AddDebtLocalUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.command.subscribe {
+        viewModel.loadingState.subscribe {
             when (it) {
-                is AddDebtActivityViewModel.Events.ShowProgress -> showProgressDialog()
-                is AddDebtActivityViewModel.Events.DismissProgress -> dismissProgressDialog()
+                is AddDebtActivityViewModel.LoadingState.OnStart -> showProgressDialog()
+                is AddDebtActivityViewModel.LoadingState.OnStop -> dismissProgressDialog()
             }
         }.addTo(weakCompositeDisposable)
     }
