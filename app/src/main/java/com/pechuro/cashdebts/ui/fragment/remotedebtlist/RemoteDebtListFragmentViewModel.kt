@@ -22,7 +22,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
 
     val debtSource = debtRepository.getSource()
         .subscribeOn(Schedulers.io())
-        .flatMapSingle { map ->
+        .concatMapSingle { map ->
             Observable.fromIterable(map.toList())
                 .flatMapSingle { originData ->
                     val (id, firestoreDebt) = originData
@@ -73,10 +73,10 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             }
             resultList
         }
+        .filter { diffCallback.oldList != it }
         .map { list ->
             list.sortedByDescending { it.date }
         }
-        .filter { diffCallback.oldList != it }
         .map {
             diffCallback.newList = it
             val diffResult = DiffUtil.calculateDiff(diffCallback)

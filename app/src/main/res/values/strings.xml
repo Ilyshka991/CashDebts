@@ -65,6 +65,7 @@
     <string name="add_debt_hint_phone">Phone</string>
     <string name="add_debt_action_pick_from_contacts">Or pick from contacts</string>
     <string name="debt_role_msg_i_am">I am:</string>
+    <string name="debt_status_msg">Current status: %1$s</string>
     <string name="debt_role_creditor">creditor</string>
     <string name="debt_role_debtor">debtor</string>
     <string name="add_debt_hint_name">Name</string>
@@ -78,4 +79,15 @@
     <string name="item_local_debt_msg_empty">There are nothing</string>
     <string name="item_local_debt_msg_debtor">I owe: %1$.2f</string>
     <string name="item_local_debt_msg_creditor">Owe me: %1.2f</string>
+
+
+    <string name="debt_status_not_send">Not send</string>
+    <string name="debt_status_wait_for_confirmation">Wait for confirmation</string>
+    <string name="debt_status_confirmation_rejected">Rejected</string>
+    <string name="debt_status_confirmation_approved">Approved</string>
+    <string name="debt_status_wait_for_completion">Wait for completion confirmation</string>
+    <string name="debt_status_need_completion_approve">Wait for your confirmation</string>
+    <string name="debt_status_completion_rejected">Completion rejected</string>
+    <string name="debt_status_complete">Complete</string>
+
 </resources>

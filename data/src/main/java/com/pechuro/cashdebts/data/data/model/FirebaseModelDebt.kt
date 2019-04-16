@@ -52,15 +52,15 @@ class FirestoreLocalDebt(
 @Retention(AnnotationRetention.SOURCE)
 annotation class FirestoreDebtStatus {
     companion object {
-        const val NOT_SEND = 1
-        const val WAIT_FOR_CONFIRMATION = 2
-        const val CONFIRMATION_REJECTED = 3
-        const val CONFIRMATION_APPROVED = 4
-        const val WAIT_FOR_COMPLETION_FROM_CREDITOR = 5
-        const val WAIT_FOR_COMPLETION_FROM_DEBTOR = 6
-        const val COMPLETION_REJECTED_BY_CREDITOR = 7
-        const val COMPLETION_REJECTED_BY_DEBTOR = 8
-        const val COMPLETE = 9
+        const val NOT_SEND = 0
+        const val WAIT_FOR_CONFIRMATION = 1
+        const val CONFIRMATION_REJECTED = 2
+        const val CONFIRMATION_APPROVED = 3
+        const val WAIT_FOR_COMPLETION_FROM_CREDITOR = 4
+        const val WAIT_FOR_COMPLETION_FROM_DEBTOR = 5
+        const val COMPLETION_REJECTED_BY_CREDITOR = 6
+        const val COMPLETION_REJECTED_BY_DEBTOR = 7
+        const val COMPLETE = 8
     }
 }
 

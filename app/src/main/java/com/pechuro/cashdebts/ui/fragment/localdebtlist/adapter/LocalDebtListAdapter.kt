@@ -73,14 +73,14 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                     return
                 }
 
-                text_debtor.text = data.personName
+                text_person_name.text = data.personName
 
                 val textValueStringRes = when (data.role) {
                     DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
                     DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
                     else -> throw IllegalArgumentException()
                 }
-                val textValue = view.context.getString(textValueStringRes, data.value)
+                val textValue = context.getString(textValueStringRes, data.value)
                 text_value.text = textValue
 
                 text_description.apply {
@@ -92,8 +92,6 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                     text = dateFormatter.format(data.date)
                     isVisible = data.isExpanded
                 }
-
-                text_date.text = dateFormatter.format(data.date)
 
                 itemView.tag = ItemInfo(data, this@ViewHolder)
                 setOnClickListener(onClickListener)

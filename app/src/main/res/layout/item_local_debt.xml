@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
         <TextView
-                android:id="@+id/text_debtor"
+                android:id="@+id/text_person_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 tools:text="Value"
-                app:layout_constraintTop_toTopOf="@+id/text_debtor"
+                app:layout_constraintTop_toTopOf="@+id/text_person_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
@@ -51,8 +51,8 @@
                 android:textSize="18sp"
                 android:visibility="gone"
                 android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/text_debtor"
-                app:layout_constraintTop_toBottomOf="@+id/text_debtor"
+                app:layout_constraintStart_toStartOf="@+id/text_person_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_person_name"
                 tools:text="Date"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
