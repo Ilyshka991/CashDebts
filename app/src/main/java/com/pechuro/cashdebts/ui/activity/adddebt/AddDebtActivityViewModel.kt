@@ -5,9 +5,12 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Calculator
 import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException
-import com.pechuro.cashdebts.data.data.model.*
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
+import com.pechuro.cashdebts.data.data.model.FirestoreBaseDebt
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
+import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
+import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
@@ -166,10 +169,10 @@ class AddDebtActivityViewModel @Inject constructor(
                 val localDebt = debt as RemoteDebtInfo
                 if (userRepository.currentUserBaseInformation.uid == firestoreDebt.creditorUid) {
                     localDebt.personUid.onNext(firestoreDebt.debtorUid)
-                    localDebt.debtRole.onNext(DebtRole.CREDITOR)
+                    localDebt.debtRole.onNext(CREDITOR)
                 } else {
                     localDebt.personUid.onNext(firestoreDebt.creditorUid)
-                    localDebt.debtRole.onNext(DebtRole.DEBTOR)
+                    localDebt.debtRole.onNext(DEBTOR)
                 }
             }
         }

@@ -13,7 +13,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import java.util.*
 import javax.inject.Inject
 
 internal class RemoteDebtRepositoryImpl @Inject constructor(
@@ -22,7 +21,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 ) : IRemoteDebtRepository {
 
     override fun getSource() =
-        Observable.zip(Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
+        Observable.combineLatest(Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
             store.collection(FirestoreStructure.RemoteDebt.TAG)
                 .whereEqualTo(creditorUid, userRepository.currentUserBaseInformation.uid)
                 .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
@@ -56,8 +55,18 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             it.first + it.second
         }
 
-    override fun get(id: String): Single<FirestoreRemoteDebt> {
-        return Single.just(FirestoreRemoteDebt("", "", 0.4, "", Date(), 3))
+    override fun get(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
+        store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get().addOnCompleteListener {
+            if (it.isSuccessful && it.result != null) {
+                if (!emitter.isDisposed) {
+                    emitter.onSuccess(it.result!!.toObject(FirestoreRemoteDebt::class.java)!!)
+                }
+            } else {
+                if (!emitter.isDisposed) {
+                    emitter.onError(FirestoreCommonException())
+                }
+            }
+        }
     }
 
     override fun add(debt: FirestoreRemoteDebt, id: String?) = Completable.create { emitter ->
