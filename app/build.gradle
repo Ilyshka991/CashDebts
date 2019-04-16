@@ -41,7 +41,6 @@ dependencies {
     implementation daggerDependencies.values()
     kapt daggerProcessorDependencies.values()
     implementation glideDependencies.values()
-    implementation leakCanaryDependencies.values()
 
     implementation project(':data')
     implementation project(':calculator')
