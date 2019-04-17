@@ -14,6 +14,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFra
 import com.pechuro.cashdebts.ui.base.activity.FragmentSwitcherBaseActivity
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.activity_container.*
+import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean
@@ -76,7 +77,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
                 is AddDebtActivityViewModel.Events.OnSaved -> onFinish()
                 is AddDebtActivityViewModel.Events.OnError -> showSnackBarError(it.id)
                 is AddDebtActivityViewModel.Events.OpenInfo -> openInfo(it.isInternetRequired)
-                is AddDebtActivityViewModel.Events.RestartWithLocalDebtFragment -> restartWithLocalDebtFragment()
+                is AddDebtActivityViewModel.Events.OnUserNotExist -> showSnackBarUserNotExist()
                 is AddDebtActivityViewModel.Events.SetOptionsMenuEnabled -> setOptionMenuEnabled(it.isEnabled)
             }
         }.let(weakCompositeDisposable::add)
@@ -98,6 +99,13 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     private fun showSnackBarError(@StringRes id: Int) {
         Snackbar.make(container, id, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showSnackBarUserNotExist() {
+        Snackbar.make(layout_coordinator, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.add_debt_action_add_local) {
+                restartWithLocalDebtFragment()
+            }.show()
     }
 
     private fun restartWithLocalDebtFragment() {

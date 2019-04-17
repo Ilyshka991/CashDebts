@@ -93,7 +93,6 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
                 when (it) {
                     is AddDebtActivityViewModel.LoadingState.OnStart -> showProgressDialog()
                     is AddDebtActivityViewModel.LoadingState.OnStop -> dismissProgressDialog()
-                    is AddDebtActivityViewModel.LoadingState.OnError -> showSnackBarUserNotExist()
                 }
             }.addTo(weakCompositeDisposable)
             isConnectionAvailable.subscribe {
@@ -119,13 +118,6 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
 
     private fun showSnackBarError(@StringRes msgId: Int) {
         Snackbar.make(layout_coordinator, msgId, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun showSnackBarUserNotExist() {
-        Snackbar.make(layout_coordinator, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.add_debt_action_add_local) {
-                viewModel.restartWithLocalDebtFragment()
-            }.show()
     }
 
     private fun startPickContactActivity() {

@@ -154,10 +154,6 @@ class AddDebtActivityViewModel @Inject constructor(
         }
     }
 
-    fun restartWithLocalDebtFragment() {
-        command.onNext(Events.RestartWithLocalDebtFragment)
-    }
-
     private fun onDebtLoaded(firestoreDebt: FirestoreBaseDebt) {
         when (firestoreDebt) {
             is FirestoreLocalDebt -> {
@@ -252,7 +248,7 @@ class AddDebtActivityViewModel @Inject constructor(
             it.printStackTrace()
             loadingState.onNext(LoadingState.OnStop)
             when (it) {
-                is FirestoreUserNotFoundException -> loadingState.onNext(LoadingState.OnError)
+                is FirestoreUserNotFoundException -> command.onNext(Events.OnUserNotExist)
                 else -> command.onNext(Events.OnError(R.string.add_debt_error_common))
             }
         }).addTo(compositeDisposable)
@@ -263,15 +259,14 @@ class AddDebtActivityViewModel @Inject constructor(
     sealed class Events {
         object OnSaved : Events()
         class OpenInfo(val isInternetRequired: Boolean) : Events()
-        object RestartWithLocalDebtFragment : Events()
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
+        object OnUserNotExist : Events()
     }
 
     sealed class LoadingState {
         object OnStart : LoadingState()
         object OnStop : LoadingState()
-        object OnError : LoadingState()
     }
 
     companion object {
