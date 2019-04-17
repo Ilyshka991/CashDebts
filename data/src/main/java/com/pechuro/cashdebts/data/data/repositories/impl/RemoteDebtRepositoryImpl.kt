@@ -21,50 +21,22 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 ) : IRemoteDebtRepository {
 
     override fun getSource() =
-        Observable.combineLatest(Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
-            store.collection(FirestoreStructure.RemoteDebt.TAG)
-                .whereEqualTo(creditorUid, userRepository.currentUserBaseInformation.uid)
-                .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
-                    if (snapshot == null) return@addSnapshotListener
-                    snapshot.documents
-                        .mapNotNull {
-                            it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
-                        }
-                        .toMap()
-                        .let {
-                            if (!emitter.isDisposed) emitter.onNext(it)
-                        }
-                }
-        }, Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
-            store.collection(FirestoreStructure.RemoteDebt.TAG)
-                .whereEqualTo(debtorUid, userRepository.currentUserBaseInformation.uid)
-                .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
-                    if (snapshot == null) return@addSnapshotListener
-                    snapshot.documents
-                        .mapNotNull {
-                            it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
-                        }
-                        .toMap()
-                        .let {
-                            if (!emitter.isDisposed) emitter.onNext(it)
-                        }
-                }
-        }, BiFunction { creditor: Map<String, FirestoreRemoteDebt>, debtor: Map<String, FirestoreRemoteDebt> ->
-            creditor to debtor
-        }).map {
+        Observable.combineLatest(
+            getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, creditorUid),
+            getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, debtorUid),
+            BiFunction { creditor: Map<String, FirestoreRemoteDebt>, debtor: Map<String, FirestoreRemoteDebt> ->
+                creditor to debtor
+            }).map {
             it.first + it.second
         }
 
     override fun get(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get().addOnCompleteListener {
+            if (emitter.isDisposed) return@addOnCompleteListener
             if (it.isSuccessful && it.result != null) {
-                if (!emitter.isDisposed) {
-                    emitter.onSuccess(it.result!!.toObject(FirestoreRemoteDebt::class.java)!!)
-                }
+                emitter.onSuccess(it.result!!.toObject(FirestoreRemoteDebt::class.java)!!)
             } else {
-                if (!emitter.isDisposed) {
-                    emitter.onError(FirestoreCommonException())
-                }
+                emitter.onError(FirestoreCommonException())
             }
         }
     }
@@ -72,6 +44,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
     override fun add(debt: FirestoreRemoteDebt, id: String?) = Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .add(debt).addOnCompleteListener {
+                if (emitter.isDisposed) return@addOnCompleteListener
                 if (it.isSuccessful) {
                     emitter.onComplete()
                 } else {
@@ -79,4 +52,21 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
                 }
             }
     }
+
+    private fun getRemoteDebtSource(uid: String, debtRole: String) =
+        Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
+            store.collection(FirestoreStructure.RemoteDebt.TAG)
+                .whereEqualTo(debtRole, uid)
+                .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
+                    if (snapshot == null) return@addSnapshotListener
+                    snapshot.documents
+                        .mapNotNull {
+                            it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
+                        }
+                        .toMap()
+                        .let {
+                            if (!emitter.isDisposed) emitter.onNext(it)
+                        }
+                }
+        }
 }

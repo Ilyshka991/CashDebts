@@ -54,6 +54,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
             store.collection(FirestoreStructure.LocalDebt.TAG)
                 .document(id)
                 .set(debt).addOnCompleteListener {
+                    if (emitter.isDisposed) return@addOnCompleteListener
                     if (it.isSuccessful) {
                         emitter.onComplete()
                     } else {
@@ -63,6 +64,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
         } else {
             store.collection(FirestoreStructure.LocalDebt.TAG)
                 .add(debt).addOnCompleteListener {
+                    if (emitter.isDisposed) return@addOnCompleteListener
                     if (it.isSuccessful) {
                         emitter.onComplete()
                     } else {
@@ -74,10 +76,11 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
 
     override fun delete(id: String) = Completable.create { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG).document(id).delete().addOnCompleteListener {
+            if (emitter.isDisposed) return@addOnCompleteListener
             if (it.isSuccessful) {
-                if (!emitter.isDisposed) emitter.onComplete()
+                emitter.onComplete()
             } else {
-                if (!emitter.isDisposed) emitter.onError(FirestoreCommonException())
+                emitter.onError(FirestoreCommonException())
             }
         }
     }

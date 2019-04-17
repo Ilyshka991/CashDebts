@@ -23,6 +23,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     val debtSource = debtRepository.getSource()
         .subscribeOn(Schedulers.io())
         .concatMapSingle { map ->
+            println("AAAAAAAAAAAAAAAAAAAAAAAAAAA")
             Observable.fromIterable(map.toList())
                 .flatMapSingle { originData ->
                     val (id, firestoreDebt) = originData
