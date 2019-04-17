@@ -10,6 +10,7 @@ import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivityViewModel
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialogViewModel
+import com.pechuro.cashdebts.ui.fragment.debtuserprofile.DebtUserProfileDialogViewModel
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentViewModel
@@ -79,4 +80,9 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(DateTimePickerDialogViewModel::class)
     fun dateTimePickerDialog(viewModel: DateTimePickerDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DebtUserProfileDialogViewModel::class)
+    fun debtUserProfileDialog(viewModel: DebtUserProfileDialogViewModel): ViewModel
 }

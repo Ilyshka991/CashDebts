@@ -20,6 +20,8 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_remote_debt.view.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -28,12 +30,20 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
     RecyclerView.Adapter<BaseViewHolder<RemoteDebt>>() {
     private var debtList = emptyList<RemoteDebt>()
 
+    private val _longClickEmitter = PublishSubject.create<RemoteDebt.User>()
+    val longClickEmitter: Observable<RemoteDebt.User> = _longClickEmitter
+
     private val onClickListener = View.OnClickListener {
         val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
         with(itemInfo) {
             data.isExpanded = !data.isExpanded
             notifyItemChanged(viewHolder.adapterPosition)
         }
+    }
+    private val onLongClickListener = View.OnLongClickListener {
+        val itemInfo = it.tag as? ItemInfo ?: return@OnLongClickListener true
+        _longClickEmitter.onNext(itemInfo.data.user)
+        true
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<RemoteDebt> = when (viewType) {
@@ -120,6 +130,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
 
                 itemView.tag = ItemInfo(data, this@ViewHolder)
                 setOnClickListener(onClickListener)
+                setOnLongClickListener(onLongClickListener)
             }
         }
     }

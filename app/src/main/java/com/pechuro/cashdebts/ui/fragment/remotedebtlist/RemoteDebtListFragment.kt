@@ -12,8 +12,10 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
+import com.pechuro.cashdebts.ui.fragment.debtuserprofile.DebtUserProfileDialog
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.utils.EventBus
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_remote_debt_list.*
@@ -72,6 +74,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
                 }
             }
         }.addTo(strongCompositeDisposable)
+        adapter.longClickEmitter.subscribe(this::showProfileDialog).addTo(strongCompositeDisposable)
     }
 
     private fun setEventListeners() {
@@ -87,6 +90,10 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
             adapter.update(it)
             if (progress.isVisible) progress.isVisible = false
         }.addTo(weakCompositeDisposable)
+    }
+
+    private fun showProfileDialog(user: RemoteDebt.User) {
+        DebtUserProfileDialog.newInstance(user).show(childFragmentManager, DebtUserProfileDialog.TAG)
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {
