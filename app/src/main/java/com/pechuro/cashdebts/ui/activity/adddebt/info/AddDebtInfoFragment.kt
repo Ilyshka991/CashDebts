@@ -38,7 +38,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewListeners()
-        setupView(savedInstanceState == null)
     }
 
     override fun onStart() {
@@ -100,10 +99,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
                 }
             }.addTo(weakCompositeDisposable)
         }
-    }
-
-    private fun setupView(isFirstTime: Boolean) {
-        if (isFirstTime) text_value.selectAll()
     }
 
     private fun onDateSelected(date: Date) {

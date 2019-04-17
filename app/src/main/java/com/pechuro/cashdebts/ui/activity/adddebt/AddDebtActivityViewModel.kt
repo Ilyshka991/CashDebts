@@ -38,7 +38,7 @@ class AddDebtActivityViewModel @Inject constructor(
     val command = PublishSubject.create<Events>()
 
     val isConnectionAvailable = BehaviorSubject.create<Boolean>()
-    val mathExpression = BehaviorSubject.createDefault("0.0")
+    val mathExpression = BehaviorSubject.createDefault("")
 
     val loadingState = BehaviorSubject.createDefault<LoadingState>(LoadingState.OnStop)
 
