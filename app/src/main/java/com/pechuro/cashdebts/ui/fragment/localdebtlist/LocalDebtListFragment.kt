@@ -66,8 +66,8 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         })
         swipeToDeleteHelper.actionEmitter.subscribe {
             when (it) {
-                is LocalDebtItemSwipeCallback.SwipeAction.SwipedToDelete -> deleteDebt(it.position)
-                is LocalDebtItemSwipeCallback.SwipeAction.SwipedToEdit -> editDebt(it.position)
+                is LocalDebtItemSwipeCallback.SwipeAction.Delete -> deleteDebt(it.position)
+                is LocalDebtItemSwipeCallback.SwipeAction.Edit -> editDebt(it.position)
             }
         }.addTo(strongCompositeDisposable)
     }

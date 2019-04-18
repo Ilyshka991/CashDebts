@@ -29,11 +29,11 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
-    private val localDebtRepository: ILocalDebtRepository,
-    private val remoteDebtRepository: IRemoteDebtRepository,
-    private val userRepository: IUserRepository,
-    private val connectivityListener: ConnectivityListener,
-    private val calculator: Calculator
+        private val localDebtRepository: ILocalDebtRepository,
+        private val remoteDebtRepository: IRemoteDebtRepository,
+        private val userRepository: IUserRepository,
+        private val connectivityListener: ConnectivityListener,
+        private val calculator: Calculator
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -44,48 +44,48 @@ class AddDebtActivityViewModel @Inject constructor(
 
     val debtValue: Observable<Pair<Boolean, Result>> by lazy {
         mathExpression
-            .distinctUntilChanged()
-            .map { expr ->
-                val builder = StringBuilder(expr)
+                .distinctUntilChanged()
+                .map { expr ->
+                    val builder = StringBuilder(expr)
 
-                when {
-                    expr.isEmpty() -> builder.append(0)
-                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" -> builder.append(
-                        0
-                    )
-                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" -> builder.append(
-                        1
-                    )
-                    expr.length > 1 && expr[expr.lastIndex] in ".+-" -> builder.append(0)
-                    expr.length > 1 && expr[expr.lastIndex] in "*/" -> builder.append(1)
-                    expr.length > 2 && expr[expr.lastIndex] == '(' && expr[expr.lastIndex - 1] in "+-/*"
-                    -> builder.delete(builder.length - 2, builder.length)
-                }
-
-
-                val openStapleCount = builder.count { it == '(' }
-                val closeStapleCount = builder.count { it == ')' }
-                if (openStapleCount > closeStapleCount) {
-                    repeat(openStapleCount - closeStapleCount) {
-                        builder.append(')')
+                    when {
+                        expr.isEmpty() -> builder.append(0)
+                        expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" -> builder.append(
+                                0
+                        )
+                        expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" -> builder.append(
+                                1
+                        )
+                        expr.length > 1 && expr[expr.lastIndex] in ".+-" -> builder.append(0)
+                        expr.length > 1 && expr[expr.lastIndex] in "*/" -> builder.append(1)
+                        expr.length > 2 && expr[expr.lastIndex] == '(' && expr[expr.lastIndex - 1] in "+-/*"
+                        -> builder.delete(builder.length - 2, builder.length)
                     }
-                }
 
-                builder.toString()
-            }
-            .map { isNotMathExpression(it) to calculator.evaluate(it) }
-            .subscribeOn(Schedulers.computation())
-            .also { observable ->
-                observable
-                    .map {
-                        when (val result = it.second) {
-                            is Result.Success -> result.result
-                            is Result.Error -> 0.0
+
+                    val openStapleCount = builder.count { it == '(' }
+                    val closeStapleCount = builder.count { it == ')' }
+                    if (openStapleCount > closeStapleCount) {
+                        repeat(openStapleCount - closeStapleCount) {
+                            builder.append(')')
                         }
                     }
-                    .subscribe(debt.value)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
+
+                    builder.toString()
+                }
+                .map { isNotMathExpression(it) to calculator.evaluate(it) }
+                .subscribeOn(Schedulers.computation())
+                .also { observable ->
+                    observable
+                            .map {
+                                when (val result = it.second) {
+                                    is Result.Success -> result.result
+                                    is Result.Error -> 0.0
+                                }
+                            }
+                            .subscribe(debt.value)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     lateinit var debt: BaseDebtInfo
@@ -134,7 +134,11 @@ class AddDebtActivityViewModel @Inject constructor(
             }
             is RemoteDebtInfo -> {
                 if (data.isValid()) {
-                    checkUserExist(data)
+                    if (data.phone.requireValue.isEqualsCurrentNumber()) {
+                        command.onNext(Events.OnError(R.string.add_debt_error_number_equal_current))
+                    } else {
+                        checkUserExist(data)
+                    }
                 } else {
                     command.onNext(Events.OnError(R.string.add_debt_error_invalid_phone))
                 }
@@ -203,12 +207,13 @@ class AddDebtActivityViewModel @Inject constructor(
         }
 
         val sendingDebt = FirestoreRemoteDebt(
-            creditorUid,
-            debtorUid,
-            debt.value.requireValue,
-            debt.description.requireValue,
-            debt.date.requireValue,
-            FirestoreDebtStatus.NOT_SEND
+                creditorUid,
+                debtorUid,
+                debt.value.requireValue,
+                debt.description.requireValue,
+                debt.date.requireValue,
+                FirestoreDebtStatus.WAIT_FOR_CONFIRMATION,
+                userRepository.currentUserBaseInformation.uid
         )
 
         remoteDebtRepository.add(sendingDebt, debt.id).subscribe({
@@ -222,12 +227,12 @@ class AddDebtActivityViewModel @Inject constructor(
     private fun addLocalDebt(debt: LocalDebtInfo) {
         val sendingDebt = with(debt) {
             FirestoreLocalDebt(
-                userRepository.currentUserBaseInformation.uid,
-                name.requireValue,
-                value.requireValue,
-                description.requireValue,
-                date.requireValue,
-                debtRole.requireValue
+                    userRepository.currentUserBaseInformation.uid,
+                    name.requireValue,
+                    value.requireValue,
+                    description.requireValue,
+                    date.requireValue,
+                    debtRole.requireValue
             )
         }
         localDebtRepository.add(sendingDebt, debt.id).subscribe({
@@ -255,6 +260,8 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     private fun isNotMathExpression(expr: String) = expr.matches(NUMBER_REGEX)
+
+    private fun String.isEqualsCurrentNumber() = this == userRepository.currentUserBaseInformation.phoneNumber
 
     sealed class Events {
         object OnSaved : Events()

@@ -11,12 +11,16 @@ import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETE
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_CREDITOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_DEBTOR
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.CONFIRMATION_APPROVED
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.CONFIRMATION_REJECTED
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.EDIT_CONFIRMATION_REJECTED_BY_CREDITOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.EDIT_CONFIRMATION_REJECTED_BY_DEBTOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.IN_PROGRESS
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.NOT_SEND
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_CREDITOR
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_DEBTOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETE_FROM_CREDITOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETE_FROM_DEBTOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRMATION
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
@@ -27,18 +31,32 @@ import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: SimpleDateFormat) :
-    RecyclerView.Adapter<BaseViewHolder<RemoteDebt>>() {
+        RecyclerView.Adapter<BaseViewHolder<RemoteDebt>>() {
     private var debtList = emptyList<RemoteDebt>()
 
     private val _longClickEmitter = PublishSubject.create<RemoteDebt.User>()
     val longClickEmitter: Observable<RemoteDebt.User> = _longClickEmitter
 
-    private val onClickListener = View.OnClickListener {
+    private val _actionsClickEmitter = PublishSubject.create<Pair<Actions, RemoteDebt>>()
+    val actionsClickEmitter: Observable<Pair<Actions, RemoteDebt>> = _actionsClickEmitter
+
+    private val onItemClickListener = View.OnClickListener {
         val itemInfo = it.tag as? ItemInfo ?: return@OnClickListener
         with(itemInfo) {
             data.isExpanded = !data.isExpanded
             notifyItemChanged(viewHolder.adapterPosition)
         }
+    }
+    private val onActionsClickListener = View.OnClickListener {
+        val itemInfo = it.tag as? RemoteDebt ?: return@OnClickListener
+        val action = when (it.id) {
+            R.id.button_reject -> Actions.REJECT
+            R.id.button_accept -> Actions.ACCEPT
+            R.id.button_ok -> Actions.OK
+            R.id.button_delete -> Actions.DELETE
+            else -> throw IllegalArgumentException()
+        }
+        _actionsClickEmitter.onNext(action to itemInfo)
     }
     private val onLongClickListener = View.OnLongClickListener {
         val itemInfo = it.tag as? ItemInfo ?: return@OnLongClickListener true
@@ -81,6 +99,8 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
         }
     }
 
+    fun getItemByPosition(position: Int) = debtList[position]
+
     private inner class ViewHolder(private val view: View) : BaseViewHolder<RemoteDebt>(view) {
 
         @SuppressLint("SetTextI18n")
@@ -102,21 +122,73 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 val textValue = context.getString(textValueStringRes, data.value)
                 text_value.text = textValue
 
+                var isActionButtonsVisible = false
+                var isOkButtonVisible = false
+                var isDeleteButtonVisible = false
                 val textStatusRes = when (data.status) {
                     NOT_SEND -> R.string.debt_status_not_send
-                    WAIT_FOR_CONFIRMATION -> R.string.debt_status_wait_for_confirmation
-                    CONFIRMATION_REJECTED -> R.string.debt_status_confirmation_rejected
-                    CONFIRMATION_APPROVED -> R.string.debt_status_confirmation_approved
-                    WAIT_FOR_COMPLETION_FROM_CREDITOR -> R.string.debt_status_wait_for_completion
-                    WAIT_FOR_COMPLETION_FROM_DEBTOR -> R.string.debt_status_wait_for_completion
-                    COMPLETION_REJECTED_BY_CREDITOR -> R.string.debt_status_completion_rejected
-                    COMPLETION_REJECTED_BY_DEBTOR -> R.string.debt_status_completion_rejected
-                    COMPLETE -> R.string.debt_status_complete
+                    WAIT_FOR_CONFIRMATION -> if (data.isCurrentUserInit) {
+                        R.string.debt_status_wait_for_confirmation
+                    } else {
+                        isActionButtonsVisible = true
+                        R.string.debt_status_need_add_approve
+                    }
+                    CONFIRMATION_REJECTED -> {
+                        if (data.isCurrentUserInit) isOkButtonVisible = true
+                        R.string.debt_status_confirmation_rejected
+                    }
+                    IN_PROGRESS -> R.string.debt_status_in_progress
+                    WAIT_FOR_COMPLETE_FROM_CREDITOR -> if (data.role == DebtRole.CREDITOR) {
+                        isActionButtonsVisible = true
+                        R.string.debt_status_need_completion_approve
+                    } else {
+                        R.string.debt_status_wait_for_completion
+                    }
+                    WAIT_FOR_COMPLETE_FROM_DEBTOR -> if (data.role == DebtRole.DEBTOR) {
+                        isActionButtonsVisible = true
+                        R.string.debt_status_need_completion_approve
+                    } else {
+                        R.string.debt_status_wait_for_completion
+                    }
+                    COMPLETION_REJECTED_BY_CREDITOR -> {
+                        if (data.role == DebtRole.DEBTOR) isOkButtonVisible = true
+                        R.string.debt_status_completion_rejected
+                    }
+                    COMPLETION_REJECTED_BY_DEBTOR -> {
+                        if (data.role == DebtRole.CREDITOR) isOkButtonVisible = true
+                        R.string.debt_status_completion_rejected
+                    }
+                    COMPLETE -> {
+                        isDeleteButtonVisible = true
+                        R.string.debt_status_complete
+                    }
+                    WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR -> if (data.role == DebtRole.CREDITOR) {
+                        isActionButtonsVisible = true
+                        R.string.debt_status_need_edit_confirmation
+                    } else {
+                        R.string.debt_status_wait_for_edit_confirmation
+                    }
+                    WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR -> if (data.role == DebtRole.DEBTOR) {
+                        isActionButtonsVisible = true
+                        R.string.debt_status_need_edit_confirmation
+                    } else {
+                        R.string.debt_status_wait_for_edit_confirmation
+                    }
+                    EDIT_CONFIRMATION_REJECTED_BY_CREDITOR -> {
+                        if (data.role == DebtRole.DEBTOR) isOkButtonVisible = true
+                        R.string.debt_status_edit_rejected
+                    }
+                    EDIT_CONFIRMATION_REJECTED_BY_DEBTOR -> {
+                        if (data.role == DebtRole.CREDITOR) isOkButtonVisible = true
+                        R.string.debt_status_edit_rejected
+                    }
                     else -> throw IllegalArgumentException()
                 }
-                val textStatusString = context.getString(textStatusRes)
-                val resultStatusText = context.getString(R.string.debt_status_msg, textStatusString)
-                text_status.text = resultStatusText
+                text_status.setText(textStatusRes)
+                button_accept.isVisible = isActionButtonsVisible
+                button_reject.isVisible = isActionButtonsVisible
+                button_ok.isVisible = isOkButtonVisible
+                button_delete.isVisible = isDeleteButtonVisible
 
                 text_description.apply {
                     isVisible = data.isExpanded
@@ -129,8 +201,25 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 }
 
                 itemView.tag = ItemInfo(data, this@ViewHolder)
-                setOnClickListener(onClickListener)
+                setOnClickListener(onItemClickListener)
                 setOnLongClickListener(onLongClickListener)
+
+                button_accept.apply {
+                    tag = data
+                    setOnClickListener(onActionsClickListener)
+                }
+                button_reject.apply {
+                    tag = data
+                    setOnClickListener(onActionsClickListener)
+                }
+                button_ok.apply {
+                    tag = data
+                    setOnClickListener(onActionsClickListener)
+                }
+                button_delete.apply {
+                    tag = data
+                    setOnClickListener(onActionsClickListener)
+                }
             }
         }
     }
@@ -140,9 +229,13 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
     }
 
     private class ItemInfo(
-        val data: RemoteDebt,
-        val viewHolder: RemoteDebtListAdapter.ViewHolder
+            val data: RemoteDebt,
+            val viewHolder: RemoteDebtListAdapter.ViewHolder
     )
+
+    enum class Actions {
+        ACCEPT, REJECT, OK, DELETE
+    }
 
     companion object ViewTypes {
         private const val VIEW_TYPE_COMMON = 1

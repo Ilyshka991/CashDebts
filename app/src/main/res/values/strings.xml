@@ -56,6 +56,7 @@
     <string name="error_load">Something went wrong. Please, retry later</string>
 
     <string name="add_debt_error_invalid_name">Please, enter valid name</string>
+    <string name="add_debt_error_number_equal_current">You can\'t add debt to yourself</string>
     <string name="add_debt_error_invalid_phone">Please, enter valid phone number</string>
     <string name="add_debt_error_user_not_exist">Such user not exist</string>
     <string name="add_debt_error_common">Something went wrong. Please, retry later</string>
@@ -83,11 +84,22 @@
 
     <string name="debt_status_not_send">Not send</string>
     <string name="debt_status_wait_for_confirmation">Wait for confirmation</string>
+    <string name="debt_status_need_add_approve">Wait for your confirmation</string>
     <string name="debt_status_confirmation_rejected">Rejected</string>
-    <string name="debt_status_confirmation_approved">Approved</string>
-    <string name="debt_status_wait_for_completion">Wait for completion confirmation</string>
+    <string name="debt_status_in_progress">In progress</string>
+    <string name="debt_status_wait_for_completion">Wait for confirmation</string>
     <string name="debt_status_need_completion_approve">Wait for your confirmation</string>
-    <string name="debt_status_completion_rejected">Completion rejected</string>
-    <string name="debt_status_complete">Complete</string>
+    <string name="debt_status_wait_for_edit_confirmation">Wait for changes accepting</string>
+    <string name="debt_status_need_edit_confirmation">Accept changes?</string>
+    <string name="debt_status_edit_rejected">No changes accepted</string>
+    <string name="debt_status_completion_rejected">Rejected</string>
+    <string name="debt_status_complete">Completed</string>
+
+    <string name="action_reject">Reject</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_negative_ok">OK :(</string>
+    <string name="msg_updated">Updated</string>
+    <string name="msg_info_sent">Sent to person</string>
+    <string name="action_delete">Delete</string>
 
 </resources>

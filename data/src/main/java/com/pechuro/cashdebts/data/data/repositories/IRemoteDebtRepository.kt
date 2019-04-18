@@ -11,4 +11,8 @@ interface IRemoteDebtRepository {
     fun get(id: String): Single<FirestoreRemoteDebt>
 
     fun add(debt: FirestoreRemoteDebt, id: String? = null): Completable
+
+    fun update(id: String, debt: FirestoreRemoteDebt): Completable
+
+    fun delete(id: String): Completable
 }

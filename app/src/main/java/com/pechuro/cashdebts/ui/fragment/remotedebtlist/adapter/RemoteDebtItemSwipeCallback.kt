@@ -14,33 +14,33 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class RemoteDebtItemSwipeCallback @Inject constructor() :
-    BaseItemTouchCallback<RemoteDebtItemSwipeCallback.SwipeAction>(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+        BaseItemTouchCallback<RemoteDebtItemSwipeCallback.SwipeAction>(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
     private val _actionEmitter = PublishSubject.create<SwipeAction>()
 
     override val actionEmitter: Observable<SwipeAction>
         get() = _actionEmitter
 
     override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
     ) = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.SwipedToDelete(viewHolder.adapterPosition))
-            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToEdit(viewHolder.adapterPosition))
+            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.Complete(viewHolder.adapterPosition))
+            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.Edit(viewHolder.adapterPosition))
         }
     }
 
     override fun onChildDraw(
-        canvas: Canvas,
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        dX: Float,
-        dY: Float,
-        actionState: Int,
-        isCurrentlyActive: Boolean
+            canvas: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
     ) {
         var drawingDx = dX
 
@@ -51,11 +51,12 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
         val backgroundColor: ColorDrawable
         when {
             dX >= 0 -> {
-                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_delete_white)
-                backgroundColor = ColorDrawable(Color.RED)
+                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_done, recyclerView.context.theme)
+                backgroundColor = ColorDrawable(Color.GREEN)
+                drawingDx /= 4
             }
             dX < 0 -> {
-                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_edit_white)
+                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_edit_white, recyclerView.context.theme)
                 backgroundColor = ColorDrawable(Color.BLUE)
                 drawingDx /= 4
             }
@@ -73,8 +74,8 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
                 backgroundColor.setBounds(
-                    itemView.left, itemView.top,
-                    itemView.left + dX.toInt() + backgroundCornerOffset, itemView.bottom
+                        itemView.left, itemView.top,
+                        itemView.left + dX.toInt() + backgroundCornerOffset, itemView.bottom
                 )
             }
             dX < 0 -> {
@@ -83,8 +84,8 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
                 backgroundColor.setBounds(
-                    itemView.right + dX.toInt() - backgroundCornerOffset,
-                    itemView.top, itemView.right, itemView.bottom
+                        itemView.right + dX.toInt() - backgroundCornerOffset,
+                        itemView.top, itemView.right, itemView.bottom
                 )
             }
             else -> backgroundColor.setBounds(0, 0, 0, 0)
@@ -97,7 +98,7 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
     }
 
     sealed class SwipeAction : BaseItemTouchCallback.TouchActions() {
-        class SwipedToDelete(val position: Int) : SwipeAction()
-        class SwipedToEdit(val position: Int) : SwipeAction()
+        class Complete(val position: Int) : SwipeAction()
+        class Edit(val position: Int) : SwipeAction()
     }
 }

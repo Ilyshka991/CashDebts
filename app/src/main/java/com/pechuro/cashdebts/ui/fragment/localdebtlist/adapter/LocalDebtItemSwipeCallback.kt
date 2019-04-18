@@ -28,8 +28,8 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.SwipedToDelete(viewHolder.adapterPosition))
-            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.SwipedToEdit(viewHolder.adapterPosition))
+            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.Delete(viewHolder.adapterPosition))
+            ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.Edit(viewHolder.adapterPosition))
         }
     }
 
@@ -97,7 +97,7 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
     }
 
     sealed class SwipeAction : BaseItemTouchCallback.TouchActions() {
-        class SwipedToDelete(val position: Int) : SwipeAction()
-        class SwipedToEdit(val position: Int) : SwipeAction()
+        class Delete(val position: Int) : SwipeAction()
+        class Edit(val position: Int) : SwipeAction()
     }
 }

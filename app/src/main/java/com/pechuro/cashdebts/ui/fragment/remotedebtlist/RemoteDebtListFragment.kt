@@ -53,7 +53,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             setHasFixedSize(true)
         }
-        // swipeHelper.attachToRecyclerView(recycler)
+        swipeHelper.attachToRecyclerView(recycler)
         progress.isVisible = true
     }
 
@@ -68,28 +68,43 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
         })
         swipeHelper.actionEmitter.subscribe {
             when (it) {
-                is RemoteDebtItemSwipeCallback.SwipeAction.SwipedToDelete -> {
-                }
-                is RemoteDebtItemSwipeCallback.SwipeAction.SwipedToEdit -> {
+                is RemoteDebtItemSwipeCallback.SwipeAction.Complete -> completeDebt(it.position)
+                is RemoteDebtItemSwipeCallback.SwipeAction.Edit -> {
                 }
             }
         }.addTo(strongCompositeDisposable)
-        adapter.longClickEmitter.subscribe(this::showProfileDialog).addTo(strongCompositeDisposable)
+        adapter.longClickEmitter.subscribe(::showProfileDialog).addTo(strongCompositeDisposable)
+        adapter.actionsClickEmitter.subscribe(viewModel::updateDebt).addTo(strongCompositeDisposable)
     }
 
     private fun setEventListeners() {
         EventBus.listen(AddDebtEvent::class.java).subscribe {
             when (it) {
-                is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
+                is AddDebtEvent.OnSuccess -> showSnackbarWithDelay(R.string.msg_success)
             }
         }.addTo(strongCompositeDisposable)
     }
 
     private fun setViewModelListeners() {
-        viewModel.debtSource.subscribe {
-            adapter.update(it)
-            if (progress.isVisible) progress.isVisible = false
-        }.addTo(weakCompositeDisposable)
+        with(viewModel) {
+            weakCompositeDisposable.addAll(
+                    debtSource.subscribe {
+                        adapter.update(it)
+                        if (progress.isVisible) progress.isVisible = false
+                    },
+                    viewModel.command.subscribe {
+                        when (it) {
+                            is RemoteDebtListFragmentViewModel.Command.ShowMessage -> showSnackbar(it.msgId)
+                        }
+                    }
+            )
+        }
+    }
+
+    private fun completeDebt(position: Int) {
+        adapter.notifyDataSetChanged()
+        val item = adapter.getItemByPosition(position)
+        viewModel.completeDebt(item)
     }
 
     private fun showProfileDialog(user: RemoteDebt.User) {
@@ -97,9 +112,13 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {
+        Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showSnackbarWithDelay(@StringRes msgId: Int) {
         coordinator.postDelayed(
-            { Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show() },
-            SNACKBAR_SHOW_DELAY
+                { Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show() },
+                SNACKBAR_SHOW_DELAY
         )
     }
 

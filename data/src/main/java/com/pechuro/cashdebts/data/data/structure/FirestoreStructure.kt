@@ -11,6 +11,7 @@ class FirestoreStructure {
             const val description = "description"
             const val date = "date"
             const val status = "status"
+            const val initPersonUid = "initPersonUid"
         }
     }
 

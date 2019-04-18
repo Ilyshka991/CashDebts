@@ -7,14 +7,15 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import java.util.*
 
 data class RemoteDebt(
-    val id: String,
-    val user: User,
-    val value: Double,
-    val description: String,
-    val date: Date,
-    @FirestoreDebtStatus val status: Int,
-    @DebtRole val role: Int,
-    var isExpanded: Boolean = false
+        val id: String,
+        val user: User,
+        val value: Double,
+        val description: String,
+        val date: Date,
+        @FirestoreDebtStatus val status: Int,
+        @DebtRole val role: Int,
+        val isCurrentUserInit: Boolean,
+        var isExpanded: Boolean = false
 ) {
     fun isEmpty() = value == 0.0
 
@@ -23,21 +24,24 @@ data class RemoteDebt(
     }
 
     data class User(
-        var firstName: String,
-        var lastName: String,
-        var phoneNumber: String,
-        var photoUrl: String?
+            val uid: String,
+            val firstName: String,
+            val lastName: String,
+            val phoneNumber: String,
+            val photoUrl: String?
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
-            parcel.readString()!!,
-            parcel.readString()!!,
-            parcel.readString()!!,
-            parcel.readString()
+                parcel.readString()!!,
+                parcel.readString()!!,
+                parcel.readString()!!,
+                parcel.readString()!!,
+                parcel.readString()
         )
 
-        constructor() : this("", "", "", null)
+        constructor() : this("", "", "", "", null)
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(uid)
             parcel.writeString(firstName)
             parcel.writeString(lastName)
             parcel.writeString(phoneNumber)

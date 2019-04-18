@@ -16,19 +16,19 @@ import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 internal class RemoteDebtRepositoryImpl @Inject constructor(
-    private val store: FirebaseFirestore,
-    private val userRepository: IUserRepository
+        private val store: FirebaseFirestore,
+        private val userRepository: IUserRepository
 ) : IRemoteDebtRepository {
 
     override fun getSource() =
-        Observable.combineLatest(
-            getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, creditorUid),
-            getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, debtorUid),
-            BiFunction { creditor: Map<String, FirestoreRemoteDebt>, debtor: Map<String, FirestoreRemoteDebt> ->
-                creditor to debtor
-            }).map {
-            it.first + it.second
-        }
+            Observable.combineLatest(
+                    getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, creditorUid),
+                    getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, debtorUid),
+                    BiFunction { creditor: Map<String, FirestoreRemoteDebt>, debtor: Map<String, FirestoreRemoteDebt> ->
+                        creditor to debtor
+                    }).map {
+                it.first + it.second
+            }
 
     override fun get(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get().addOnCompleteListener {
@@ -43,30 +43,58 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 
     override fun add(debt: FirestoreRemoteDebt, id: String?) = Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
-            .add(debt).addOnCompleteListener {
-                if (emitter.isDisposed) return@addOnCompleteListener
-                if (it.isSuccessful) {
-                    emitter.onComplete()
-                } else {
-                    emitter.onError(FirestoreCommonException())
+                .add(debt).addOnCompleteListener {
+                    if (emitter.isDisposed) return@addOnCompleteListener
+                    if (it.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(FirestoreCommonException())
+                    }
                 }
-            }
+    }
+
+    override fun update(id: String, debt: FirestoreRemoteDebt) = Completable.create { emitter ->
+        store.collection(FirestoreStructure.RemoteDebt.TAG)
+                .document(id)
+                .set(debt)
+                .addOnCompleteListener {
+                    if (emitter.isDisposed) return@addOnCompleteListener
+                    if (it.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(FirestoreCommonException())
+                    }
+                }
+    }
+
+    override fun delete(id: String) = Completable.create { emitter ->
+        store.collection(FirestoreStructure.RemoteDebt.TAG)
+                .document(id)
+                .delete()
+                .addOnCompleteListener {
+                    if (emitter.isDisposed) return@addOnCompleteListener
+                    if (it.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(FirestoreCommonException())
+                    }
+                }
     }
 
     private fun getRemoteDebtSource(uid: String, debtRole: String) =
-        Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
-            store.collection(FirestoreStructure.RemoteDebt.TAG)
-                .whereEqualTo(debtRole, uid)
-                .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
-                    if (snapshot == null) return@addSnapshotListener
-                    snapshot.documents
-                        .mapNotNull {
-                            it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
+            Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
+                store.collection(FirestoreStructure.RemoteDebt.TAG)
+                        .whereEqualTo(debtRole, uid)
+                        .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
+                            if (snapshot == null) return@addSnapshotListener
+                            snapshot.documents
+                                    .mapNotNull {
+                                        it.id to it.toObject(FirestoreRemoteDebt::class.java)!!
+                                    }
+                                    .toMap()
+                                    .let {
+                                        if (!emitter.isDisposed) emitter.onNext(it)
+                                    }
                         }
-                        .toMap()
-                        .let {
-                            if (!emitter.isDisposed) emitter.onNext(it)
-                        }
-                }
-        }
+            }
 }

@@ -6,48 +6,55 @@ import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETE
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_CREDITOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_DEBTOR
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.CONFIRMATION_APPROVED
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.CONFIRMATION_REJECTED
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.EDIT_CONFIRMATION_REJECTED_BY_CREDITOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.EDIT_CONFIRMATION_REJECTED_BY_DEBTOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.IN_PROGRESS
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.NOT_SEND
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_CREDITOR
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETION_FROM_DEBTOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETE_FROM_CREDITOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_COMPLETE_FROM_DEBTOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRMATION
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR
 import java.util.*
 
 abstract class FirestoreBaseDebt(
-    val value: Double,
-    val description: String,
-    val date: Date
+        val value: Double,
+        val description: String,
+        val date: Date
 )
 
 class FirestoreRemoteDebt(
-    val creditorUid: String,
-    val debtorUid: String,
-    value: Double,
-    description: String,
-    date: Date,
-    @FirestoreDebtStatus val status: Int
+        val creditorUid: String,
+        val debtorUid: String,
+        value: Double,
+        description: String,
+        date: Date,
+        @FirestoreDebtStatus val status: Int,
+        val initPersonUid: String
 ) : FirestoreBaseDebt(value, description, date) {
-    constructor() : this("", "", 0.0, "", Date(), FirestoreDebtStatus.NOT_SEND)
+    constructor() : this("", "", 0.0, "", Date(), FirestoreDebtStatus.NOT_SEND, "")
 }
 
 class FirestoreLocalDebt(
-    val ownerUid: String,
-    val name: String,
-    value: Double,
-    description: String,
-    date: Date,
-    @DebtRole val role: Int
+        val ownerUid: String,
+        val name: String,
+        value: Double,
+        description: String,
+        date: Date,
+        @DebtRole val role: Int
 ) : FirestoreBaseDebt(value, description, date) {
     constructor() : this("", "", 0.0, "", Date(), DebtRole.CREDITOR)
 }
 
 @IntDef(
-    NOT_SEND,
-    WAIT_FOR_CONFIRMATION, CONFIRMATION_REJECTED,
-    CONFIRMATION_APPROVED, WAIT_FOR_COMPLETION_FROM_CREDITOR,
-    WAIT_FOR_COMPLETION_FROM_DEBTOR, COMPLETION_REJECTED_BY_CREDITOR,
-    COMPLETION_REJECTED_BY_DEBTOR, COMPLETE
+        NOT_SEND,
+        WAIT_FOR_CONFIRMATION, CONFIRMATION_REJECTED,
+        IN_PROGRESS, WAIT_FOR_COMPLETE_FROM_CREDITOR,
+        WAIT_FOR_COMPLETE_FROM_DEBTOR, COMPLETION_REJECTED_BY_CREDITOR,
+        COMPLETION_REJECTED_BY_DEBTOR, COMPLETE,
+        WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR, WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR,
+        EDIT_CONFIRMATION_REJECTED_BY_CREDITOR, EDIT_CONFIRMATION_REJECTED_BY_DEBTOR
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class FirestoreDebtStatus {
@@ -55,12 +62,16 @@ annotation class FirestoreDebtStatus {
         const val NOT_SEND = 0
         const val WAIT_FOR_CONFIRMATION = 1
         const val CONFIRMATION_REJECTED = 2
-        const val CONFIRMATION_APPROVED = 3
-        const val WAIT_FOR_COMPLETION_FROM_CREDITOR = 4
-        const val WAIT_FOR_COMPLETION_FROM_DEBTOR = 5
+        const val IN_PROGRESS = 3
+        const val WAIT_FOR_COMPLETE_FROM_CREDITOR = 4
+        const val WAIT_FOR_COMPLETE_FROM_DEBTOR = 5
         const val COMPLETION_REJECTED_BY_CREDITOR = 6
         const val COMPLETION_REJECTED_BY_DEBTOR = 7
         const val COMPLETE = 8
+        const val WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR = 9
+        const val WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR = 10
+        const val EDIT_CONFIRMATION_REJECTED_BY_CREDITOR = 11
+        const val EDIT_CONFIRMATION_REJECTED_BY_DEBTOR = 12
     }
 }
 
