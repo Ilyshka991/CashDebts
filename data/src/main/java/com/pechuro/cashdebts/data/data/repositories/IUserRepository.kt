@@ -3,12 +3,15 @@ package com.pechuro.cashdebts.data.data.repositories
 import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.data.model.UserBaseInformation
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface IUserRepository {
     val currentUserBaseInformation: UserBaseInformation
 
-    fun get(uid: String = currentUserBaseInformation.uid): Single<FirestoreUser>
+    fun getSource(uid: String = currentUserBaseInformation.uid): Observable<FirestoreUser>
+
+    fun getSingle(uid: String = currentUserBaseInformation.uid): Single<FirestoreUser>
 
     fun isUserWithUidExist(uid: String = currentUserBaseInformation.uid): Single<Boolean>
 

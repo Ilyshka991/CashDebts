@@ -25,10 +25,10 @@ class ProfileViewFragmentViewModel @Inject constructor(
 
     fun loadUser() {
         _loadingState.onNext(LoadingState.OnStart)
-        userRepository.get()
+        userRepository.getSource()
             .subscribe({
-                _user.onNext(it)
                 _loadingState.onNext(LoadingState.OnStop)
+                _user.onNext(it)
             }, {
                 _loadingState.onNext(LoadingState.OnStop)
                 _loadingState.onNext(LoadingState.OnError)

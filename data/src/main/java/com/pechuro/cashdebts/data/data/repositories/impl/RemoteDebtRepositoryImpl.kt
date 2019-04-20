@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.data.data.repositories.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.MetadataChanges
 import com.pechuro.cashdebts.data.data.exception.FirestoreCommonException
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
@@ -85,7 +84,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
                 store.collection(FirestoreStructure.RemoteDebt.TAG)
                         .whereEqualTo(debtRole, uid)
-                        .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
+                    .addSnapshotListener { snapshot, e ->
                             if (snapshot == null) return@addSnapshotListener
                             snapshot.documents
                                     .mapNotNull {

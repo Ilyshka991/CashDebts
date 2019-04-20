@@ -7,7 +7,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.loadAvatar
 import io.reactivex.rxkotlin.addTo
@@ -22,7 +21,6 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewListeners()
-        setEventListeners()
     }
 
     override fun onStart() {
@@ -57,14 +55,6 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
         viewModel.user.subscribe {
             setUser(it)
         }.addTo(weakCompositeDisposable)
-    }
-
-    private fun setEventListeners() {
-        EventBus.listen(ProfileEditEvent::class.java).subscribe {
-            when (it) {
-                is ProfileEditEvent.OnSaved -> viewModel.loadUser()
-            }
-        }.addTo(strongCompositeDisposable)
     }
 
     private fun setUser(user: FirestoreUser) {

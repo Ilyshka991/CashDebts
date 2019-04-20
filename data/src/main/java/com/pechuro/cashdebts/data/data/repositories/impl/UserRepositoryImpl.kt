@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -20,9 +21,27 @@ internal class UserRepositoryImpl @Inject constructor(
 ) : IUserRepository {
 
     override val currentUserBaseInformation: UserBaseInformation
-        get() = auth.getCurrentUserBaseInformation() ?: throw IllegalStateException("User not sign in")
+        get() = auth.getCurrentUserBaseInformation()
+            ?: throw IllegalStateException("User not sign in")
 
-    override fun get(uid: String) = Single.create<FirestoreUser> { emitter ->
+    override fun getSource(uid: String) = Observable.create<FirestoreUser> { emitter ->
+        store.collection(FirestoreStructure.Users.TAG)
+            .document(uid)
+            .addSnapshotListener { snapshot, e ->
+                if (emitter.isDisposed) return@addSnapshotListener
+                if (e == null) {
+                    if (snapshot != null && snapshot.exists()) {
+                        emitter.onNext(snapshot.toObject(FirestoreUser::class.java)!!)
+                    } else {
+                        emitter.onError(FirestoreUserNotFoundException())
+                    }
+                } else {
+                    emitter.onError(FirestoreCommonException())
+                }
+            }
+    }
+
+    override fun getSingle(uid: String) = Single.create<FirestoreUser> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
             .get()
@@ -39,6 +58,7 @@ internal class UserRepositoryImpl @Inject constructor(
                 }
             }
     }
+
 
     override fun isUserWithUidExist(uid: String) = Single.create<Boolean> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
