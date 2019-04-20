@@ -19,6 +19,7 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
         0,
         ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
     ) {
+
     private val _actionEmitter = PublishSubject.create<SwipeAction>()
 
     override val actionEmitter: Observable<SwipeAction>
@@ -31,8 +32,9 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
     ) = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        val position = viewHolder.adapterPosition
         when (direction) {
-            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.Complete(viewHolder.adapterPosition))
+            ItemTouchHelper.RIGHT -> _actionEmitter.onNext(SwipeAction.Complete(position))
             ItemTouchHelper.LEFT -> _actionEmitter.onNext(SwipeAction.Edit(viewHolder.adapterPosition))
         }
     }
@@ -40,11 +42,12 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
-    ) = if ((viewHolder as? BaseViewHolder<*>)?.isSwipeable == false) {
-        0
-    } else {
-        super.getMovementFlags(recyclerView, viewHolder)
-    }
+    ) =
+        if ((viewHolder as? BaseViewHolder<*>)?.isSwipeable == false) {
+            0
+        } else {
+            super.getMovementFlags(recyclerView, viewHolder)
+        }
 
     override fun onChildDraw(
         canvas: Canvas,
@@ -56,7 +59,6 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
         isCurrentlyActive: Boolean
     ) {
         val context = recyclerView.context
-        var drawingDx = dX
 
         val itemView = viewHolder.itemView
         val backgroundCornerOffset = 10.px
@@ -71,7 +73,6 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                 )
                 backgroundColor =
                     ColorDrawable(ContextCompat.getColor(context, R.color.color_action_complete))
-                drawingDx /= 4
             }
             dX < 0 -> {
                 icon = recyclerView.context.resources.getDrawable(
@@ -80,7 +81,6 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                 )
                 backgroundColor =
                     ColorDrawable(ContextCompat.getColor(context, R.color.color_action_edit))
-                drawingDx /= 4
             }
             else -> throw IllegalArgumentException()
         }
@@ -120,7 +120,7 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
             canvas,
             recyclerView,
             viewHolder,
-            drawingDx,
+            dX / 4,
             dY,
             actionState,
             isCurrentlyActive

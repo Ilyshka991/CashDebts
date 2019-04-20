@@ -103,6 +103,8 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
         }
     }
 
+    override fun getItemId(position: Int) = debtList[position].id.hashCode().toLong()
+
     fun getItemByPosition(position: Int) = debtList[position]
 
     private inner class ViewHolder(private val view: View) : BaseViewHolder<RemoteDebt>(view) {
