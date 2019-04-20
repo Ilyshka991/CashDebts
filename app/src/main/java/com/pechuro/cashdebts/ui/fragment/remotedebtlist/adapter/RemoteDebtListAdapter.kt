@@ -111,8 +111,12 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
         override fun onBind(data: RemoteDebt) {
             view.apply {
                 if ((itemView.tag as? ItemInfo)?.data === data) {
-                    if (data.description.isNotEmpty()) text_description.isVisible = data.isExpanded
-                    text_date.isVisible = data.isExpanded
+                    val isExpanded = data.isExpanded
+
+                    if (data.description.isNotEmpty()) text_description.isVisible = isExpanded
+                    text_date.isVisible = isExpanded
+                    if (data.status == COMPLETE) button_delete.isVisible = isExpanded
+
                     return
                 }
 
@@ -167,7 +171,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                         R.string.debt_status_completion_rejected
                     }
                     COMPLETE -> {
-                        isDeleteButtonVisible = true
+                        if (data.isExpanded) isDeleteButtonVisible = true
                         R.string.debt_status_complete
                     }
                     WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR -> if (data.role == DebtRole.CREDITOR) {
@@ -195,6 +199,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 if (textStatusRes == 0) {
                     text_status.isVisible = false
                 } else {
+                    text_status.isVisible = true
                     text_status.setText(
                         textStatusRes
                     )

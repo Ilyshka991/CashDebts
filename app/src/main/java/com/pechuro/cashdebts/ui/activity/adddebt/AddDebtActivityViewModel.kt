@@ -5,12 +5,9 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Calculator
 import com.pechuro.cashdebts.calculator.Result
 import com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException
+import com.pechuro.cashdebts.data.data.model.*
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
-import com.pechuro.cashdebts.data.data.model.FirestoreBaseDebt
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
-import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
-import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
@@ -29,11 +26,11 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AddDebtActivityViewModel @Inject constructor(
-        private val localDebtRepository: ILocalDebtRepository,
-        private val remoteDebtRepository: IRemoteDebtRepository,
-        private val userRepository: IUserRepository,
-        private val connectivityListener: ConnectivityListener,
-        private val calculator: Calculator
+    private val localDebtRepository: ILocalDebtRepository,
+    private val remoteDebtRepository: IRemoteDebtRepository,
+    private val userRepository: IUserRepository,
+    private val connectivityListener: ConnectivityListener,
+    private val calculator: Calculator
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -44,48 +41,48 @@ class AddDebtActivityViewModel @Inject constructor(
 
     val debtValue: Observable<Pair<Boolean, Result>> by lazy {
         mathExpression
-                .distinctUntilChanged()
-                .map { expr ->
-                    val builder = StringBuilder(expr)
+            .distinctUntilChanged()
+            .map { expr ->
+                val builder = StringBuilder(expr)
 
-                    when {
-                        expr.isEmpty() -> builder.append(0)
-                        expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" -> builder.append(
-                                0
-                        )
-                        expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" -> builder.append(
-                                1
-                        )
-                        expr.length > 1 && expr[expr.lastIndex] in ".+-" -> builder.append(0)
-                        expr.length > 1 && expr[expr.lastIndex] in "*/" -> builder.append(1)
-                        expr.length > 2 && expr[expr.lastIndex] == '(' && expr[expr.lastIndex - 1] in "+-/*"
-                        -> builder.delete(builder.length - 2, builder.length)
+                when {
+                    expr.isEmpty() -> builder.append(0)
+                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" -> builder.append(
+                        0
+                    )
+                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" -> builder.append(
+                        1
+                    )
+                    expr.length > 1 && expr[expr.lastIndex] in ".+-" -> builder.append(0)
+                    expr.length > 1 && expr[expr.lastIndex] in "*/" -> builder.append(1)
+                    expr.length > 2 && expr[expr.lastIndex] == '(' && expr[expr.lastIndex - 1] in "+-/*"
+                    -> builder.delete(builder.length - 2, builder.length)
+                }
+
+
+                val openStapleCount = builder.count { it == '(' }
+                val closeStapleCount = builder.count { it == ')' }
+                if (openStapleCount > closeStapleCount) {
+                    repeat(openStapleCount - closeStapleCount) {
+                        builder.append(')')
                     }
+                }
 
-
-                    val openStapleCount = builder.count { it == '(' }
-                    val closeStapleCount = builder.count { it == ')' }
-                    if (openStapleCount > closeStapleCount) {
-                        repeat(openStapleCount - closeStapleCount) {
-                            builder.append(')')
+                builder.toString()
+            }
+            .map { isNotMathExpression(it) to calculator.evaluate(it) }
+            .subscribeOn(Schedulers.computation())
+            .also { observable ->
+                observable
+                    .map {
+                        when (val result = it.second) {
+                            is Result.Success -> result.result
+                            is Result.Error -> 0.0
                         }
                     }
-
-                    builder.toString()
-                }
-                .map { isNotMathExpression(it) to calculator.evaluate(it) }
-                .subscribeOn(Schedulers.computation())
-                .also { observable ->
-                    observable
-                            .map {
-                                when (val result = it.second) {
-                                    is Result.Success -> result.result
-                                    is Result.Error -> 0.0
-                                }
-                            }
-                            .subscribe(debt.value)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(debt.value)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     lateinit var debt: BaseDebtInfo
@@ -207,13 +204,14 @@ class AddDebtActivityViewModel @Inject constructor(
         }
 
         val sendingDebt = FirestoreRemoteDebt(
-                creditorUid,
-                debtorUid,
-                debt.value.requireValue,
-                debt.description.requireValue,
-                debt.date.requireValue,
-                FirestoreDebtStatus.WAIT_FOR_CONFIRMATION,
-                userRepository.currentUserBaseInformation.uid
+            creditorUid,
+            debtorUid,
+            debt.value.requireValue,
+            debt.description.requireValue,
+            debt.date.requireValue,
+            FirestoreDebtStatus.WAIT_FOR_CONFIRMATION,
+            userRepository.currentUserBaseInformation.uid,
+            DebtDeleteStatus.NOT_DELETED
         )
 
         remoteDebtRepository.add(sendingDebt, debt.id).subscribe({
@@ -227,12 +225,12 @@ class AddDebtActivityViewModel @Inject constructor(
     private fun addLocalDebt(debt: LocalDebtInfo) {
         val sendingDebt = with(debt) {
             FirestoreLocalDebt(
-                    userRepository.currentUserBaseInformation.uid,
-                    name.requireValue,
-                    value.requireValue,
-                    description.requireValue,
-                    date.requireValue,
-                    debtRole.requireValue
+                userRepository.currentUserBaseInformation.uid,
+                name.requireValue,
+                value.requireValue,
+                description.requireValue,
+                date.requireValue,
+                debtRole.requireValue
             )
         }
         localDebtRepository.add(sendingDebt, debt.id).subscribe({
@@ -261,7 +259,8 @@ class AddDebtActivityViewModel @Inject constructor(
 
     private fun isNotMathExpression(expr: String) = expr.matches(NUMBER_REGEX)
 
-    private fun String.isEqualsCurrentNumber() = this == userRepository.currentUserBaseInformation.phoneNumber
+    private fun String.isEqualsCurrentNumber() =
+        this == userRepository.currentUserBaseInformation.phoneNumber
 
     sealed class Events {
         object OnSaved : Events()

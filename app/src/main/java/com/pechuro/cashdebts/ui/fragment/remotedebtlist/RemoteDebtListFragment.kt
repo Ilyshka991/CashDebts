@@ -74,7 +74,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
             }
         }.addTo(strongCompositeDisposable)
         adapter.longClickEmitter.subscribe(::showProfileDialog).addTo(strongCompositeDisposable)
-        adapter.actionsClickEmitter.subscribe(viewModel::updateDebt).addTo(strongCompositeDisposable)
+        adapter.actionsClickEmitter.subscribe(viewModel::update).addTo(strongCompositeDisposable)
     }
 
     private fun setEventListeners() {
@@ -104,7 +104,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     private fun completeDebt(position: Int) {
         adapter.notifyDataSetChanged()
         val item = adapter.getItemByPosition(position)
-        viewModel.completeDebt(item)
+        viewModel.complete(item)
     }
 
     private fun showProfileDialog(user: RemoteDebt.User) {

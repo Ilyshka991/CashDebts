@@ -1,6 +1,9 @@
 package com.pechuro.cashdebts.data.data.model
 
 import androidx.annotation.IntDef
+import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETE_FROM_CREDITOR
+import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETE_FROM_DEBTOR
+import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.NOT_DELETED
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETE
@@ -19,42 +22,52 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_
 import java.util.*
 
 abstract class FirestoreBaseDebt(
-        val value: Double,
-        val description: String,
-        val date: Date
+    val value: Double,
+    val description: String,
+    val date: Date
 )
 
 class FirestoreRemoteDebt(
-        val creditorUid: String,
-        val debtorUid: String,
-        value: Double,
-        description: String,
-        date: Date,
-        @FirestoreDebtStatus val status: Int,
-        val initPersonUid: String
+    val creditorUid: String,
+    val debtorUid: String,
+    value: Double,
+    description: String,
+    date: Date,
+    @FirestoreDebtStatus val status: Int,
+    val initPersonUid: String,
+    @DebtDeleteStatus val deleteStatus: Int
 ) : FirestoreBaseDebt(value, description, date) {
-    constructor() : this("", "", 0.0, "", Date(), FirestoreDebtStatus.NOT_SEND, "")
+    constructor() : this(
+        "",
+        "",
+        0.0,
+        "",
+        Date(),
+        FirestoreDebtStatus.NOT_SEND,
+        "",
+        DebtDeleteStatus.NOT_DELETED
+    )
 }
 
 class FirestoreLocalDebt(
-        val ownerUid: String,
-        val name: String,
-        value: Double,
-        description: String,
-        date: Date,
-        @DebtRole val role: Int
+    val ownerUid: String,
+    val name: String,
+    value: Double,
+    description: String,
+    date: Date,
+    @DebtRole val role: Int
 ) : FirestoreBaseDebt(value, description, date) {
     constructor() : this("", "", 0.0, "", Date(), DebtRole.CREDITOR)
 }
 
 @IntDef(
-        NOT_SEND,
-        WAIT_FOR_CONFIRMATION, CONFIRMATION_REJECTED,
-        IN_PROGRESS, WAIT_FOR_COMPLETE_FROM_CREDITOR,
-        WAIT_FOR_COMPLETE_FROM_DEBTOR, COMPLETION_REJECTED_BY_CREDITOR,
-        COMPLETION_REJECTED_BY_DEBTOR, COMPLETE,
-        WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR, WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR,
-        EDIT_CONFIRMATION_REJECTED_BY_CREDITOR, EDIT_CONFIRMATION_REJECTED_BY_DEBTOR
+    NOT_SEND,
+    WAIT_FOR_CONFIRMATION, CONFIRMATION_REJECTED,
+    IN_PROGRESS, WAIT_FOR_COMPLETE_FROM_CREDITOR,
+    WAIT_FOR_COMPLETE_FROM_DEBTOR, COMPLETION_REJECTED_BY_CREDITOR,
+    COMPLETION_REJECTED_BY_DEBTOR, COMPLETE,
+    WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR, WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR,
+    EDIT_CONFIRMATION_REJECTED_BY_CREDITOR, EDIT_CONFIRMATION_REJECTED_BY_DEBTOR
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class FirestoreDebtStatus {
@@ -81,5 +94,15 @@ annotation class DebtRole {
     companion object {
         const val CREDITOR = 1
         const val DEBTOR = 2
+    }
+}
+
+@IntDef(NOT_DELETED, DELETE_FROM_CREDITOR, DELETE_FROM_DEBTOR)
+@Retention(AnnotationRetention.SOURCE)
+annotation class DebtDeleteStatus {
+    companion object {
+        const val NOT_DELETED = 0
+        const val DELETE_FROM_CREDITOR = 1
+        const val DELETE_FROM_DEBTOR = 2
     }
 }

@@ -7,35 +7,47 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import java.util.*
 
 data class RemoteDebt(
-        val id: String,
-        val user: User,
-        val value: Double,
-        val description: String,
-        val date: Date,
-        @FirestoreDebtStatus val status: Int,
-        @DebtRole val role: Int,
-        val isCurrentUserInit: Boolean,
-        var isExpanded: Boolean = false
+    val id: String,
+    val user: User,
+    val value: Double,
+    val description: String,
+    val date: Date,
+    @FirestoreDebtStatus val status: Int,
+    @DebtRole val role: Int,
+    val isCurrentUserInit: Boolean,
+    var isExpanded: Boolean = false,
+    val isLocal: Boolean
 ) {
     fun isEmpty() = value == 0.0
 
     companion object {
-        val EMPTY = RemoteDebt("", User(), 0.0, "", Date(), FirestoreDebtStatus.NOT_SEND, DebtRole.CREDITOR, false)
+        val EMPTY = RemoteDebt(
+            "",
+            User(),
+            0.0,
+            "",
+            Date(),
+            FirestoreDebtStatus.NOT_SEND,
+            DebtRole.CREDITOR,
+            false,
+            false,
+            false
+        )
     }
 
     data class User(
-            val uid: String,
-            val firstName: String,
-            val lastName: String,
-            val phoneNumber: String,
-            val photoUrl: String?
+        val uid: String,
+        val firstName: String,
+        val lastName: String,
+        val phoneNumber: String,
+        val photoUrl: String?
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
-                parcel.readString()!!,
-                parcel.readString()!!,
-                parcel.readString()!!,
-                parcel.readString()!!,
-                parcel.readString()
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()
         )
 
         constructor() : this("", "", "", "", null)
