@@ -83,16 +83,16 @@
 
 
     <string name="debt_status_not_send">Not send</string>
-    <string name="debt_status_wait_for_confirmation">Wait for confirmation</string>
-    <string name="debt_status_need_add_approve">Wait for your confirmation</string>
-    <string name="debt_status_confirmation_rejected">Rejected</string>
+    <string name="debt_status_wait_for_confirmation">Wait for add confirmation</string>
+    <string name="debt_status_need_add_approve">Wait for your add confirmation</string>
+    <string name="debt_status_confirmation_rejected">Add rejected</string>
     <string name="debt_status_in_progress">In progress</string>
-    <string name="debt_status_wait_for_completion">Wait for confirmation</string>
-    <string name="debt_status_need_completion_approve">Wait for your confirmation</string>
+    <string name="debt_status_wait_for_completion">Wait for complete confirmation</string>
+    <string name="debt_status_need_completion_approve">Wait for your complete confirmation</string>
     <string name="debt_status_wait_for_edit_confirmation">Wait for changes accepting</string>
     <string name="debt_status_need_edit_confirmation">Accept changes?</string>
     <string name="debt_status_edit_rejected">No changes accepted</string>
-    <string name="debt_status_completion_rejected">Rejected</string>
+    <string name="debt_status_completion_rejected">Complete rejected</string>
     <string name="debt_status_complete">Completed</string>
 
     <string name="action_reject">Reject</string>

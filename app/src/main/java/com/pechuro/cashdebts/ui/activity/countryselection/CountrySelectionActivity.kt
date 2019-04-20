@@ -40,7 +40,7 @@ class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityVi
 
     private fun setupActionBar() {
         supportActionBar?.apply {
-            setHomeAsUpIndicator(R.drawable.ic_action_close_white)
+            setHomeAsUpIndicator(R.drawable.ic_action_close)
             setDisplayHomeAsUpEnabled(true)
         }
     }

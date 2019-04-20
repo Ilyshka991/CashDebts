@@ -70,11 +70,11 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentAc
         }
 
         if (isCloseButtonEnabled && backStackCount == 0) {
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close_white)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             return
         }
-        if (isCloseButtonEnabled) supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_back_white)
+        if (isCloseButtonEnabled) supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_back)
         supportActionBar?.setDisplayHomeAsUpEnabled(backStackCount != 0)
     }
 

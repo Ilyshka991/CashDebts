@@ -1,20 +1,24 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseItemTouchCallback
+import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.utils.px
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class LocalDebtItemSwipeCallback @Inject constructor() :
-    BaseItemTouchCallback<LocalDebtItemSwipeCallback.SwipeAction>(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+    BaseItemTouchCallback<LocalDebtItemSwipeCallback.SwipeAction>(
+        0,
+        ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
+    ) {
     private val _actionEmitter = PublishSubject.create<SwipeAction>()
 
     override val actionEmitter: Observable<SwipeAction>
@@ -33,6 +37,15 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
         }
     }
 
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ) = if ((viewHolder as? BaseViewHolder<*>)?.isSwipeable == false) {
+        0
+    } else {
+        super.getMovementFlags(recyclerView, viewHolder)
+    }
+
     override fun onChildDraw(
         canvas: Canvas,
         recyclerView: RecyclerView,
@@ -42,6 +55,7 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
+        val context = recyclerView.context
         var drawingDx = dX
 
         val itemView = viewHolder.itemView
@@ -51,12 +65,20 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
         val backgroundColor: ColorDrawable
         when {
             dX >= 0 -> {
-                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_delete_white)
-                backgroundColor = ColorDrawable(Color.RED)
+                icon = recyclerView.context.resources.getDrawable(
+                    R.drawable.ic_delete,
+                    context.theme
+                )
+                backgroundColor =
+                    ColorDrawable(ContextCompat.getColor(context, R.color.color_action_delete))
             }
             dX < 0 -> {
-                icon = recyclerView.context.resources.getDrawable(R.drawable.ic_edit_white)
-                backgroundColor = ColorDrawable(Color.BLUE)
+                icon = recyclerView.context.resources.getDrawable(
+                    R.drawable.ic_edit,
+                    context.theme
+                )
+                backgroundColor =
+                    ColorDrawable(ContextCompat.getColor(context, R.color.color_action_edit))
                 drawingDx /= 4
             }
             else -> throw IllegalArgumentException()
@@ -93,7 +115,15 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
         backgroundColor.draw(canvas)
         icon.draw(canvas)
 
-        super.onChildDraw(canvas, recyclerView, viewHolder, drawingDx, dY, actionState, isCurrentlyActive)
+        super.onChildDraw(
+            canvas,
+            recyclerView,
+            viewHolder,
+            drawingDx,
+            dY,
+            actionState,
+            isCurrentlyActive
+        )
     }
 
     sealed class SwipeAction : BaseItemTouchCallback.TouchActions() {

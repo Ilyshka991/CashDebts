@@ -26,17 +26,20 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> = when (viewType) {
-        VIEW_TYPE_COMMON -> {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_local_debt, parent, false)
-            ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<LocalDebt> =
+        when (viewType) {
+            VIEW_TYPE_COMMON -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_local_debt, parent, false)
+                ViewHolder(view)
+            }
+            VIEW_TYPE_EMPTY -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_debt_empty, parent, false)
+                EmptyViewHolder(view)
+            }
+            else -> throw IllegalArgumentException()
         }
-        VIEW_TYPE_EMPTY -> {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_debt_empty, parent, false)
-            EmptyViewHolder(view)
-        }
-        else -> throw IllegalArgumentException()
-    }
 
     override fun getItemCount() = debtList.size
 
@@ -45,7 +48,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
         else -> VIEW_TYPE_COMMON
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) = holder.onBind(debtList[position])
+    override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) =
+        holder.onBind(debtList[position])
 
     fun update(result: DiffResult<LocalDebt>) {
         when {
@@ -100,7 +104,9 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     }
 
     private class EmptyViewHolder(view: View) : BaseViewHolder<LocalDebt>(view) {
-        override fun onBind(data: LocalDebt) {}
+        override fun onBind(data: LocalDebt) {
+            isSwipeable = false
+        }
     }
 
     private class ItemInfo(

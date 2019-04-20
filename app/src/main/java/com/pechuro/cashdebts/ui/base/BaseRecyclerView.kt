@@ -21,6 +21,7 @@ class ItemTouchHelper<T : BaseItemTouchCallback.TouchActions>(callback: BaseItem
 }
 
 abstract class BaseViewHolder<T : Any>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var isSwipeable = true
 
     abstract fun onBind(data: T)
 }

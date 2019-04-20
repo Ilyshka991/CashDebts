@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: SimpleDateFormat) :
-        RecyclerView.Adapter<BaseViewHolder<RemoteDebt>>() {
+    RecyclerView.Adapter<BaseViewHolder<RemoteDebt>>() {
     private var debtList = emptyList<RemoteDebt>()
 
     private val _longClickEmitter = PublishSubject.create<RemoteDebt.User>()
@@ -64,17 +64,20 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
         true
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<RemoteDebt> = when (viewType) {
-        VIEW_TYPE_COMMON -> {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_remote_debt, parent, false)
-            ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<RemoteDebt> =
+        when (viewType) {
+            VIEW_TYPE_COMMON -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_remote_debt, parent, false)
+                ViewHolder(view)
+            }
+            VIEW_TYPE_EMPTY -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_debt_empty, parent, false)
+                EmptyViewHolder(view)
+            }
+            else -> throw IllegalArgumentException()
         }
-        VIEW_TYPE_EMPTY -> {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_debt_empty, parent, false)
-            EmptyViewHolder(view)
-        }
-        else -> throw IllegalArgumentException()
-    }
 
     override fun getItemCount() = debtList.size
 
@@ -83,7 +86,8 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
         else -> VIEW_TYPE_COMMON
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<RemoteDebt>, position: Int) = holder.onBind(debtList[position])
+    override fun onBindViewHolder(holder: BaseViewHolder<RemoteDebt>, position: Int) =
+        holder.onBind(debtList[position])
 
     fun update(result: DiffResult<RemoteDebt>) {
         when {
@@ -125,6 +129,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 var isActionButtonsVisible = false
                 var isOkButtonVisible = false
                 var isDeleteButtonVisible = false
+                isSwipeable = false
                 val textStatusRes = when (data.status) {
                     NOT_SEND -> R.string.debt_status_not_send
                     WAIT_FOR_CONFIRMATION -> if (data.isCurrentUserInit) {
@@ -137,7 +142,10 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                         if (data.isCurrentUserInit) isOkButtonVisible = true
                         R.string.debt_status_confirmation_rejected
                     }
-                    IN_PROGRESS -> R.string.debt_status_in_progress
+                    IN_PROGRESS -> {
+                        isSwipeable = true
+                        0
+                    }
                     WAIT_FOR_COMPLETE_FROM_CREDITOR -> if (data.role == DebtRole.CREDITOR) {
                         isActionButtonsVisible = true
                         R.string.debt_status_need_completion_approve
@@ -184,7 +192,13 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                     }
                     else -> throw IllegalArgumentException()
                 }
-                text_status.setText(textStatusRes)
+                if (textStatusRes == 0) {
+                    text_status.isVisible = false
+                } else {
+                    text_status.setText(
+                        textStatusRes
+                    )
+                }
                 button_accept.isVisible = isActionButtonsVisible
                 button_reject.isVisible = isActionButtonsVisible
                 button_ok.isVisible = isOkButtonVisible
@@ -225,12 +239,14 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
     }
 
     private class EmptyViewHolder(view: View) : BaseViewHolder<RemoteDebt>(view) {
-        override fun onBind(data: RemoteDebt) {}
+        override fun onBind(data: RemoteDebt) {
+            isSwipeable = false
+        }
     }
 
     private class ItemInfo(
-            val data: RemoteDebt,
-            val viewHolder: RemoteDebtListAdapter.ViewHolder
+        val data: RemoteDebt,
+        val viewHolder: RemoteDebtListAdapter.ViewHolder
     )
 
     enum class Actions {

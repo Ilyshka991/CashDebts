@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="color_primary">#008577</color>
+    <color name="color_primary_dark">#00574B</color>
+    <color name="color_accent">#D81B60</color>
+
+    <color name="color_background">#FFFFFF</color>
+    <color name="color_item_background">#FFFFFF</color>
+    <color name="color_splash_background">#E0E0E0</color>
     <color name="ic_launcher_background">#90A4AE</color>
 
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="color_action_delete">#E53935</color>
+    <color name="color_action_edit">#3949AB</color>
+    <color name="color_action_complete">#43A047</color>
 
-    <color name="splash_background">#E0E0E0</color>
+    <color name="color_action_bar_elements">#FFFFFF</color>
+    <color name="color_icons">#FF000000</color>
+    <color name="color_text">#FF000000</color>
 
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_500">#9E9E9E</color>
-
-    <color name="color_action_bar_elements">#FFFFFF</color>
 </resources>
