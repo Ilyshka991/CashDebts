@@ -101,10 +101,19 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
                 viewModel.command.subscribe {
                     when (it) {
                         is RemoteDebtListFragmentViewModel.Command.ShowMessage -> showSnackbar(it.msgId)
+                        is RemoteDebtListFragmentViewModel.Command.ShowUndoDeletionSnackbar -> showUndoDeletionSnackbar()
                     }
                 }
             )
         }
+    }
+
+    private fun showUndoDeletionSnackbar() {
+        Snackbar.make(coordinator, R.string.msg_deleted, Snackbar.LENGTH_LONG)
+            .setAction(R.string.action_undo) {
+                viewModel.restoreDebt()
+            }
+            .show()
     }
 
     private fun completeDebt(position: Int) {

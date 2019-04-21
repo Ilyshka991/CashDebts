@@ -110,6 +110,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
 
+    private var previousDeletedDebt: RemoteDebt? = null
+
     init {
         debtSource.connect().addTo(compositeDisposable)
     }
@@ -126,11 +128,11 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     }
 
     fun update(info: Pair<RemoteDebtListAdapter.Actions, RemoteDebt>) {
-        when (val action = getDebtStatus(info.first, info.second.status)) {
+        when (val action = getDebtAction(info.first, info.second.status)) {
             is DebtAction.OneSideDelete -> with(info.second) {
-                if (isLocal) fullDelete(id) else oneSideDelete(this)
+                if (isLocal) fullDelete(this) else oneSideDelete(this)
             }
-            is DebtAction.FullDelete -> fullDelete(info.second.id)
+            is DebtAction.FullDelete -> fullDelete(info.second)
             is DebtAction.EditReject -> rejectDebtEdit(info.second.id)
             is DebtAction.EditAccept -> acceptDebtEdit(info.second)
             is DebtAction.Update -> {
@@ -142,6 +144,14 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                 }).addTo(compositeDisposable)
             }
         }
+    }
+
+    fun restoreDebt() {
+        val debt = previousDeletedDebt ?: return
+        debtRepository.update(debt.id, debt.toFirestoreDebt())
+            .onErrorComplete()
+            .subscribe()
+            .addTo(compositeDisposable)
     }
 
     private fun acceptDebtEdit(debt: RemoteDebt) {
@@ -179,6 +189,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     }
 
     private fun oneSideDelete(debt: RemoteDebt) {
+        previousDeletedDebt = debt
         val deleteStatus = if (debt.role == DebtRole.DEBTOR) {
             DebtDeleteStatus.DELETED_FROM_DEBTOR
         } else {
@@ -186,15 +197,16 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         }
         val firestoreDebt = debt.toFirestoreDebt(deleteStatus = deleteStatus)
         debtRepository.update(debt.id, firestoreDebt).subscribe({
-            command.onNext(Command.ShowMessage(R.string.msg_deleted))
+            command.onNext(Command.ShowUndoDeletionSnackbar)
         }, {
             command.onNext(Command.ShowMessage(R.string.error_load))
         }).addTo(compositeDisposable)
     }
 
-    private fun fullDelete(id: String) {
-        debtRepository.delete(id).subscribe({
-            command.onNext(Command.ShowMessage(R.string.msg_deleted))
+    private fun fullDelete(debt: RemoteDebt) {
+        previousDeletedDebt = debt
+        debtRepository.delete(debt.id).subscribe({
+            command.onNext(Command.ShowUndoDeletionSnackbar)
         }, {
             command.onNext(Command.ShowMessage(R.string.error_load))
         }).addTo(compositeDisposable)
@@ -219,7 +231,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         deleteStatus
     )
 
-    private fun getDebtStatus(action: RemoteDebtListAdapter.Actions, currentStatus: Int) =
+    private fun getDebtAction(action: RemoteDebtListAdapter.Actions, currentStatus: Int) =
         when (action) {
             RemoteDebtListAdapter.Actions.ACCEPT -> when (currentStatus) {
                 WAIT_FOR_CONFIRMATION -> DebtAction.Update(IN_PROGRESS)
@@ -259,5 +271,6 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
 
     sealed class Command {
         class ShowMessage(@StringRes val msgId: Int) : Command()
+        object ShowUndoDeletionSnackbar : Command()
     }
 }
