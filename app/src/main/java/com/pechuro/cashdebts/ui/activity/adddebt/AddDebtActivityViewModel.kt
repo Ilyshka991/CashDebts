@@ -86,7 +86,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     lateinit var debt: BaseDebtInfo
-    private var isUserAlreadyLoaded = false
+    private var isDebtAlreadyLoaded = false
 
     init {
         setConnectivityListener()
@@ -99,7 +99,7 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     fun loadExistingDebt(id: String) {
-        if (isUserAlreadyLoaded) return
+        if (isDebtAlreadyLoaded) return
 
         val debtInfo = debt
         val source = when (debtInfo) {
@@ -112,8 +112,10 @@ class AddDebtActivityViewModel @Inject constructor(
 
         source.subscribe({
             onDebtLoaded(it)
-            isUserAlreadyLoaded = true
-        }, {}).addTo(compositeDisposable)
+            isDebtAlreadyLoaded = true
+        }, {
+            it.printStackTrace()
+        }).addTo(compositeDisposable)
     }
 
     fun setPhoneData(phoneNumber: String) {
@@ -164,6 +166,9 @@ class AddDebtActivityViewModel @Inject constructor(
             }
             is FirestoreRemoteDebt -> {
                 val localDebt = debt as RemoteDebtInfo
+
+                localDebt.isPersonChangeEnabled.onNext(false)
+
                 if (userRepository.currentUserBaseInformation.uid == firestoreDebt.creditorUid) {
                     localDebt.personUid.onNext(firestoreDebt.debtorUid)
                     localDebt.debtRole.onNext(CREDITOR)
@@ -171,6 +176,12 @@ class AddDebtActivityViewModel @Inject constructor(
                     localDebt.personUid.onNext(firestoreDebt.creditorUid)
                     localDebt.debtRole.onNext(DEBTOR)
                 }
+
+                userRepository.getSingle(localDebt.personUid.requireValue, true).subscribe({
+                    localDebt.phone.onNext(it.phoneNumber)
+                }, {
+                    it.printStackTrace()
+                })
             }
         }
         with(debt) {
@@ -185,8 +196,11 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     private fun addRemoteDebt(debt: RemoteDebtInfo) {
+        val id = debt.id
+
         val creditorUid: String
         val debtorUid: String
+        val status: Int
         when (debt.debtRole.value) {
             null -> {
                 command.onNext(Events.OnError(R.string.add_debt_error_common))
@@ -195,10 +209,20 @@ class AddDebtActivityViewModel @Inject constructor(
             CREDITOR -> {
                 creditorUid = userRepository.currentUserBaseInformation.uid
                 debtorUid = debt.personUid.requireValue
+                status = if (id == null) {
+                    FirestoreDebtStatus.WAIT_FOR_CONFIRMATION
+                } else {
+                    FirestoreDebtStatus.WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR
+                }
             }
             DEBTOR -> {
                 debtorUid = userRepository.currentUserBaseInformation.uid
                 creditorUid = debt.personUid.requireValue
+                status = if (id == null) {
+                    FirestoreDebtStatus.WAIT_FOR_CONFIRMATION
+                } else {
+                    FirestoreDebtStatus.WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR
+                }
             }
             else -> throw IllegalArgumentException()
         }
@@ -209,16 +233,31 @@ class AddDebtActivityViewModel @Inject constructor(
             debt.value.requireValue,
             debt.description.requireValue,
             debt.date.requireValue,
-            FirestoreDebtStatus.WAIT_FOR_CONFIRMATION,
+            status,
             userRepository.currentUserBaseInformation.uid,
             DebtDeleteStatus.NOT_DELETED
         )
-        val id = debt.id
+
+
         val operation = if (id == null) {
             remoteDebtRepository.add(sendingDebt)
         } else {
-            remoteDebtRepository.update(id, sendingDebt)
+            remoteDebtRepository.getSingle(id).flatMapCompletable {
+                remoteDebtRepository.update(
+                    "${id}_tmp", FirestoreRemoteDebt(
+                        it.creditorUid,
+                        it.debtorUid,
+                        it.value,
+                        it.description,
+                        it.date,
+                        it.status,
+                        it.initPersonUid,
+                        DebtDeleteStatus.CACHED
+                    )
+                )
+            }.andThen(remoteDebtRepository.update(id, sendingDebt))
         }
+
         operation.subscribe({
             loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OnSaved)
@@ -279,6 +318,7 @@ class AddDebtActivityViewModel @Inject constructor(
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
         object OnUserNotExist : Events()
+        object DisablePhoneChanges : Events()
     }
 
     sealed class LoadingState {

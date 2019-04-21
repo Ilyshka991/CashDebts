@@ -6,6 +6,7 @@ import io.reactivex.subjects.BehaviorSubject
 class RemoteDebtInfo : BaseDebtInfo() {
     val phone = BehaviorSubject.createDefault("")
     val personUid = BehaviorSubject.createDefault("")
+    val isPersonChangeEnabled = BehaviorSubject.createDefault(true)
 
     override fun isValid(): Boolean {
         return !phone.value.isNullOrEmpty()

@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.data.data.repositories.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Source
 import com.pechuro.cashdebts.data.data.exception.FirestoreCommonException
 import com.pechuro.cashdebts.data.data.exception.FirestoreUserNotFoundException
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
@@ -41,24 +42,24 @@ internal class UserRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun getSingle(uid: String) = Single.create<FirestoreUser> { emitter ->
-        store.collection(FirestoreStructure.Users.TAG)
-            .document(uid)
-            .get()
-            .addOnCompleteListener {
-                if (emitter.isDisposed) return@addOnCompleteListener
-                if (it.isSuccessful) {
-                    if (it.result?.data != null) {
-                        emitter.onSuccess(it.result!!.toObject(FirestoreUser::class.java)!!)
+    override fun getSingle(uid: String, fromCache: Boolean) =
+        Single.create<FirestoreUser> { emitter ->
+            store.collection(FirestoreStructure.Users.TAG)
+                .document(uid)
+                .get(if (fromCache) Source.CACHE else Source.DEFAULT)
+                .addOnCompleteListener {
+                    if (emitter.isDisposed) return@addOnCompleteListener
+                    if (it.isSuccessful) {
+                        if (it.result?.data != null) {
+                            emitter.onSuccess(it.result!!.toObject(FirestoreUser::class.java)!!)
+                        } else {
+                            emitter.onError(FirestoreUserNotFoundException())
+                        }
                     } else {
-                        emitter.onError(FirestoreUserNotFoundException())
+                        emitter.onError(FirestoreCommonException())
                     }
-                } else {
-                    emitter.onError(FirestoreCommonException())
                 }
-            }
-    }
-
+        }
 
     override fun isUserWithUidExist(uid: String) = Single.create<Boolean> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)

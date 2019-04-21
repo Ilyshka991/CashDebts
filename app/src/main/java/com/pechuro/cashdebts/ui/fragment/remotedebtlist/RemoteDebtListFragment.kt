@@ -75,8 +75,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
 
             when (it) {
                 is RemoteDebtItemSwipeCallback.SwipeAction.Complete -> completeDebt(it.position)
-                is RemoteDebtItemSwipeCallback.SwipeAction.Edit -> {
-                }
+                is RemoteDebtItemSwipeCallback.SwipeAction.Edit -> editDebt(it.position)
             }
         }.addTo(strongCompositeDisposable)
 
@@ -111,6 +110,11 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     private fun completeDebt(position: Int) {
         val item = adapter.getItemByPosition(position)
         viewModel.complete(item)
+    }
+
+    private fun editDebt(position: Int) {
+        val item = adapter.getItemByPosition(position)
+        EventBus.publish(MainActivityEvent.OpenAddActivity(false, item.id))
     }
 
     private fun showProfileDialog(user: RemoteDebt.User) {

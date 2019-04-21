@@ -103,6 +103,11 @@ class PhoneNumberEditText @JvmOverloads constructor(
         return true
     }
 
+    override fun setEnabled(isEnabled: Boolean) {
+        textCode.isFocusable = isEnabled
+        textNumber.isFocusable = isEnabled
+    }
+
     private fun moveCodeCursorAtTheEnd() {
         textCode.setSelection(textCode.text.length)
     }

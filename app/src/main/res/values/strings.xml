@@ -99,6 +99,8 @@
     <string name="action_accept">Accept</string>
     <string name="action_negative_ok">OK :(</string>
     <string name="msg_updated">Updated</string>
+    <string name="msg_accepted">Accepted</string>
+    <string name="msg_restored">Restored</string>
     <string name="msg_info_sent">Sent to person</string>
     <string name="action_delete">Delete</string>
 

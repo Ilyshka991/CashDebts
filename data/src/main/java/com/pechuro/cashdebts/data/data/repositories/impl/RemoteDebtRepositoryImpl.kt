@@ -24,11 +24,17 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
         Observable.combineLatest(
             getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, creditorUid)
                 .map { map ->
-                    map.filter { it.value.deleteStatus != DebtDeleteStatus.DELETE_FROM_CREDITOR }
+                    map.filter {
+                        it.value.deleteStatus != DebtDeleteStatus.DELETED_FROM_CREDITOR &&
+                                it.value.deleteStatus != DebtDeleteStatus.CACHED
+                    }
                 },
             getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, debtorUid)
                 .map { map ->
-                    map.filter { it.value.deleteStatus != DebtDeleteStatus.DELETE_FROM_DEBTOR }
+                    map.filter {
+                        it.value.deleteStatus != DebtDeleteStatus.DELETED_FROM_DEBTOR &&
+                                it.value.deleteStatus != DebtDeleteStatus.CACHED
+                    }
                 },
             BiFunction { creditor: Map<String, FirestoreRemoteDebt>, debtor: Map<String, FirestoreRemoteDebt> ->
                 creditor to debtor

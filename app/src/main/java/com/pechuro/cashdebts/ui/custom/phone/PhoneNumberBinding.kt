@@ -21,5 +21,11 @@ fun Subject<String>.receiveTextChangesFrom(view: PhoneNumberEditText): Disposabl
     return doOnDispose {
         view.textCode.removeTextChangedListener(codeListener)
         view.textNumber.removeTextChangedListener(numberListener)
-    }.subscribe()
+    }
+        .filter {
+            it != view.getPhoneNumber()
+        }
+        .subscribe {
+            view.setPhoneNumber(it)
+        }
 }

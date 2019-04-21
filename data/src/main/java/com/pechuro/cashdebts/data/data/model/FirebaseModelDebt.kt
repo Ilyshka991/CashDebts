@@ -1,8 +1,9 @@
 package com.pechuro.cashdebts.data.data.model
 
 import androidx.annotation.IntDef
-import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETE_FROM_CREDITOR
-import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETE_FROM_DEBTOR
+import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.CACHED
+import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETED_FROM_CREDITOR
+import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETED_FROM_DEBTOR
 import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.NOT_DELETED
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.DEBTOR
@@ -97,12 +98,13 @@ annotation class DebtRole {
     }
 }
 
-@IntDef(NOT_DELETED, DELETE_FROM_CREDITOR, DELETE_FROM_DEBTOR)
+@IntDef(NOT_DELETED, DELETED_FROM_CREDITOR, DELETED_FROM_DEBTOR, CACHED)
 @Retention(AnnotationRetention.SOURCE)
 annotation class DebtDeleteStatus {
     companion object {
         const val NOT_DELETED = 0
-        const val DELETE_FROM_CREDITOR = 1
-        const val DELETE_FROM_DEBTOR = 2
+        const val DELETED_FROM_CREDITOR = 1
+        const val DELETED_FROM_DEBTOR = 2
+        const val CACHED = 3
     }
 }

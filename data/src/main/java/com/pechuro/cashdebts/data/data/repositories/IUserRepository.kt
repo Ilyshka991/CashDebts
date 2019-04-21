@@ -11,7 +11,10 @@ interface IUserRepository {
 
     fun getSource(uid: String = currentUserBaseInformation.uid): Observable<FirestoreUser>
 
-    fun getSingle(uid: String = currentUserBaseInformation.uid): Single<FirestoreUser>
+    fun getSingle(
+        uid: String = currentUserBaseInformation.uid,
+        fromCache: Boolean = false
+    ): Single<FirestoreUser>
 
     fun isUserWithUidExist(uid: String = currentUserBaseInformation.uid): Single<Boolean>
 

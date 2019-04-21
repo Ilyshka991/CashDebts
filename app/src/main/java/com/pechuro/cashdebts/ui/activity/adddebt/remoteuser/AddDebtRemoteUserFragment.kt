@@ -83,8 +83,12 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
         button_pick_contact.setOnClickListener {
             startPickContactActivity()
         }
-        viewModel.debt.debtRole.receiveDebtRoleChangesFrom(chip_container).addTo(strongCompositeDisposable)
-        (viewModel.debt as RemoteDebtInfo).phone.receiveTextChangesFrom(text_phone).addTo(strongCompositeDisposable)
+        weakCompositeDisposable.addAll(
+            viewModel.debt.debtRole.receiveDebtRoleChangesFrom(chip_container),
+            (viewModel.debt as RemoteDebtInfo).phone.receiveTextChangesFrom(text_phone),
+            (viewModel.debt as RemoteDebtInfo).isPersonChangeEnabled.subscribe {
+                setIsPersonChangeEnabled(it)
+            })
     }
 
     private fun setViewModelListeners() {
@@ -114,6 +118,11 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     private fun onConnectionChanged(isAvailable: Boolean) {
         view_no_connection.isVisible = !isAvailable
         viewModel.command.onNext(AddDebtActivityViewModel.Events.SetOptionsMenuEnabled(isAvailable))
+    }
+
+    private fun setIsPersonChangeEnabled(isEnabled: Boolean) {
+        button_pick_contact.isEnabled = isEnabled
+        text_phone.isEnabled = isEnabled
     }
 
     private fun showSnackBarError(@StringRes msgId: Int) {
