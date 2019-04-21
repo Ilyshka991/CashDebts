@@ -36,7 +36,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             it.first + it.second
         }
 
-    override fun get(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
+    override fun getSingle(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get()
             .addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
@@ -48,7 +48,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun add(debt: FirestoreRemoteDebt, id: String?) = Completable.create { emitter ->
+    override fun add(debt: FirestoreRemoteDebt) = Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .add(debt).addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener

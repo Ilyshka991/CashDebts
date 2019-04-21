@@ -25,7 +25,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     @Inject
     protected lateinit var layoutManager: RecyclerView.LayoutManager
     @Inject
-    protected lateinit var swipeToDeleteHelper: ItemTouchHelper<LocalDebtItemSwipeCallback.SwipeAction>
+    protected lateinit var swipeHelper: ItemTouchHelper<LocalDebtItemSwipeCallback.SwipeAction>
 
     override val layoutId: Int
         get() = R.layout.fragment_local_debt_list
@@ -48,10 +48,10 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         recycler.apply {
             adapter = this@LocalDebtListFragment.adapter
             layoutManager = this@LocalDebtListFragment.layoutManager
-            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
             setHasFixedSize(true)
         }
-        swipeToDeleteHelper.attachToRecyclerView(recycler)
+        swipeHelper.attachToRecyclerView(recycler)
         progress.isVisible = true
     }
 
@@ -64,10 +64,16 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
                 if (dy > 0) fab_add.hide() else fab_add.show()
             }
         })
-        swipeToDeleteHelper.actionEmitter.subscribe {
+        swipeHelper.actionEmitter.subscribe {
             when (it) {
                 is LocalDebtItemSwipeCallback.SwipeAction.Delete -> deleteDebt(it.position)
-                is LocalDebtItemSwipeCallback.SwipeAction.Edit -> editDebt(it.position)
+                is LocalDebtItemSwipeCallback.SwipeAction.Edit -> {
+                    editDebt(it.position)
+
+                    //Fixme: find better solution for move items back
+                    swipeHelper.attachToRecyclerView(null)
+                    swipeHelper.attachToRecyclerView(recycler)
+                }
             }
         }.addTo(strongCompositeDisposable)
     }
@@ -94,7 +100,6 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun editDebt(position: Int) {
-        adapter.notifyDataSetChanged()
         val item = adapter.getItemByPosition(position)
         EventBus.publish(MainActivityEvent.OpenAddActivity(true, item.id))
     }

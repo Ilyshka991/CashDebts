@@ -7,5 +7,5 @@ import io.reactivex.Single
 interface IStorageRepository {
     fun uploadAndGetUrl(fileUri: Uri, name: String): Single<Uri>
 
-    fun deletePrevious(url: String): Completable
+    fun delete(url: String): Completable
 }

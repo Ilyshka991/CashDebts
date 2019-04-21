@@ -51,6 +51,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     override fun onBindViewHolder(holder: BaseViewHolder<LocalDebt>, position: Int) =
         holder.onBind(debtList[position])
 
+    override fun getItemId(position: Int) = debtList[position].id.hashCode().toLong()
+
     fun update(result: DiffResult<LocalDebt>) {
         when {
             debtList.isEmpty() -> {

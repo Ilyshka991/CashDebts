@@ -9,9 +9,11 @@ interface ILocalDebtRepository {
 
     fun getSource(): Observable<Map<String, FirestoreLocalDebt>>
 
-    fun get(id: String): Single<FirestoreLocalDebt>
+    fun getSingle(id: String): Single<FirestoreLocalDebt>
 
-    fun add(debt: FirestoreLocalDebt, id: String? = null): Completable
+    fun add(debt: FirestoreLocalDebt): Completable
+
+    fun update(id: String, debt: FirestoreLocalDebt): Completable
 
     fun delete(id: String): Completable
 }

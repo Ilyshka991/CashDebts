@@ -75,7 +75,8 @@ class LocalDebtListFragmentViewModel @Inject constructor(
 
     fun restoreDebt() {
         val debt = previousDeletedDebt ?: return
-        debtRepository.add(debt.firestoreDebt(), debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)
+        debtRepository.update(debt.id, debt.firestoreDebt()).onErrorComplete().subscribe()
+            .addTo(compositeDisposable)
     }
 
     private fun LocalDebt.firestoreDebt() = FirestoreLocalDebt(

@@ -35,53 +35,55 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun get(id: String) = Single.create<FirestoreLocalDebt> { emitter ->
-        store.collection(FirestoreStructure.LocalDebt.TAG).document(id).get().addOnCompleteListener {
-            if (it.isSuccessful && it.result != null) {
-                if (!emitter.isDisposed) {
-                    emitter.onSuccess(it.result!!.toObject(FirestoreLocalDebt::class.java)!!)
+    override fun getSingle(id: String) = Single.create<FirestoreLocalDebt> { emitter ->
+        store.collection(FirestoreStructure.LocalDebt.TAG).document(id).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful && it.result != null) {
+                    if (!emitter.isDisposed) {
+                        emitter.onSuccess(it.result!!.toObject(FirestoreLocalDebt::class.java)!!)
+                    }
+                } else {
+                    if (!emitter.isDisposed) {
+                        emitter.onError(FirestoreCommonException())
+                    }
                 }
-            } else {
-                if (!emitter.isDisposed) {
+            }
+    }
+
+    override fun add(debt: FirestoreLocalDebt) = Completable.create { emitter ->
+        store.collection(FirestoreStructure.LocalDebt.TAG)
+            .add(debt).addOnCompleteListener {
+                if (emitter.isDisposed) return@addOnCompleteListener
+                if (it.isSuccessful) {
+                    emitter.onComplete()
+                } else {
                     emitter.onError(FirestoreCommonException())
                 }
             }
-        }
     }
 
-    override fun add(debt: FirestoreLocalDebt, id: String?) = Completable.create { emitter ->
-        if (id != null) {
-            store.collection(FirestoreStructure.LocalDebt.TAG)
-                .document(id)
-                .set(debt).addOnCompleteListener {
-                    if (emitter.isDisposed) return@addOnCompleteListener
-                    if (it.isSuccessful) {
-                        emitter.onComplete()
-                    } else {
-                        emitter.onError(FirestoreCommonException())
-                    }
+    override fun update(id: String, debt: FirestoreLocalDebt) = Completable.create { emitter ->
+        store.collection(FirestoreStructure.LocalDebt.TAG)
+            .document(id)
+            .set(debt).addOnCompleteListener {
+                if (emitter.isDisposed) return@addOnCompleteListener
+                if (it.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    emitter.onError(FirestoreCommonException())
                 }
-        } else {
-            store.collection(FirestoreStructure.LocalDebt.TAG)
-                .add(debt).addOnCompleteListener {
-                    if (emitter.isDisposed) return@addOnCompleteListener
-                    if (it.isSuccessful) {
-                        emitter.onComplete()
-                    } else {
-                        emitter.onError(FirestoreCommonException())
-                    }
-                }
-        }
+            }
     }
 
     override fun delete(id: String) = Completable.create { emitter ->
-        store.collection(FirestoreStructure.LocalDebt.TAG).document(id).delete().addOnCompleteListener {
-            if (emitter.isDisposed) return@addOnCompleteListener
-            if (it.isSuccessful) {
-                emitter.onComplete()
-            } else {
-                emitter.onError(FirestoreCommonException())
+        store.collection(FirestoreStructure.LocalDebt.TAG).document(id).delete()
+            .addOnCompleteListener {
+                if (emitter.isDisposed) return@addOnCompleteListener
+                if (it.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    emitter.onError(FirestoreCommonException())
+                }
             }
-        }
     }
 }

@@ -72,7 +72,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
 
     fun save() {
         fun deletePreviousPhoto(): Completable {
-            return storageRepository.deletePrevious(initialImageUrl)
+            return storageRepository.delete(initialImageUrl)
         }
 
         fun uploadPhoto(): Single<Uri> {

@@ -48,9 +48,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
 
     private fun setupView() {
         recycler.apply {
-            adapter = this@RemoteDebtListFragment.adapter.apply {
-                setHasStableIds(true)
-            }
+            adapter = this@RemoteDebtListFragment.adapter
             layoutManager = this@RemoteDebtListFragment.layoutManager
             (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
             setHasFixedSize(true)
@@ -68,19 +66,20 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
                 if (dy > 0) fab_add.hide() else fab_add.show()
             }
         })
-        swipeHelper.actionEmitter.subscribe {
-            when (it) {
-                is RemoteDebtItemSwipeCallback.SwipeAction.Complete -> {
-                    completeDebt(it.position)
 
-                    //Fixme: find better solution for move items back
-                    swipeHelper.attachToRecyclerView(null)
-                    swipeHelper.attachToRecyclerView(recycler)
-                }
+        swipeHelper.actionEmitter.subscribe {
+
+            //Fixme: find better solution for move items back
+            swipeHelper.attachToRecyclerView(null)
+            swipeHelper.attachToRecyclerView(recycler)
+
+            when (it) {
+                is RemoteDebtItemSwipeCallback.SwipeAction.Complete -> completeDebt(it.position)
                 is RemoteDebtItemSwipeCallback.SwipeAction.Edit -> {
                 }
             }
         }.addTo(strongCompositeDisposable)
+
         adapter.longClickEmitter.subscribe(::showProfileDialog).addTo(strongCompositeDisposable)
         adapter.actionsClickEmitter.subscribe(viewModel::update).addTo(strongCompositeDisposable)
     }

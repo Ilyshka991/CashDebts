@@ -103,8 +103,8 @@ class AddDebtActivityViewModel @Inject constructor(
 
         val debtInfo = debt
         val source = when (debtInfo) {
-            is LocalDebtInfo -> localDebtRepository.get(id)
-            is RemoteDebtInfo -> remoteDebtRepository.get(id)
+            is LocalDebtInfo -> localDebtRepository.getSingle(id)
+            is RemoteDebtInfo -> remoteDebtRepository.getSingle(id)
             else -> throw  IllegalArgumentException()
         }
 
@@ -213,8 +213,13 @@ class AddDebtActivityViewModel @Inject constructor(
             userRepository.currentUserBaseInformation.uid,
             DebtDeleteStatus.NOT_DELETED
         )
-
-        remoteDebtRepository.add(sendingDebt, debt.id).subscribe({
+        val id = debt.id
+        val operation = if (id == null) {
+            remoteDebtRepository.add(sendingDebt)
+        } else {
+            remoteDebtRepository.update(id, sendingDebt)
+        }
+        operation.subscribe({
             loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OnSaved)
         }, {
@@ -233,7 +238,13 @@ class AddDebtActivityViewModel @Inject constructor(
                 debtRole.requireValue
             )
         }
-        localDebtRepository.add(sendingDebt, debt.id).subscribe({
+        val id = debt.id
+        val operation = if (id == null) {
+            localDebtRepository.add(sendingDebt)
+        } else {
+            localDebtRepository.update(id, sendingDebt)
+        }
+        operation.subscribe({
             loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OnSaved)
         }, {

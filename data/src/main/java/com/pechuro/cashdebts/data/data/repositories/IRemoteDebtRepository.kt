@@ -8,9 +8,9 @@ import io.reactivex.Single
 interface IRemoteDebtRepository {
     fun getSource(): Observable<Map<String, FirestoreRemoteDebt>>
 
-    fun get(id: String): Single<FirestoreRemoteDebt>
+    fun getSingle(id: String): Single<FirestoreRemoteDebt>
 
-    fun add(debt: FirestoreRemoteDebt, id: String? = null): Completable
+    fun add(debt: FirestoreRemoteDebt): Completable
 
     fun update(id: String, debt: FirestoreRemoteDebt): Completable
 

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.di.annotations.FragmentScope
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtItemSwipeCallback
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
 import dagger.Module
 import dagger.Provides
 import java.text.SimpleDateFormat
@@ -21,6 +22,13 @@ class RemoteDebtListFragmentModule {
     @FragmentScope
     fun provideLayoutManager(fragment: RemoteDebtListFragment): RecyclerView.LayoutManager =
         LinearLayoutManager(fragment.context, RecyclerView.VERTICAL, false)
+
+    @Provides
+    @FragmentScope
+    fun provideAdapter(dateFormatter: SimpleDateFormat) =
+        RemoteDebtListAdapter(dateFormatter).apply {
+            setHasStableIds(true)
+        }
 
     @Provides
     @FragmentScope

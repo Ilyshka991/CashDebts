@@ -23,7 +23,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     if (emitter.isDisposed) {
-                        deletePrevious(it.result!!.toString()).subscribe()
+                        delete(it.result!!.toString()).subscribe()
                         return@addOnCompleteListener
                     }
                     emitter.onSuccess(it.result!!)
@@ -33,7 +33,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
             }
     }
 
-    override fun deletePrevious(url: String) = Completable.create { emitter ->
+    override fun delete(url: String) = Completable.create { emitter ->
         val ref = storage.getReferenceFromUrl(url)
         ref.delete().addOnCompleteListener {
             if (emitter.isDisposed) return@addOnCompleteListener
