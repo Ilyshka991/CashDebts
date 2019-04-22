@@ -21,7 +21,8 @@ def libraryVersions = [
         firestore       : '18.1.0',
         core            : '16.0.7',
         auth            : '16.1.0',
-        storage         : '16.1.0'
+        storage         : '16.1.0',
+        fcm             : '17.6.0'
 ]
 
 
@@ -70,6 +71,7 @@ ext {
             firestore: "com.google.firebase:firebase-firestore:${libraryVersions.firestore}",
             core     : "com.google.firebase:firebase-core:${libraryVersions.core}",
             auth     : "com.google.firebase:firebase-auth:${libraryVersions.auth}",
-            storage  : "com.google.firebase:firebase-storage:${libraryVersions.storage}"
+            storage  : "com.google.firebase:firebase-storage:${libraryVersions.storage}",
+            fcm      : "com.google.firebase:firebase-messaging:${libraryVersions.fcm}"
     ]
 }

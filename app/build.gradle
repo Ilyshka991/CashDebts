@@ -41,6 +41,7 @@ dependencies {
     implementation daggerDependencies.values()
     kapt daggerProcessorDependencies.values()
     implementation glideDependencies.values()
+    implementation firebaseDependencies.fcm
 
     implementation project(':data')
     implementation project(':calculator')
