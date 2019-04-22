@@ -47,6 +47,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun setupView() {
+        fab_add.show()
         recycler.apply {
             adapter = this@RemoteDebtListFragment.adapter
             layoutManager = this@RemoteDebtListFragment.layoutManager

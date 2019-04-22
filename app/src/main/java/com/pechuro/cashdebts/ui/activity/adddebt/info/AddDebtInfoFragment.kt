@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.activity.adddebt.info
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Result
@@ -21,6 +22,9 @@ import javax.inject.Inject
 
 
 class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
+    @Inject
+    protected lateinit var imm: InputMethodManager
+
     override val layoutId: Int
         get() = R.layout.fragment_add_debt_info
     override val isViewModelShared: Boolean
@@ -38,6 +42,7 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewListeners()
+        setupView()
     }
 
     override fun onStart() {
@@ -73,6 +78,10 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
             }
             false
         }
+    }
+
+    private fun setupView() {
+        if (!imm.isActive) imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 
     private fun setViewModelListeners() {

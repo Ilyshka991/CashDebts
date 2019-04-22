@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -58,6 +59,9 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
+        val cornersRadius = if (isCurrentlyActive) 8.px.toFloat() else 0F
+        (viewHolder.itemView as? CardView)?.radius = cornersRadius
+
         val context = recyclerView.context
 
         val itemView = viewHolder.itemView
@@ -88,6 +92,7 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
         val iconTop = itemView.top + ((itemView.height - icon.intrinsicHeight) / 2)
         val iconBottom = iconTop + icon.intrinsicHeight
         val iconPadding = 16.px
+
 
         when {
             dX > 0 -> {

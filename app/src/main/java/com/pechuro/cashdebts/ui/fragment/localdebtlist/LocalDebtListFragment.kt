@@ -45,6 +45,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setupView() {
+        fab_add.show()
         recycler.apply {
             adapter = this@LocalDebtListFragment.adapter
             layoutManager = this@LocalDebtListFragment.layoutManager

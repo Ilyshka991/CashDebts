@@ -292,6 +292,11 @@ class AddDebtActivityViewModel @Inject constructor(
     }
 
     private fun checkUserExist(data: RemoteDebtInfo) {
+        if (data.personUid.requireValue.isNotEmpty()) {
+            command.onNext(Events.OpenInfo(true))
+            return
+        }
+
         loadingState.onNext(LoadingState.OnStart)
         userRepository.getUidByPhone(data.phone.requireValue).subscribe({
             data.personUid.onNext(it)
