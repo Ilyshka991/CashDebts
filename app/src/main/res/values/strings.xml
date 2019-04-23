@@ -104,4 +104,8 @@
     <string name="msg_info_sent">Sent to person</string>
     <string name="action_delete">Delete</string>
 
+    <string name="notification_group_debt_actions">Debt actions</string>
+    <string name="notification_channel_add_name">Add</string>
+    <string name="notification_channel_complete_name">Complete</string>
+    <string name="notification_channel_update_name">Update</string>
 </resources>
