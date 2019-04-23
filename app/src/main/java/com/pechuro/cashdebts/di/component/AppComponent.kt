@@ -17,7 +17,8 @@ import dagger.Component
         AppActivitiesModule::class,
         AppViewModelsModule::class,
         CountryListModule::class,
-        RxModule::class]
+        RxModule::class,
+        AppServicesModule::class]
 )
 interface AppComponent {
 

@@ -14,9 +14,12 @@ import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtAction
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_ADD
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_COMPLETE
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_UPDATE
+import javax.inject.Inject
 
-class NotificationManager(private val context: Context) {
-    private val notificationManager = NotificationManagerCompat.from(context)
+class NotificationManager @Inject constructor(
+    private val context: Context,
+    private val notificationManager: NotificationManagerCompat
+) {
 
     init {
         setupChannels()

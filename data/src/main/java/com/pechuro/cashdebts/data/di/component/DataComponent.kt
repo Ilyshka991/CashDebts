@@ -19,4 +19,6 @@ interface DataComponent {
     fun remoteDebtRepository(): IRemoteDebtRepository
 
     fun userRepository(): IUserRepository
+
+    fun messagingRepository(): IMessagingRepository
 }

@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.di.module
 import android.content.Context
 import android.net.ConnectivityManager
 import android.telephony.TelephonyManager
+import androidx.core.app.NotificationManagerCompat
 import com.pechuro.cashdebts.di.annotations.AppScope
 import dagger.Module
 import dagger.Provides
@@ -21,4 +22,8 @@ class ManagerModule {
     fun provideConnectivityManager(context: Context): ConnectivityManager {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
+
+    @Provides
+    @AppScope
+    fun provideNotificationManaget(context: Context) = NotificationManagerCompat.from(context)
 }

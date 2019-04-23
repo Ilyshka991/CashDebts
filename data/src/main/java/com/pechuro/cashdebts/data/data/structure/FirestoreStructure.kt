@@ -38,4 +38,12 @@ class FirestoreStructure {
             const val photoUrl = "photoUrl"
         }
     }
+
+    object FCMTokens {
+        const val TAG = "fcmTokens"
+
+        object Structure {
+            const val tokens = "tokens"
+        }
+    }
 }

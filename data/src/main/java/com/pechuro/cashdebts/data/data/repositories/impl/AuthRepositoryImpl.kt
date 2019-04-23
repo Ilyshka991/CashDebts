@@ -9,13 +9,15 @@ import com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException
 import com.pechuro.cashdebts.data.data.exception.AuthUnknownException
 import com.pechuro.cashdebts.data.data.model.UserBaseInformation
 import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
+import com.pechuro.cashdebts.data.data.repositories.IMessagingRepository
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 internal class AuthRepositoryImpl @Inject constructor(
     private val authClient: FirebaseAuth,
-    private val phoneAuthProvider: PhoneAuthProvider
+    private val phoneAuthProvider: PhoneAuthProvider,
+    private val messagingRepository: IMessagingRepository
 ) : IAuthRepository {
     override val eventEmitter: PublishSubject<IAuthRepository.Event>
         get() = _eventEmitter
@@ -44,7 +46,10 @@ internal class AuthRepositoryImpl @Inject constructor(
             )
         }
 
-        override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+        override fun onCodeSent(
+            verificationId: String,
+            token: PhoneAuthProvider.ForceResendingToken
+        ) {
             if (!isCodeResent) {
                 _eventEmitter.onNext(IAuthRepository.Event.OnCodeSent)
             }
@@ -83,6 +88,7 @@ internal class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun signOut() {
+        disableMessaging()
         authClient.signOut()
     }
 
@@ -91,12 +97,27 @@ internal class AuthRepositoryImpl @Inject constructor(
     private fun signIn(credential: PhoneAuthCredential) {
         authClient.signInWithCredential(credential)
             .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    enableMessaging()
+                }
                 _eventEmitter.onNext(if (task.isSuccessful) IAuthRepository.Event.OnSuccess else IAuthRepository.Event.OnIncorrectCode)
             }
     }
 
     private fun FirebaseUser.getBaseInformation() =
         UserBaseInformation(uid, phoneNumber!!)
+
+    private fun disableMessaging() {
+        messagingRepository.setEnabled(false)
+        val personUid = getCurrentUserBaseInformation()?.uid ?: throw IllegalStateException()
+        messagingRepository.deleteToken(personUid)
+    }
+
+    private fun enableMessaging() {
+        messagingRepository.setEnabled(true)
+        val personUid = getCurrentUserBaseInformation()?.uid ?: throw IllegalStateException()
+        messagingRepository.saveToken(personUid)
+    }
 
     companion object {
         private const val TIMEOUT = 60L

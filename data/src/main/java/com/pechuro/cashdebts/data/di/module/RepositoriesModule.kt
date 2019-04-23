@@ -28,4 +28,8 @@ internal interface RepositoriesModule {
     @Binds
     @DataScope
     fun provideRemoteDebtRepository(repository: RemoteDebtRepositoryImpl): IRemoteDebtRepository
+
+    @Binds
+    @DataScope
+    fun provideMessagingRepository(repository: MessagingRepositoryImpl): IMessagingRepository
 }
