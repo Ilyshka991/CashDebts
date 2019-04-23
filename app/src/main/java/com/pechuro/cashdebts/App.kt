@@ -4,6 +4,7 @@ package com.pechuro.cashdebts
 * if removed:
 * com.pechuro.cashdebts.calculator.di.component.DaggerCalculatorComponent
 * */
+import com.pechuro.cashdebts.calculator.di.component.DaggerCalculatorComponent
 import android.app.Activity
 import android.app.Application
 import android.app.Service
