@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.data.data.repositories.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import com.pechuro.cashdebts.data.data.exception.FirestoreCommonException
@@ -21,6 +22,8 @@ internal class UserRepositoryImpl @Inject constructor(
     private val auth: IAuthRepository
 ) : IUserRepository {
 
+    private val userSnapshotListeners = mutableListOf<ListenerRegistration>()
+
     override val currentUserBaseInformation: UserBaseInformation
         get() = auth.getCurrentUserBaseInformation()
             ?: throw IllegalStateException("User not sign in")
@@ -39,7 +42,13 @@ internal class UserRepositoryImpl @Inject constructor(
                 } else {
                     emitter.onError(FirestoreCommonException())
                 }
+            }.also {
+                userSnapshotListeners += it
             }
+    }.doOnDispose {
+        userSnapshotListeners.forEach {
+            it.remove()
+        }
     }
 
     override fun getSingle(uid: String, fromCache: Boolean) =

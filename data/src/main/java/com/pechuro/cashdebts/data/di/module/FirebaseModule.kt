@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.data.di.module
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.pechuro.cashdebts.data.di.scopes.DataScope
@@ -31,4 +32,8 @@ internal class FirebaseModule {
     @Provides
     @DataScope
     fun provideMessaging() = FirebaseMessaging.getInstance()
+
+    @Provides
+    @DataScope
+    fun provideInstanceId() = FirebaseInstanceId.getInstance()
 }

@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.service
+package com.pechuro.cashdebts.service.fcm
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -22,7 +22,9 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        messagingRepository.saveToken(userRepository.currentUserBaseInformation.uid, token)
+        messagingRepository
+            .saveToken(userRepository.currentUserBaseInformation.uid, token)
+            .subscribe()
     }
 
     override fun onMessageReceived(msg: RemoteMessage?) {

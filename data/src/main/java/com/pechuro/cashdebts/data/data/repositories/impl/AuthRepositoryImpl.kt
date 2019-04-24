@@ -110,13 +110,13 @@ internal class AuthRepositoryImpl @Inject constructor(
     private fun disableMessaging() {
         messagingRepository.setEnabled(false)
         val personUid = getCurrentUserBaseInformation()?.uid ?: throw IllegalStateException()
-        messagingRepository.deleteToken(personUid)
+        messagingRepository.deleteCurrentToken(personUid).subscribe()
     }
 
     private fun enableMessaging() {
         messagingRepository.setEnabled(true)
         val personUid = getCurrentUserBaseInformation()?.uid ?: throw IllegalStateException()
-        messagingRepository.saveToken(personUid)
+        messagingRepository.saveToken(personUid).subscribe()
     }
 
     companion object {

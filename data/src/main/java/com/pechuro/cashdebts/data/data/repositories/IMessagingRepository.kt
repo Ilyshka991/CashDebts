@@ -7,9 +7,9 @@ interface IMessagingRepository {
 
     fun setEnabled(isEnabled: Boolean)
 
-    fun getToken(): Single<String>
+    fun getCurrentToken(): Single<String>
 
-    fun deleteToken(personUid: String): Completable
+    fun deleteCurrentToken(personUid: String): Completable
 
     fun saveToken(personUid: String, token: String? = null): Completable
 }

@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.data.data.repositories.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.pechuro.cashdebts.data.data.exception.FirestoreCommonException
 import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
@@ -19,6 +20,8 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
     private val store: FirebaseFirestore,
     private val userRepository: IUserRepository
 ) : IRemoteDebtRepository {
+
+    private val snapshotListeners = mutableListOf<ListenerRegistration>()
 
     override fun getSource() =
         Observable.combineLatest(
@@ -40,6 +43,8 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
                 creditor to debtor
             }).map {
             it.first + it.second
+        }.doOnDispose {
+            snapshotListeners.forEach { it.remove() }
         }
 
     override fun getSingle(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
@@ -108,6 +113,8 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
                         .let {
                             if (!emitter.isDisposed) emitter.onNext(it)
                         }
+                }.also {
+                    snapshotListeners += it
                 }
         }
 }

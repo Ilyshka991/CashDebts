@@ -39,11 +39,18 @@ class FirestoreStructure {
         }
     }
 
-    object FCMTokens {
-        const val TAG = "fcmTokens"
+    object Tokens {
+        const val TAG = "tokens"
 
         object Structure {
-            const val tokens = "tokens"
+
+            object PushTokens {
+                const val TAG = "pushTokens"
+
+                object Structure {
+                    const val token = "token"
+                }
+            }
         }
     }
 }

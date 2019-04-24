@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.service
+package com.pechuro.cashdebts.service.fcm
 
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
