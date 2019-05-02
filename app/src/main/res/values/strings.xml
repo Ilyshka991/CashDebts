@@ -111,4 +111,5 @@
     <string name="menu_action_logout">Logout</string>
     <string name="menu_action_edit">Edit</string>
     <string name="label_profile_edit">Profile edit</string>
+    <string name="label_add_debt">Add debt</string>
 </resources>

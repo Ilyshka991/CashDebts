@@ -32,7 +32,7 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         return true
     }
 
-    protected fun homeFragment() {
+    protected open fun homeFragment() {
         supportFragmentManager.transaction {
             replace(containerId, getHomeFragment())
         }

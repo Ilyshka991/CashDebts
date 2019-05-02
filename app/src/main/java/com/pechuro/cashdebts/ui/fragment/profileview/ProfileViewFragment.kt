@@ -5,11 +5,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.utils.SnackActionInfo
-import com.pechuro.cashdebts.ui.utils.SnackInfo
-import com.pechuro.cashdebts.ui.utils.SnackbarManager
+import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
+import com.pechuro.cashdebts.ui.activity.main.SnackInfo
+import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
 import com.pechuro.cashdebts.ui.utils.loadAvatar
-import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_view.*
 
 class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
@@ -60,7 +59,10 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
             SnackInfo(
                 R.string.error_load,
                 Snackbar.LENGTH_INDEFINITE,
-                SnackActionInfo(R.string.action_retry, viewModel::loadUser)
+                SnackActionInfo(
+                    R.string.action_retry,
+                    viewModel::loadUser
+                )
             )
         )
     }

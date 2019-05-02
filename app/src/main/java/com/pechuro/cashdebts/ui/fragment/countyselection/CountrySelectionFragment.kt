@@ -40,7 +40,7 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
             adapter = this@CountrySelectionFragment.adapter
         }
         adapter.clickEmitter.subscribe {
-            EventBus.publish(CountySelectEvent.OnCountySelect(it))
+            EventBus.publish(CountySelectEvent.OnCountrySelect(it))
         }.addTo(strongCompositeDisposable)
         viewModel.searchQuery.receiveQueryChangesFrom(search).addTo(strongCompositeDisposable)
     }

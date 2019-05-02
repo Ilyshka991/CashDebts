@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
@@ -20,7 +19,6 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
-import com.pechuro.cashdebts.ui.utils.SnackbarManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -32,22 +30,25 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     override val containerId: Int
         get() = container.id
 
-    private var isBottomNavVisible = true
+    private var isBottomNavVisible = false
         set(value) {
             field = value
             bottom_app_bar.isVisible = value
-            fab.isVisible = value
         }
-    private var isFabVisible = true
+    private var isFabVisible = false
         set(value) {
             field = value
             if (value) fab.show() else fab.hide()
         }
     @MenuRes
-    private var currentMenuRes: Int = R.menu.menu_activity_add
+    private var currentMenuRes: Int = 0
         set(value) {
             field = value
-            bottom_app_bar.replaceMenu(value)
+            if (value == 0) {
+                bottom_app_bar.menu.clear()
+            } else {
+                bottom_app_bar.replaceMenu(value)
+            }
         }
 
     override fun getViewModelClass() = MainActivityViewModel::class
@@ -85,6 +86,12 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }
     }
 
+    override fun homeFragment() {
+        super.homeFragment()
+        isFabVisible = true
+        isBottomNavVisible = true
+    }
+
     private fun setViewListeners() {
         bottom_app_bar.setNavigationOnClickListener {
             openNavigation()
@@ -95,6 +102,12 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 R.id.menu_profile_action_logout -> logout()
             }
             true
+        }
+        fab.setOnClickListener {
+            when (supportFragmentManager.findFragmentById(containerId)) {
+                is RemoteDebtListFragment -> openAddActivity(false)
+                is LocalDebtListFragment -> openAddActivity(true)
+            }
         }
     }
 
@@ -167,7 +180,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         finish()
     }
 
-    private fun openAddActivity(isLocalDebt: Boolean, id: String?) {
+    private fun openAddActivity(isLocalDebt: Boolean, id: String? = null) {
         val intent = AddDebtActivity.newIntent(this, isLocalDebt, id)
         startActivity(intent)
     }
@@ -175,6 +188,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     private fun openProfileEditIfNecessary() {
         if (!viewModel.isUserAddInfo()) {
             isBottomNavVisible = false
+            isFabVisible = false
             showFragment(ProfileEditFragment.newInstance(true), false)
         }
     }

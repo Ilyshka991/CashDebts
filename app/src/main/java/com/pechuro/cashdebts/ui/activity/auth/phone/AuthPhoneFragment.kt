@@ -17,15 +17,16 @@ import kotlinx.android.synthetic.main.fragment_auth_phone.*
 import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
-    override val layoutId: Int
-        get() = R.layout.fragment_auth_phone
-    override val isViewModelShared: Boolean
-        get() = true
 
     @Inject
     protected lateinit var countryList: List<CountryData>
     @Inject
     protected lateinit var telephonyManager: TelephonyManager
+
+    override val layoutId: Int
+        get() = R.layout.fragment_auth_phone
+    override val isViewModelShared: Boolean
+        get() = true
 
     override fun getViewModelClass() = AuthActivityViewModel::class
 

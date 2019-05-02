@@ -48,7 +48,7 @@ class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityVi
     private fun subscribeToEvents() {
         EventBus.listen(CountySelectEvent::class.java).subscribe {
             when (it) {
-                is CountySelectEvent.OnCountySelect -> onCountrySelected(it.country)
+                is CountySelectEvent.OnCountrySelect -> onCountrySelected(it.country)
             }
         }.let(weakCompositeDisposable::add)
     }
@@ -75,5 +75,5 @@ class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityVi
 }
 
 sealed class CountySelectEvent : BaseEvent() {
-    class OnCountySelect(val country: CountryData) : CountySelectEvent()
+    class OnCountrySelect(val country: CountryData) : CountySelectEvent()
 }

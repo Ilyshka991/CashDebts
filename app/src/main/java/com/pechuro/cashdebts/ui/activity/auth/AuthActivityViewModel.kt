@@ -3,11 +3,12 @@ package com.pechuro.cashdebts.ui.activity.auth
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.exception.AuthException
+import com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException
+import com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException
 import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -23,8 +24,7 @@ class AuthActivityViewModel @Inject constructor(
     val fullPhoneNumber = BehaviorSubject.createDefault("")
     val phoneCode = BehaviorSubject.createDefault("")
 
-    private val _loadingState = BehaviorSubject.createDefault(false)
-    val loadingState: Observable<Boolean> = _loadingState
+    val loadingState = BehaviorSubject.createDefault(false)
 
     init {
         setAuthEventListener()
@@ -36,7 +36,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.OnError(R.string.error_auth_phone_validation))
             return
         }
-        _loadingState.onNext(true)
+        loadingState.onNext(true)
         authRepository.startVerification(number)
     }
 
@@ -46,7 +46,7 @@ class AuthActivityViewModel @Inject constructor(
             command.onNext(Events.OnError(R.string.error_auth_code_validation))
             return
         }
-        _loadingState.onNext(true)
+        loadingState.onNext(true)
         authRepository.verifyWithCode(code)
     }
 
@@ -71,37 +71,37 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onError(e: AuthException) {
-        _loadingState.onNext(false)
+        loadingState.onNext(false)
         val error = when (e) {
-            is com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
-            is com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException -> R.string.error_auth_too_many_requests
+            is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
+            is AuthNotAvailableException -> R.string.error_auth_too_many_requests
             else -> R.string.error_auth_common
         }
         command.onNext(Events.OnError(error))
     }
 
     private fun onCodeSent() {
-        _loadingState.onNext(false)
+        loadingState.onNext(false)
         command.onNext(Events.OnCodeSent)
     }
 
     private fun onSuccess() {
         userRepository.isUserWithUidExist()
             .subscribe({
-                _loadingState.onNext(false)
+                loadingState.onNext(false)
                 if (it) {
                     prefsManager.isUserAddInfo = true
                 }
                 command.onNext(Events.OnComplete(it))
             }, {
-                _loadingState.onNext(false)
+                loadingState.onNext(false)
             })
             .addTo(compositeDisposable)
     }
 
     private fun onIncorrectCode() {
         command.onNext(Events.OnError(R.string.error_auth_code_validation))
-        _loadingState.onNext(false)
+        loadingState.onNext(false)
     }
 
     sealed class Events {

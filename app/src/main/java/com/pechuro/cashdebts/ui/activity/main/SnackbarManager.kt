@@ -1,6 +1,5 @@
-package com.pechuro.cashdebts.ui.utils
+package com.pechuro.cashdebts.ui.activity.main
 
-import android.view.View
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.subjects.PublishSubject
