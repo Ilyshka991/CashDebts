@@ -3,9 +3,9 @@ package com.pechuro.cashdebts.ui.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
@@ -21,7 +21,6 @@ import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import com.pechuro.cashdebts.ui.utils.SnackbarManager
-import com.pechuro.cashdebts.ui.utils.px
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -38,6 +37,17 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             field = value
             bottom_app_bar.isVisible = value
             fab.isVisible = value
+        }
+    private var isFabVisible = true
+        set(value) {
+            field = value
+            if (value) fab.show() else fab.hide()
+        }
+    @MenuRes
+    private var currentMenuRes: Int = R.menu.menu_activity_add
+        set(value) {
+            field = value
+            bottom_app_bar.replaceMenu(value)
         }
 
     override fun getViewModelClass() = MainActivityViewModel::class
@@ -59,19 +69,32 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, isBottomNavVisible)
+        with(outState) {
+            putBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, isBottomNavVisible)
+            putBoolean(BUNDLE_IS_FAB_VISIBLE, isFabVisible)
+            putInt(BUNDLE_MENU_RES, currentMenuRes)
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
-        savedInstanceState?.getBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE)?.let {
-            isBottomNavVisible = it
+        savedInstanceState?.apply {
+            isBottomNavVisible = getBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, true)
+            isFabVisible = getBoolean(BUNDLE_IS_FAB_VISIBLE, true)
+            currentMenuRes = getInt(BUNDLE_MENU_RES, R.menu.menu_activity_add)
         }
     }
 
     private fun setViewListeners() {
         bottom_app_bar.setNavigationOnClickListener {
             openNavigation()
+        }
+        bottom_app_bar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_profile_action_edit -> openEditProfile()
+                R.id.menu_profile_action_logout -> logout()
+            }
+            true
         }
     }
 
@@ -123,7 +146,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun showProfile() {
         showFragment(ProfileViewFragment.newInstance(), false)
-
+        currentMenuRes = R.menu.menu_profile
+        isFabVisible = false
     }
 
     private fun openNavigation() {
@@ -157,6 +181,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     companion object {
         private const val BUNDLE_IS_BOTTOM_NAV_VISIBLE = "isBottomNavVisible"
+        private const val BUNDLE_IS_FAB_VISIBLE = "isFabVisible"
+        private const val BUNDLE_MENU_RES = "menuRes"
 
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }

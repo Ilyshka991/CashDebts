@@ -4,7 +4,6 @@ import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -13,25 +12,22 @@ class ProfileViewFragmentViewModel @Inject constructor(
     private val userRepository: IUserRepository
 ) : BaseViewModel() {
 
-    private val _loadingState = BehaviorSubject.create<LoadingState>()
-    val loadingState: Observable<LoadingState> = _loadingState
-
-    private val _user = BehaviorSubject.create<FirestoreUser>()
-    val user: Observable<FirestoreUser> = _user
+    val loadingState = BehaviorSubject.create<LoadingState>()
+    val user = BehaviorSubject.create<FirestoreUser>()
 
     init {
         loadUser()
     }
 
     fun loadUser() {
-        _loadingState.onNext(LoadingState.OnStart)
+        loadingState.onNext(LoadingState.OnStart)
         userRepository.getSource()
             .subscribe({
-                _loadingState.onNext(LoadingState.OnStop)
-                _user.onNext(it)
+                loadingState.onNext(LoadingState.OnStop)
+                user.onNext(it)
             }, {
-                _loadingState.onNext(LoadingState.OnStop)
-                _loadingState.onNext(LoadingState.OnError)
+                loadingState.onNext(LoadingState.OnStop)
+                loadingState.onNext(LoadingState.OnError)
                 it.printStackTrace()
             }).addTo(compositeDisposable)
     }

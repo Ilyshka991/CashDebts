@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
@@ -26,6 +26,7 @@
 
         <activity
             android:name=".ui.activity.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/label_activity_main" />
 
         <activity
@@ -42,6 +43,7 @@
 
         <activity
             android:name=".ui.activity.profileedit.ProfileEditActivity"
+            android:label="@string/label_profile_edit"
             android:parentActivityName=".ui.activity.main.MainActivity" />
 
         <provider

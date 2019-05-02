@@ -108,4 +108,7 @@
     <string name="notification_channel_add_name">Add</string>
     <string name="notification_channel_complete_name">Complete</string>
     <string name="notification_channel_update_name">Update</string>
+    <string name="menu_action_logout">Logout</string>
+    <string name="menu_action_edit">Edit</string>
+    <string name="label_profile_edit">Profile edit</string>
 </resources>

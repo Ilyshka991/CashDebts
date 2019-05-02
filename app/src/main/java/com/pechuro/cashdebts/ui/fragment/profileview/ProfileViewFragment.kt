@@ -21,29 +21,29 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     override fun onStart() {
         super.onStart()
         setViewModelListeners()
-        image_avatar.setOnClickListener {
-            showErrorSnackbar()
-        }
     }
 
     private fun setViewModelListeners() {
-        viewModel.loadingState.subscribe {
-            when (it) {
-                is ProfileViewFragmentViewModel.LoadingState.OnStart -> {
-                    container_auth_phone.isVisible = false
-                    progress.isVisible = true
+        with(viewModel) {
+            weakCompositeDisposable.addAll(
+                loadingState.subscribe {
+                    when (it) {
+                        is ProfileViewFragmentViewModel.LoadingState.OnStart -> {
+                            container_auth_phone.isVisible = false
+                            progress.isVisible = true
+                        }
+                        is ProfileViewFragmentViewModel.LoadingState.OnStop -> {
+                            container_auth_phone.isVisible = true
+                            progress.isVisible = false
+                        }
+                        is ProfileViewFragmentViewModel.LoadingState.OnError -> showErrorSnackbar()
+                    }
+                },
+                user.subscribe {
+                    setUser(it)
                 }
-                is ProfileViewFragmentViewModel.LoadingState.OnStop -> {
-                    container_auth_phone.isVisible = true
-                    progress.isVisible = false
-                }
-                is ProfileViewFragmentViewModel.LoadingState.OnError -> showErrorSnackbar()
-            }
-        }.addTo(weakCompositeDisposable)
-
-        viewModel.user.subscribe {
-            setUser(it)
-        }.addTo(weakCompositeDisposable)
+            )
+        }
     }
 
     private fun setUser(user: FirestoreUser) {
