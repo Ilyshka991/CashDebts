@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
@@ -17,6 +18,7 @@ import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
@@ -28,7 +30,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     private var isBottomNavVisible = true
         set(value) {
             field = value
-            bottom_navigation.isVisible = value
+            bottom_app_bar.isVisible = value
+            fab.isVisible = value
         }
 
     override fun getViewModelClass() = MainActivityViewModel::class
@@ -46,6 +49,15 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         setEventListeners()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, isBottomNavVisible)
@@ -59,17 +71,17 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setViewListeners() {
-        bottom_navigation.setOnNavigationItemSelectedListener {
-            if (bottom_navigation.selectedItemId == it.itemId) {
-                return@setOnNavigationItemSelectedListener true
-            }
-            when (it.itemId) {
-                R.id.menu_nav_remote_debt -> showFragment(RemoteDebtListFragment.newInstance(), false)
-                R.id.menu_nav_local_debt -> showFragment(LocalDebtListFragment.newInstance(), false)
-                R.id.menu_nav_profile -> showFragment(ProfileViewFragment.newInstance(), false)
-            }
-            true
-        }
+        /*  bottom_navigation.setOnNavigationItemSelectedListener {
+              if (bottom_navigation.selectedItemId == it.itemId) {
+                  return@setOnNavigationItemSelectedListener true
+              }
+              when (it.itemId) {
+                  R.id.menu_nav_remote_debt -> showFragment(RemoteDebtListFragment.newInstance(), false)
+                  R.id.menu_nav_local_debt -> showFragment(LocalDebtListFragment.newInstance(), false)
+                  R.id.menu_nav_profile -> showFragment(ProfileViewFragment.newInstance(), false)
+              }
+              true
+          }*/
     }
 
     private fun setEventListeners() {

@@ -47,7 +47,6 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun setupView() {
-        fab_add.show()
         recycler.apply {
             adapter = this@RemoteDebtListFragment.adapter
             layoutManager = this@RemoteDebtListFragment.layoutManager
@@ -59,15 +58,6 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun setViewListeners() {
-        fab_add.setOnClickListener {
-            EventBus.publish(MainActivityEvent.OpenAddActivity(false))
-        }
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) fab_add.hide() else fab_add.show()
-            }
-        })
-
         swipeHelper.actionEmitter.subscribe {
 
             //Fixme: find better solution for move items back
