@@ -14,7 +14,6 @@ import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFra
 import com.pechuro.cashdebts.ui.base.activity.FragmentSwitcherBaseActivity
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.activity_container.*
-import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean
@@ -102,7 +101,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     }
 
     private fun showSnackBarUserNotExist() {
-        Snackbar.make(layout_coordinator, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(container, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.add_debt_action_add_local) {
                 restartWithLocalDebtFragment()
             }.show()

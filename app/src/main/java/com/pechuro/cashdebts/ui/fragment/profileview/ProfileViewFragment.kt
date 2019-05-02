@@ -1,13 +1,13 @@
 package com.pechuro.cashdebts.ui.fragment.profileview
 
-import android.os.Bundle
-import android.view.View
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.FirestoreUser
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.SnackActionInfo
+import com.pechuro.cashdebts.ui.utils.SnackInfo
+import com.pechuro.cashdebts.ui.utils.SnackbarManager
 import com.pechuro.cashdebts.ui.utils.loadAvatar
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_view.*
@@ -18,22 +18,11 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
 
     override fun getViewModelClass() = ProfileViewFragmentViewModel::class
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setViewListeners()
-    }
-
     override fun onStart() {
         super.onStart()
         setViewModelListeners()
-    }
-
-    private fun setViewListeners() {
-        button_edit.setOnClickListener {
-            EventBus.publish(ProfileViewEvent.OpenEditProfile)
-        }
-        button_logout.setOnClickListener {
-            EventBus.publish(ProfileViewEvent.OnLogout)
+        image_avatar.setOnClickListener {
+            showErrorSnackbar()
         }
     }
 
@@ -67,11 +56,13 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     }
 
     private fun showErrorSnackbar() {
-        Snackbar.make(layout_coordinator, R.string.error_load, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.action_retry) {
-                viewModel.loadUser()
-            }
-            .show()
+        SnackbarManager.show(
+            SnackInfo(
+                R.string.error_load,
+                Snackbar.LENGTH_INDEFINITE,
+                SnackActionInfo(R.string.action_retry, viewModel::loadUser)
+            )
+        )
     }
 
     companion object {

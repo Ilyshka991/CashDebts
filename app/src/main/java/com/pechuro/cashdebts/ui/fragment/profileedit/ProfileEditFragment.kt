@@ -177,7 +177,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun showSnackbarErrorLoad() {
-        Snackbar.make(layout_coordinator, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(container, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.action_retry) {
                 viewModel.loadUser()
             }
@@ -185,7 +185,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun showSnackbarErrorSave() {
-        Snackbar.make(layout_coordinator, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(container, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.action_retry) {
                 viewModel.save()
             }

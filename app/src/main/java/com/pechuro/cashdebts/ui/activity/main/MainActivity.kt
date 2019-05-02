@@ -3,7 +3,10 @@ package com.pechuro.cashdebts.ui.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
@@ -14,10 +17,11 @@ import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialog
 import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
-import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewEvent
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.SnackbarManager
+import com.pechuro.cashdebts.ui.utils.px
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -45,6 +49,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         if (savedInstanceState == null) openProfileEditIfNecessary()
         setNavigationListeners()
         setViewListeners()
+        setupSnackbarManager()
     }
 
     override fun onStart() {
@@ -70,6 +75,16 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }
     }
 
+    private fun setupSnackbarManager() {
+        SnackbarManager.listen {
+            Snackbar.make(coordinatorLayout, it.msgId, it.duration).apply {
+                anchorView = if (fab.isVisible) fab else bottom_app_bar
+                it.action?.let { info -> setAction(info.actionId) { info.callback() } }
+                show()
+            }
+        }.addTo(strongCompositeDisposable)
+    }
+
     private fun setEventListeners() {
         weakCompositeDisposable.addAll(
             EventBus.listen(MainActivityEvent::class.java).subscribe {
@@ -84,33 +99,31 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                         isBottomNavVisible = true
                     }
                 }
-            },
-            EventBus.listen(ProfileViewEvent::class.java).subscribe {
-                when (it) {
-                    is ProfileViewEvent.OnLogout -> logout()
-                    is ProfileViewEvent.OpenEditProfile -> openEditProfile()
-                }
             }
         )
     }
 
     private fun setNavigationListeners() {
-        EventBus.listen(NavigationEvent::class.java).subscribe {
+        EventBus.listen(NavigationEvent::class.java).distinctUntilChanged().subscribe {
             when (it) {
-                is NavigationEvent.openRemoteDebts -> showFragment(
-                    RemoteDebtListFragment.newInstance(),
-                    false
-                )
-                is NavigationEvent.openLocalDebts -> showFragment(
-                    LocalDebtListFragment.newInstance(),
-                    false
-                )
-                is NavigationEvent.openProfile -> showFragment(
-                    ProfileViewFragment.newInstance(),
-                    false
-                )
+                is NavigationEvent.openRemoteDebts -> showRemoteDebts()
+                is NavigationEvent.openLocalDebts -> showLocalDebts()
+                is NavigationEvent.openProfile -> showProfile()
             }
         }.addTo(strongCompositeDisposable)
+    }
+
+    private fun showRemoteDebts() {
+        showFragment(RemoteDebtListFragment.newInstance(), false)
+    }
+
+    private fun showLocalDebts() {
+        showFragment(LocalDebtListFragment.newInstance(), false)
+    }
+
+    private fun showProfile() {
+        showFragment(ProfileViewFragment.newInstance(), false)
+
     }
 
     private fun openNavigation() {

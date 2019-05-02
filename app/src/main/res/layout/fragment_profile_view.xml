@@ -7,8 +7,8 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/layout_coordinator"
+    <FrameLayout
+        android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -18,16 +18,18 @@
                 android:layout_height="match_parent">
 
             <ImageView
-                    android:id="@+id/image_avatar"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars"/>
+                android:id="@+id/image_avatar"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="64dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                     android:id="@+id/text_first_name"
@@ -52,44 +54,15 @@
                     android:textAllCaps="false"/>
 
             <TextView
-                    android:id="@+id/text_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="@+id/text_first_name"
-                    app:layout_constraintTop_toBottomOf="@+id/text_first_name"
-                    tools:text="Phone"
-                    android:layout_marginBottom="24dp"
-                    app:layout_constraintBottom_toTopOf="@+id/button_edit"
-                    app:layout_constraintVertical_bias="0.0"/>
+                android:id="@+id/text_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/text_first_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_first_name"
+                tools:text="Phone" />
 
-            <Button
-                    android:id="@+id/button_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_action_edit"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintEnd_toStartOf="@+id/button_logout"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"/>
-
-            <Button
-                    android:id="@+id/button_logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_action_logout"
-                    android:textSize="18sp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/button_edit"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_edit"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
@@ -99,5 +72,5 @@
                 android:visibility="gone"
                 android:layout_gravity="center"
                 tools:visibility="visible"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
 </ScrollView>

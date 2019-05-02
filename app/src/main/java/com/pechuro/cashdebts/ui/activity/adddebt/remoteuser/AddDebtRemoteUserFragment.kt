@@ -126,7 +126,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun showSnackBarError(@StringRes msgId: Int) {
-        Snackbar.make(layout_coordinator, msgId, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(container, msgId, Snackbar.LENGTH_LONG).show()
     }
 
     private fun startPickContactActivity() {
