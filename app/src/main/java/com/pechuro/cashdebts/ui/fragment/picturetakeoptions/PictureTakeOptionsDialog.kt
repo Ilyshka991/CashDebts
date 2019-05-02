@@ -1,22 +1,16 @@
 package com.pechuro.cashdebts.ui.fragment.picturetakeoptions
 
 import android.os.Bundle
-import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.ui.base.BaseBottomSheetDialog
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventBus
 import kotlinx.android.synthetic.main.dialog_picture_take_options.*
 
-class PictureTakeOptionsDialog : BottomSheetDialogFragment() {
-    private val handler = Handler()
+class PictureTakeOptionsDialog : BaseBottomSheetDialog() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_picture_take_options, container, false)
-    }
+    override val layoutId: Int
+        get() = R.layout.dialog_picture_take_options
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -34,11 +28,6 @@ class PictureTakeOptionsDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun close() {
-        handler.post { }
-        dismiss()
-    }
-
     companion object {
         const val TAG = "add_option_dialog"
 
@@ -46,7 +35,3 @@ class PictureTakeOptionsDialog : BottomSheetDialogFragment() {
     }
 }
 
-sealed class AddOptionsEvent : BaseEvent() {
-    object TakePictureFromCamera : AddOptionsEvent()
-    object TakePictureFromGallery : AddOptionsEvent()
-}

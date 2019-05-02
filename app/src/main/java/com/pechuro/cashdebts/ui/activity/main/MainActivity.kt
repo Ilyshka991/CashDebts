@@ -3,7 +3,6 @@ package com.pechuro.cashdebts.ui.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
@@ -11,12 +10,15 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
+import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialog
+import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewEvent
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
 import com.pechuro.cashdebts.ui.utils.EventBus
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -41,21 +43,13 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) openProfileEditIfNecessary()
+        setNavigationListeners()
         setViewListeners()
     }
 
     override fun onStart() {
         super.onStart()
         setEventListeners()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -71,17 +65,9 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setViewListeners() {
-        /*  bottom_navigation.setOnNavigationItemSelectedListener {
-              if (bottom_navigation.selectedItemId == it.itemId) {
-                  return@setOnNavigationItemSelectedListener true
-              }
-              when (it.itemId) {
-                  R.id.menu_nav_remote_debt -> showFragment(RemoteDebtListFragment.newInstance(), false)
-                  R.id.menu_nav_local_debt -> showFragment(LocalDebtListFragment.newInstance(), false)
-                  R.id.menu_nav_profile -> showFragment(ProfileViewFragment.newInstance(), false)
-              }
-              true
-          }*/
+        bottom_app_bar.setNavigationOnClickListener {
+            openNavigation()
+        }
     }
 
     private fun setEventListeners() {
@@ -106,6 +92,30 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 }
             }
         )
+    }
+
+    private fun setNavigationListeners() {
+        EventBus.listen(NavigationEvent::class.java).subscribe {
+            when (it) {
+                is NavigationEvent.openRemoteDebts -> showFragment(
+                    RemoteDebtListFragment.newInstance(),
+                    false
+                )
+                is NavigationEvent.openLocalDebts -> showFragment(
+                    LocalDebtListFragment.newInstance(),
+                    false
+                )
+                is NavigationEvent.openProfile -> showFragment(
+                    ProfileViewFragment.newInstance(),
+                    false
+                )
+            }
+        }.addTo(strongCompositeDisposable)
+    }
+
+    private fun openNavigation() {
+        val navDialog = NavigationDialog.newInstance()
+        navDialog.show(supportFragmentManager, NavigationDialog.TAG)
     }
 
     private fun openEditProfile() {

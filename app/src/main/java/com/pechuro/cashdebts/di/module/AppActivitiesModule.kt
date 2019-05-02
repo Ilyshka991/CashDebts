@@ -15,6 +15,7 @@ import com.pechuro.cashdebts.ui.activity.splash.SplashActivity
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialogProvider
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialogProvider
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragmentProvider
@@ -37,7 +38,8 @@ interface AppActivitiesModule {
             LocalDebtListFragmentProvider::class,
             RemoteDebtListFragmentProvider::class,
             ProfileViewFragmentProvider::class,
-            DateTimePickerDialogProvider::class
+            DateTimePickerDialogProvider::class,
+            NavigationDialogProvider::class
         ]
     )
     fun bindMain(): MainActivity
