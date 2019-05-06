@@ -1,7 +1,7 @@
 package com.pechuro.cashdebts.ui.utils.binding
 
 import android.widget.EditText
-import com.pechuro.cashdebts.ui.custom.TextWatcher
+import com.pechuro.cashdebts.ui.widget.TextWatcher
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.Subject
 import java.text.SimpleDateFormat

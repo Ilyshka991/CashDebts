@@ -16,7 +16,7 @@
         android:singleLine="true"
         tools:text="+" />
 
-    <com.pechuro.cashdebts.ui.custom.hintedittext.HintEditText
+    <com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
         android:id="@+id/text_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

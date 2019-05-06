@@ -15,7 +15,7 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.custom.phone.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.binding.receiveDebtRoleChangesFrom
 import com.pechuro.cashdebts.ui.utils.getUserCountryCode
 import io.reactivex.rxkotlin.addTo

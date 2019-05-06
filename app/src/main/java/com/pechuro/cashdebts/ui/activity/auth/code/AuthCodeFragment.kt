@@ -9,7 +9,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.timer.Timer
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.custom.hintedittext.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.widget.hintedittext.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_code.*
 

@@ -58,7 +58,7 @@
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.pechuro.cashdebts.ui.custom.progressbutton.ProgressButton
+        <com.pechuro.cashdebts.ui.widget.progressbutton.ProgressButton
             android:id="@+id/button_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

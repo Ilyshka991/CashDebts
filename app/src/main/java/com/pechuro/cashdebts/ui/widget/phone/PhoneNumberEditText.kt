@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.custom.phone
+package com.pechuro.cashdebts.ui.widget.phone
 
 import android.content.Context
 import android.text.Editable
@@ -8,8 +8,8 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
-import com.pechuro.cashdebts.ui.custom.TextWatcher
-import com.pechuro.cashdebts.ui.custom.hintedittext.HintEditText
+import com.pechuro.cashdebts.ui.widget.TextWatcher
+import com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
 import kotlinx.android.synthetic.main.layout_phone_edit_text.view.*
 
 class PhoneNumberEditText @JvmOverloads constructor(

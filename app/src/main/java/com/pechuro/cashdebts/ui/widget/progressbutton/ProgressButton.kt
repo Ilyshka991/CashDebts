@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.custom.progressbutton
+package com.pechuro.cashdebts.ui.widget.progressbutton
 
 import android.annotation.SuppressLint
 import android.content.Context

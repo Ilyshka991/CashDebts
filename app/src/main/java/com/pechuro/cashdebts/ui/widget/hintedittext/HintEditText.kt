@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.custom.hintedittext
+package com.pechuro.cashdebts.ui.widget.hintedittext
 
 import android.annotation.SuppressLint
 import android.content.Context

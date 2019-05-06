@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.custom
+package com.pechuro.cashdebts.ui.widget
 
 import android.text.Editable
 import android.text.TextWatcher

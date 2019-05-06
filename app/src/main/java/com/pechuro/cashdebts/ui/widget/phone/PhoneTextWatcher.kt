@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.custom.phone
+package com.pechuro.cashdebts.ui.widget.phone
 
 interface PhoneTextWatcher {
     fun onCodeChanged(code: String?) {}

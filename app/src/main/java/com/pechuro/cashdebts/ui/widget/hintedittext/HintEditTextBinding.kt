@@ -1,6 +1,6 @@
-package com.pechuro.cashdebts.ui.custom.hintedittext
+package com.pechuro.cashdebts.ui.widget.hintedittext
 
-import com.pechuro.cashdebts.ui.custom.TextWatcher
+import com.pechuro.cashdebts.ui.widget.TextWatcher
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.Subject
 

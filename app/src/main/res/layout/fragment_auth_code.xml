@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.pechuro.cashdebts.ui.custom.hintedittext.HintEditText
+    <com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
         android:id="@+id/text_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         tools:text="12 12 12">
 
         <requestFocus />
-    </com.pechuro.cashdebts.ui.custom.hintedittext.HintEditText>
+    </com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText>
 
     <TextView
         android:id="@+id/text_not_receive"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_not_receive"
         tools:visibility="visible" />
 
-    <com.pechuro.cashdebts.ui.custom.progressbutton.ProgressButton
+    <com.pechuro.cashdebts.ui.widget.progressbutton.ProgressButton
         android:id="@+id/button_code_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

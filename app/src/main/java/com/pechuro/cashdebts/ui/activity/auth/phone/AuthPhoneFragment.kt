@@ -10,7 +10,7 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.custom.phone.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.getUserCountryCode
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
