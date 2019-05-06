@@ -15,11 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        app:fabAnimationMode="slide"
         android:backgroundTint="@color/grey_300"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true"
-        app:navigationIcon="@drawable/ic_menu_black"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+        app:navigationIcon="@drawable/ic_menu_black" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

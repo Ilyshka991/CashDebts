@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
@@ -76,6 +77,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        bottom_app_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+    }
+
     override fun homeFragment() {
         super.homeFragment()
         currentMenuRes = R.menu.menu_debt_list
@@ -109,9 +115,9 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 is LocalDebtListFragment -> openAddActivity(true)
             }
         }
-        nestedScrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            println("AAAAAAAAAAA")
-            bottom_app_bar.dispatchNestedScroll(scrollX, scrollY, oldScrollX, oldScrollY, null)
+        nestedScrollView.setOnScrollChangeListener { _: NestedScrollView, _, scrollY, _, oldScrollY ->
+            bottom_app_bar.fabAlignmentMode = if (scrollY > oldScrollY)
+                BottomAppBar.FAB_ALIGNMENT_MODE_CENTER else BottomAppBar.FAB_ALIGNMENT_MODE_END
         }
     }
 
