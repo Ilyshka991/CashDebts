@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.view.isInvisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseDialog
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.dialog_datetime_picker.*
 import java.util.*
 
@@ -71,7 +71,7 @@ class DateTimePickerDialog : BaseDialog<DateTimePickerDialogViewModel>() {
                 picker_time.currentMinute
             )
         }.let { it.time }
-        EventBus.publish(DateTimePickerEvent.OnDateSelected(date))
+        EventManager.publish(DateTimePickerEvent.OnDateSelected(date))
         dismiss()
     }
 

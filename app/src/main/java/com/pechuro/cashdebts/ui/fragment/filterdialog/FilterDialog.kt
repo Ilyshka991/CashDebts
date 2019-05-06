@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseBottomSheetDialog
-import com.pechuro.cashdebts.ui.utils.EventBus
-import kotlinx.android.synthetic.main.dialog_navigation.*
 
 class FilterDialog : BaseBottomSheetDialog() {
 

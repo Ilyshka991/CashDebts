@@ -12,7 +12,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragment
 import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragment
 import com.pechuro.cashdebts.ui.base.activity.FragmentSwitcherBaseActivity
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.activity_container.*
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
@@ -84,7 +84,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     private fun onFinish() {
         finish()
-        EventBus.publish(AddDebtEvent.OnSuccess)
+        EventManager.publish(AddDebtEvent.OnSuccess)
     }
 
     private fun setOptionMenuEnabled(isEnabled: Boolean) {

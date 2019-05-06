@@ -21,10 +21,12 @@ import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtDiffCallback
+import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

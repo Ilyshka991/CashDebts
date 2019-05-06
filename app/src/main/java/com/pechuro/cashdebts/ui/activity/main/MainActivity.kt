@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
@@ -19,15 +20,15 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.activity_bottom_navigation.*
+import kotlinx.android.synthetic.main.activity_bottom_bar.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     override val layoutId: Int
-        get() = R.layout.activity_bottom_navigation
+        get() = R.layout.activity_bottom_bar
     override val containerId: Int
         get() = container.id
 
@@ -58,14 +59,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        restoreState(savedInstanceState)
         if (savedInstanceState == null) openProfileEditIfNecessary()
         setNavigationListeners()
         setViewListeners()
         setupSnackbarManager()
-    }
-
-    override fun onStart() {
-        super.onStart()
         setEventListeners()
     }
 
@@ -78,20 +76,19 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        savedInstanceState?.apply {
-            isBottomNavVisible = getBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, true)
-            isFabVisible = getBoolean(BUNDLE_IS_FAB_VISIBLE, true)
-            currentMenuRes = getInt(BUNDLE_MENU_RES, R.menu.menu_activity_add)
-        }
-    }
-
     override fun homeFragment() {
         super.homeFragment()
         currentMenuRes = R.menu.menu_debt_list
         isFabVisible = true
         isBottomNavVisible = true
+    }
+
+    private fun restoreState(savedInstanceState: Bundle?) {
+        savedInstanceState?.apply {
+            isBottomNavVisible = getBoolean(BUNDLE_IS_BOTTOM_NAV_VISIBLE, true)
+            isFabVisible = getBoolean(BUNDLE_IS_FAB_VISIBLE, true)
+            currentMenuRes = getInt(BUNDLE_MENU_RES, R.menu.menu_activity_add)
+        }
     }
 
     private fun setViewListeners() {
@@ -112,6 +109,10 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 is LocalDebtListFragment -> openAddActivity(true)
             }
         }
+        nestedScrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            println("AAAAAAAAAAA")
+            bottom_app_bar.dispatchNestedScroll(scrollX, scrollY, oldScrollX, oldScrollY, null)
+        }
     }
 
     private fun setupSnackbarManager() {
@@ -125,13 +126,14 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setEventListeners() {
-        weakCompositeDisposable.addAll(
-            EventBus.listen(MainActivityEvent::class.java).subscribe {
+        strongCompositeDisposable.addAll(
+            EventManager.listen(MainActivityEvent::class.java).subscribe {
                 when (it) {
                     is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
+                    is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
                 }
             },
-            EventBus.listen(ProfileEditEvent::class.java).subscribe {
+            EventManager.listen(ProfileEditEvent::class.java).subscribe {
                 when (it) {
                     is ProfileEditEvent.OnSaved -> {
                         homeFragment()
@@ -143,7 +145,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setNavigationListeners() {
-        EventBus.listen(NavigationEvent::class.java).distinctUntilChanged().subscribe {
+        EventManager.listen(NavigationEvent::class.java).distinctUntilChanged().subscribe {
             when (it) {
                 is NavigationEvent.openRemoteDebts -> showRemoteDebts()
                 is NavigationEvent.openLocalDebts -> showLocalDebts()
@@ -155,16 +157,12 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     private fun showRemoteDebts() {
         currentMenuRes = R.menu.menu_debt_list
         isFabVisible = true
-        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total).title =
-            getString(R.string.menu_debt_list_total, 4.5)
         showFragment(RemoteDebtListFragment.newInstance(), false)
     }
 
     private fun showLocalDebts() {
         currentMenuRes = R.menu.menu_debt_list
         isFabVisible = true
-        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total).title =
-            getString(R.string.menu_debt_list_total, 4.5)
         showFragment(LocalDebtListFragment.newInstance(), false)
     }
 
@@ -201,6 +199,13 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     private fun openAddActivity(isLocalDebt: Boolean, id: String? = null) {
         val intent = AddDebtActivity.newIntent(this, isLocalDebt, id)
         startActivity(intent)
+    }
+
+    private fun updateTotalDebtSum(value: Double) {
+        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total)?.apply {
+            title = getString(R.string.menu_debt_list_total, value)
+            isVisible = true
+        }
     }
 
     private fun openProfileEditIfNecessary() {

@@ -13,7 +13,7 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel.Events.*
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.loadAvatar
 import com.pechuro.cashdebts.ui.utils.setError
@@ -100,7 +100,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventBus.listen(AddOptionsEvent::class.java).subscribe {
+        EventManager.listen(AddOptionsEvent::class.java).subscribe {
             when (it) {
                 is AddOptionsEvent.TakePictureFromCamera -> dispatchTakePictureFromCameraIntent()
                 is AddOptionsEvent.TakePictureFromGallery -> dispatchTakePictureFromGalleryIntent()
@@ -173,7 +173,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun onSaved() {
-        EventBus.publish(ProfileEditEvent.OnSaved)
+        EventManager.publish(ProfileEditEvent.OnSaved)
     }
 
     private fun showSnackbarErrorLoad() {

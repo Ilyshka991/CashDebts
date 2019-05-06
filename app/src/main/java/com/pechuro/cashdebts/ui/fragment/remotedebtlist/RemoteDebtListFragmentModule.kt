@@ -20,7 +20,7 @@ class RemoteDebtListFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideLayoutManager(fragment: RemoteDebtListFragment): RecyclerView.LayoutManager =
+    fun provideLayoutManager(fragment: RemoteDebtListFragment) =
         LinearLayoutManager(fragment.context, RecyclerView.VERTICAL, false)
 
     @Provides

@@ -4,19 +4,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
+import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
+import com.pechuro.cashdebts.ui.activity.main.SnackInfo
+import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
 import com.pechuro.cashdebts.ui.fragment.debtuserprofile.DebtUserProfileDialog
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_remote_debt_list.*
 import javax.inject.Inject
@@ -25,7 +29,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     @Inject
     lateinit var adapter: RemoteDebtListAdapter
     @Inject
-    protected lateinit var layoutManager: RecyclerView.LayoutManager
+    protected lateinit var layoutManager: LinearLayoutManager
     @Inject
     protected lateinit var swipeHelper: ItemTouchHelper<RemoteDebtItemSwipeCallback.SwipeAction>
 
@@ -51,7 +55,6 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
             adapter = this@RemoteDebtListFragment.adapter
             layoutManager = this@RemoteDebtListFragment.layoutManager
             (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
-            setHasFixedSize(true)
         }
         swipeHelper.attachToRecyclerView(recycler)
         progress.isVisible = true
@@ -75,7 +78,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventBus.listen(AddDebtEvent::class.java).subscribe {
+        EventManager.listen(AddDebtEvent::class.java).subscribe {
             when (it) {
                 is AddDebtEvent.OnSuccess -> showSnackbarWithDelay(R.string.msg_success)
             }
@@ -88,6 +91,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
                 debtSource.subscribe {
                     adapter.update(it)
                     if (progress.isVisible) progress.isVisible = false
+                    updateTotalSum(it.dataList)
                 },
                 viewModel.command.subscribe {
                     when (it) {
@@ -99,12 +103,21 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
         }
     }
 
+    private fun updateTotalSum(debts: List<RemoteDebt>) {
+        val totalValue = debts.fold(0.0) { acc, debt ->
+            acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
+        }
+        EventManager.publish(MainActivityEvent.UpdateTotalDebtSum(totalValue))
+    }
+
     private fun showUndoDeletionSnackbar() {
-        Snackbar.make(coordinator, R.string.msg_deleted, Snackbar.LENGTH_LONG)
-            .setAction(R.string.action_undo) {
-                viewModel.restoreDebt()
-            }
-            .show()
+        SnackbarManager.show(
+            SnackInfo(
+                R.string.msg_deleted,
+                Snackbar.LENGTH_LONG,
+                SnackActionInfo(R.string.action_undo, viewModel::restoreDebt)
+            )
+        )
     }
 
     private fun completeDebt(position: Int) {
@@ -114,7 +127,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
 
     private fun editDebt(position: Int) {
         val item = adapter.getItemByPosition(position)
-        EventBus.publish(MainActivityEvent.OpenAddActivity(false, item.id))
+        EventManager.publish(MainActivityEvent.OpenAddActivity(false, item.id))
     }
 
     private fun showProfileDialog(user: RemoteDebt.User) {
@@ -123,12 +136,12 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {
-        Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show()
+        SnackbarManager.show(SnackInfo(msgId, Snackbar.LENGTH_SHORT))
     }
 
     private fun showSnackbarWithDelay(@StringRes msgId: Int) {
-        coordinator.postDelayed(
-            { Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show() },
+        view?.postDelayed(
+            { SnackbarManager.show(SnackInfo(msgId, Snackbar.LENGTH_SHORT)) },
             SNACKBAR_SHOW_DELAY
         )
     }

@@ -6,7 +6,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_container.*
 
@@ -27,7 +27,7 @@ class ProfileEditActivity : BaseFragmentActivity<ProfileEditActivityViewModel>()
     }
 
     private fun subscribeToEvents() {
-        EventBus.listen(ProfileEditEvent::class.java).subscribe {
+        EventManager.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
                 is ProfileEditEvent.OnSaved -> finish()
             }

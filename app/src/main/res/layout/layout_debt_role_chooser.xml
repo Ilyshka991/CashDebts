@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <TextView
-            android:id="@+id/text_role"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/debt_role_msg_i_am"
-            android:textSize="24sp"/>
+        android:id="@+id/text_role"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/debt_role_msg_i_am"
+        android:textSize="24sp" />
 
     <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_container"
-            android:layout_width="match_parent"
+        android:id="@+id/chip_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:checkedChip="@+id/chip_creditor"
+        app:chipSpacing="16dp"
+        app:singleLine="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_creditor"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleLine="true"
-            app:chipSpacing="16dp"
-            app:singleSelection="true"
-            app:checkedChip="@+id/chip_creditor"
-            android:layout_marginStart="16dp">
+            android:checkable="true"
+            android:text="@string/debt_role_creditor" />
 
         <com.google.android.material.chip.Chip
-                android:id="@+id/chip_creditor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/debt_role_creditor"
-                android:checkable="true"/>
-
-        <com.google.android.material.chip.Chip
-                android:id="@+id/chip_debtor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/debt_role_debtor"
-                android:checkable="true"/>
+            android:id="@+id/chip_debtor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/debt_role_debtor" />
     </com.google.android.material.chip.ChipGroup>
 </LinearLayout>

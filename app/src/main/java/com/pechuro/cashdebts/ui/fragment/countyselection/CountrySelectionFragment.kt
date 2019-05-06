@@ -7,7 +7,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveQueryChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_country_select.*
@@ -40,7 +40,7 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
             adapter = this@CountrySelectionFragment.adapter
         }
         adapter.clickEmitter.subscribe {
-            EventBus.publish(CountySelectEvent.OnCountrySelect(it))
+            EventManager.publish(CountySelectEvent.OnCountrySelect(it))
         }.addTo(strongCompositeDisposable)
         viewModel.searchQuery.receiveQueryChangesFrom(search).addTo(strongCompositeDisposable)
     }

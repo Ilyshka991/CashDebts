@@ -11,7 +11,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialog
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerEvent
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveDateChangesFrom
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
@@ -52,7 +52,7 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventBus.listen(DateTimePickerEvent::class.java).subscribe {
+        EventManager.listen(DateTimePickerEvent::class.java).subscribe {
             when (it) {
                 is DateTimePickerEvent.OnDateSelected -> onDateSelected(it.date)
             }

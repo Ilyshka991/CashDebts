@@ -1,77 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <EditText
-            android:id="@+id/text_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/add_debt_hint_value"
-            android:inputType="number|numberDecimal|numberSigned"
-            android:digits="0123456789.+-*/()"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/text_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:digits="0123456789.+-*/()"
+        android:ems="10"
+        android:hint="@string/add_debt_hint_value"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintEnd_toStartOf="@+id/text_sum"
+        app:layout_constraintStart_toStartOf="parent"
 
-        app:layout_constraintEnd_toStartOf="@+id/text_sum">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <requestFocus/>
+        <requestFocus />
     </EditText>
 
     <TextView
-            android:id="@+id/text_sum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@+id/text_value"/>
+        android:id="@+id/text_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/text_value"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-            android:id="@+id/text_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:hint="@string/add_debt_hint_description"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_value"
-            app:layout_constraintStart_toStartOf="@+id/text_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp"/>
+        android:id="@+id/text_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/add_debt_hint_description"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/text_value"
+        app:layout_constraintTop_toBottomOf="@+id/text_value" />
 
     <EditText
-            android:id="@+id/text_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="none"
-            android:focusable="false"
-            android:layout_marginTop="16dp"
-            android:hint="@string/add_debt_hint_date"
-            app:layout_constraintTop_toBottomOf="@+id/text_description"
-            app:layout_constraintStart_toStartOf="@+id/text_description"
-            app:layout_constraintEnd_toEndOf="@+id/text_description"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/view_no_connection"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="TextFields"/>
+        android:id="@+id/text_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="@string/add_debt_hint_date"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/view_no_connection"
+        app:layout_constraintEnd_toEndOf="@+id/text_description"
+        app:layout_constraintStart_toStartOf="@+id/text_description"
+        app:layout_constraintTop_toBottomOf="@+id/text_description"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TextFields" />
 
     <include
-            android:id="@+id/view_no_connection"
-            layout="@layout/layout_no_connection"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
+        android:id="@+id/view_no_connection"
+        layout="@layout/layout_no_connection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

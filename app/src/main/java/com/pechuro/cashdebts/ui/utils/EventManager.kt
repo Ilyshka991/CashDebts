@@ -5,7 +5,7 @@ import io.reactivex.subjects.PublishSubject
 
 abstract class BaseEvent
 
-object EventBus {
+object EventManager {
     private val publishSubject = PublishSubject.create<BaseEvent>()
 
     fun publish(event: BaseEvent) {

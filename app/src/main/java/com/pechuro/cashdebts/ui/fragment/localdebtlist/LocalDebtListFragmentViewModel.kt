@@ -1,13 +1,16 @@
 package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import androidx.recyclerview.widget.DiffUtil
+import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallback
+import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers

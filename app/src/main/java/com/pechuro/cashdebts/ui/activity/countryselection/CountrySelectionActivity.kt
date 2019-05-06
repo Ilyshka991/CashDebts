@@ -9,7 +9,7 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragment
 import com.pechuro.cashdebts.ui.utils.BaseEvent
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.activity_container.*
 
 class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityViewModel>() {
@@ -46,7 +46,7 @@ class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityVi
     }
 
     private fun subscribeToEvents() {
-        EventBus.listen(CountySelectEvent::class.java).subscribe {
+        EventManager.listen(CountySelectEvent::class.java).subscribe {
             when (it) {
                 is CountySelectEvent.OnCountrySelect -> onCountrySelected(it.country)
             }

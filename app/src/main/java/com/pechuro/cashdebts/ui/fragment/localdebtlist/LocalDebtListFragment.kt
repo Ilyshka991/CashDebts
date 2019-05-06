@@ -8,13 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
+import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
+import com.pechuro.cashdebts.ui.activity.main.SnackInfo
+import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
+import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_local_debt_list.*
 import javax.inject.Inject
@@ -49,7 +54,6 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
             adapter = this@LocalDebtListFragment.adapter
             layoutManager = this@LocalDebtListFragment.layoutManager
             (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
-            setHasFixedSize(true)
         }
         swipeHelper.attachToRecyclerView(recycler)
         progress.isVisible = true
@@ -71,7 +75,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventBus.listen(AddDebtEvent::class.java).subscribe {
+        EventManager.listen(AddDebtEvent::class.java).subscribe {
             when (it) {
                 is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
             }
@@ -82,7 +86,15 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         viewModel.debtSource.subscribe {
             adapter.update(it)
             if (progress.isVisible) progress.isVisible = false
+            updateTotalSum(it.dataList)
         }.addTo(weakCompositeDisposable)
+    }
+
+    private fun updateTotalSum(debts: List<LocalDebt>) {
+        val totalValue = debts.fold(0.0) { acc, debt ->
+            acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
+        }
+        EventManager.publish(MainActivityEvent.UpdateTotalDebtSum(totalValue))
     }
 
     private fun deleteDebt(position: Int) {
@@ -93,21 +105,23 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
 
     private fun editDebt(position: Int) {
         val item = adapter.getItemByPosition(position)
-        EventBus.publish(MainActivityEvent.OpenAddActivity(true, item.id))
+        EventManager.publish(MainActivityEvent.OpenAddActivity(true, item.id))
     }
 
     private fun showSnackbar(@StringRes msgId: Int) {
-        coordinator.postDelayed({
-            Snackbar.make(coordinator, msgId, Snackbar.LENGTH_SHORT).show()
+        view?.postDelayed({
+            SnackbarManager.show(SnackInfo(msgId, Snackbar.LENGTH_SHORT))
         }, SNACKBAR_SHOW_DELAY)
     }
 
     private fun showUndoDeletionSnackbar() {
-        Snackbar.make(coordinator, R.string.msg_deleted, Snackbar.LENGTH_LONG)
-            .setAction(R.string.action_undo) {
-                viewModel.restoreDebt()
-            }
-            .show()
+        SnackbarManager.show(
+            SnackInfo(
+                R.string.msg_deleted,
+                Snackbar.LENGTH_LONG,
+                SnackActionInfo(R.string.action_undo, viewModel::restoreDebt)
+            )
+        )
     }
 
     companion object {

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseBottomSheetDialog
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.dialog_navigation.*
 
 class NavigationDialog : BaseBottomSheetDialog() {
@@ -19,15 +19,15 @@ class NavigationDialog : BaseBottomSheetDialog() {
 
     private fun setViewListeners() {
         text_local_debt.setOnClickListener {
-            EventBus.publish(NavigationEvent.openLocalDebts)
+            EventManager.publish(NavigationEvent.openLocalDebts)
             close()
         }
         text_remote_debt.setOnClickListener {
-            EventBus.publish(NavigationEvent.openRemoteDebts)
+            EventManager.publish(NavigationEvent.openRemoteDebts)
             close()
         }
         text_profile.setOnClickListener {
-            EventBus.publish(NavigationEvent.openProfile)
+            EventManager.publish(NavigationEvent.openProfile)
             close()
         }
     }

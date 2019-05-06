@@ -3,8 +3,7 @@ package com.pechuro.cashdebts.ui.fragment.picturetakeoptions
 import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseBottomSheetDialog
-import com.pechuro.cashdebts.ui.utils.BaseEvent
-import com.pechuro.cashdebts.ui.utils.EventBus
+import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.dialog_picture_take_options.*
 
 class PictureTakeOptionsDialog : BaseBottomSheetDialog() {
@@ -19,11 +18,11 @@ class PictureTakeOptionsDialog : BaseBottomSheetDialog() {
 
     private fun setViewListeners() {
         button_camera.setOnClickListener {
-            EventBus.publish(AddOptionsEvent.TakePictureFromCamera)
+            EventManager.publish(AddOptionsEvent.TakePictureFromCamera)
             close()
         }
         button_gallery.setOnClickListener {
-            EventBus.publish(AddOptionsEvent.TakePictureFromGallery)
+            EventManager.publish(AddOptionsEvent.TakePictureFromGallery)
             close()
         }
     }

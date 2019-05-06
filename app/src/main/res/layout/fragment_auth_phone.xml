@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/container_auth_phone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_auth_phone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <EditText
-            android:id="@+id/text_country"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:ems="12"
-            android:editable="false"
-            android:focusable="false"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+        android:id="@+id/text_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="12"
+        android:focusable="false"
+        android:inputType="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.pechuro.cashdebts.ui.custom.phone.PhoneNumberEditText
-            android:id="@+id/text_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_country"/>
+        android:id="@+id/text_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_country" />
 
     <com.pechuro.cashdebts.ui.custom.progressbutton.ProgressButton
-            android:id="@+id/button_verify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/auth_action_verify"
-            app:layout_constraintStart_toStartOf="@+id/text_phone"
-            app:layout_constraintEnd_toEndOf="@+id/text_phone"
-            app:layout_constraintTop_toBottomOf="@+id/text_phone"/>
+        android:id="@+id/button_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/auth_action_verify"
+        app:layout_constraintEnd_toEndOf="@+id/text_phone"
+        app:layout_constraintStart_toStartOf="@+id/text_phone"
+        app:layout_constraintTop_toBottomOf="@+id/text_phone" />
 </androidx.constraintlayout.widget.ConstraintLayout>
