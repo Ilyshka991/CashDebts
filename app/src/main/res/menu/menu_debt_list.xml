@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_debt_list_action_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/menu_action_filter"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_debt_list_msg_total"
+        android:title="@string/menu_debt_list_total"
+        app:showAsAction="ifRoom" />
+</menu>

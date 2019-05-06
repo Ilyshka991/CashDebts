@@ -112,4 +112,6 @@
     <string name="menu_action_edit">Edit</string>
     <string name="label_profile_edit">Profile edit</string>
     <string name="label_add_debt">Add debt</string>
+    <string name="menu_action_filter">Filter</string>
+    <string name="menu_debt_list_total">Total: %1$.2f</string>
 </resources>

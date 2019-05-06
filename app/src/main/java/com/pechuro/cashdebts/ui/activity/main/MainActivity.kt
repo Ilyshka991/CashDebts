@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
+import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterDialog
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
 import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialog
 import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationEvent
@@ -88,6 +89,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     override fun homeFragment() {
         super.homeFragment()
+        currentMenuRes = R.menu.menu_debt_list
         isFabVisible = true
         isBottomNavVisible = true
     }
@@ -100,6 +102,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             when (it.itemId) {
                 R.id.menu_profile_action_edit -> openEditProfile()
                 R.id.menu_profile_action_logout -> logout()
+                R.id.menu_debt_list_action_filter -> openFilter()
             }
             true
         }
@@ -150,10 +153,18 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun showRemoteDebts() {
+        currentMenuRes = R.menu.menu_debt_list
+        isFabVisible = true
+        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total).title =
+            getString(R.string.menu_debt_list_total, 4.5)
         showFragment(RemoteDebtListFragment.newInstance(), false)
     }
 
     private fun showLocalDebts() {
+        currentMenuRes = R.menu.menu_debt_list
+        isFabVisible = true
+        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total).title =
+            getString(R.string.menu_debt_list_total, 4.5)
         showFragment(LocalDebtListFragment.newInstance(), false)
     }
 
@@ -164,8 +175,15 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun openNavigation() {
-        val navDialog = NavigationDialog.newInstance()
-        navDialog.show(supportFragmentManager, NavigationDialog.TAG)
+        NavigationDialog.newInstance().apply {
+            show(supportFragmentManager, NavigationDialog.TAG)
+        }
+    }
+
+    private fun openFilter() {
+        FilterDialog.newInstance().apply {
+            show(supportFragmentManager, FilterDialog.TAG)
+        }
     }
 
     private fun openEditProfile() {
