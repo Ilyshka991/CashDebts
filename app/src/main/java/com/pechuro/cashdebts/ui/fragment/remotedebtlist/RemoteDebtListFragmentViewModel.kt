@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus
 import com.pechuro.cashdebts.data.data.model.DebtRole
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETE
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_CREDITOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.COMPLETION_REJECTED_BY_DEBTOR
@@ -21,6 +22,7 @@ import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
@@ -29,6 +31,7 @@ import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtDiffCallb
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -37,9 +40,9 @@ import javax.inject.Inject
 class RemoteDebtListFragmentViewModel @Inject constructor(
     private val debtRepository: IRemoteDebtRepository,
     private val userRepository: IUserRepository,
-    private val diffCallback: RemoteDebtDiffCallback
+    private val diffCallback: RemoteDebtDiffCallback,
+    private val prefsManager: PrefsManager
 ) : BaseViewModel() {
-
     val command = PublishSubject.create<Command>()
 
     val debtSource = debtRepository.getSource()
@@ -104,6 +107,14 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             list.sortedByDescending { it.date }
         }
         .map {
+            val filteredList = if (prefsManager.filterNotShowCompleted) {
+                it.filter { debt -> debt.status != FirestoreDebtStatus.WAIT_FOR_COMPLETE_FROM_CREDITOR }
+            } else {
+                it
+            }
+            filteredList
+        }
+        .map {
             diffCallback.newList = it
             val diffResult = DiffUtil.calculateDiff(diffCallback)
             diffCallback.oldList = it
@@ -112,10 +123,17 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
 
+    private var debtSourceConnection: Disposable? = null
+
     private var previousDeletedDebt: RemoteDebt? = null
 
     init {
-        debtSource.connect().addTo(compositeDisposable)
+        initSource()
+    }
+
+    fun initSource() {
+        debtSourceConnection?.dispose()
+        debtSourceConnection = debtSource.connect()
     }
 
     fun complete(debt: RemoteDebt) {

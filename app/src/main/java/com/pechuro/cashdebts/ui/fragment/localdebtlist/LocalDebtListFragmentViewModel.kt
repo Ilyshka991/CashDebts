@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallback
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -67,10 +68,16 @@ class LocalDebtListFragmentViewModel @Inject constructor(
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
 
+    private var debtSourceConnection: Disposable? = null
+
     init {
-        debtSource.connect().addTo(compositeDisposable)
+        initSource()
     }
 
+    fun initSource() {
+        debtSourceConnection?.dispose()
+        debtSourceConnection = debtSource.connect()
+    }
     fun deleteDebt(debt: LocalDebt) {
         previousDeletedDebt = debt
         debtRepository.delete(debt.id).onErrorComplete().subscribe().addTo(compositeDisposable)

@@ -16,6 +16,7 @@ import com.pechuro.cashdebts.ui.activity.main.SnackInfo
 import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
+import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterEvent
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
@@ -65,8 +66,6 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
                 is LocalDebtItemSwipeCallback.SwipeAction.Delete -> deleteDebt(it.position)
                 is LocalDebtItemSwipeCallback.SwipeAction.Edit -> {
                     editDebt(it.position)
-
-                    //Fixme: find better solution for move items back
                     swipeHelper.attachToRecyclerView(null)
                     swipeHelper.attachToRecyclerView(recycler)
                 }
@@ -75,11 +74,21 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventManager.listen(AddDebtEvent::class.java).subscribe {
-            when (it) {
-                is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
+        strongCompositeDisposable.addAll(
+            EventManager.listen(AddDebtEvent::class.java).subscribe {
+                when (it) {
+                    is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
+                }
+            }, EventManager.listen(FilterEvent::class.java).subscribe {
+                when (it) {
+                    is FilterEvent.OnChange -> {
+                        weakCompositeDisposable.clear()
+                        viewModel.initSource()
+                        setViewModelListeners()
+                    }
+                }
             }
-        }.addTo(strongCompositeDisposable)
+        )
     }
 
     private fun setViewModelListeners() {

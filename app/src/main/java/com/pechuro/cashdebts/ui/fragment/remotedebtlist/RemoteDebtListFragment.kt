@@ -5,7 +5,6 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
@@ -18,6 +17,7 @@ import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
 import com.pechuro.cashdebts.ui.fragment.debtuserprofile.DebtUserProfileDialog
+import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterEvent
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
@@ -79,11 +79,22 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventManager.listen(AddDebtEvent::class.java).subscribe {
-            when (it) {
-                is AddDebtEvent.OnSuccess -> showSnackbarWithDelay(R.string.msg_success)
+        strongCompositeDisposable.addAll(
+            EventManager.listen(AddDebtEvent::class.java).subscribe {
+                when (it) {
+                    is AddDebtEvent.OnSuccess -> showSnackbarWithDelay(R.string.msg_success)
+                }
+            },
+            EventManager.listen(FilterEvent::class.java).subscribe {
+                when (it) {
+                    is FilterEvent.OnChange -> {
+                        weakCompositeDisposable.clear()
+                        viewModel.initSource()
+                        setViewModelListeners()
+                    }
+                }
             }
-        }.addTo(strongCompositeDisposable)
+        )
     }
 
     private fun setViewModelListeners() {
