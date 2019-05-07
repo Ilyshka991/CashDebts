@@ -16,7 +16,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.model.BaseDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.LocalDebtInfo
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import com.pechuro.cashdebts.ui.utils.requireValue
+import com.pechuro.cashdebts.ui.utils.extensions.requireValue
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

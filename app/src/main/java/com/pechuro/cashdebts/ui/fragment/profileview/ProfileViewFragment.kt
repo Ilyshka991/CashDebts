@@ -8,7 +8,7 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
 import com.pechuro.cashdebts.ui.activity.main.SnackInfo
 import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
-import com.pechuro.cashdebts.ui.utils.loadAvatar
+import com.pechuro.cashdebts.ui.utils.extensions.loadAvatar
 import kotlinx.android.synthetic.main.fragment_profile_view.*
 
 class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {

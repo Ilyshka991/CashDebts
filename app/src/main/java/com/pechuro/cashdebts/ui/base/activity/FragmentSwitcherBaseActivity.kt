@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import com.pechuro.cashdebts.ui.utils.transaction
+import com.pechuro.cashdebts.ui.utils.extensions.transaction
 import kotlinx.android.synthetic.main.activity_container.*
 
 abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentActivity<VM>() {

@@ -1,7 +1,7 @@
 package com.pechuro.cashdebts.ui.fragment.profileedit.model
 
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.utils.requireValue
+import com.pechuro.cashdebts.ui.utils.extensions.requireValue
 
 class ProfileEditModel {
     val fields = ProfileEditFields()

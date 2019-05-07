@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import com.pechuro.cashdebts.ui.utils.transaction
+import com.pechuro.cashdebts.ui.utils.extensions.transaction
 
 abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
     @get:IdRes

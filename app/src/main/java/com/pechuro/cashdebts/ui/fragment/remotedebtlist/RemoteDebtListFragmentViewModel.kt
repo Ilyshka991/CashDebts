@@ -23,12 +23,11 @@ import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.model.prefs.PrefsManager
-import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.DebtsUiInfo
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtDiffCallback
-import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -83,7 +82,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                                 if (isCurrentUserCreditor) DebtRole.CREDITOR else DebtRole.DEBTOR,
                                 firestoreDebt.initPersonUid == userRepository.currentUserBaseInformation.uid,
                                 false,
-                                firestoreDebt.deleteStatus != DebtDeleteStatus.NOT_DELETED
+                                firestoreDebt.deleteStatus != DebtDeleteStatus.NOT_DELETED,
+                                false
                             )
                         }
                 }.toList()
@@ -92,6 +92,47 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         .scan { first: List<RemoteDebt>, second: List<RemoteDebt> ->
             val mergedList = first.filter { it in second } + second
             mergedList.toSet().toList()
+        }
+        .map {
+            if (prefsManager.filterNotShowCompleted) {
+                it.filter { debt -> debt.status != FirestoreDebtStatus.COMPLETE }
+            } else {
+                it
+            }
+        }
+        .map {
+            if (prefsManager.filterUnitePersons) {
+                val notGroupingItems = it.filter { it.status != FirestoreDebtStatus.IN_PROGRESS }
+                val singleItems = it.groupBy { it.user }.filter { it.value.size == 1 }.toList()
+                    .map { it.second[0] }
+                val groupedItems = (it - notGroupingItems - singleItems).groupingBy { it.user }
+                    .aggregate { key: RemoteDebt.User, accumulator: RemoteDebt?, element: RemoteDebt, first: Boolean ->
+                        if (first) {
+                            element.apply {
+                                if (role == DebtRole.DEBTOR) {
+                                    value = -value
+                                }
+                                isUnited = true
+                            }
+                        } else {
+                            accumulator!!.apply {
+                                value += if (element.role == DebtRole.CREDITOR) element.value else -element.value
+                            }
+                        }
+                    }.toList().map {
+                        it.second!!.apply {
+                            if (value < 0) {
+                                value = -value
+                                role = DebtRole.DEBTOR
+                            } else {
+                                role = DebtRole.CREDITOR
+                            }
+                        }
+                    }
+                notGroupingItems + groupedItems + singleItems
+            } else {
+                it
+            }
         }
         .map {
             val resultList = mutableListOf<RemoteDebt>()
@@ -107,18 +148,17 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             list.sortedByDescending { it.date }
         }
         .map {
-            val filteredList = if (prefsManager.filterNotShowCompleted) {
-                it.filter { debt -> debt.status != FirestoreDebtStatus.WAIT_FOR_COMPLETE_FROM_CREDITOR }
-            } else {
-                it
-            }
-            filteredList
-        }
-        .map {
             diffCallback.newList = it
             val diffResult = DiffUtil.calculateDiff(diffCallback)
             diffCallback.oldList = it
             DiffResult(diffResult, it)
+        }.map {
+            val totalValue = it.dataList
+                .filter { it.status == FirestoreDebtStatus.IN_PROGRESS }
+                .fold(0.0) { acc, debt ->
+                    acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
+                }
+            DebtsUiInfo(it, totalValue)
         }
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseItemTouchCallback
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
-import com.pechuro.cashdebts.ui.utils.px
+import com.pechuro.cashdebts.ui.utils.extensions.px
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject

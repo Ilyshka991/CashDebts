@@ -9,14 +9,15 @@ import java.util.*
 data class RemoteDebt(
     val id: String,
     val user: User,
-    val value: Double,
+    var value: Double,
     val description: String,
     val date: Date,
     @FirestoreDebtStatus val status: Int,
-    @DebtRole val role: Int,
+    @DebtRole var role: Int,
     val isCurrentUserInit: Boolean,
     var isExpanded: Boolean = false,
-    val isLocal: Boolean
+    val isLocal: Boolean,
+    var isUnited: Boolean = false
 ) {
     fun isEmpty() = value == 0.0
 
@@ -29,6 +30,7 @@ data class RemoteDebt(
             Date(),
             FirestoreDebtStatus.NOT_SEND,
             DebtRole.CREDITOR,
+            false,
             false,
             false,
             false

@@ -11,7 +11,7 @@ import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.BaseEvent
-import com.pechuro.cashdebts.ui.utils.requireValue
+import com.pechuro.cashdebts.ui.utils.extensions.requireValue
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable

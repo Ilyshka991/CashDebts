@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.utils
+package com.pechuro.cashdebts.ui.utils.extensions
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

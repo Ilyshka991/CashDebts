@@ -5,7 +5,7 @@ import android.view.View
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseDialog
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
-import com.pechuro.cashdebts.ui.utils.loadAvatar
+import com.pechuro.cashdebts.ui.utils.extensions.loadAvatar
 import kotlinx.android.synthetic.main.dialog_debt_user_profile.*
 
 class DebtUserProfileDialog : BaseDialog<DebtUserProfileDialogViewModel>() {

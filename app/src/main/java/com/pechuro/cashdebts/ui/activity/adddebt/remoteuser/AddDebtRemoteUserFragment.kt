@@ -17,7 +17,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.binding.receiveDebtRoleChangesFrom
-import com.pechuro.cashdebts.ui.utils.getUserCountryCode
+import com.pechuro.cashdebts.ui.utils.extensions.getUserCountryCode
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
 import kotlinx.android.synthetic.main.layout_debt_role_chooser.*
@@ -83,7 +83,7 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
         button_pick_contact.setOnClickListener {
             startPickContactActivity()
         }
-        weakCompositeDisposable.addAll(
+        strongCompositeDisposable.addAll(
             viewModel.debt.debtRole.receiveDebtRoleChangesFrom(chip_container),
             (viewModel.debt as RemoteDebtInfo).phone.receiveTextChangesFrom(text_phone),
             (viewModel.debt as RemoteDebtInfo).isPersonChangeEnabled.subscribe {

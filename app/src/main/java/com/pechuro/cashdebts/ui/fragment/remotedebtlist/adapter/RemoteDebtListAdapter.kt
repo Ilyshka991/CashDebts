@@ -27,6 +27,7 @@ import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_remote_debt.view.*
+import kotlinx.android.synthetic.main.item_remote_debt_united.view.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -71,6 +72,11 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                     .inflate(R.layout.item_remote_debt, parent, false)
                 ViewHolder(view)
             }
+            VIEW_TYPE_UNITED -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_remote_debt_united, parent, false)
+                UnitedViewHolder(view)
+            }
             VIEW_TYPE_EMPTY -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_debt_empty, parent, false)
@@ -83,6 +89,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
 
     override fun getItemViewType(position: Int) = when {
         debtList[position].isEmpty() -> VIEW_TYPE_EMPTY
+        debtList[position].isUnited -> VIEW_TYPE_UNITED
         else -> VIEW_TYPE_COMMON
     }
 
@@ -106,6 +113,29 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
     override fun getItemId(position: Int) = debtList[position].id.hashCode().toLong()
 
     fun getItemByPosition(position: Int) = debtList[position]
+
+    private inner class UnitedViewHolder(private val view: View) :
+        BaseViewHolder<RemoteDebt>(view) {
+
+        @SuppressLint("SetTextI18n")
+        override fun onBind(data: RemoteDebt) {
+            isSwipeable = false
+            view.apply {
+                text_united_person_name.text = "${data.user.firstName} ${data.user.lastName}"
+
+                val textValueStringRes = when (data.role) {
+                    DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
+                    DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
+                    else -> throw IllegalArgumentException()
+                }
+                val textValue = context.getString(textValueStringRes, data.value)
+                text_united_value.text = textValue
+
+                itemView.tag = ItemInfo(data, this@UnitedViewHolder)
+                setOnLongClickListener(onLongClickListener)
+            }
+        }
+    }
 
     private inner class ViewHolder(private val view: View) : BaseViewHolder<RemoteDebt>(view) {
 
@@ -253,7 +283,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
 
     private class ItemInfo(
         val data: RemoteDebt,
-        val viewHolder: RemoteDebtListAdapter.ViewHolder
+        val viewHolder: BaseViewHolder<RemoteDebt>
     )
 
     enum class Actions {
@@ -263,5 +293,6 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
     companion object ViewTypes {
         private const val VIEW_TYPE_COMMON = 1
         private const val VIEW_TYPE_EMPTY = 2
+        private const val VIEW_TYPE_UNITED = 3
     }
 }

@@ -11,7 +11,7 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
-import com.pechuro.cashdebts.ui.utils.getUserCountryCode
+import com.pechuro.cashdebts.ui.utils.extensions.getUserCountryCode
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
 import javax.inject.Inject

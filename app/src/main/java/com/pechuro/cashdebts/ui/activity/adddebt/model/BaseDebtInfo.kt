@@ -2,7 +2,7 @@ package com.pechuro.cashdebts.ui.activity.adddebt.model
 
 import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.data.data.model.DebtRole.Companion.CREDITOR
-import com.pechuro.cashdebts.ui.utils.requireValue
+import com.pechuro.cashdebts.ui.utils.extensions.requireValue
 import io.reactivex.subjects.BehaviorSubject
 import java.util.*
 

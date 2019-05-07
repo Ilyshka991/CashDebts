@@ -15,8 +15,8 @@ import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDi
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel.Events.*
 import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
-import com.pechuro.cashdebts.ui.utils.loadAvatar
-import com.pechuro.cashdebts.ui.utils.setError
+import com.pechuro.cashdebts.ui.utils.extensions.loadAvatar
+import com.pechuro.cashdebts.ui.utils.extensions.setError
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
