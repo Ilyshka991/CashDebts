@@ -22,7 +22,7 @@ abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentAc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setSupportActionBar(toolbar)
         isBackAllowed = savedInstanceState?.getBoolean(BUNDLE_IS_BACK_ALLOWED) ?: isBackAllowed
         setBackStackListener()
         setupActionBar(supportFragmentManager.backStackEntryCount)

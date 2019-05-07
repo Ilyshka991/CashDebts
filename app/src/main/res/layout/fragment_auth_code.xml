@@ -7,6 +7,7 @@
 
     <com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
         android:id="@+id/text_code"
+        style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -28,6 +29,7 @@
 
     <TextView
         android:id="@+id/text_not_receive"
+        style="@style/TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -42,6 +44,7 @@
 
     <TextView
         android:id="@+id/text_time"
+        style="@style/TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,7 +71,7 @@
 
     <Button
         android:id="@+id/button_resend"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/TextButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,6 +79,7 @@
         android:layout_marginEnd="8dp"
         android:enabled="false"
         android:text="@string/auth_action_resend"
+        android:textColor="@color/text_colors"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +96,7 @@
 
     <TextView
         android:id="@+id/text_resend_error"
+        style="@style/TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

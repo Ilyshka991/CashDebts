@@ -11,6 +11,7 @@
 
     <TextView
         android:id="@+id/text_country_name"
+        style="@style/TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -20,6 +21,7 @@
 
     <TextView
         android:id="@+id/text_country_code"
+        style="@style/TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
