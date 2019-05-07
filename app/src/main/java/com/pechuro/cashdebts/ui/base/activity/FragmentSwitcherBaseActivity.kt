@@ -5,11 +5,11 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.extensions.transaction
-import kotlinx.android.synthetic.main.activity_container.*
+import kotlinx.android.synthetic.main.activity_scrolling_container.*
 
 abstract class FragmentSwitcherBaseActivity<VM : BaseViewModel> : BaseFragmentActivity<VM>() {
     override val layoutId: Int
-        get() = R.layout.activity_container
+        get() = R.layout.activity_scrolling_container
     override val containerId: Int
         get() = container.id
 

@@ -80,7 +80,7 @@ class PhoneNumberEditText @JvmOverloads constructor(
         if (!pattern.matches(number)) return false
 
         var countryData: CountryData? = null
-        for (i in 4 downTo 1) {
+        for (i in number.lastIndex downTo 1) {
             val possiblePrefix = number.slice(0..i)
             val possibleData = countryList?.findLast { possiblePrefix == it.phonePrefix }
             if (possibleData != null) {

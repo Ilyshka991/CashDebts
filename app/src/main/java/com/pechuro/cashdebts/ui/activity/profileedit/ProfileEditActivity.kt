@@ -8,12 +8,12 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.activity_container.*
+import kotlinx.android.synthetic.main.activity_scrolling_container.*
 
 class ProfileEditActivity : BaseFragmentActivity<ProfileEditActivityViewModel>() {
 
     override val layoutId: Int
-        get() = R.layout.activity_container
+        get() = R.layout.activity_scrolling_container
     override val containerId: Int
         get() = container.id
 

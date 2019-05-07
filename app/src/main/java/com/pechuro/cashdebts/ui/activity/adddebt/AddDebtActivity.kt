@@ -13,7 +13,7 @@ import com.pechuro.cashdebts.ui.activity.adddebt.localuser.AddDebtLocalUserFragm
 import com.pechuro.cashdebts.ui.activity.adddebt.remoteuser.AddDebtRemoteUserFragment
 import com.pechuro.cashdebts.ui.base.activity.FragmentSwitcherBaseActivity
 import com.pechuro.cashdebts.ui.utils.EventManager
-import kotlinx.android.synthetic.main.activity_container.*
+import kotlinx.android.synthetic.main.activity_scrolling_container.*
 
 class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean

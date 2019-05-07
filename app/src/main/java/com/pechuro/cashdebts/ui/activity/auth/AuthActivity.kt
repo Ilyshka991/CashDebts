@@ -12,7 +12,7 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.activity_container.*
+import kotlinx.android.synthetic.main.activity_scrolling_container.*
 
 class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     override val isCloseButtonEnabled: Boolean

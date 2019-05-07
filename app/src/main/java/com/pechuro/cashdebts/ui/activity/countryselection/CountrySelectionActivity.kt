@@ -10,7 +10,7 @@ import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragment
 import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
-import kotlinx.android.synthetic.main.activity_container.*
+import kotlinx.android.synthetic.main.activity_scrolling_container.*
 
 class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityViewModel>() {
 

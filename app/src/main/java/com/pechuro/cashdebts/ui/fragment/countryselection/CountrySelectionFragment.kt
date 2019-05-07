@@ -9,7 +9,7 @@ import com.pechuro.cashdebts.ui.fragment.countryselection.adapter.CountrySelecti
 import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveQueryChangesFrom
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.fragment_country_select.*
+import kotlinx.android.synthetic.main.fragment_country_selection.*
 import javax.inject.Inject
 
 class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>() {
@@ -19,7 +19,7 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
     protected lateinit var layoutManager: RecyclerView.LayoutManager
 
     override val layoutId: Int
-        get() = R.layout.fragment_country_select
+        get() = R.layout.fragment_country_selection
 
     override fun getViewModelClass() = CountrySelectionFragmentViewModel::class
 
