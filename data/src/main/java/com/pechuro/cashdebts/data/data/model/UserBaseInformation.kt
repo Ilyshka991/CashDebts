@@ -20,11 +20,10 @@ data class UserBaseInformation(
 
     override fun describeContents() = 0
 
-    companion object CREATOR : Parcelable.Creator<com.pechuro.cashdebts.data.data.model.UserBaseInformation> {
-        override fun createFromParcel(parcel: Parcel) =
-            com.pechuro.cashdebts.data.data.model.UserBaseInformation(parcel)
+    companion object CREATOR : Parcelable.Creator<UserBaseInformation> {
+        override fun createFromParcel(parcel: Parcel) = UserBaseInformation(parcel)
 
-        override fun newArray(size: Int): Array<com.pechuro.cashdebts.data.data.model.UserBaseInformation?> {
+        override fun newArray(size: Int): Array<UserBaseInformation?> {
             return arrayOfNulls(size)
         }
     }

@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.data.data.repositories.impl
 
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
+import com.pechuro.cashdebts.data.data.exception.FirebaseStorageCommonException
 import com.pechuro.cashdebts.data.data.repositories.IStorageRepository
 import com.pechuro.cashdebts.data.data.structure.FirebaseStorageStructure
 import io.reactivex.Completable
@@ -16,7 +17,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
         avatarRef.putFile(fileUri)
             .continueWithTask {
                 if (!it.isSuccessful) {
-                    emitter.onError(com.pechuro.cashdebts.data.data.exception.FirebaseStorageCommonException())
+                    emitter.onError(FirebaseStorageCommonException())
                 }
                 avatarRef.downloadUrl
             }
@@ -28,7 +29,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
                     }
                     emitter.onSuccess(it.result!!)
                 } else {
-                    emitter.onError(com.pechuro.cashdebts.data.data.exception.FirebaseStorageCommonException())
+                    emitter.onError(FirebaseStorageCommonException())
                 }
             }
     }
