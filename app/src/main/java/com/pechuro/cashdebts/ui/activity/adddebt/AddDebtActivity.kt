@@ -43,19 +43,19 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_activity_add, menu)
         if (backStackSize > 0) {
-            menu?.findItem(R.id.menu_action_next)?.isVisible = false
-            menu?.findItem(R.id.menu_action_save)?.isEnabled = isOptionsMenuEnabled
+            menu?.findItem(R.id.menu_add_action_next)?.isVisible = false
+            menu?.findItem(R.id.menu_add_action_save)?.isEnabled = isOptionsMenuEnabled
         } else {
-            menu?.findItem(R.id.menu_action_save)?.isVisible = false
-            menu?.findItem(R.id.menu_action_next)?.isEnabled = isOptionsMenuEnabled
+            menu?.findItem(R.id.menu_add_action_save)?.isVisible = false
+            menu?.findItem(R.id.menu_add_action_next)?.isEnabled = isOptionsMenuEnabled
         }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.menu_action_next -> viewModel.validatePersonInfo()
-            R.id.menu_action_save -> viewModel.save()
+            R.id.menu_add_action_next -> viewModel.validatePersonInfo()
+            R.id.menu_add_action_save -> viewModel.save()
         }
         return super.onOptionsItemSelected(item)
     }

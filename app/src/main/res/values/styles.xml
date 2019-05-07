@@ -4,6 +4,8 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="actionMenuTextColor">@color/colorBlack</item>
+        <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -14,4 +16,69 @@
     <style name="SplashTheme" parent="AppTheme.NoActionBar">
         <item name="android:background">@drawable/background_splash</item>
     </style>
+
+    <style name="FabStyle" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorOrange</item>
+        <item name="tint">@color/colorBlack</item>
+        <item name="rippleColor">@color/colorGrayLightMiddle</item>
+    </style>
+
+    <style name="SwitchStyle">
+        <item name="android:fontFamily">@font/sofia_pro_light</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:backgroundTint">@color/colorTransparent</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:switchPadding">8dp</item>
+    </style>
+
+    <style name="TextButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
+        <item name="rippleColor">@color/colorOrange</item>
+    </style>
+
+    <style name="EditTextStyle" parent="@style/Base.Widget.MaterialComponents.TextInputEditText">
+        <item name="android:background">@drawable/background_edit_text</item>
+        <item name="android:fontFamily">@font/sofia_pro_light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/colorGrayMiddle</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="VerificationCodeEditTextStyle" parent="@style/EditTextStyle">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:ems">2</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:hint">-</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColorHint">@color/colorGrayMiddle</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:inputType">number</item>
+    </style>
+
+
+    <style name="TextViewLight">
+        <item name="android:fontFamily">@font/sofia_pro_light</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">@color/colorTransparent</item>
+        <item name="android:textColor">@color/colorGrayDark</item>
+    </style>
+
+    <style name="TextViewBold">
+        <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">@color/colorTransparent</item>
+        <item name="android:textColor">@color/colorGrayDark</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
 </resources>

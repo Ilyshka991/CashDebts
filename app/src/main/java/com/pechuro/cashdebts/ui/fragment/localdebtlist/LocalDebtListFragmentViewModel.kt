@@ -49,10 +49,13 @@ class LocalDebtListFragmentViewModel @Inject constructor(
         }
         .map { debts ->
             if (prefsManager.filterUnitePersons) {
-                val singleItems =
-                    debts.groupBy { it.personName }.filter { it.value.size == 1 }.toList()
+                val singleItems = debts
+                    .groupBy { it.personName }
+                    .filter { it.value.size == 1 }
+                    .toList()
                         .map { it.second[0] }
-                val groupedItems = (debts - singleItems).groupingBy { it.personName }
+                val groupedItems = (debts - singleItems)
+                    .groupingBy { it.personName }
                     .aggregate { _: String, accumulator: LocalDebt?, element: LocalDebt, first: Boolean ->
                         if (first) {
                             element.apply {

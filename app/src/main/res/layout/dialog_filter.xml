@@ -20,12 +20,13 @@
 
     <TextView
         android:id="@+id/text_title"
+        style="@style/TextViewBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Filter"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:text="@string/dialog_filter_filter"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,33 +35,32 @@
         android:id="@+id/divider_title"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/grey_300"
         android:layout_marginTop="8dp"
+        android:background="@color/colorGrayLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
     <Switch
         android:id="@+id/switch_unite_persons"
+        style="@style/SwitchStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:switchPadding="8dp"
-        android:text="Unite persons (You can't perform any action in this mode)"
-        android:textSize="16sp"
+        android:text="@string/dialog_filter_switch_unite"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
     <Switch
         android:id="@+id/switch_show_completed"
+        style="@style/SwitchStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="32dp"
-        android:switchPadding="8dp"
-        android:text="Don't show completed debts"
-        android:textSize="16sp"
+        android:text="@string/dialog_filter_switch_show_complete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"

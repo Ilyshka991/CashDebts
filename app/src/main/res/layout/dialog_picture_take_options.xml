@@ -7,25 +7,31 @@
 
     <Button
         android:id="@+id/button_camera"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/TextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
+        android:padding="16dp"
         android:text="@string/action_camera"
-        android:textSize="18sp"
-        app:icon="@drawable/ic_action_camera" />
+        android:textColor="@color/colorOrange"
+        android:textSize="20sp"
+        app:icon="@drawable/ic_action_camera"
+        app:iconTint="@color/colorOrange" />
 
     <Button
         android:id="@+id/button_gallery"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/TextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
+        android:padding="16dp"
         android:text="@string/action_gallery"
-        android:textSize="18sp"
-        app:icon="@drawable/ic_action_gallery" />
+        android:textColor="@color/colorOrange"
+        android:textSize="20sp"
+        app:icon="@drawable/ic_action_gallery"
+        app:iconTint="@color/colorOrange" />
 </LinearLayout>

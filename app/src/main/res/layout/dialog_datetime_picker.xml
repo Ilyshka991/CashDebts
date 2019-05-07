@@ -8,6 +8,7 @@
         android:id="@+id/picker_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:headerBackground="@color/colorOrange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,6 +19,7 @@
         android:id="@+id/picker_time"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:headerBackground="@color/colorOrange"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/picker_date"
         app:layout_constraintEnd_toEndOf="@+id/picker_date"
@@ -26,21 +28,25 @@
 
     <Button
         android:id="@+id/button_ok"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        style="@style/TextButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="Ok"
+        android:text="@string/dialog_datetime_picker_action_ok"
+        android:textColor="@color/colorOrange"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/picker_time"
         app:layout_constraintEnd_toEndOf="@+id/picker_date" />
 
     <Button
         android:id="@+id/button_cancel"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        style="@style/TextButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="Cancel"
+        android:text="@string/dialog_datetime_picker_action_cancel"
+        android:textColor="@color/colorOrange"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/button_ok"
         app:layout_constraintTop_toTopOf="@+id/button_ok" />
 </androidx.constraintlayout.widget.ConstraintLayout>

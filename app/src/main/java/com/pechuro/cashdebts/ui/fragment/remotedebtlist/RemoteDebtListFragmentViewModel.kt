@@ -108,9 +108,13 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         .map { debts ->
             if (prefsManager.filterUnitePersons) {
                 val notGroupingItems = debts.filter { it.status != FirestoreDebtStatus.IN_PROGRESS }
-                val singleItems = debts.groupBy { it.user }.filter { it.value.size == 1 }.toList()
+                val singleItems = (debts - notGroupingItems)
+                    .groupBy { it.user }
+                    .filter { it.value.size == 1 }
+                    .toList()
                     .map { it.second[0] }
-                val groupedItems = (debts - notGroupingItems - singleItems).groupingBy { it.user }
+                val groupedItems = (debts - notGroupingItems - singleItems)
+                    .groupingBy { it.user }
                     .aggregate { _: RemoteDebt.User, accumulator: RemoteDebt?, element: RemoteDebt, first: Boolean ->
                         if (first) {
                             element.apply {

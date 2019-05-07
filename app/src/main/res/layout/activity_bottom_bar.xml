@@ -16,14 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:fabAnimationMode="slide"
-        android:backgroundTint="@color/grey_300"
+        android:backgroundTint="@color/colorGrayMiddle"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true"
-        app:navigationIcon="@drawable/ic_menu_black" />
+        app:navigationIcon="@drawable/ic_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        style="@style/FabStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"

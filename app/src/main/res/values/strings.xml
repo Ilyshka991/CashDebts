@@ -108,12 +108,22 @@
     <string name="notification_channel_add_name">Add</string>
     <string name="notification_channel_complete_name">Complete</string>
     <string name="notification_channel_update_name">Update</string>
-    <string name="menu_action_logout">Logout</string>
-    <string name="menu_action_edit">Edit</string>
+    <string name="menu_profile_action_logout">Logout</string>
+    <string name="menu_profile_action_edit">Edit</string>
     <string name="label_profile_edit">Profile edit</string>
     <string name="label_add_debt">Add debt</string>
     <string name="menu_action_filter">Filter</string>
     <string name="menu_debt_list_total">Total:\u0020\u0020%1$.2f</string>
 
     <string name="remote_debt_no_connection">No internet connection. Data sync turn off</string>
+    <string name="menu_add_action_next">Next</string>
+    <string name="menu_add_action_save">Save</string>
+    <string name="dialog_datetime_picker_action_ok">Ok</string>
+    <string name="dialog_datetime_picker_action_cancel">Cancel</string>
+    <string name="dialog_navigation_remote_debt">Remote debt</string>
+    <string name="dialog_navigation_local_debt">Local debt</string>
+    <string name="dialog_navigation_profile">Profile</string>
+    <string name="dialog_filter_filter">Filter</string>
+    <string name="dialog_filter_switch_unite">Unite persons (You can\'t perform any action in this mode)</string>
+    <string name="dialog_filter_switch_show_complete">Don\'t show completed debts</string>
 </resources>
