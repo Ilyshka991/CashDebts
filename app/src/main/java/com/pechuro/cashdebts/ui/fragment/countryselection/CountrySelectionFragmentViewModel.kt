@@ -1,10 +1,10 @@
-package com.pechuro.cashdebts.ui.fragment.countyselection
+package com.pechuro.cashdebts.ui.fragment.countryselection
 
 import androidx.recyclerview.widget.DiffUtil
-import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.entity.DiffResult
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.BaseViewModel
-import com.pechuro.cashdebts.ui.fragment.countyselection.model.CountrySelectionDiffCallback
+import com.pechuro.cashdebts.ui.fragment.countryselection.model.CountrySelectionDiffCallback
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observables.ConnectableObservable

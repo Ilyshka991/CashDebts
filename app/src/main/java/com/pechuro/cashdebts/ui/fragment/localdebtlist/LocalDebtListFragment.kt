@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
@@ -19,7 +18,6 @@ import com.pechuro.cashdebts.ui.base.ItemTouchHelper
 import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterEvent
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
-import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_local_debt_list.*

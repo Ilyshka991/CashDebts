@@ -8,9 +8,9 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivityViewModel
-import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentViewModel
+import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialogViewModel
-import com.pechuro.cashdebts.ui.fragment.debtuserprofile.DebtUserProfileDialogViewModel
+import com.pechuro.cashdebts.ui.fragment.debtuserprofiledialog.DebtUserProfileDialogViewModel
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentViewModel

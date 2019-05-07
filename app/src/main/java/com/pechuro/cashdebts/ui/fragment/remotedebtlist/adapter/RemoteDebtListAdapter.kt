@@ -21,7 +21,7 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_CONFIRMATION
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR
-import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.entity.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import io.reactivex.Observable

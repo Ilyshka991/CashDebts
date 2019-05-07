@@ -25,5 +25,5 @@ class ManagerModule {
 
     @Provides
     @AppScope
-    fun provideNotificationManaget(context: Context) = NotificationManagerCompat.from(context)
+    fun provideNotificationManager(context: Context) = NotificationManagerCompat.from(context)
 }

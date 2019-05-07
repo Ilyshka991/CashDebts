@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.debtuserprofile
+package com.pechuro.cashdebts.ui.fragment.debtuserprofiledialog
 
 import android.os.Bundle
 import android.view.View

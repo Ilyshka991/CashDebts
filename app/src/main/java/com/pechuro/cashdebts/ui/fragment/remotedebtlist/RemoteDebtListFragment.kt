@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.data.model.DebtRole
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtEvent
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
@@ -16,7 +15,7 @@ import com.pechuro.cashdebts.ui.activity.main.SnackInfo
 import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.ItemTouchHelper
-import com.pechuro.cashdebts.ui.fragment.debtuserprofile.DebtUserProfileDialog
+import com.pechuro.cashdebts.ui.fragment.debtuserprofiledialog.DebtUserProfileDialog
 import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterEvent
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtItemSwipeCallback
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter

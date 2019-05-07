@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.model.DebtRole
-import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.entity.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import kotlinx.android.synthetic.main.item_local_debt.view.*

@@ -8,7 +8,6 @@ import com.pechuro.cashdebts.data.data.repositories.IMessagingRepository
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 internal class MessagingRepositoryImpl @Inject constructor(

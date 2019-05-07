@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.countyselection.model
+package com.pechuro.cashdebts.ui.fragment.countryselection.model
 
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.model.entity.CountryData

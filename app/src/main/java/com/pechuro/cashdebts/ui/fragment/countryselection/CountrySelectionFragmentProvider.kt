@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.ui.fragment.countyselection
+package com.pechuro.cashdebts.ui.fragment.countryselection
 
 import com.pechuro.cashdebts.di.annotations.FragmentScope
 import dagger.Module

@@ -21,14 +21,14 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
-import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
+import com.pechuro.cashdebts.model.entity.DiffResult
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
-import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtDiffCallback
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -105,13 +105,13 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                 it
             }
         }
-        .map {
+        .map { debts ->
             if (prefsManager.filterUnitePersons) {
-                val notGroupingItems = it.filter { it.status != FirestoreDebtStatus.IN_PROGRESS }
-                val singleItems = it.groupBy { it.user }.filter { it.value.size == 1 }.toList()
+                val notGroupingItems = debts.filter { it.status != FirestoreDebtStatus.IN_PROGRESS }
+                val singleItems = debts.groupBy { it.user }.filter { it.value.size == 1 }.toList()
                     .map { it.second[0] }
-                val groupedItems = (it - notGroupingItems - singleItems).groupingBy { it.user }
-                    .aggregate { key: RemoteDebt.User, accumulator: RemoteDebt?, element: RemoteDebt, first: Boolean ->
+                val groupedItems = (debts - notGroupingItems - singleItems).groupingBy { it.user }
+                    .aggregate { _: RemoteDebt.User, accumulator: RemoteDebt?, element: RemoteDebt, first: Boolean ->
                         if (first) {
                             element.apply {
                                 if (role == DebtRole.DEBTOR) {
@@ -136,7 +136,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                     }
                 notGroupingItems + groupedItems + singleItems
             } else {
-                it
+                debts
             }
         }
         .map {

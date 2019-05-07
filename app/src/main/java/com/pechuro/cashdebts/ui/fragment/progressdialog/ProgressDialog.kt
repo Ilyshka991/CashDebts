@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.progressdialog
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,12 @@ import androidx.fragment.app.DialogFragment
 import com.pechuro.cashdebts.R
 
 class ProgressDialog : DialogFragment() {
-    private val handler = Handler()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_progress, container, false)
     }
 
@@ -23,7 +25,6 @@ class ProgressDialog : DialogFragment() {
             window?.setLayout(size, size)
             isCancelable = false
         }
-        handler.post { }
     }
 
     companion object {

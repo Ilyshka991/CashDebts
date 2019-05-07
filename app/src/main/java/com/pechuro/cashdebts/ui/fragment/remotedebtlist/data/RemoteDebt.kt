@@ -30,10 +30,10 @@ data class RemoteDebt(
             Date(),
             FirestoreDebtStatus.NOT_SEND,
             DebtRole.CREDITOR,
-            false,
-            false,
-            false,
-            false
+            isCurrentUserInit = false,
+            isExpanded = false,
+            isLocal = false,
+            isUnited = false
         )
     }
 

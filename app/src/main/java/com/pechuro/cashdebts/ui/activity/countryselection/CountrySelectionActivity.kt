@@ -7,8 +7,8 @@ import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
-import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragment
-import com.pechuro.cashdebts.ui.utils.BaseEvent
+import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragment
+import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.activity_container.*
 
@@ -46,9 +46,9 @@ class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityVi
     }
 
     private fun subscribeToEvents() {
-        EventManager.listen(CountySelectEvent::class.java).subscribe {
+        EventManager.listen(CountrySelectionFragmentEvent::class.java).subscribe {
             when (it) {
-                is CountySelectEvent.OnCountrySelect -> onCountrySelected(it.country)
+                is CountrySelectionFragmentEvent.OnCountrySelect -> onCountrySelected(it.country)
             }
         }.let(weakCompositeDisposable::add)
     }
@@ -72,8 +72,4 @@ class CountrySelectionActivity : BaseFragmentActivity<CountrySelectionActivityVi
 
         fun newIntent(context: Context) = Intent(context, CountrySelectionActivity::class.java)
     }
-}
-
-sealed class CountySelectEvent : BaseEvent() {
-    class OnCountrySelect(val country: CountryData) : CountySelectEvent()
 }

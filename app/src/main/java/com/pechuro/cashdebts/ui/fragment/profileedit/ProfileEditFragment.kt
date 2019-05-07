@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.AddOptionsEvent
+import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionDialogEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel.Events.*
 import com.pechuro.cashdebts.ui.utils.EventManager
@@ -100,10 +100,10 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun setEventListeners() {
-        EventManager.listen(AddOptionsEvent::class.java).subscribe {
+        EventManager.listen(PictureTakeOptionDialogEvent::class.java).subscribe {
             when (it) {
-                is AddOptionsEvent.TakePictureFromCamera -> dispatchTakePictureFromCameraIntent()
-                is AddOptionsEvent.TakePictureFromGallery -> dispatchTakePictureFromGalleryIntent()
+                is PictureTakeOptionDialogEvent.TakePictureFromCamera -> dispatchTakePictureFromCameraIntent()
+                is PictureTakeOptionDialogEvent.TakePictureFromGallery -> dispatchTakePictureFromGalleryIntent()
             }
         }.addTo(weakCompositeDisposable)
     }

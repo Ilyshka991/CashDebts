@@ -1,4 +1,4 @@
-package com.pechuro.cashdebts.model
+package com.pechuro.cashdebts.model.entity
 
 import androidx.recyclerview.widget.DiffUtil
 

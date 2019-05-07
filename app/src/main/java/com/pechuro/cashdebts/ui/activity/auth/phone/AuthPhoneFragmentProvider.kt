@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 interface AuthPhoneFragmentProvider {
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     fun bind(): AuthPhoneFragment
 }

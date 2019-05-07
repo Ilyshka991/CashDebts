@@ -2,20 +2,15 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.data.data.model.DebtRole
-import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
-import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.entity.DiffResult
 import com.pechuro.cashdebts.model.prefs.PrefsManager
-import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallback
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtsUiInfo
-import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
-import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
-import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
@@ -52,13 +47,13 @@ class LocalDebtListFragmentViewModel @Inject constructor(
             val mergedList = first.filter { it in second } + second
             mergedList.toSet().toList()
         }
-        .map {
+        .map { debts ->
             if (prefsManager.filterUnitePersons) {
                 val singleItems =
-                    it.groupBy { it.personName }.filter { it.value.size == 1 }.toList()
+                    debts.groupBy { it.personName }.filter { it.value.size == 1 }.toList()
                         .map { it.second[0] }
-                val groupedItems = (it - singleItems).groupingBy { it.personName }
-                    .aggregate { key: String, accumulator: LocalDebt?, element: LocalDebt, first: Boolean ->
+                val groupedItems = (debts - singleItems).groupingBy { it.personName }
+                    .aggregate { _: String, accumulator: LocalDebt?, element: LocalDebt, first: Boolean ->
                         if (first) {
                             element.apply {
                                 if (role == DebtRole.DEBTOR) {
@@ -84,7 +79,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
                     }
                 groupedItems + singleItems
             } else {
-                it
+                debts
             }
         }
         .map {

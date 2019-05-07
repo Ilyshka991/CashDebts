@@ -18,11 +18,11 @@ class PictureTakeOptionsDialog : BaseBottomSheetDialog() {
 
     private fun setViewListeners() {
         button_camera.setOnClickListener {
-            EventManager.publish(AddOptionsEvent.TakePictureFromCamera)
+            EventManager.publish(PictureTakeOptionDialogEvent.TakePictureFromCamera)
             close()
         }
         button_gallery.setOnClickListener {
-            EventManager.publish(AddOptionsEvent.TakePictureFromGallery)
+            EventManager.publish(PictureTakeOptionDialogEvent.TakePictureFromGallery)
             close()
         }
     }

@@ -47,12 +47,10 @@ class AddDebtActivityViewModel @Inject constructor(
 
                 when {
                     expr.isEmpty() -> builder.append(0)
-                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" -> builder.append(
-                        0
-                    )
-                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" -> builder.append(
-                        1
-                    )
+                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "+-" ->
+                        builder.append(0)
+                    expr.length > 2 && expr[expr.lastIndex] == '-' && expr[expr.lastIndex - 1] in "*/" ->
+                        builder.append(1)
                     expr.length > 1 && expr[expr.lastIndex] in ".+-" -> builder.append(0)
                     expr.length > 1 && expr[expr.lastIndex] in "*/" -> builder.append(1)
                     expr.length > 2 && expr[expr.lastIndex] == '(' && expr[expr.lastIndex - 1] in "+-/*"
@@ -323,7 +321,6 @@ class AddDebtActivityViewModel @Inject constructor(
         class OnError(@StringRes val id: Int) : Events()
         class SetOptionsMenuEnabled(val isEnabled: Boolean) : Events()
         object OnUserNotExist : Events()
-        object DisablePhoneChanges : Events()
     }
 
     sealed class LoadingState {

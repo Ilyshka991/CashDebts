@@ -1,12 +1,11 @@
-package com.pechuro.cashdebts.ui.fragment.countyselection
+package com.pechuro.cashdebts.ui.fragment.countryselection
 
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.ui.activity.countryselection.CountySelectEvent
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.fragment.countyselection.adapter.CountrySelectionAdapter
+import com.pechuro.cashdebts.ui.fragment.countryselection.adapter.CountrySelectionAdapter
 import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveQueryChangesFrom
 import io.reactivex.rxkotlin.addTo
@@ -40,7 +39,7 @@ class CountrySelectionFragment : BaseFragment<CountrySelectionFragmentViewModel>
             adapter = this@CountrySelectionFragment.adapter
         }
         adapter.clickEmitter.subscribe {
-            EventManager.publish(CountySelectEvent.OnCountrySelect(it))
+            EventManager.publish(CountrySelectionFragmentEvent.OnCountrySelect(it))
         }.addTo(strongCompositeDisposable)
         viewModel.searchQuery.receiveQueryChangesFrom(search).addTo(strongCompositeDisposable)
     }

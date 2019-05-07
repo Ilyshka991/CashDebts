@@ -12,7 +12,7 @@ import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivi
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.activity.splash.SplashActivity
-import com.pechuro.cashdebts.ui.fragment.countyselection.CountrySelectionFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialogProvider
 import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterDialogProvider
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentProvider
@@ -57,7 +57,10 @@ interface AppActivitiesModule {
     fun bindAdd(): AddDebtActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [ProfileEditFragmentProvider::class])
+    @ContributesAndroidInjector(
+        modules = [
+            ProfileEditFragmentProvider::class]
+    )
     fun bindProfileEdit(): ProfileEditActivity
 
     @ActivityScope
@@ -71,7 +74,8 @@ interface AppActivitiesModule {
 
     @ActivityScope
     @ContributesAndroidInjector(
-        modules = [CountrySelectionFragmentProvider::class]
+        modules = [
+            CountrySelectionFragmentProvider::class]
     )
     fun bindCountrySelect(): CountrySelectionActivity
 }
