@@ -114,4 +114,6 @@
     <string name="label_add_debt">Add debt</string>
     <string name="menu_action_filter">Filter</string>
     <string name="menu_debt_list_total">Total:\u0020\u0020%1$.2f</string>
+
+    <string name="remote_debt_no_connection">No internet connection. Data sync turn off</string>
 </resources>

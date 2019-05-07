@@ -22,6 +22,7 @@ import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
@@ -33,6 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -40,9 +42,12 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     private val debtRepository: IRemoteDebtRepository,
     private val userRepository: IUserRepository,
     private val diffCallback: RemoteDebtDiffCallback,
-    private val prefsManager: PrefsManager
+    private val prefsManager: PrefsManager,
+    connectivityListener: ConnectivityListener
 ) : BaseViewModel() {
     val command = PublishSubject.create<Command>()
+
+    val isConnectionAvailable = BehaviorSubject.create<Boolean>()
 
     val debtSource = debtRepository.getSource()
         .subscribeOn(Schedulers.io())
@@ -169,6 +174,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
 
     init {
         initSource()
+        connectivityListener.listen(isConnectionAvailable::onNext).addTo(compositeDisposable)
     }
 
     fun initSource() {

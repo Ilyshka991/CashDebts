@@ -105,14 +105,28 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
                     if (progress.isVisible) progress.isVisible = false
                     updateTotalSum(it.totalSum)
                 },
-                viewModel.command.subscribe {
+                command.subscribe {
                     when (it) {
                         is RemoteDebtListFragmentViewModel.Command.ShowMessage -> showSnackbar(it.msgId)
                         is RemoteDebtListFragmentViewModel.Command.ShowUndoDeletionSnackbar -> showUndoDeletionSnackbar()
                     }
-                }
+                },
+                isConnectionAvailable.subscribe(::onConnectionChange)
             )
         }
+    }
+
+    private fun onConnectionChange(isConnected: Boolean) {
+        SnackbarManager.show(
+            if (isConnected) {
+                SnackInfo.EMPTY
+            } else {
+                SnackInfo(
+                    R.string.remote_debt_no_connection,
+                    Snackbar.LENGTH_INDEFINITE
+                )
+            }
+        )
     }
 
     private fun updateTotalSum(totalSum: Double) {

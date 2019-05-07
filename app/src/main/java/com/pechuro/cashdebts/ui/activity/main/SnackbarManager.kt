@@ -10,7 +10,13 @@ class SnackInfo(
     @StringRes val msgId: Int,
     val duration: Int = Snackbar.LENGTH_LONG,
     val action: SnackActionInfo? = null
-)
+) {
+    fun isEmpty() = msgId == 0
+
+    companion object {
+        val EMPTY = SnackInfo(0)
+    }
+}
 
 object SnackbarManager {
     private val emitter = PublishSubject.create<SnackInfo>()

@@ -54,6 +54,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             }
         }
 
+    private var lastShownSnackbar: Snackbar? = null
+
     override fun getViewModelClass() = MainActivityViewModel::class
 
     override fun getHomeFragment() = RemoteDebtListFragment.newInstance()
@@ -123,10 +125,14 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun setupSnackbarManager() {
         SnackbarManager.listen {
-            Snackbar.make(coordinatorLayout, it.msgId, it.duration).apply {
-                anchorView = if (fab.isVisible) fab else bottom_app_bar
-                it.action?.let { info -> setAction(info.actionId) { info.callback() } }
-                show()
+            if (it.isEmpty()) {
+                lastShownSnackbar?.dismiss()
+            } else {
+                lastShownSnackbar = Snackbar.make(coordinatorLayout, it.msgId, it.duration).apply {
+                    anchorView = if (fab.isVisible) fab else bottom_app_bar
+                    it.action?.let { info -> setAction(info.actionId) { info.callback() } }
+                    show()
+                }
             }
         }.addTo(strongCompositeDisposable)
     }
