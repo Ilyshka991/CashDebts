@@ -22,7 +22,7 @@ import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAd
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.fragment_remote_debt_list.*
+import kotlinx.android.synthetic.main.fragment_debt_list.*
 import javax.inject.Inject
 
 class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
@@ -34,7 +34,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     protected lateinit var swipeHelper: ItemTouchHelper<RemoteDebtItemSwipeCallback.SwipeAction>
 
     override val layoutId: Int
-        get() = R.layout.fragment_remote_debt_list
+        get() = R.layout.fragment_debt_list
 
     override fun getViewModelClass() = RemoteDebtListFragmentViewModel::class
 

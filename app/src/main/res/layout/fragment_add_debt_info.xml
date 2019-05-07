@@ -7,10 +7,10 @@
 
     <EditText
         android:id="@+id/text_value"
+        style="@style/EditTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        style="@style/EditTextStyle"
         android:layout_marginTop="24dp"
         android:digits="0123456789.+-*/()"
         android:ems="10"
@@ -18,7 +18,6 @@
         android:inputType="number|numberDecimal|numberSigned"
         app:layout_constraintEnd_toStartOf="@+id/text_sum"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent">
 
         <requestFocus />
@@ -26,8 +25,8 @@
 
     <TextView
         android:id="@+id/text_sum"
-        android:layout_width="wrap_content"
         style="@style/TextViewLight"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:textSize="20sp"
@@ -36,10 +35,10 @@
 
     <EditText
         android:id="@+id/text_description"
+        style="@style/EditTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        style="@style/EditTextStyle"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/add_debt_hint_description"
@@ -50,10 +49,10 @@
 
     <EditText
         android:id="@+id/text_date"
+        style="@style/EditTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        style="@style/EditTextStyle"
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:focusable="false"

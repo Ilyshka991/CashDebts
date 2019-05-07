@@ -6,11 +6,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.res.use
 import com.pechuro.cashdebts.R
 
-class HintEditText : EditText {
+class HintEditText : AppCompatEditText {
 
     constructor(context: Context?) : super(context)
 
@@ -80,15 +80,15 @@ class HintEditText : EditText {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         if (hintText != null && length() < hintText!!.length && hintText!![length()] == ' ') {
             if (lengthAfter > lengthBefore) {
-                this.text.append(' ')
+                this.text?.append(' ')
             } else {
-                this.text.delete(length() - 1, length())
+                this.text?.delete(length() - 1, length())
             }
         }
         calculateTextOffset()
     }
 
-    fun getEnteredText() = text.replace("[ ]".toRegex(), "")
+    fun getEnteredText() = text?.replace("[ ]".toRegex(), "")
 
     @SuppressLint("Recycle")
     private fun init(attrs: AttributeSet?) {

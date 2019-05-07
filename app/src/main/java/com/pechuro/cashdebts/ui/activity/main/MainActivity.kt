@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.MenuRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -128,11 +129,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             if (it.isEmpty()) {
                 lastShownSnackbar?.dismiss()
             } else {
-                lastShownSnackbar = Snackbar.make(coordinatorLayout, it.msgId, it.duration).apply {
-                    anchorView = if (fab.isVisible) fab else bottom_app_bar
-                    it.action?.let { info -> setAction(info.actionId) { info.callback() } }
-                    show()
-                }
+                lastShownSnackbar = showSnackbar(it)
             }
         }.addTo(strongCompositeDisposable)
     }
@@ -157,12 +154,20 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     private fun setNavigationListeners() {
         EventManager.listen(NavigationEvent::class.java).distinctUntilChanged().subscribe {
             when (it) {
-                is NavigationEvent.openRemoteDebts -> showRemoteDebts()
-                is NavigationEvent.openLocalDebts -> showLocalDebts()
-                is NavigationEvent.openProfile -> showProfile()
+                is NavigationEvent.OpenRemoteDebts -> showRemoteDebts()
+                is NavigationEvent.OpenLocalDebts -> showLocalDebts()
+                is NavigationEvent.OpenProfile -> showProfile()
             }
         }.addTo(strongCompositeDisposable)
     }
+
+    private fun showSnackbar(info: SnackInfo) = Snackbar
+        .make(coordinatorLayout, info.msgId, info.duration).apply {
+            setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            anchorView = if (fab.isVisible) fab else bottom_app_bar
+            info.action?.let { info -> setAction(info.actionId) { info.callback() } }
+            show()
+        }
 
     private fun showRemoteDebts() {
         currentMenuRes = R.menu.menu_debt_list

@@ -7,7 +7,7 @@ import io.reactivex.subjects.Subject
 fun Subject<String>.receiveTextChangesFrom(view: HintEditText): Disposable {
     val listener = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            onNext(view.getEnteredText())
+            view.getEnteredText()?.let { onNext(it) }
         }
     }
     view.addTextChangedListener(listener)

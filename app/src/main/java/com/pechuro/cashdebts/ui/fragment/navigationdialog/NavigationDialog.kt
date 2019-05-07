@@ -19,15 +19,15 @@ class NavigationDialog : BaseBottomSheetDialog() {
 
     private fun setViewListeners() {
         text_local_debt.setOnClickListener {
-            EventManager.publish(NavigationEvent.openLocalDebts)
+            EventManager.publish(NavigationEvent.OpenLocalDebts)
             close()
         }
         text_remote_debt.setOnClickListener {
-            EventManager.publish(NavigationEvent.openRemoteDebts)
+            EventManager.publish(NavigationEvent.OpenRemoteDebts)
             close()
         }
         text_profile.setOnClickListener {
-            EventManager.publish(NavigationEvent.openProfile)
+            EventManager.publish(NavigationEvent.OpenProfile)
             close()
         }
     }

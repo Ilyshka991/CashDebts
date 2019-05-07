@@ -24,7 +24,6 @@
     </EditText>
 
     <include
-        android:id="@+id/role_chooser"
         layout="@layout/layout_debt_role_chooser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

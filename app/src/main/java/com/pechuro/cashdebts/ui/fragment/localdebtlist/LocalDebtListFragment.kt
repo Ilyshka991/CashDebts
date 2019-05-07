@@ -20,7 +20,7 @@ import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtItemSwip
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.adapter.LocalDebtListAdapter
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.fragment_local_debt_list.*
+import kotlinx.android.synthetic.main.fragment_debt_list.*
 import javax.inject.Inject
 
 class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
@@ -32,7 +32,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     protected lateinit var swipeHelper: ItemTouchHelper<LocalDebtItemSwipeCallback.SwipeAction>
 
     override val layoutId: Int
-        get() = R.layout.fragment_local_debt_list
+        get() = R.layout.fragment_debt_list
 
     override fun getViewModelClass() = LocalDebtListFragmentViewModel::class
 

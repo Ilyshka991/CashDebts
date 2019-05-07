@@ -76,15 +76,20 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                     context.theme
                 )
                 backgroundColor =
-                    ColorDrawable(ContextCompat.getColor(context, R.color.color_action_complete))
+                    ColorDrawable(ContextCompat.getColor(context, R.color.colorGreen))
             }
             dX < 0 -> {
                 icon = recyclerView.context.resources.getDrawable(
-                    R.drawable.ic_edit,
+                    R.drawable.ic_edit_white,
                     context.theme
                 )
                 backgroundColor =
-                    ColorDrawable(ContextCompat.getColor(context, R.color.color_action_edit))
+                    ColorDrawable(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.colorBlueBrightHalfTransparent
+                        )
+                    )
             }
             else -> throw IllegalArgumentException()
         }

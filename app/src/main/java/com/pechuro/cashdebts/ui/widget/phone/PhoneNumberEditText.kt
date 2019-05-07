@@ -95,9 +95,9 @@ class PhoneNumberEditText @JvmOverloads constructor(
 
         this.countryData = countryData
         val numberWithoutPrefix = number.removePrefix(countryData.phonePrefix)
-        textNumber.text.clear()
+        textNumber.text?.clear()
         numberWithoutPrefix.forEach {
-            textNumber.text.append(it)
+            textNumber.text?.append(it)
         }
 
         return true

@@ -5,42 +5,18 @@
     <color name="colorPrimaryDark">@color/colorGrayMiddle</color>
     <color name="colorAccent">@color/colorOrange</color>
 
-    <color name="color_background">#FFFFFF</color>
     <color name="color_item_background">#FFFFFF</color>
     <color name="color_splash_background">#E0E0E0</color>
     <color name="ic_launcher_background">#90A4AE</color>
 
-    <color name="color_action_delete">#E53935</color>
-    <color name="color_action_edit">#3949AB</color>
-    <color name="color_action_complete">#43A047</color>
-
-    <color name="color_action_bar_elements">#FFFFFF</color>
-    <color name="color_icons">#FF000000</color>
-    <color name="color_text">#FF000000</color>
-
-    <color name="grey_100">#F5F5F5</color>
-    <color name="grey_300">#E0E0E0</color>
-    <color name="grey_500">#9E9E9E</color>
-
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTransparent">#00FFFFFF</color>
     <color name="colorBlack">#515556</color>
-    <color name="colorGrayDark">#96A3A7</color>
     <color name="colorGrayMiddle">#C1C8CA</color>
-    <color name="colorGrayUltraLight">#E5E5E5</color>
     <color name="colorGrayLight">#DFE1E1</color>
     <color name="colorGrayLightMiddle">#E4E6E6</color>
-    <color name="colorWhiteLight">#FAFAFA</color>
-    <color name="colorGrayMiddleLight">#F3F4F4</color>
-    <color name="colorBlueBright">#25ACE6</color>
     <color name="colorBlueBrightHalfTransparent">#8025ACE6</color>
     <color name="colorPink">#F73777</color>
-    <color name="colorPinkMedium">#E67097</color>
-    <color name="colorBlue">#00B4E5</color>
-    <color name="colorPurpleMono">#AD8FB9</color>
-    <color name="colorPinkLight">#FDC4D6</color>
-    <color name="colorBlueLight">#B3E9F7</color>
     <color name="colorOrange">#E77747</color>
-    <color name="colorSuccess">#66B635</color>
-    <color name="colorWarningProgress">#FDC536</color>
+    <color name="colorGreen">#66B635</color>
 </resources>

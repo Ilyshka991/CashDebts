@@ -67,25 +67,6 @@
         <item name="android:textColor">@color/colorBlack</item>
     </style>
 
-    <style name="VerificationCodeEditTextStyle" parent="@style/EditTextStyle">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:ems">2</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:hint">-</item>
-        <item name="android:maxLength">1</item>
-        <item name="android:textColorHint">@color/colorGrayMiddle</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:paddingStart">0dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingEnd">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:inputType">number</item>
-    </style>
-
 
     <style name="TextViewLight">
         <item name="android:fontFamily">@font/sofia_pro_light</item>

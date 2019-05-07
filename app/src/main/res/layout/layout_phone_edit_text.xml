@@ -15,7 +15,8 @@
         android:inputType="phone"
         android:minEms="2"
         android:singleLine="true"
-        tools:text="+" />
+        tools:text="+"
+        tools:ignore="LabelFor" />
 
     <com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
         android:id="@+id/text_number"

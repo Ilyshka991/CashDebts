@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.fragment.datetimepicker
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isInvisible
@@ -67,8 +68,8 @@ class DateTimePickerDialog : BaseDialog<DateTimePickerDialogViewModel>() {
                 picker_date.year,
                 picker_date.month,
                 picker_date.dayOfMonth,
-                picker_time.currentHour,
-                picker_time.currentMinute
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) picker_time.hour else picker_time.currentHour,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) picker_time.minute else picker_time.currentMinute
             )
         }.let { it.time }
         EventManager.publish(DateTimePickerEvent.OnDateSelected(date))

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.info.AddDebtInfoFragment
@@ -97,11 +98,14 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     }
 
     private fun showSnackBarError(@StringRes id: Int) {
-        Snackbar.make(container, id, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(container, id, Snackbar.LENGTH_LONG)
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            .show()
     }
 
     private fun showSnackBarUserNotExist() {
         Snackbar.make(container, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
             .setAction(R.string.add_debt_action_add_local) {
                 restartWithLocalDebtFragment()
             }.show()

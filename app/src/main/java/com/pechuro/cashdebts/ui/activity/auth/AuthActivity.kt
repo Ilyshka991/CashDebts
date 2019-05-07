@@ -3,7 +3,9 @@ package com.pechuro.cashdebts.ui.activity.auth
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
+import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.auth.code.AuthCodeFragment
 import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragment
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
@@ -54,7 +56,9 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     }
 
     private fun showSnackBar(@StringRes id: Int) {
-        Snackbar.make(container, id, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(container, id, Snackbar.LENGTH_LONG)
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            .show()
     }
 
     private fun openMainActivity() {
