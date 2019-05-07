@@ -28,7 +28,7 @@
     <style name="FabStyle" parent="@style/Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/colorOrange</item>
         <item name="tint">@color/colorBlack</item>
-        <item name="rippleColor">@color/colorGrayLightMiddle</item>
+        <item name="rippleColor">@color/colorGrayMiddleLight</item>
     </style>
 
     <style name="ChipStyle">

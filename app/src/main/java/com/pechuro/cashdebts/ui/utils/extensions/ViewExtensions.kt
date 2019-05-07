@@ -1,10 +1,10 @@
 package com.pechuro.cashdebts.ui.utils.extensions
 
+import android.widget.EditText
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
-import com.google.android.material.textfield.TextInputLayout
 import com.pechuro.cashdebts.R
 
 fun ImageView.loadAvatar(url: String?) {
@@ -19,7 +19,7 @@ fun ImageView.loadAvatar(url: String?) {
         .into(this)
 }
 
-fun TextInputLayout.setError(errorId: Int) {
+fun EditText.setError(errorId: Int) {
     if (errorId == -1) {
         error = null
     } else {

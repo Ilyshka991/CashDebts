@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.di.module
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import com.pechuro.cashdebts.App
 import com.pechuro.cashdebts.di.annotations.AppScope
@@ -18,7 +19,8 @@ class ApplicationModule {
 
     @Provides
     @AppScope
-    fun providePrefs(context: Context) = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
+    fun providePrefs(context: Context): SharedPreferences =
+        context.getSharedPreferences(context.packageName, MODE_PRIVATE)
 
     @Provides
     @AppScope

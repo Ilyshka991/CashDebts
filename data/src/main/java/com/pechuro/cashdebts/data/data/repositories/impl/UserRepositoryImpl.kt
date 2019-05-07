@@ -28,7 +28,8 @@ internal class UserRepositoryImpl @Inject constructor(
         get() = auth.getCurrentUserBaseInformation()
             ?: throw IllegalStateException("User not sign in")
 
-    override fun getSource(uid: String) = Observable.create<FirestoreUser> { emitter ->
+    override fun getSource(uid: String): Observable<FirestoreUser> =
+        Observable.create<FirestoreUser> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
             .addSnapshotListener { snapshot, e ->
@@ -51,7 +52,7 @@ internal class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSingle(uid: String, fromCache: Boolean) =
+    override fun getSingle(uid: String, fromCache: Boolean): Single<FirestoreUser> =
         Single.create<FirestoreUser> { emitter ->
             store.collection(FirestoreStructure.Users.TAG)
                 .document(uid)
@@ -70,7 +71,8 @@ internal class UserRepositoryImpl @Inject constructor(
                 }
         }
 
-    override fun isUserWithUidExist(uid: String) = Single.create<Boolean> { emitter ->
+    override fun isUserWithUidExist(uid: String): Single<Boolean> =
+        Single.create<Boolean> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .document(uid)
             .get()
@@ -84,7 +86,8 @@ internal class UserRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun getUidByPhone(phoneNumber: String) = Single.create<String> { emitter ->
+    override fun getUidByPhone(phoneNumber: String): Single<String> =
+        Single.create<String> { emitter ->
         store.collection(FirestoreStructure.Users.TAG)
             .whereEqualTo(FirestoreStructure.Users.Structure.phoneNumber, phoneNumber)
             .get()
@@ -102,7 +105,7 @@ internal class UserRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun updateUser(user: FirestoreUser, uid: String) =
+    override fun updateUser(user: FirestoreUser, uid: String): Completable =
         Completable.create { emitter ->
             store.collection(FirestoreStructure.Users.TAG)
                 .document(uid)

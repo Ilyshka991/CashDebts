@@ -16,7 +16,8 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
     private val userRepository: IUserRepository
 ) : ILocalDebtRepository {
 
-    override fun getSource() = Observable.create<Map<String, FirestoreLocalDebt>> { emitter ->
+    override fun getSource(): Observable<Map<String, FirestoreLocalDebt>> =
+        Observable.create<Map<String, FirestoreLocalDebt>> { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG)
             .whereEqualTo(
                 FirestoreStructure.LocalDebt.Structure.ownerUid,
@@ -35,7 +36,8 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun getSingle(id: String) = Single.create<FirestoreLocalDebt> { emitter ->
+    override fun getSingle(id: String): Single<FirestoreLocalDebt> =
+        Single.create<FirestoreLocalDebt> { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG).document(id).get()
             .addOnCompleteListener {
                 if (it.isSuccessful && it.result != null) {
@@ -50,7 +52,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun add(debt: FirestoreLocalDebt) = Completable.create { emitter ->
+    override fun add(debt: FirestoreLocalDebt): Completable = Completable.create { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG)
             .add(debt).addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
@@ -62,7 +64,8 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun update(id: String, debt: FirestoreLocalDebt) = Completable.create { emitter ->
+    override fun update(id: String, debt: FirestoreLocalDebt): Completable =
+        Completable.create { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG)
             .document(id)
             .set(debt).addOnCompleteListener {
@@ -75,7 +78,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun delete(id: String) = Completable.create { emitter ->
+    override fun delete(id: String): Completable = Completable.create { emitter ->
         store.collection(FirestoreStructure.LocalDebt.TAG).document(id).delete()
             .addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener

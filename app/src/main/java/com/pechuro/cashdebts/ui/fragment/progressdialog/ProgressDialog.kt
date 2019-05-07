@@ -13,15 +13,13 @@ class ProgressDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_progress, container, false)
-    }
+    ): View = inflater.inflate(R.layout.dialog_progress, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialog?.apply {
             window?.setBackgroundDrawableResource(android.R.color.transparent)
-            val size = resources.getDimensionPixelSize(R.dimen.progress_dialog_size)
+            val size = resources.getDimensionPixelSize(R.dimen.dimen_progress_dialog_size)
             window?.setLayout(size, size)
             isCancelable = false
         }

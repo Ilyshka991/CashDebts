@@ -13,10 +13,10 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionDialogEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel.Events.*
-import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.extensions.loadAvatar
+import com.pechuro.cashdebts.ui.utils.extensions.setError
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
@@ -93,12 +93,10 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
                 }
                 with(errors) {
                     firstNameError.subscribe {
-                        text_first_name.error =
-                            if (it == ProfileEditModel.ID_NO_ERROR) null else getString(it)
+                        text_first_name.setError(it)
                     }.addTo(weakCompositeDisposable)
                     lastNameError.subscribe {
-                        text_last_name.error =
-                            if (it == ProfileEditModel.ID_NO_ERROR) null else getString(it)
+                        text_last_name.setError(it)
                     }.addTo(weakCompositeDisposable)
                 }
             }

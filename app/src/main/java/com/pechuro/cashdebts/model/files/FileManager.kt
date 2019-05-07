@@ -33,9 +33,6 @@ class FileManager @Inject constructor(private val context: Context) {
 
     private fun isExternalStorageWritable() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
 
-    private fun isExternalStorageReadable() = Environment.getExternalStorageState() in
-            setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
-
     private fun InputStream.getBytes(): ByteArray {
         val byteBuffer = ByteArrayOutputStream()
         val bufferSize = 1024

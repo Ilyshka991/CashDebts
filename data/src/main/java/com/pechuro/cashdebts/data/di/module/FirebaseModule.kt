@@ -15,25 +15,25 @@ internal class FirebaseModule {
 
     @Provides
     @DataScope
-    fun provideFirestore() = FirebaseFirestore.getInstance()
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 
     @Provides
     @DataScope
-    fun provideAuth() = FirebaseAuth.getInstance()
+    fun provideAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
     @DataScope
-    fun provideStorage() = FirebaseStorage.getInstance()
+    fun provideStorage(): FirebaseStorage = FirebaseStorage.getInstance()
 
     @Provides
     @DataScope
-    fun providePhoneAuthProvider() = PhoneAuthProvider.getInstance()
+    fun providePhoneAuthProvider(): PhoneAuthProvider = PhoneAuthProvider.getInstance()
 
     @Provides
     @DataScope
-    fun provideMessaging() = FirebaseMessaging.getInstance()
+    fun provideMessaging(): FirebaseMessaging = FirebaseMessaging.getInstance()
 
     @Provides
     @DataScope
-    fun provideInstanceId() = FirebaseInstanceId.getInstance()
+    fun provideInstanceId(): FirebaseInstanceId = FirebaseInstanceId.getInstance()
 }

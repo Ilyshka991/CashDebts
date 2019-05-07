@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.activity.main
 
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
 class SnackActionInfo(@StringRes val actionId: Int, val callback: () -> Unit)
@@ -25,5 +26,5 @@ object SnackbarManager {
         emitter.onNext(info)
     }
 
-    fun listen(info: (SnackInfo) -> Unit) = emitter.subscribe(info)
+    fun listen(info: (SnackInfo) -> Unit): Disposable = emitter.subscribe(info)
 }

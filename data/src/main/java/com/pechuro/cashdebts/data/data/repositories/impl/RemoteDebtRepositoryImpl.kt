@@ -23,7 +23,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 
     private val snapshotListeners = mutableListOf<ListenerRegistration>()
 
-    override fun getSource() =
+    override fun getSource(): Observable<Map<String, FirestoreRemoteDebt>> =
         Observable.combineLatest(
             getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, creditorUid)
                 .map { map ->
@@ -47,7 +47,8 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             snapshotListeners.forEach { it.remove() }
         }
 
-    override fun getSingle(id: String) = Single.create<FirestoreRemoteDebt> { emitter ->
+    override fun getSingle(id: String): Single<FirestoreRemoteDebt> =
+        Single.create<FirestoreRemoteDebt> { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get()
             .addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
@@ -59,7 +60,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun add(debt: FirestoreRemoteDebt) = Completable.create { emitter ->
+    override fun add(debt: FirestoreRemoteDebt): Completable = Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .add(debt).addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
@@ -71,7 +72,8 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun update(id: String, debt: FirestoreRemoteDebt) = Completable.create { emitter ->
+    override fun update(id: String, debt: FirestoreRemoteDebt): Completable =
+        Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .document(id)
             .set(debt)
@@ -85,7 +87,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun delete(id: String) = Completable.create { emitter ->
+    override fun delete(id: String): Completable = Completable.create { emitter ->
         store.collection(FirestoreStructure.RemoteDebt.TAG)
             .document(id)
             .delete()

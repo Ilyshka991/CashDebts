@@ -10,7 +10,10 @@ inline val <T : Any> BehaviorSubject<T>.requireValue: T
 
 
 //TODO: WTF??????????????
-inline fun <T : Any> Observable<T>.mapIf(condition: Boolean, crossinline mapper: T.() -> T) = map {
+inline fun <T : Any> Observable<T>.mapIf(
+    condition: Boolean,
+    crossinline mapper: T.() -> T
+): Observable<T> = map {
     println("Condition $condition")
     if (condition) mapper(it) else it
 }

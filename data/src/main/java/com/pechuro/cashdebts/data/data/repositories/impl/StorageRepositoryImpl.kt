@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 internal class StorageRepositoryImpl @Inject constructor(private val storage: FirebaseStorage) : IStorageRepository {
 
-    override fun uploadAndGetUrl(fileUri: Uri, name: String) = Single.create<Uri> { emitter ->
+    override fun uploadAndGetUrl(fileUri: Uri, name: String): Single<Uri> =
+        Single.create<Uri> { emitter ->
         val avatarRef = storage.reference.child("${FirebaseStorageStructure.AVATARS_PATH}/$name")
 
         avatarRef.putFile(fileUri)
@@ -34,7 +35,7 @@ internal class StorageRepositoryImpl @Inject constructor(private val storage: Fi
             }
     }
 
-    override fun delete(url: String) = Completable.create { emitter ->
+    override fun delete(url: String): Completable = Completable.create { emitter ->
         val ref = storage.getReferenceFromUrl(url)
         ref.delete().addOnCompleteListener {
             if (emitter.isDisposed) return@addOnCompleteListener

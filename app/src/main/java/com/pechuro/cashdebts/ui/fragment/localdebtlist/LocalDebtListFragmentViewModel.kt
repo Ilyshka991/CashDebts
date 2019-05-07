@@ -13,6 +13,7 @@ import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallbac
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtsUiInfo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.observables.ConnectableObservable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class LocalDebtListFragmentViewModel @Inject constructor(
 
     private var previousDeletedDebt: LocalDebt? = null
 
-    val debtSource = debtRepository.getSource()
+    val debtSource: ConnectableObservable<LocalDebtsUiInfo> = debtRepository.getSource()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.computation())
         .map { map ->

@@ -20,7 +20,7 @@ internal class MessagingRepositoryImpl @Inject constructor(
         messagingClient.isAutoInitEnabled = isEnabled
     }
 
-    override fun getCurrentToken() = Single.create<String> { emitter ->
+    override fun getCurrentToken(): Single<String> = Single.create<String> { emitter ->
         instanceId.instanceId
             .addOnCompleteListener { task ->
                 if (!emitter.isDisposed) {
@@ -34,7 +34,8 @@ internal class MessagingRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun deleteCurrentToken(personUid: String) = Completable.create { emitter ->
+    override fun deleteCurrentToken(personUid: String): Completable =
+        Completable.create { emitter ->
         firestore.collection(FirestoreStructure.Tokens.TAG)
             .document(personUid)
             .collection(FirestoreStructure.Tokens.Structure.PushTokens.TAG)
@@ -51,7 +52,7 @@ internal class MessagingRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun saveToken(personUid: String, token: String?) = if (token == null) {
+    override fun saveToken(personUid: String, token: String?): Completable = if (token == null) {
         getCurrentToken().flatMapCompletable {
             saveTokenToFirestore(personUid, instanceId.id, it)
         }

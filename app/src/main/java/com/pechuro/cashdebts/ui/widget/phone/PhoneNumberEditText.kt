@@ -10,7 +10,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.widget.TextWatcher
 import com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
-import kotlinx.android.synthetic.main.layout_phone_edit_text.view.*
+import kotlinx.android.synthetic.main.custom_phone_edit_text.view.*
 
 class PhoneNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -50,7 +50,7 @@ class PhoneNumberEditText @JvmOverloads constructor(
     }
 
     init {
-        inflate(context, R.layout.layout_phone_edit_text, this)
+        inflate(context, R.layout.custom_phone_edit_text, this)
         textNumber = text_number.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {

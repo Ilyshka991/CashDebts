@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
@@ -33,7 +34,7 @@ class ConnectivityListener @Inject constructor(private val connectivityManager: 
         initService()
     }
 
-    fun listen(onChange: (Boolean) -> Unit) = emitter
+    fun listen(onChange: (Boolean) -> Unit): Disposable = emitter
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(onChange)
 

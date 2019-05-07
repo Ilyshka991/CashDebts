@@ -17,7 +17,7 @@ class ProgressButton @JvmOverloads constructor(
     private val progress: ProgressBar
 
     init {
-        inflate(context, R.layout.layout_progress_button, this)
+        inflate(context, R.layout.custom_progress_button, this)
         button = findViewById(R.id.button)
         progress = findViewById(R.id.progress)
         attrs?.let { obtainAttrs(it) }

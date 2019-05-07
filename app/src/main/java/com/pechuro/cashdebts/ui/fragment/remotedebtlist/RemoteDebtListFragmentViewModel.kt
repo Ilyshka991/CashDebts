@@ -32,6 +32,7 @@ import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.observables.ConnectableObservable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
@@ -49,7 +50,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
 
     val isConnectionAvailable = BehaviorSubject.create<Boolean>()
 
-    val debtSource = debtRepository.getSource()
+    val debtSource: ConnectableObservable<RemoteDebtsUiInfo> = debtRepository.getSource()
         .subscribeOn(Schedulers.io())
         .concatMapSingle { map ->
             Observable.fromIterable(map.toList())
@@ -161,13 +162,13 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             val diffResult = DiffUtil.calculateDiff(diffCallback)
             diffCallback.oldList = it
             DiffResult(diffResult, it)
-        }.map {
-            val totalValue = it.dataList
+        }.map { diffResult ->
+            val totalValue = diffResult.dataList
                 .filter { it.status == FirestoreDebtStatus.IN_PROGRESS }
                 .fold(0.0) { acc, debt ->
                     acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
                 }
-            RemoteDebtsUiInfo(it, totalValue)
+            RemoteDebtsUiInfo(diffResult, totalValue)
         }
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)

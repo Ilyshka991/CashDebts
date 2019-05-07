@@ -14,11 +14,11 @@ class Stack<T : Any> {
         values.push(value)
     }
 
-    fun pop() = values.pop()
+    fun pop(): T = values.pop()
 
     fun popIfExist() = if (isNotEmpty) pop() else null
 
-    fun peek() = values.peek()
+    fun peek(): T = values.peek()
 }
 
 fun <T : Any> mutableStackOf() = Stack<T>()
