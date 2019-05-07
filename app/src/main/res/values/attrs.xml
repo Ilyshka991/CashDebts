@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="HintEditText">
-        <attr name="hint" format="string"/>
-        <attr name="is_align_center" format="boolean"/>
+        <attr name="hint" format="string" />
+        <attr name="is_align_center" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ProgressButton">
-        <attr name="android:text" format="string"/>
+        <attr name="android:text" format="string" />
     </declare-styleable>
 </resources>

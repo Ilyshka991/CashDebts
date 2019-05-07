@@ -18,7 +18,11 @@ class HintEditText : EditText {
         init(attrs)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         init(attrs)
     }
 
@@ -67,7 +71,12 @@ class HintEditText : EditText {
         }
     }
 
-    override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
+    override fun onTextChanged(
+        text: CharSequence?,
+        start: Int,
+        lengthBefore: Int,
+        lengthAfter: Int
+    ) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         if (hintText != null && length() < hintText!!.length && hintText!![length()] == ' ') {
             if (lengthAfter > lengthBefore) {
@@ -102,7 +111,7 @@ class HintEditText : EditText {
 
     private fun calculateCharSizes() {
         spaceSize = getPaint().measureText(" ")
-        charSize = getPaint().measureText("1")
+        charSize = getPaint().measureText("‒")
     }
 
     private fun calculateTextOffset() {

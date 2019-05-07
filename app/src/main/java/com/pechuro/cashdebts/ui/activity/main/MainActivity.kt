@@ -138,22 +138,20 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setEventListeners() {
-        strongCompositeDisposable.addAll(
-            EventManager.listen(MainActivityEvent::class.java).subscribe {
-                when (it) {
-                    is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
-                    is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
-                }
-            },
-            EventManager.listen(ProfileEditEvent::class.java).subscribe {
-                when (it) {
-                    is ProfileEditEvent.OnSaved -> {
-                        homeFragment()
-                        isBottomNavVisible = true
-                    }
+        EventManager.listen(MainActivityEvent::class.java).subscribe {
+            when (it) {
+                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
+                is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
+            }
+        }.addTo(strongCompositeDisposable)
+        EventManager.listen(ProfileEditEvent::class.java).subscribe {
+            when (it) {
+                is ProfileEditEvent.OnSaved -> {
+                    homeFragment()
+                    isBottomNavVisible = true
                 }
             }
-        )
+        }.addTo(weakCompositeDisposable)
     }
 
     private fun setNavigationListeners() {

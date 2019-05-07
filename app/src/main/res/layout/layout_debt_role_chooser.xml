@@ -7,9 +7,11 @@
 
     <TextView
         android:id="@+id/text_role"
+        style="@style/TextViewBold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="@string/debt_role_msg_i_am"
+        android:textColor="@color/colorBlack"
         android:textSize="24sp" />
 
     <com.google.android.material.chip.ChipGroup
@@ -24,16 +26,16 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_creditor"
+            style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkable="true"
             android:text="@string/debt_role_creditor" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_debtor"
+            style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkable="true"
             android:text="@string/debt_role_debtor" />
     </com.google.android.material.chip.ChipGroup>
 </LinearLayout>

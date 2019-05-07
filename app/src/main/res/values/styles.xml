@@ -1,11 +1,12 @@
 <resources>
 
     <style name="AppTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/colorBlack</item>
         <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,6 +24,20 @@
         <item name="rippleColor">@color/colorGrayLightMiddle</item>
     </style>
 
+    <style name="ChipStyle">
+        <item name="android:textAppearance">@style/ChipTextAppearance</item>
+        <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
+        <item name="android:checkable">true</item>
+        <item name="checkedIcon">@drawable/ic_chip_ok</item>
+        <item name="rippleColor">@color/colorOrange</item>
+    </style>
+
+    <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/sofia_pro_light</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
     <style name="SwitchStyle">
         <item name="android:fontFamily">@font/sofia_pro_light</item>
         <item name="android:textSize">18sp</item>
@@ -37,10 +52,9 @@
         <item name="rippleColor">@color/colorOrange</item>
     </style>
 
-    <style name="EditTextStyle" parent="@style/Base.Widget.MaterialComponents.TextInputEditText">
-        <item name="android:background">@drawable/background_edit_text</item>
+    <style name="EditTextStyle" parent="@style/Widget.AppCompat.EditText">
         <item name="android:fontFamily">@font/sofia_pro_light</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColorHint">@color/colorGrayMiddle</item>
         <item name="android:textColor">@color/colorBlack</item>
     </style>
@@ -70,14 +84,14 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/colorTransparent</item>
-        <item name="android:textColor">@color/colorGrayDark</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
     <style name="TextViewBold">
         <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/colorTransparent</item>
-        <item name="android:textColor">@color/colorGrayDark</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 

@@ -40,7 +40,9 @@ class ProgressButton @JvmOverloads constructor(
     private fun obtainAttrs(attrs: AttributeSet) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.ProgressButton)
         ta.use {
-            button.text = it.getString(R.styleable.ProgressButton_android_text)
+            button.apply {
+                text = it.getString(R.styleable.ProgressButton_android_text)
+            }
         }
     }
 }

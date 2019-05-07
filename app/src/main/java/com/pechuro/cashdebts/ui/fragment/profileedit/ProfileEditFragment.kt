@@ -13,10 +13,10 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionDialogEvent
 import com.pechuro.cashdebts.ui.fragment.picturetakeoptions.PictureTakeOptionsDialog
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel.Events.*
+import com.pechuro.cashdebts.ui.fragment.profileedit.model.ProfileEditModel
 import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.extensions.loadAvatar
-import com.pechuro.cashdebts.ui.utils.extensions.setError
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
@@ -42,7 +42,11 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when {
             requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK -> loadEditedAvatar()
-            requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK -> data?.data?.let { onPhotoPick(it) }
+            requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK -> data?.data?.let {
+                onPhotoPick(
+                    it
+                )
+            }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -89,10 +93,12 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
                 }
                 with(errors) {
                     firstNameError.subscribe {
-                        text_first_name_layout.setError(it)
+                        text_first_name.error =
+                            if (it == ProfileEditModel.ID_NO_ERROR) null else getString(it)
                     }.addTo(weakCompositeDisposable)
                     lastNameError.subscribe {
-                        text_last_name_layout.setError(it)
+                        text_last_name.error =
+                            if (it == ProfileEditModel.ID_NO_ERROR) null else getString(it)
                     }.addTo(weakCompositeDisposable)
                 }
             }
@@ -165,7 +171,8 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun showOptionsDialog() {
-        PictureTakeOptionsDialog.newInstance().show(childFragmentManager, PictureTakeOptionsDialog.TAG)
+        PictureTakeOptionsDialog.newInstance()
+            .show(childFragmentManager, PictureTakeOptionsDialog.TAG)
     }
 
     private fun loadEditedAvatar() {

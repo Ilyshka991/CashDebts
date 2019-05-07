@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        style="@style/EditTextStyle"
         android:layout_marginTop="24dp"
         android:digits="0123456789.+-*/()"
         android:ems="10"
@@ -26,9 +27,10 @@
     <TextView
         android:id="@+id/text_sum"
         android:layout_width="wrap_content"
+        style="@style/TextViewLight"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/text_value"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -37,6 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        style="@style/EditTextStyle"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/add_debt_hint_description"
@@ -50,6 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        style="@style/EditTextStyle"
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:focusable="false"
@@ -71,6 +75,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

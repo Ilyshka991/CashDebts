@@ -7,9 +7,10 @@
 
     <Button
         android:id="@+id/button"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/TextButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
         android:textSize="24sp"
         tools:text="Button" />
 

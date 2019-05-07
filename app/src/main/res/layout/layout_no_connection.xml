@@ -8,14 +8,15 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="?android:attr/listDivider" />
+        android:background="@color/colorGrayLight" />
 
     <TextView
         android:id="@+id/text_no_connection"
+        style="@style/TextViewBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp"
+        android:padding="16dp"
         android:text="@string/error_no_connection"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 </LinearLayout>

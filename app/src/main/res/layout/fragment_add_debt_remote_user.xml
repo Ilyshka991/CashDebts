@@ -22,14 +22,15 @@
 
         <Button
             android:id="@+id/button_pick_contact"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/TextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/add_debt_action_pick_from_contacts"
-            android:textSize="18sp"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_phone" />

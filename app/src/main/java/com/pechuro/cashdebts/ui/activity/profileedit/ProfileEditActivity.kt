@@ -2,6 +2,7 @@ package com.pechuro.cashdebts.ui.activity.profileedit
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
@@ -20,6 +21,12 @@ class ProfileEditActivity : BaseFragmentActivity<ProfileEditActivityViewModel>()
     override fun getViewModelClass() = ProfileEditActivityViewModel::class
 
     override fun getHomeFragment() = ProfileEditFragment.newInstance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
     override fun onStart() {
         super.onStart()

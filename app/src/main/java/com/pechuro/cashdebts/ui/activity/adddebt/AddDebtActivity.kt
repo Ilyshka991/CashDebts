@@ -37,6 +37,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSupportActionBar(toolbar)
         setupViewModel()
     }
 
