@@ -25,7 +25,7 @@ import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
-import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.DebtsUiInfo
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtDiffCallback
 import io.reactivex.Observable
@@ -158,7 +158,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                 .fold(0.0) { acc, debt ->
                     acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
                 }
-            DebtsUiInfo(it, totalValue)
+            RemoteDebtsUiInfo(it, totalValue)
         }
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)

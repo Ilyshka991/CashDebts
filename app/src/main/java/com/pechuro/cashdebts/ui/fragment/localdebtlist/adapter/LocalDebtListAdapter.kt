@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.model.DiffResult
 import com.pechuro.cashdebts.ui.base.BaseViewHolder
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import kotlinx.android.synthetic.main.item_local_debt.view.*
+import kotlinx.android.synthetic.main.item_local_debt_united.view.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -38,6 +39,11 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                     .inflate(R.layout.item_debt_empty, parent, false)
                 EmptyViewHolder(view)
             }
+            VIEW_TYPE_UNITED -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_local_debt_united, parent, false)
+                UnitedViewHolder(view)
+            }
             else -> throw IllegalArgumentException()
         }
 
@@ -45,6 +51,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
     override fun getItemViewType(position: Int) = when {
         debtList[position].isEmpty() -> VIEW_TYPE_EMPTY
+        debtList[position].isUnited -> VIEW_TYPE_UNITED
         else -> VIEW_TYPE_COMMON
     }
 
@@ -69,12 +76,31 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
     fun getItemByPosition(position: Int) = debtList[position]
 
+    private inner class UnitedViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
+
+        override fun onBind(data: LocalDebt) {
+            isSwipeable = false
+            view.apply {
+                text_person_name_united.text = data.personName
+
+                val textValueStringRes = when (data.role) {
+                    DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
+                    DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
+                    else -> throw IllegalArgumentException()
+                }
+                val textValue = context.getString(textValueStringRes, data.value)
+                text_value_united.text = textValue
+            }
+        }
+    }
+
     private inner class ViewHolder(private val view: View) : BaseViewHolder<LocalDebt>(view) {
 
         override fun onBind(data: LocalDebt) {
             view.apply {
                 if ((itemView.tag as? ItemInfo)?.data === data) {
-                    if (data.description.isNotEmpty()) text_description.isVisible = data.isExpanded
+                    if (data.description.isNotEmpty()) text_description.isVisible =
+                        data.isExpanded
                     text_date.isVisible = data.isExpanded
                     return
                 }
@@ -91,7 +117,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
 
                 text_description.apply {
                     isVisible = data.isExpanded
-                    if (data.description.isEmpty()) isVisible = false else text = data.description
+                    if (data.description.isEmpty()) isVisible = false else text =
+                        data.description
                 }
 
                 text_date.apply {
@@ -119,6 +146,7 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
     companion object ViewTypes {
         private const val VIEW_TYPE_COMMON = 1
         private const val VIEW_TYPE_EMPTY = 2
+        private const val VIEW_TYPE_UNITED = 3
     }
 }
 

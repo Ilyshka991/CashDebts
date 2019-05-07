@@ -93,17 +93,14 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
 
     private fun setViewModelListeners() {
         viewModel.debtSource.subscribe {
-            adapter.update(it)
+            adapter.update(it.diffResult)
             if (progress.isVisible) progress.isVisible = false
-            updateTotalSum(it.dataList)
+            updateTotalSum(it.totalSum)
         }.addTo(weakCompositeDisposable)
     }
 
-    private fun updateTotalSum(debts: List<LocalDebt>) {
-        val totalValue = debts.fold(0.0) { acc, debt ->
-            acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
-        }
-        EventManager.publish(MainActivityEvent.UpdateTotalDebtSum(totalValue))
+    private fun updateTotalSum(totalSum: Double) {
+        EventManager.publish(MainActivityEvent.UpdateTotalDebtSum(totalSum))
     }
 
     private fun deleteDebt(position: Int) {

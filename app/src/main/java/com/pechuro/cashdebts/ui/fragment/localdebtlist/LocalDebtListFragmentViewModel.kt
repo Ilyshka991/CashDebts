@@ -2,14 +2,19 @@ package com.pechuro.cashdebts.ui.fragment.localdebtlist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.pechuro.cashdebts.data.data.model.DebtRole
+import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import com.pechuro.cashdebts.data.data.model.FirestoreLocalDebt
 import com.pechuro.cashdebts.data.data.repositories.ILocalDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.DiffResult
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.activity.main.MainActivityEvent
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebt
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtDiffCallback
+import com.pechuro.cashdebts.ui.fragment.localdebtlist.data.LocalDebtsUiInfo
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
+import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -20,7 +25,8 @@ import javax.inject.Inject
 class LocalDebtListFragmentViewModel @Inject constructor(
     private val debtRepository: ILocalDebtRepository,
     private val userRepository: IUserRepository,
-    private val diffCallback: LocalDebtDiffCallback
+    private val diffCallback: LocalDebtDiffCallback,
+    private val prefsManager: PrefsManager
 ) : BaseViewModel() {
 
     private var previousDeletedDebt: LocalDebt? = null
@@ -47,6 +53,41 @@ class LocalDebtListFragmentViewModel @Inject constructor(
             mergedList.toSet().toList()
         }
         .map {
+            if (prefsManager.filterUnitePersons) {
+                val singleItems =
+                    it.groupBy { it.personName }.filter { it.value.size == 1 }.toList()
+                        .map { it.second[0] }
+                val groupedItems = (it - singleItems).groupingBy { it.personName }
+                    .aggregate { key: String, accumulator: LocalDebt?, element: LocalDebt, first: Boolean ->
+                        if (first) {
+                            element.apply {
+                                if (role == DebtRole.DEBTOR) {
+                                    value = -value
+                                }
+                                isUnited = true
+                            }
+                        } else {
+                            accumulator!!.apply {
+                                value += if (element.role == DebtRole.CREDITOR) element.value else -element.value
+                            }
+                        }
+                    }
+                    .toList().map {
+                        it.second!!.apply {
+                            if (value < 0) {
+                                value = -value
+                                role = DebtRole.DEBTOR
+                            } else {
+                                role = DebtRole.CREDITOR
+                            }
+                        }
+                    }
+                groupedItems + singleItems
+            } else {
+                it
+            }
+        }
+        .map {
             val resultList = mutableListOf<LocalDebt>()
             if (it.isEmpty()) {
                 resultList += LocalDebt.EMPTY
@@ -64,6 +105,13 @@ class LocalDebtListFragmentViewModel @Inject constructor(
             val diffResult = DiffUtil.calculateDiff(diffCallback)
             diffCallback.oldList = it
             DiffResult(diffResult, it)
+        }
+        .map {
+            val totalValue = it.dataList
+                .fold(0.0) { acc, debt ->
+                    acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
+                }
+            LocalDebtsUiInfo(it, totalValue)
         }
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
