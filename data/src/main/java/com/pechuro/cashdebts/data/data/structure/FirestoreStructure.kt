@@ -53,4 +53,13 @@ class FirestoreStructure {
             }
         }
     }
+
+    object Version {
+        const val TAG = "version"
+
+        object Structure {
+
+            const val version = "version"
+        }
+    }
 }

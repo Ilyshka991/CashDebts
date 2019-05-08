@@ -32,4 +32,8 @@ internal interface RepositoriesModule {
     @Binds
     @DataScope
     fun provideMessagingRepository(repository: MessagingRepositoryImpl): IMessagingRepository
+
+    @Binds
+    @DataScope
+    fun provideVersionRepository(repository: VersionRepositoryImpl): IVersionRepository
 }

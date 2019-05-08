@@ -48,6 +48,8 @@
             android:label="@string/label_profile_edit"
             android:parentActivityName=".ui.activity.main.MainActivity" />
 
+        <activity android:name=".ui.activity.version.NewVersionActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.pechuro.cashdebts.fileprovider"

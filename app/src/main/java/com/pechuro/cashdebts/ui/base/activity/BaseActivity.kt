@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.pechuro.cashdebts.AppEvent
+import com.pechuro.cashdebts.ui.activity.version.NewVersionActivity
 import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.utils.EventManager
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -38,6 +42,7 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
         initViewModel()
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
+        setAppEventListener()
     }
 
     override fun onStop() {
@@ -56,5 +61,21 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass().java)
+    }
+
+    private fun setAppEventListener() {
+        EventManager.listen(AppEvent::class.java, true).subscribe {
+            when (it) {
+                is AppEvent.OnNewVersionAvailable -> openNewVersionActivity()
+            }
+        }.addTo(strongCompositeDisposable)
+    }
+
+    private fun openNewVersionActivity() {
+        if (this !is NewVersionActivity) {
+            val intent = NewVersionActivity.newIntent(this)
+            startActivity(intent)
+            finish()
+        }
     }
 }

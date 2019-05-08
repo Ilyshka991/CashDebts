@@ -12,6 +12,7 @@ import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivi
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
 import com.pechuro.cashdebts.ui.activity.splash.SplashActivity
+import com.pechuro.cashdebts.ui.activity.version.NewVersionActivity
 import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialogProvider
 import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterDialogProvider
@@ -20,6 +21,7 @@ import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialogProvid
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.version.NewVersionFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -78,4 +80,11 @@ interface AppActivitiesModule {
             CountrySelectionFragmentProvider::class]
     )
     fun bindCountrySelect(): CountrySelectionActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(
+        modules = [
+            NewVersionFragmentProvider::class]
+    )
+    fun bindVersion(): NewVersionActivity
 }

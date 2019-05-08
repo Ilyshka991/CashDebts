@@ -8,6 +8,7 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivityViewModel
 import com.pechuro.cashdebts.ui.activity.main.MainActivityViewModel
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivityViewModel
+import com.pechuro.cashdebts.ui.activity.version.NewVersionActivityViewModel
 import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialogViewModel
 import com.pechuro.cashdebts.ui.fragment.debtuserprofiledialog.DebtUserProfileDialogViewModel
@@ -15,6 +16,7 @@ import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragmentView
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragmentViewModel
+import com.pechuro.cashdebts.ui.fragment.version.NewVersionFragmentViewModel
 import com.pechuro.cashdebts.ui.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -85,4 +87,14 @@ interface AppViewModelsModule {
     @IntoMap
     @ViewModelKey(DebtUserProfileDialogViewModel::class)
     fun debtUserProfileDialog(viewModel: DebtUserProfileDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewVersionFragmentViewModel::class)
+    fun newVersionFragment(viewModel: NewVersionFragmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewVersionActivityViewModel::class)
+    fun newVersionActivity(viewModel: NewVersionActivityViewModel): ViewModel
 }

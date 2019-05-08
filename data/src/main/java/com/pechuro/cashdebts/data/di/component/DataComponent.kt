@@ -21,4 +21,6 @@ interface DataComponent {
     fun userRepository(): IUserRepository
 
     fun messagingRepository(): IMessagingRepository
+
+    fun versionRepository(): IVersionRepository
 }
