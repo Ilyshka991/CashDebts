@@ -53,7 +53,7 @@ abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
         val view = inflater.inflate(layoutId, container, false)
         dialog?.apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            window?.setBackgroundDrawableResource(R.color.colorTransparent)
+            window?.setBackgroundDrawableResource(R.color.transparent)
         }
 
         return view

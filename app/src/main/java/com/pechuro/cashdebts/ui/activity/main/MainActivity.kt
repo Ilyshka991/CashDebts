@@ -173,7 +173,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun showSnackbar(info: SnackInfo) = Snackbar
         .make(coordinatorLayout, info.msgId, info.duration).apply {
-            setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             anchorView = if (fab.isVisible) fab else bottom_app_bar
             info.action?.let { info -> setAction(info.actionId) { info.callback() } }
             show()

@@ -99,13 +99,13 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
 
     private fun showSnackBarError(@StringRes id: Int) {
         Snackbar.make(container, id, Snackbar.LENGTH_LONG)
-            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             .show()
     }
 
     private fun showSnackBarUserNotExist() {
         Snackbar.make(container, R.string.add_debt_error_user_not_exist, Snackbar.LENGTH_INDEFINITE)
-            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             .setAction(R.string.add_debt_action_add_local) {
                 restartWithLocalDebtFragment()
             }.show()

@@ -76,7 +76,7 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                     context.theme
                 )
                 backgroundColor =
-                    ColorDrawable(ContextCompat.getColor(context, R.color.colorGreen))
+                    ColorDrawable(ContextCompat.getColor(context, R.color.green))
             }
             dX < 0 -> {
                 icon = recyclerView.context.resources.getDrawable(
@@ -87,7 +87,7 @@ class RemoteDebtItemSwipeCallback @Inject constructor() :
                     ColorDrawable(
                         ContextCompat.getColor(
                             context,
-                            R.color.colorBlueBrightHalfTransparent
+                            R.color.blue_bright
                         )
                     )
             }

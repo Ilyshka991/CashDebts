@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="@string/debt_role_msg_i_am"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <com.google.android.material.chip.ChipGroup

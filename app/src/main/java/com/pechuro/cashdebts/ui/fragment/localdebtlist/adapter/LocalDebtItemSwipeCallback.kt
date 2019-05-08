@@ -74,7 +74,7 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
                     context.theme
                 )
                 backgroundColor =
-                    ColorDrawable(ContextCompat.getColor(context, R.color.colorPink))
+                    ColorDrawable(ContextCompat.getColor(context, R.color.pink))
             }
             dX < 0 -> {
                 icon = recyclerView.context.resources.getDrawable(
@@ -85,7 +85,7 @@ class LocalDebtItemSwipeCallback @Inject constructor() :
                     ColorDrawable(
                         ContextCompat.getColor(
                             context,
-                            R.color.colorBlueBrightHalfTransparent
+                            R.color.blue_bright
                         )
                     )
                 drawingDx /= 4
