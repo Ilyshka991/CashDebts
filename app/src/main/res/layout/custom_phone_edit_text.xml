@@ -13,10 +13,11 @@
         android:layout_height="wrap_content"
         android:imeOptions="actionNext"
         android:inputType="phone"
+        android:maxLength="5"
         android:minEms="2"
         android:singleLine="true"
-        tools:text="+"
-        tools:ignore="LabelFor" />
+        tools:ignore="LabelFor"
+        tools:text="+" />
 
     <com.pechuro.cashdebts.ui.widget.hintedittext.HintEditText
         android:id="@+id/text_number"

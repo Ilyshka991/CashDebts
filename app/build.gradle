@@ -1,8 +1,11 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'io.fabric'
+
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
 
 apply from: '../dependencies.gradle'
 apply from: '../configuration.gradle'
@@ -42,6 +45,7 @@ dependencies {
     kapt daggerProcessorDependencies.values()
     implementation glideDependencies.values()
     implementation firebaseDependencies.fcm
+    implementation firebaseDependencies.crashlytics
 
     implementation project(':data')
     implementation project(':calculator')
