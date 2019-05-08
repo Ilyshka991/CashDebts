@@ -37,18 +37,7 @@ class FirestoreRemoteDebt(
     @FirestoreDebtStatus val status: Int,
     val initPersonUid: String,
     @DebtDeleteStatus val deleteStatus: Int
-) : FirestoreBaseDebt(value, description, date) {
-    constructor() : this(
-        "",
-        "",
-        0.0,
-        "",
-        Date(),
-        FirestoreDebtStatus.NOT_SEND,
-        "",
-        DebtDeleteStatus.NOT_DELETED
-    )
-}
+) : FirestoreBaseDebt(value, description, date)
 
 class FirestoreLocalDebt(
     val ownerUid: String,
@@ -57,9 +46,7 @@ class FirestoreLocalDebt(
     description: String,
     date: Date,
     @DebtRole val role: Int
-) : FirestoreBaseDebt(value, description, date) {
-    constructor() : this("", "", 0.0, "", Date(), DebtRole.CREDITOR)
-}
+) : FirestoreBaseDebt(value, description, date)
 
 @IntDef(
     NOT_SEND,

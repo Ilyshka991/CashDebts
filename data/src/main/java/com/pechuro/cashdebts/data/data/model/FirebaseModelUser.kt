@@ -5,6 +5,4 @@ data class FirestoreUser(
     var lastName: String,
     var phoneNumber: String,
     var photoUrl: String?
-) {
-    constructor() : this("", "", "", null)
-}
+)
