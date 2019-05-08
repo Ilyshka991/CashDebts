@@ -2,12 +2,16 @@
     <string name="app_name">Cash Debts</string>
 
     <string name="label_activity_main">Ca$h debts</string>
-    <string name="label_county_select">Select country</string>
+    <string name="label_activity_country_select">Select country</string>
+    <string name="label_activity_profile_edit">Profile edit</string>
+    <string name="label_activity_add_debt">Add debt</string>
+    <string name="label_activity_auth">Sign in</string>
 
-    <string name="error_auth_phone_validation">Phone number isn\'t correct</string>
-    <string name="error_auth_code_validation">Verification code isn\'t correct</string>
-    <string name="error_auth_too_many_requests">Service is not available. Please, retry later</string>
-    <string name="error_auth_common">Something went wrong. Please, retry later</string>
+    <string name="fragment_auth_phone_error_validation">Phone number isn\'t correct</string>
+    <string name="fragment_auth_code_error_validation">Verification code isn\'t correct</string>
+    <string name="fragment_auth_phone_error_too_many_requests">Service is not available. Please, retry later</string>
+
+    <string name="error_common">Something went wrong. Please, retry later</string>
 
     <string name="auth_invalid_country">Invalid country</string>
     <string name="auth_code_time">You can resend it after: %1$d sec</string>
@@ -90,8 +94,6 @@
     <string name="notification_channel_complete_name">Complete</string>
     <string name="notification_channel_update_name">Update</string>
 
-    <string name="label_profile_edit">Profile edit</string>
-    <string name="label_add_debt">Add debt</string>
 
 
     <string name="remote_debt_no_connection">No internet connection. Data sync turn off</string>
@@ -112,7 +114,7 @@
     <string name="dialog_filter_switch_unite">Unite persons (You can\'t perform any action in this mode)</string>
     <string name="dialog_filter_switch_show_complete">Don\'t show completed debts</string>
     <string name="dialog_picture_take_options_title">Choose option</string>
-    <string name="label_auth_activity">Sign in</string>
+
     <string name="fragment_new_version_action_download">Download</string>
     <string name="fragment_new_version_title">New version is available!</string>
 

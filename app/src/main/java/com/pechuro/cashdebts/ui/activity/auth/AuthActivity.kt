@@ -32,7 +32,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        supportActionBar?.title = getString(R.string.label_auth_activity)
+        supportActionBar?.title = getString(R.string.label_activity_auth)
     }
 
     private fun setViewModelListener() {

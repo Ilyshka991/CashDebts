@@ -40,7 +40,7 @@ class AuthActivityViewModel @Inject constructor(
     fun startPhoneNumberVerification() {
         val number = fullPhoneNumber.value
         if (number.isNullOrEmpty()) {
-            command.onNext(Events.OnError(R.string.error_auth_phone_validation))
+            command.onNext(Events.OnError(R.string.fragment_auth_phone_error_validation))
             return
         }
         loadingState.onNext(true)
@@ -50,7 +50,7 @@ class AuthActivityViewModel @Inject constructor(
     fun verifyPhoneNumberWithCode() {
         val code = phoneCode.value
         if (code.isNullOrEmpty()) {
-            command.onNext(Events.OnError(R.string.error_auth_code_validation))
+            command.onNext(Events.OnError(R.string.fragment_auth_code_error_validation))
             return
         }
         loadingState.onNext(true)
@@ -60,7 +60,7 @@ class AuthActivityViewModel @Inject constructor(
     fun resendVerificationCode() {
         val number = fullPhoneNumber.value
         if (number.isNullOrEmpty()) {
-            command.onNext(Events.OnError(R.string.error_auth_phone_validation))
+            command.onNext(Events.OnError(R.string.fragment_auth_phone_error_validation))
             return
         }
         authRepository.resendCode(number)
@@ -86,9 +86,9 @@ class AuthActivityViewModel @Inject constructor(
     private fun onError(e: AuthException) {
         loadingState.onNext(false)
         val error = when (e) {
-            is AuthInvalidCredentialsException -> R.string.error_auth_phone_validation
-            is AuthNotAvailableException -> R.string.error_auth_too_many_requests
-            else -> R.string.error_auth_common
+            is AuthInvalidCredentialsException -> R.string.fragment_auth_phone_error_validation
+            is AuthNotAvailableException -> R.string.fragment_auth_phone_error_too_many_requests
+            else -> R.string.error_common
         }
         command.onNext(Events.OnError(error))
     }
@@ -113,7 +113,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     private fun onIncorrectCode() {
-        command.onNext(Events.OnError(R.string.error_auth_code_validation))
+        command.onNext(Events.OnError(R.string.fragment_auth_code_error_validation))
         loadingState.onNext(false)
     }
 
