@@ -19,3 +19,5 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file displayName.
 #-renamesourcefileattribute SourceFile
+
+-keepnames class com.pechuro.cashdebts.data.data.model.** { *; }
