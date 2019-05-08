@@ -22,6 +22,7 @@ import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
+import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.model.entity.DiffResult
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
@@ -29,6 +30,7 @@ import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAd
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebt
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtDiffCallback
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.data.RemoteDebtsUiInfo
+import com.pechuro.cashdebts.ui.utils.extensions.getFormattedNumber
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -44,6 +46,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     private val userRepository: IUserRepository,
     private val diffCallback: RemoteDebtDiffCallback,
     private val prefsManager: PrefsManager,
+    private val countryList: List<CountryData>,
     connectivityListener: ConnectivityListener
 ) : BaseViewModel() {
     val command = PublishSubject.create<Command>()
@@ -73,7 +76,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                                 anotherPersonUid,
                                 it.firstName,
                                 it.lastName,
-                                it.phoneNumber,
+                                it.phoneNumber.getFormattedNumber(countryList),
                                 it.photoUrl
                             )
                         }

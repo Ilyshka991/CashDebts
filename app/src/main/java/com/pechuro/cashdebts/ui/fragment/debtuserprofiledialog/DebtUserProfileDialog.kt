@@ -28,7 +28,7 @@ class DebtUserProfileDialog : BaseDialog<DebtUserProfileDialogViewModel>() {
             image_avatar.loadAvatar(photoUrl)
             text_first_name.text = firstName
             text_last_name.text = lastName
-            text_phone.text = phoneNumber
+            text_phone.text = formattedPhoneNumber
         }
     }
 

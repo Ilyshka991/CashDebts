@@ -3,7 +3,6 @@ package com.pechuro.cashdebts.ui.activity.auth.phone
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.view.View
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
@@ -11,17 +10,10 @@ import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
-import com.pechuro.cashdebts.ui.utils.extensions.getUserCountryCode
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
-import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
-
-    @Inject
-    protected lateinit var countryList: List<CountryData>
-    @Inject
-    protected lateinit var telephonyManager: TelephonyManager
 
     override val layoutId: Int
         get() = R.layout.fragment_auth_phone
@@ -88,17 +80,11 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
     }
 
     private fun setupView() {
-        text_phone.countryList = countryList
+        text_phone.countryList = viewModel.countryList
     }
 
     private fun setInitialCountry() {
-        text_phone.countryData = getInitialCountry()
-    }
-
-    private fun getInitialCountry(): CountryData {
-        val countryCode = telephonyManager.getUserCountryCode()
-        val country = countryList.find { it.code == countryCode }
-        return country ?: CountryData.EMPTY
+        text_phone.countryData = viewModel.getInitialCountry()
     }
 
     private fun openCountrySelectionActivity() {

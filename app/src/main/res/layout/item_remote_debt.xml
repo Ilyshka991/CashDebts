@@ -14,6 +14,7 @@
 
         <TextView
             android:id="@+id/text_person_name"
+            style="@style/TextViewLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -23,8 +24,10 @@
 
         <TextView
             android:id="@+id/text_value"
+            style="@style/TextViewLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_person_name"
@@ -32,7 +35,9 @@
 
         <TextView
             android:id="@+id/text_status"
+            style="@style/TextViewLight"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textSize="18sp"
@@ -42,9 +47,11 @@
 
         <TextView
             android:id="@+id/text_description"
+            style="@style/TextViewLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/text_person_name"
             app:layout_constraintTop_toBottomOf="@+id/text_status"
@@ -53,8 +60,10 @@
 
         <TextView
             android:id="@+id/text_date"
+            style="@style/TextViewLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginTop="8dp"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/text_description"
@@ -64,13 +73,13 @@
 
         <Button
             android:id="@+id/button_reject"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/TextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/action_reject"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_accept"
             app:layout_constraintHorizontal_bias="0.5"
@@ -79,12 +88,12 @@
 
         <Button
             android:id="@+id/button_accept"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/TextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/action_accept"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_reject"
@@ -92,28 +101,28 @@
 
         <Button
             android:id="@+id/button_ok"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/TextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/action_negative_ok"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_date" />
 
         <Button
             android:id="@+id/button_delete"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/TextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/action_delete"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_date" />

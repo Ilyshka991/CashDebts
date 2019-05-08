@@ -1,5 +1,6 @@
 package com.pechuro.cashdebts.ui.activity.auth
 
+import android.telephony.TelephonyManager
 import androidx.annotation.StringRes
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.data.data.exception.AuthException
@@ -7,17 +8,23 @@ import com.pechuro.cashdebts.data.data.exception.AuthInvalidCredentialsException
 import com.pechuro.cashdebts.data.data.exception.AuthNotAvailableException
 import com.pechuro.cashdebts.data.data.repositories.IAuthRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
+import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
+import com.pechuro.cashdebts.ui.utils.extensions.getFormattedNumber
+import com.pechuro.cashdebts.ui.utils.extensions.getUserCountryCode
+import com.pechuro.cashdebts.ui.utils.extensions.requireValue
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AuthActivityViewModel @Inject constructor(
+    val countryList: List<CountryData>,
     private val authRepository: IAuthRepository,
     private val userRepository: IUserRepository,
-    private val prefsManager: PrefsManager
+    private val prefsManager: PrefsManager,
+    private val telephonyManager: TelephonyManager
 ) : BaseViewModel() {
     val command = PublishSubject.create<Events>()
 
@@ -59,6 +66,12 @@ class AuthActivityViewModel @Inject constructor(
         authRepository.resendCode(number)
     }
 
+    fun getInitialCountry(): CountryData {
+        val countryCode = telephonyManager.getUserCountryCode()
+        val country = countryList.find { it.code == countryCode }
+        return country ?: CountryData.EMPTY
+    }
+
     private fun setAuthEventListener() {
         authRepository.eventEmitter.subscribe {
             when (it) {
@@ -82,7 +95,7 @@ class AuthActivityViewModel @Inject constructor(
 
     private fun onCodeSent() {
         loadingState.onNext(false)
-        command.onNext(Events.OnCodeSent)
+        command.onNext(Events.OnCodeSent(fullPhoneNumber.requireValue.getFormattedNumber(countryList)))
     }
 
     private fun onSuccess() {
@@ -105,7 +118,7 @@ class AuthActivityViewModel @Inject constructor(
     }
 
     sealed class Events {
-        object OnCodeSent : Events()
+        class OnCodeSent(val number: String) : Events()
         class OnComplete(val isUserExist: Boolean) : Events()
         class OnError(@StringRes val id: Int) : Events()
     }

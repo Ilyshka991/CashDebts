@@ -26,11 +26,12 @@
 
         <activity
             android:name=".ui.activity.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/label_activity_main" />
+            android:label="@string/label_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".ui.activity.auth.AuthActivity"
+            android:label="@string/label_auth_activity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

@@ -30,10 +30,15 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
         setViewModelListener()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        supportActionBar?.title = getString(R.string.label_auth_activity)
+    }
+
     private fun setViewModelListener() {
         viewModel.command.subscribe {
             when (it) {
-                is AuthActivityViewModel.Events.OnCodeSent -> showFragment(AuthCodeFragment.newInstance())
+                is AuthActivityViewModel.Events.OnCodeSent -> showCodeFragment(it.number)
                 is AuthActivityViewModel.Events.OnComplete -> {
                     if (it.isUserExist) {
                         openMainActivity()
@@ -59,6 +64,11 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
         Snackbar.make(container, id, Snackbar.LENGTH_LONG)
             .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
             .show()
+    }
+
+    private fun showCodeFragment(title: String) {
+        supportActionBar?.title = title
+        showFragment(AuthCodeFragment.newInstance())
     }
 
     private fun openMainActivity() {

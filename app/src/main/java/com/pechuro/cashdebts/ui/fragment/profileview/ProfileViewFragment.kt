@@ -3,11 +3,11 @@ package com.pechuro.cashdebts.ui.fragment.profileview
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.data.data.model.FirestoreUser
-import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.activity.main.SnackActionInfo
 import com.pechuro.cashdebts.ui.activity.main.SnackInfo
 import com.pechuro.cashdebts.ui.activity.main.SnackbarManager
+import com.pechuro.cashdebts.ui.base.BaseFragment
+import com.pechuro.cashdebts.ui.fragment.profileview.data.ProfileUser
 import com.pechuro.cashdebts.ui.utils.extensions.loadAvatar
 import kotlinx.android.synthetic.main.fragment_profile_view.*
 
@@ -45,12 +45,12 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
         }
     }
 
-    private fun setUser(user: FirestoreUser) {
+    private fun setUser(user: ProfileUser) {
         with(user) {
             image_avatar.loadAvatar(photoUrl)
             text_first_name.text = firstName
             text_last_name.text = lastName
-            text_phone.text = phoneNumber
+            text_phone.text = formattedPhoneNumber
         }
     }
 

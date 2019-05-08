@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.di.module
 
 import android.content.Context
+import com.pechuro.cashdebts.di.annotations.AppScope
 import com.pechuro.cashdebts.model.entity.CountryData
 import dagger.Module
 import dagger.Provides
@@ -9,6 +10,7 @@ import dagger.Provides
 class CountryListModule {
 
     @Provides
+    @AppScope
     fun provideCountryList(context: Context): List<CountryData> {
         val resultList = mutableListOf<CountryData>()
         val reader = context.resources.assets.open("countries.txt").bufferedReader()

@@ -41,7 +41,7 @@ data class RemoteDebt(
         val uid: String,
         val firstName: String,
         val lastName: String,
-        val phoneNumber: String,
+        val formattedPhoneNumber: String,
         val photoUrl: String?
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
@@ -58,7 +58,7 @@ data class RemoteDebt(
             parcel.writeString(uid)
             parcel.writeString(firstName)
             parcel.writeString(lastName)
-            parcel.writeString(phoneNumber)
+            parcel.writeString(formattedPhoneNumber)
             parcel.writeString(photoUrl)
         }
 

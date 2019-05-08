@@ -46,9 +46,6 @@
     <string name="add_debt_invalid_number">Invalid number</string>
     <string name="add_debt_error_invalid_info">Please, enter valid info</string>
     <string name="add_debt_action_pick_from_contacts">Or pick from contacts</string>
-    <string name="debt_role_msg_i_am">I am:</string>
-    <string name="debt_role_creditor">creditor</string>
-    <string name="debt_role_debtor">debtor</string>
     <string name="add_debt_hint_name">Name</string>
     <string name="add_debt_hint_value">Value</string>
     <string name="add_debt_hint_description">Description</string>
@@ -56,7 +53,12 @@
     <string name="add_debt_msg_sum">= %1$.2f</string>
     <string name="add_debt_msg_sum_error">= ERROR</string>
 
+    <string name="debt_role_msg_i_am">I am:</string>
+    <string name="debt_role_creditor">creditor</string>
+    <string name="debt_role_debtor">debtor</string>
+
     <string name="msg_success">Success</string>
+
     <string name="item_local_debt_msg_empty">There are nothing</string>
     <string name="item_local_debt_msg_debtor">I owe: %1$.2f</string>
     <string name="item_local_debt_msg_creditor">Owe me: %1.2f</string>
@@ -87,16 +89,20 @@
     <string name="notification_channel_add_name">Add</string>
     <string name="notification_channel_complete_name">Complete</string>
     <string name="notification_channel_update_name">Update</string>
-    <string name="menu_profile_action_logout">Logout</string>
-    <string name="menu_profile_action_edit">Edit</string>
+
     <string name="label_profile_edit">Profile edit</string>
     <string name="label_add_debt">Add debt</string>
+
+
+    <string name="remote_debt_no_connection">No internet connection. Data sync turn off</string>
+
+    <string name="menu_add_action_next">Next</string>
+    <string name="menu_add_action_save">Save</string>
+    <string name="menu_profile_action_logout">Logout</string>
+    <string name="menu_profile_action_edit">Edit</string>
     <string name="menu_action_filter">Filter</string>
     <string name="menu_debt_list_total">Total:\u0020\u0020%1$.2f</string>
 
-    <string name="remote_debt_no_connection">No internet connection. Data sync turn off</string>
-    <string name="menu_add_action_next">Next</string>
-    <string name="menu_add_action_save">Save</string>
     <string name="dialog_datetime_picker_action_ok">OK</string>
     <string name="dialog_datetime_picker_action_cancel">Cancel</string>
     <string name="dialog_navigation_remote_debt">Remote debt</string>
@@ -106,4 +112,5 @@
     <string name="dialog_filter_switch_unite">Unite persons (You can\'t perform any action in this mode)</string>
     <string name="dialog_filter_switch_show_complete">Don\'t show completed debts</string>
     <string name="dialog_picture_take_options_title">Choose option</string>
+    <string name="label_auth_activity">Sign in</string>
 </resources>
