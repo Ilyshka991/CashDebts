@@ -105,4 +105,5 @@
     <string name="dialog_filter_filter">Filter</string>
     <string name="dialog_filter_switch_unite">Unite persons (You can\'t perform any action in this mode)</string>
     <string name="dialog_filter_switch_show_complete">Don\'t show completed debts</string>
+    <string name="dialog_picture_take_options_title">Choose option</string>
 </resources>

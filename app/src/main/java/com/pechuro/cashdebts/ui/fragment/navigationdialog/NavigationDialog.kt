@@ -12,21 +12,41 @@ class NavigationDialog : BaseBottomSheetDialog() {
     override val layoutId: Int
         get() = R.layout.dialog_navigation
 
+    private val currentItem: NavigationItems by lazy {
+        val index = arguments?.getInt(ARG_CURRENT_ITEM) ?: throw IllegalArgumentException()
+        NavigationItems.values().forEach {
+            if (index == it.index) {
+                return@lazy it
+            }
+        }
+        throw IllegalArgumentException()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupView()
         setViewListeners()
     }
 
+    private fun setupView() {
+        val currentButton = when (currentItem) {
+            NavigationItems.REMOTE_DEBT -> button_remote_debt
+            NavigationItems.LOCAL_DEBT -> button_local_debt
+            NavigationItems.PROFILE -> button_profile
+        }
+        currentButton.alpha = 0.6f
+    }
+
     private fun setViewListeners() {
-        text_local_debt.setOnClickListener {
+        button_local_debt.setOnClickListener {
             EventManager.publish(NavigationEvent.OpenLocalDebts)
             close()
         }
-        text_remote_debt.setOnClickListener {
+        button_remote_debt.setOnClickListener {
             EventManager.publish(NavigationEvent.OpenRemoteDebts)
             close()
         }
-        text_profile.setOnClickListener {
+        button_profile.setOnClickListener {
             EventManager.publish(NavigationEvent.OpenProfile)
             close()
         }
@@ -35,7 +55,16 @@ class NavigationDialog : BaseBottomSheetDialog() {
     companion object {
         const val TAG = "navigation_dialog"
 
-        fun newInstance() = NavigationDialog()
+        private const val ARG_CURRENT_ITEM = "currentItem"
+
+        fun newInstance(currentItem: NavigationItems) = NavigationDialog().apply {
+            arguments = Bundle().apply {
+                putInt(ARG_CURRENT_ITEM, currentItem.index)
+            }
+        }
     }
 }
 
+enum class NavigationItems(val index: Int) {
+    REMOTE_DEBT(1), LOCAL_DEBT(2), PROFILE(3)
+}

@@ -5,14 +5,14 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/color_item_background"
+    app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="0dp"
-    app:cardElevation="4dp"
-    app:contentPadding="16dp">
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/text_person_name"
@@ -54,4 +54,11 @@
             app:layout_constraintTop_toBottomOf="@+id/text_person_name"
             tools:text="Date" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_height="1dp"
+        android:background="@color/colorGrayLight" />
 </androidx.cardview.widget.CardView>

@@ -18,6 +18,7 @@ import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterDialog
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
 import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialog
 import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationEvent
+import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationItems
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
@@ -188,7 +189,13 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun openNavigation() {
-        NavigationDialog.newInstance().apply {
+        val currentFragment = when (supportFragmentManager.findFragmentById(containerId)) {
+            is RemoteDebtListFragment -> NavigationItems.REMOTE_DEBT
+            is LocalDebtListFragment -> NavigationItems.LOCAL_DEBT
+            is ProfileViewFragment -> NavigationItems.PROFILE
+            else -> throw IllegalStateException()
+        }
+        NavigationDialog.newInstance(currentFragment).apply {
             show(supportFragmentManager, NavigationDialog.TAG)
         }
     }

@@ -32,9 +32,7 @@ abstract class BaseBottomSheetDialog : BottomSheetDialogFragment(), HasSupportFr
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(layoutId, container, false)
-    }
+    ): View = inflater.inflate(layoutId, container, false)
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
 

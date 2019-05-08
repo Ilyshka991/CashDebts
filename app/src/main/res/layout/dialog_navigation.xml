@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/text_remote_debt"
+        android:id="@+id/button_remote_debt"
         style="@style/TextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         app:iconTint="@color/colorBlack" />
 
     <Button
-        android:id="@+id/text_local_debt"
+        android:id="@+id/button_local_debt"
         style="@style/TextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         app:iconTint="@color/colorBlack" />
 
     <Button
-        android:id="@+id/text_profile"
+        android:id="@+id/button_profile"
         style="@style/TextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
