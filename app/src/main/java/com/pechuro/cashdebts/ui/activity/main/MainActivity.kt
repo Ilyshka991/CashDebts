@@ -69,7 +69,12 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         setNavigationListeners()
         setViewListeners()
         setupSnackbarManager()
-        setEventListeners()
+        setStrongEventListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setWeakEventListeners()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -135,18 +140,22 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }.addTo(strongCompositeDisposable)
     }
 
-    private fun setEventListeners() {
+    private fun setStrongEventListeners() {
         EventManager.listen(MainActivityEvent::class.java).subscribe {
             when (it) {
                 is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
                 is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
             }
         }.addTo(strongCompositeDisposable)
+    }
+
+    private fun setWeakEventListeners() {
         EventManager.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
                 is ProfileEditEvent.OnSaved -> {
                     homeFragment()
                     isBottomNavVisible = true
+                    isFabVisible = true
                 }
             }
         }.addTo(weakCompositeDisposable)

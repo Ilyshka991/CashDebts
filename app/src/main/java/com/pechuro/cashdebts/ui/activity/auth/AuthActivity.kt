@@ -40,12 +40,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
             when (it) {
                 is AuthActivityViewModel.Events.OnCodeSent -> showCodeFragment(it.number)
                 is AuthActivityViewModel.Events.OnComplete -> {
-                    if (it.isUserExist) {
-                        openMainActivity()
-                    } else {
-                        isBackAllowed = false
-                        showFragment(ProfileEditFragment.newInstance(true))
-                    }
+                    if (it.isUserExist) openMainActivity() else showEditProfileFragment()
                 }
                 is AuthActivityViewModel.Events.OnError -> showSnackBar(it.id)
             }
@@ -69,6 +64,12 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
     private fun showCodeFragment(title: String) {
         supportActionBar?.title = title
         showFragment(AuthCodeFragment.newInstance())
+    }
+
+    private fun showEditProfileFragment() {
+        isBackAllowed = false
+        supportActionBar?.title = getString(R.string.auth_activity_title_add_profile)
+        showFragment(ProfileEditFragment.newInstance(true))
     }
 
     private fun openMainActivity() {

@@ -115,4 +115,6 @@
     <string name="label_auth_activity">Sign in</string>
     <string name="fragment_new_version_action_download">Download</string>
     <string name="fragment_new_version_title">New version is available!</string>
+
+    <string name="auth_activity_title_add_profile">Add profile</string>
 </resources>
