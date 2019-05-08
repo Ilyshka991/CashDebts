@@ -20,4 +20,4 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepnames class com.pechuro.cashdebts.data.data.model.*
+-keepnames class com.pechuro.cashdebts.data.data.model.** { *; }
