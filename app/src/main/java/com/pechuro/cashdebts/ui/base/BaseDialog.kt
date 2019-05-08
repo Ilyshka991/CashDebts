@@ -1,7 +1,6 @@
 package com.pechuro.cashdebts.ui.base
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.pechuro.cashdebts.R
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
@@ -37,8 +37,6 @@ abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
     @Inject
     protected lateinit var strongCompositeDisposable: CompositeDisposable
 
-    private val handler = Handler()
-
     protected abstract fun getViewModelClass(): KClass<V>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,15 +45,18 @@ abstract class BaseDialog<V : BaseViewModel> : DialogFragment(),
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(layoutId, container, false)
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        return view
-    }
+        dialog?.apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window?.setBackgroundDrawableResource(R.color.colorTransparent)
+        }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        handler.post { }
+        return view
     }
 
     override fun onStop() {
