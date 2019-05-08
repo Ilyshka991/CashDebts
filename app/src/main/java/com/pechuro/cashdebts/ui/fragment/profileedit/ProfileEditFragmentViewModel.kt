@@ -83,7 +83,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
         }
 
         fun updateUser(photoUrl: String?): Completable {
-            val user = com.pechuro.cashdebts.data.data.model.FirestoreUser(
+            val user = FirestoreUser(
                 inputData.fields.firstName.requireValue,
                 inputData.fields.lastName.requireValue,
                 userRepository.currentUserBaseInformation.phoneNumber,
