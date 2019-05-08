@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivityViewModel
@@ -12,8 +13,12 @@ import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_auth_phone.*
+import javax.inject.Inject
 
 class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
+
+    @Inject
+    protected lateinit var imm: InputMethodManager
 
     override val layoutId: Int
         get() = R.layout.fragment_auth_phone
@@ -44,6 +49,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
                         text_phone.countryData = country ?: CountryData.EMPTY
                     }
                 }
+                showSoftInput()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -83,8 +89,21 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
         text_phone.countryList = viewModel.countryList
     }
 
+    private fun showSoftInput() {
+        requireView().postDelayed({
+            imm.showSoftInput(requireView().findFocus(), 0)
+        }, 50)
+    }
+
     private fun setInitialCountry() {
-        text_phone.countryData = viewModel.getInitialCountry()
+        viewModel.getInitialCountry().also {
+            text_phone.countryData = it
+            if (it.isEmpty) {
+                text_phone.textCode.requestFocus()
+            } else {
+                text_phone.textNumber.requestFocus()
+            }
+        }
     }
 
     private fun openCountrySelectionActivity() {
