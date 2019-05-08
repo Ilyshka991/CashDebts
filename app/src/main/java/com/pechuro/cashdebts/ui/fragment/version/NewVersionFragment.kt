@@ -31,7 +31,7 @@ class NewVersionFragment : BaseFragment<NewVersionFragmentViewModel>() {
     }
 
     companion object {
-        private const val LINK = "https://github.com/Ilyshka991/Cash_Debts"
+        private const val LINK = "https://github.com/Ilyshka991/Cash_Debts/releases"
 
         fun newInstance() = NewVersionFragment()
     }
