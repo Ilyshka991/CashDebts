@@ -19,7 +19,7 @@
     <string name="menu_fragment_profile_action_edit">Edit</string>
 
     <string name="menu_fragment_debt_list_action_filter">Filter</string>
-    <string name="menu_fragment_debt_list_text_total">Total:\u0020\u0020%1$.2f</string>
+    <string name="menu_fragment_debt_list_action_total_sum">Total sum</string>
 
     <string name="snackbar_msg_deleted">Deleted</string>
     <string name="snackbar_msg_success">Success</string>
@@ -116,4 +116,6 @@
     <string name="dialog_filter_title">Filter</string>
     <string name="dialog_filter_text_unite_persons">Unite persons (You can\'t perform any action in this mode)</string>
     <string name="dialog_filter_text_show_complete">Don\'t show completed debts</string>
+
+    <string name="popup_total_sum_title">Total:\u0020\u0020%1$.2f</string>
 </resources>

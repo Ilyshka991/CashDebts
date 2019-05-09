@@ -1,8 +1,13 @@
 package com.pechuro.cashdebts.ui.activity.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.annotation.MenuRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -27,6 +32,7 @@ import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_bar.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.popup_total_sum.view.*
 
 class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
@@ -58,6 +64,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private var lastShownSnackbar: Snackbar? = null
 
+    private lateinit var popupTotalSum: PopupWindow
+
     override fun getViewModelClass() = MainActivityViewModel::class
 
     override fun getHomeFragment() = RemoteDebtListFragment.newInstance()
@@ -75,6 +83,13 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     override fun onStart() {
         super.onStart()
         setWeakEventListeners()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::popupTotalSum.isInitialized) {
+            popupTotalSum.dismiss()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -115,6 +130,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 R.id.menu_profile_action_edit -> openEditProfile()
                 R.id.menu_profile_action_logout -> logout()
                 R.id.menu_debt_list_action_filter -> openFilter()
+                R.id.menu_debt_list_msg_total -> showTotalSumPopup()
             }
             true
         }
@@ -239,10 +255,8 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun updateTotalDebtSum(value: Double) {
-        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total)?.apply {
-            title = getString(R.string.menu_fragment_debt_list_text_total, value)
-            isVisible = true
-        }
+        popupTotalSum = createTotalSumPopup(value)
+        bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total)?.isVisible = true
     }
 
     private fun openProfileEditIfNecessary() {
@@ -251,6 +265,36 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             isFabVisible = false
             showFragment(ProfileEditFragment.newInstance(true), false)
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun createTotalSumPopup(value: Double) = PopupWindow(
+        layoutInflater.inflate(R.layout.popup_total_sum, null),
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT
+    ).apply {
+        this.contentView.text_total_sum.text = getString(R.string.popup_total_sum_title, value)
+        setBackgroundDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.background_popup,
+                theme
+            )
+        )
+        isOutsideTouchable = true
+    }
+
+    private fun showTotalSumPopup() {
+        val location = IntArray(2)
+        val menuView = findViewById<View>(R.id.menu_debt_list_msg_total)
+        menuView.getLocationOnScreen(location)
+
+        popupTotalSum.showAtLocation(
+            menuView,
+            Gravity.NO_GRAVITY,
+            location[0],
+            location[1] - bottom_app_bar.height
+        )
     }
 
     companion object {
