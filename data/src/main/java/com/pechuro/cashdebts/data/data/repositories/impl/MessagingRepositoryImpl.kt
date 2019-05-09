@@ -36,21 +36,21 @@ internal class MessagingRepositoryImpl @Inject constructor(
 
     override fun deleteCurrentToken(personUid: String): Completable =
         Completable.create { emitter ->
-        firestore.collection(FirestoreStructure.Tokens.TAG)
-            .document(personUid)
-            .collection(FirestoreStructure.Tokens.Structure.PushTokens.TAG)
-            .document(instanceId.id)
-            .delete()
-            .addOnCompleteListener {
-                if (!emitter.isDisposed) {
-                    if (it.isSuccessful) {
-                        emitter.onComplete()
-                    } else {
-                        emitter.onError(it.exception ?: Exception())
+            firestore.collection(FirestoreStructure.TAG_TOKENS)
+                .document(personUid)
+                .collection(FirestoreStructure.TAG_PUSH_TOKENS)
+                .document(instanceId.id)
+                .delete()
+                .addOnCompleteListener {
+                    if (!emitter.isDisposed) {
+                        if (it.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            emitter.onError(it.exception ?: Exception())
+                        }
                     }
                 }
-            }
-    }
+        }
 
     override fun saveToken(personUid: String, token: String?): Completable = if (token == null) {
         getCurrentToken().flatMapCompletable {
@@ -62,9 +62,9 @@ internal class MessagingRepositoryImpl @Inject constructor(
 
     private fun saveTokenToFirestore(personUid: String, instanceId: String, token: String) =
         Completable.create { emitter ->
-            firestore.collection(FirestoreStructure.Tokens.TAG)
+            firestore.collection(FirestoreStructure.TAG_TOKENS)
                 .document(personUid)
-                .collection(FirestoreStructure.Tokens.Structure.PushTokens.TAG)
+                .collection(FirestoreStructure.TAG_PUSH_TOKENS)
                 .document(instanceId)
                 .set(FirestoreToken(token))
                 .addOnCompleteListener {

@@ -20,9 +20,9 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
 
     override fun getSource(): Observable<Map<String, FirestoreLocalDebt>> =
         Observable.create<Map<String, FirestoreLocalDebt>> { emitter ->
-            store.collection(FirestoreStructure.LocalDebt.TAG)
+            store.collection(FirestoreStructure.TAG_LOCAL_DEBTS)
                 .whereEqualTo(
-                    FirestoreStructure.LocalDebt.Structure.ownerUid,
+                    FirestoreLocalDebt::ownerUid.name,
                     userRepository.currentUserBaseInformation.uid
                 )
                 .addSnapshotListener { snapshot, _ ->
@@ -31,14 +31,12 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
                         .mapNotNull {
                             val debt = with(it) {
                                 FirestoreLocalDebt(
-                                    getString(FirestoreStructure.LocalDebt.Structure.ownerUid)
-                                        ?: "",
-                                    getString(FirestoreStructure.LocalDebt.Structure.name) ?: "",
-                                    getDouble(FirestoreStructure.LocalDebt.Structure.value) ?: 0.0,
-                                    getString(FirestoreStructure.LocalDebt.Structure.description)
-                                        ?: "",
-                                    getDate(FirestoreStructure.LocalDebt.Structure.date) ?: Date(),
-                                    getLong(FirestoreStructure.LocalDebt.Structure.role)?.toInt()
+                                    getString(FirestoreLocalDebt::ownerUid.name) ?: "",
+                                    getString(FirestoreLocalDebt::name.name) ?: "",
+                                    getDouble(FirestoreLocalDebt::value.name) ?: 0.0,
+                                    getString(FirestoreLocalDebt::description.name) ?: "",
+                                    getDate(FirestoreLocalDebt::date.name) ?: Date(),
+                                    getLong(FirestoreLocalDebt::role.name)?.toInt()
                                         ?: DebtRole.CREDITOR
                                 )
                             }
@@ -53,20 +51,18 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
 
     override fun getSingle(id: String): Single<FirestoreLocalDebt> =
         Single.create<FirestoreLocalDebt> { emitter ->
-            store.collection(FirestoreStructure.LocalDebt.TAG).document(id).get()
+            store.collection(FirestoreStructure.TAG_LOCAL_DEBTS).document(id).get()
                 .addOnCompleteListener {
                     if (it.isSuccessful && it.result != null) {
                         if (!emitter.isDisposed) {
                             val debt = with(it.result!!) {
                                 FirestoreLocalDebt(
-                                    getString(FirestoreStructure.LocalDebt.Structure.ownerUid)
-                                        ?: "",
-                                    getString(FirestoreStructure.LocalDebt.Structure.name) ?: "",
-                                    getDouble(FirestoreStructure.LocalDebt.Structure.value) ?: 0.0,
-                                    getString(FirestoreStructure.LocalDebt.Structure.description)
-                                        ?: "",
-                                    getDate(FirestoreStructure.LocalDebt.Structure.date) ?: Date(),
-                                    getLong(FirestoreStructure.LocalDebt.Structure.role)?.toInt()
+                                    getString(FirestoreLocalDebt::ownerUid.name) ?: "",
+                                    getString(FirestoreLocalDebt::name.name) ?: "",
+                                    getDouble(FirestoreLocalDebt::value.name) ?: 0.0,
+                                    getString(FirestoreLocalDebt::description.name) ?: "",
+                                    getDate(FirestoreLocalDebt::date.name) ?: Date(),
+                                    getLong(FirestoreLocalDebt::role.name)?.toInt()
                                         ?: DebtRole.CREDITOR
                                 )
                             }
@@ -81,7 +77,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
         }
 
     override fun add(debt: FirestoreLocalDebt): Completable = Completable.create { emitter ->
-        store.collection(FirestoreStructure.LocalDebt.TAG)
+        store.collection(FirestoreStructure.TAG_LOCAL_DEBTS)
             .add(debt).addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
                 if (it.isSuccessful) {
@@ -94,7 +90,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
 
     override fun update(id: String, debt: FirestoreLocalDebt): Completable =
         Completable.create { emitter ->
-            store.collection(FirestoreStructure.LocalDebt.TAG)
+            store.collection(FirestoreStructure.TAG_LOCAL_DEBTS)
                 .document(id)
                 .set(debt).addOnCompleteListener {
                     if (emitter.isDisposed) return@addOnCompleteListener
@@ -107,7 +103,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
         }
 
     override fun delete(id: String): Completable = Completable.create { emitter ->
-        store.collection(FirestoreStructure.LocalDebt.TAG).document(id).delete()
+        store.collection(FirestoreStructure.TAG_LOCAL_DEBTS).document(id).delete()
             .addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
                 if (it.isSuccessful) {

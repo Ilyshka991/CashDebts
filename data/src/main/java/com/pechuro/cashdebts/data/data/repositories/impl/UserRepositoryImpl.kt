@@ -29,7 +29,7 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override fun getSource(uid: String): Observable<FirestoreUser> =
         Observable.create<FirestoreUser> { emitter ->
-            store.collection(FirestoreStructure.Users.TAG)
+            store.collection(FirestoreStructure.TAG_USERS)
                 .document(uid)
                 .addSnapshotListener { snapshot, e ->
                     if (emitter.isDisposed) return@addSnapshotListener
@@ -37,10 +37,10 @@ internal class UserRepositoryImpl @Inject constructor(
                         if (snapshot != null && snapshot.exists()) {
                             val user = with(snapshot) {
                                 FirestoreUser(
-                                    getString(FirestoreStructure.Users.Structure.firstName) ?: "",
-                                    getString(FirestoreStructure.Users.Structure.lastName) ?: "",
-                                    getString(FirestoreStructure.Users.Structure.phoneNumber) ?: "",
-                                    getString(FirestoreStructure.Users.Structure.photoUrl)
+                                    getString(FirestoreUser::firstName.name) ?: "",
+                                    getString(FirestoreUser::lastName.name) ?: "",
+                                    getString(FirestoreUser::phoneNumber.name) ?: "",
+                                    getString(FirestoreUser::photoUrl.name)
                                 )
                             }
                             emitter.onNext(user)
@@ -61,7 +61,7 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override fun getSingle(uid: String, fromCache: Boolean): Single<FirestoreUser> =
         Single.create<FirestoreUser> { emitter ->
-            store.collection(FirestoreStructure.Users.TAG)
+            store.collection(FirestoreStructure.TAG_USERS)
                 .document(uid)
                 .get(if (fromCache) Source.CACHE else Source.DEFAULT)
                 .addOnCompleteListener {
@@ -70,10 +70,10 @@ internal class UserRepositoryImpl @Inject constructor(
                         if (it.result?.data != null) {
                             val user = with(it.result!!) {
                                 FirestoreUser(
-                                    getString(FirestoreStructure.Users.Structure.firstName) ?: "",
-                                    getString(FirestoreStructure.Users.Structure.lastName) ?: "",
-                                    getString(FirestoreStructure.Users.Structure.phoneNumber) ?: "",
-                                    getString(FirestoreStructure.Users.Structure.photoUrl)
+                                    getString(FirestoreUser::firstName.name) ?: "",
+                                    getString(FirestoreUser::lastName.name) ?: "",
+                                    getString(FirestoreUser::phoneNumber.name) ?: "",
+                                    getString(FirestoreUser::photoUrl.name)
                                 )
                             }
                             emitter.onSuccess(user)
@@ -88,7 +88,7 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override fun isUserWithUidExist(uid: String): Single<Boolean> =
         Single.create<Boolean> { emitter ->
-            store.collection(FirestoreStructure.Users.TAG)
+            store.collection(FirestoreStructure.TAG_USERS)
                 .document(uid)
                 .get()
                 .addOnCompleteListener {
@@ -103,8 +103,8 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override fun getUidByPhone(phoneNumber: String): Single<String> =
         Single.create<String> { emitter ->
-            store.collection(FirestoreStructure.Users.TAG)
-                .whereEqualTo(FirestoreStructure.Users.Structure.phoneNumber, phoneNumber)
+            store.collection(FirestoreStructure.TAG_USERS)
+                .whereEqualTo(FirestoreUser::phoneNumber.name, phoneNumber)
                 .get()
                 .addOnCompleteListener {
                     if (emitter.isDisposed) return@addOnCompleteListener
@@ -122,7 +122,7 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override fun updateUser(user: FirestoreUser, uid: String): Completable =
         Completable.create { emitter ->
-            store.collection(FirestoreStructure.Users.TAG)
+            store.collection(FirestoreStructure.TAG_USERS)
                 .document(uid)
                 .set(user)
                 .addOnCompleteListener {
@@ -140,13 +140,13 @@ internal class UserRepositoryImpl @Inject constructor(
 
     private fun updateRemoteDebts(uid: String) = Completable.merge(
         listOf(
-            updateRemoteDebt(uid, FirestoreStructure.RemoteDebt.Structure.debtorUid),
-            updateRemoteDebt(uid, FirestoreStructure.RemoteDebt.Structure.creditorUid)
+            updateRemoteDebt(uid, FirestoreRemoteDebt::debtorUid.name),
+            updateRemoteDebt(uid, FirestoreRemoteDebt::creditorUid.name)
         )
     )
 
     private fun updateRemoteDebt(uid: String, debtRole: String) = Completable.create { emitter ->
-        store.collection(FirestoreStructure.RemoteDebt.TAG)
+        store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
             .whereEqualTo(debtRole, uid)
             .get()
             .addOnCompleteListener { task ->
@@ -165,28 +165,29 @@ internal class UserRepositoryImpl @Inject constructor(
     private fun updateDocuments(snapshot: QuerySnapshot) = Completable.create { emitter ->
         if (snapshot.documents.isNotEmpty()) {
             snapshot.documents.forEach { snapshot ->
-                store.collection(FirestoreStructure.RemoteDebt.TAG)
+                store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
                     .document(snapshot.id)
                     .delete()
                     .continueWithTask {
                         val debt = with(snapshot) {
                             FirestoreRemoteDebt(
-                                getString(FirestoreStructure.RemoteDebt.Structure.creditorUid)
+                                getString(FirestoreRemoteDebt::creditorUid.name)
                                     ?: "",
-                                getString(FirestoreStructure.RemoteDebt.Structure.debtorUid) ?: "",
-                                getDouble(FirestoreStructure.RemoteDebt.Structure.value) ?: 0.0,
-                                getString(FirestoreStructure.RemoteDebt.Structure.description)
+                                getString(FirestoreRemoteDebt::debtorUid.name) ?: "",
+                                getDouble(FirestoreRemoteDebt::value.name) ?: 0.0,
+                                getString(FirestoreRemoteDebt::description.name)
                                     ?: "",
-                                getDate(FirestoreStructure.RemoteDebt.Structure.date) ?: Date(),
-                                getLong(FirestoreStructure.RemoteDebt.Structure.status)?.toInt()
+                                getDate(FirestoreRemoteDebt::date.name) ?: Date(),
+                                getLong(FirestoreRemoteDebt::status.name)?.toInt()
                                     ?: FirestoreDebtStatus.NOT_SEND,
-                                getString(FirestoreStructure.RemoteDebt.Structure.initPersonUid)
+                                getString(FirestoreRemoteDebt::initPersonUid.name)
                                     ?: "",
-                                getLong(FirestoreStructure.RemoteDebt.Structure.deleteStatus)?.toInt()
+                                getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
                                     ?: DebtDeleteStatus.NOT_DELETED
+
                             )
                         }
-                        store.collection(FirestoreStructure.RemoteDebt.TAG)
+                        store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
                             .document(snapshot.id)
                             .set(debt)
                     }
