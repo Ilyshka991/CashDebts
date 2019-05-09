@@ -32,6 +32,7 @@ internal class UserRepositoryImpl @Inject constructor(
             store.collection(FirestoreStructure.TAG_USERS)
                 .document(uid)
                 .addSnapshotListener { snapshot, e ->
+                    println("AAAAAAAAAAAAAA ")
                     if (emitter.isDisposed) return@addSnapshotListener
                     if (e == null) {
                         if (snapshot != null && snapshot.exists()) {
