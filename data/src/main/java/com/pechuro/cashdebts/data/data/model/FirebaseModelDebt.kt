@@ -1,6 +1,7 @@
 package com.pechuro.cashdebts.data.data.model
 
 import androidx.annotation.IntDef
+import androidx.annotation.Keep
 import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.CACHED
 import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETED_FROM_CREDITOR
 import com.pechuro.cashdebts.data.data.model.DebtDeleteStatus.Companion.DELETED_FROM_DEBTOR
@@ -22,12 +23,14 @@ import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus.Companion.WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR
 import java.util.*
 
+@Keep
 abstract class FirestoreBaseDebt(
     val value: Double,
     val description: String,
     val date: Date
 )
 
+@Keep
 class FirestoreRemoteDebt(
     val creditorUid: String,
     val debtorUid: String,
@@ -39,6 +42,7 @@ class FirestoreRemoteDebt(
     @DebtDeleteStatus val deleteStatus: Int
 ) : FirestoreBaseDebt(value, description, date)
 
+@Keep
 class FirestoreLocalDebt(
     val ownerUid: String,
     val name: String,

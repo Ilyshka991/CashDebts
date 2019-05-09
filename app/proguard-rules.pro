@@ -1,1 +1,0 @@
--keepnames class com.pechuro.cashdebts.data.data.model.** { *; }
