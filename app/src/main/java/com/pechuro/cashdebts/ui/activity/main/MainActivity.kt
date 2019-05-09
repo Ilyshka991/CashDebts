@@ -125,8 +125,14 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             }
         }
         nestedScrollView.setOnScrollChangeListener { _: NestedScrollView, _, scrollY, _, oldScrollY ->
-            bottom_app_bar.fabAlignmentMode = if (scrollY > oldScrollY)
-                BottomAppBar.FAB_ALIGNMENT_MODE_CENTER else BottomAppBar.FAB_ALIGNMENT_MODE_END
+            bottom_app_bar.apply {
+                fabAlignmentMode = if (scrollY > oldScrollY) {
+                    BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+                } else {
+                    (behavior as? BottomAppBar.Behavior)?.slideUp(this)
+                    BottomAppBar.FAB_ALIGNMENT_MODE_END
+                }
+            }
         }
     }
 
