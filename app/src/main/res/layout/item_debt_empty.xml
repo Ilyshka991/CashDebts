@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:text="@string/item_local_debt_msg_empty"
+    android:text="@string/item_debt_text_empty"
     android:textSize="24sp" />
 

@@ -126,18 +126,18 @@ class AddDebtActivityViewModel @Inject constructor(
                 if (data.isValid()) {
                     command.onNext(Events.OpenInfo(false))
                 } else {
-                    command.onNext(Events.OnError(R.string.add_debt_error_invalid_name))
+                    command.onNext(Events.OnError(R.string.fragment_add_debt_local_error_invalid_name))
                 }
             }
             is RemoteDebtInfo -> {
                 if (data.isValid()) {
                     if (data.phone.requireValue.isEqualsCurrentNumber()) {
-                        command.onNext(Events.OnError(R.string.add_debt_error_number_equal_current))
+                        command.onNext(Events.OnError(R.string.fragment_add_debt_remote_error_number_equal_current))
                     } else {
                         checkUserExist(data)
                     }
                 } else {
-                    command.onNext(Events.OnError(R.string.add_debt_error_invalid_phone))
+                    command.onNext(Events.OnError(R.string.fragment_add_debt_remote_error_invalid_phone))
                 }
             }
         }
@@ -145,7 +145,7 @@ class AddDebtActivityViewModel @Inject constructor(
 
     fun save() {
         if (!debt.isInfoValid()) {
-            command.onNext(Events.OnError(R.string.add_debt_error_invalid_info))
+            command.onNext(Events.OnError(R.string.fragment_add_debt_info_error_invalid_info))
             return
         }
         loadingState.onNext(LoadingState.OnStart)
@@ -201,7 +201,7 @@ class AddDebtActivityViewModel @Inject constructor(
         val status: Int
         when (debt.debtRole.value) {
             null -> {
-                command.onNext(Events.OnError(R.string.add_debt_error_common))
+                command.onNext(Events.OnError(R.string.common_error))
                 return
             }
             CREDITOR -> {
@@ -301,11 +301,10 @@ class AddDebtActivityViewModel @Inject constructor(
             loadingState.onNext(LoadingState.OnStop)
             command.onNext(Events.OpenInfo(true))
         }, {
-            it.printStackTrace()
             loadingState.onNext(LoadingState.OnStop)
             when (it) {
                 is FirestoreUserNotFoundException -> command.onNext(Events.OnUserNotExist)
-                else -> command.onNext(Events.OnError(R.string.add_debt_error_common))
+                else -> command.onNext(Events.OnError(R.string.common_error))
             }
         }).addTo(compositeDisposable)
     }

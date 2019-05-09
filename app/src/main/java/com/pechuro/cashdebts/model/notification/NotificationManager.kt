@@ -76,7 +76,7 @@ class NotificationManager @Inject constructor(
 
     private fun createAddChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = context.getString(R.string.notification_channel_add_name)
+            val name = context.getString(R.string.notification_channel_add)
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ADD_ID, name, importance).apply {
                 group = NotificationConstants.DebtActionsChannelGroup.GROUP_ID
@@ -87,7 +87,7 @@ class NotificationManager @Inject constructor(
 
     private fun createCompleteChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = context.getString(R.string.notification_channel_complete_name)
+            val name = context.getString(R.string.notification_channel_complete)
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_COMPLETE_ID, name, importance).apply {
                 group = NotificationConstants.DebtActionsChannelGroup.GROUP_ID
@@ -98,7 +98,7 @@ class NotificationManager @Inject constructor(
 
     private fun createUpdateChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = context.getString(R.string.notification_channel_update_name)
+            val name = context.getString(R.string.notification_channel_update)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_UPDATE_ID, name, importance).apply {
                 group = NotificationConstants.DebtActionsChannelGroup.GROUP_ID

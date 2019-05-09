@@ -5,12 +5,12 @@
     <item
         android:id="@+id/menu_debt_list_action_filter"
         android:icon="@drawable/ic_filter"
-        android:title="@string/menu_action_filter"
+        android:title="@string/menu_fragment_debt_list_action_filter"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_debt_list_msg_total"
-        android:title="@string/menu_debt_list_total"
+        android:title="@string/menu_fragment_debt_list_text_total"
 
         android:visible="false"
         app:showAsAction="ifRoom" />

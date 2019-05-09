@@ -47,10 +47,6 @@ class FirestoreStructure {
 
             object PushTokens {
                 const val TAG = "pushTokens"
-
-                object Structure {
-                    const val token = "token"
-                }
             }
         }
     }

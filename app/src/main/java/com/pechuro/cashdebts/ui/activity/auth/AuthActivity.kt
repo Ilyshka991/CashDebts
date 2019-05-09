@@ -32,7 +32,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        supportActionBar?.title = getString(R.string.label_auth_activity)
+        supportActionBar?.title = getString(R.string.label_activity_auth)
     }
 
     private fun setViewModelListener() {
@@ -40,12 +40,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
             when (it) {
                 is AuthActivityViewModel.Events.OnCodeSent -> showCodeFragment(it.number)
                 is AuthActivityViewModel.Events.OnComplete -> {
-                    if (it.isUserExist) {
-                        openMainActivity()
-                    } else {
-                        isBackAllowed = false
-                        showFragment(ProfileEditFragment.newInstance(true))
-                    }
+                    if (it.isUserExist) openMainActivity() else showEditProfileFragment()
                 }
                 is AuthActivityViewModel.Events.OnError -> showSnackBar(it.id)
             }
@@ -62,13 +57,19 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     private fun showSnackBar(@StringRes id: Int) {
         Snackbar.make(container, id, Snackbar.LENGTH_LONG)
-            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             .show()
     }
 
     private fun showCodeFragment(title: String) {
         supportActionBar?.title = title
         showFragment(AuthCodeFragment.newInstance())
+    }
+
+    private fun showEditProfileFragment() {
+        isBackAllowed = false
+        supportActionBar?.title = getString(R.string.fragment_profile_edit_title)
+        showFragment(ProfileEditFragment.newInstance(true))
     }
 
     private fun openMainActivity() {

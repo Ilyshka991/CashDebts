@@ -69,7 +69,12 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         setNavigationListeners()
         setViewListeners()
         setupSnackbarManager()
-        setEventListeners()
+        setStrongEventListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setWeakEventListeners()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -88,7 +93,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     override fun homeFragment() {
         super.homeFragment()
-        currentMenuRes = R.menu.menu_debt_list
+        currentMenuRes = R.menu.menu_fragment_debt_list
         isFabVisible = true
         isBottomNavVisible = true
     }
@@ -135,18 +140,22 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
         }.addTo(strongCompositeDisposable)
     }
 
-    private fun setEventListeners() {
+    private fun setStrongEventListeners() {
         EventManager.listen(MainActivityEvent::class.java).subscribe {
             when (it) {
                 is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
                 is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
             }
         }.addTo(strongCompositeDisposable)
+    }
+
+    private fun setWeakEventListeners() {
         EventManager.listen(ProfileEditEvent::class.java).subscribe {
             when (it) {
                 is ProfileEditEvent.OnSaved -> {
                     homeFragment()
                     isBottomNavVisible = true
+                    isFabVisible = true
                 }
             }
         }.addTo(weakCompositeDisposable)
@@ -164,27 +173,27 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun showSnackbar(info: SnackInfo) = Snackbar
         .make(coordinatorLayout, info.msgId, info.duration).apply {
-            setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             anchorView = if (fab.isVisible) fab else bottom_app_bar
             info.action?.let { info -> setAction(info.actionId) { info.callback() } }
             show()
         }
 
     private fun showRemoteDebts() {
-        currentMenuRes = R.menu.menu_debt_list
+        currentMenuRes = R.menu.menu_fragment_debt_list
         isFabVisible = true
         showFragment(RemoteDebtListFragment.newInstance(), false)
     }
 
     private fun showLocalDebts() {
-        currentMenuRes = R.menu.menu_debt_list
+        currentMenuRes = R.menu.menu_fragment_debt_list
         isFabVisible = true
         showFragment(LocalDebtListFragment.newInstance(), false)
     }
 
     private fun showProfile() {
         showFragment(ProfileViewFragment.newInstance(), false)
-        currentMenuRes = R.menu.menu_profile
+        currentMenuRes = R.menu.menu_fragment_profile
         isFabVisible = false
     }
 
@@ -225,7 +234,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun updateTotalDebtSum(value: Double) {
         bottom_app_bar.menu.findItem(R.id.menu_debt_list_msg_total)?.apply {
-            title = getString(R.string.menu_debt_list_total, value)
+            title = getString(R.string.menu_fragment_debt_list_text_total, value)
             isVisible = true
         }
     }

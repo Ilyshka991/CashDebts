@@ -1,6 +1,5 @@
-1. Fix Title in profile after code
-2. Notifications
-3. Debt items design
-4. Add focus change in auth phone screen
-5. Refactor string resources
-6. Add dark theme
+1. Notifications
+2. Debt items design
+3. Add dark theme
+4. Localization
+5. Edittext autofill

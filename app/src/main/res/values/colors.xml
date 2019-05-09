@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/colorWhite</color>
-    <color name="colorPrimaryDark">@color/colorGrayMiddle</color>
-    <color name="colorAccent">@color/colorOrange</color>
 
-    <color name="color_background_splash">#E0E0E0</color>
-    <color name="color_background_launcher">#90A4AE</color>
+    <!--App-->
+    <color name="primary">@color/white</color>
+    <color name="primary_dark">@color/gray_middle</color>
+    <color name="accent">@color/orange</color>
 
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorTransparent">#00FFFFFF</color>
-    <color name="colorBlack">#515556</color>
-    <color name="colorGrayMiddle">#C1C8CA</color>
-    <color name="colorGrayLight">#DFE1E1</color>
-    <color name="colorGrayMiddleLight">#E4E6E6</color>
-    <color name="colorBlueBrightHalfTransparent">#8025ACE6</color>
-    <color name="colorPink">#F73777</color>
-    <color name="colorOrange">#E77747</color>
-    <color name="colorGreen">#66B635</color>
 
-    <color name="color_item_background">#FFFFFF</color>
+    <!--Common-->
+
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="black">#515556</color>
+    <color name="gray_middle">#C1C8CA</color>
+    <color name="gray_light">#DFE1E1</color>
+    <color name="gray_middle_light">#E4E6E6</color>
+    <color name="blue_bright">#8025ACE6</color>
+    <color name="pink">#F73777</color>
+    <color name="orange">#E77747</color>
+    <color name="green">#66B635</color>
+
+
+    <!--Activities-->
+
+    <color name="background_splash">#E0E0E0</color>
+    <color name="background_launcher">#90A4AE</color>
 </resources>

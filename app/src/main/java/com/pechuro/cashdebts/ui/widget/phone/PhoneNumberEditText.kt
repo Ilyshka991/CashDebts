@@ -31,6 +31,7 @@ class PhoneNumberEditText @JvmOverloads constructor(
             if (!value.isEmpty) {
                 textCode.setText(value.phonePrefix)
                 moveCodeCursorAtTheEnd()
+                textNumber.requestFocus()
             }
             textNumber.hintText = value.phonePattern
         }
