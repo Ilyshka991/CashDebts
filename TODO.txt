@@ -3,3 +3,4 @@
 3. Add dark theme
 4. Localization
 5. Edittext autofill
+6. Fix bottom bar scroll
