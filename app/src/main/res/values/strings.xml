@@ -1,120 +1,119 @@
 <resources>
     <string name="app_name">Cash Debts</string>
 
+    <string name="common_error">Something went wrong. Please, retry later</string>
+    <string name="common_error_load">Something went wrong. Please, retry later</string>
+    <string name="common_action_retry">Retry</string>
+    <string name="common_action_undo">Undo</string>
+
     <string name="label_activity_main">Ca$h debts</string>
-    <string name="label_county_select">Select country</string>
+    <string name="label_activity_country_select">Select country</string>
+    <string name="label_activity_profile_edit">Profile edit</string>
+    <string name="label_activity_add_debt">Add debt</string>
+    <string name="label_activity_auth">Sign in</string>
 
-    <string name="error_auth_phone_validation">Phone number isn\'t correct</string>
-    <string name="error_auth_code_validation">Verification code isn\'t correct</string>
-    <string name="error_auth_too_many_requests">Service is not available. Please, retry later</string>
-    <string name="error_auth_common">Something went wrong. Please, retry later</string>
+    <string name="menu_activity_add_action_next">Next</string>
+    <string name="menu_activity_add_action_save">Save</string>
 
-    <string name="auth_invalid_country">Invalid country</string>
-    <string name="auth_code_time">You can resend it after: %1$d sec</string>
-    <string name="auth_action_resend">Resend</string>
-    <string name="auth_action_code_confirm">Confirm</string>
-    <string name="auth_msg_not_receive_code">Not receive code?</string>
+    <string name="menu_fragment_profile_action_logout">Logout</string>
+    <string name="menu_fragment_profile_action_edit">Edit</string>
 
-    <string name="auth_resend_code_error">Still not receive code? Please, retry later</string>
+    <string name="menu_fragment_debt_list_action_filter">Filter</string>
+    <string name="menu_fragment_debt_list_text_total">Total:\u0020\u0020%1$.2f</string>
 
-    <string name="action_camera">Camera</string>
-    <string name="action_gallery">Gallery</string>
-
-    <string name="profile_edit_error_first_name">Incorrect!</string>
-    <string name="profile_edit_error_last_name">Incorrect!</string>
-    <string name="auth_action_verify">Verify</string>
-
-    <string name="profile_edit_action_save">Save</string>
-    <string name="profile_edit_hint_last_name">Last name</string>
-    <string name="profile_edit_hint_first_name">First name</string>
-    <string name="profile_edit_error_load">Something went wrong. Please, retry later</string>
-
-    <string name="item_county_empty_msg">Nothing found</string>
-
-    <string name="action_retry">Retry</string>
-    <string name="action_undo">Undo</string>
-    <string name="msg_deleted">Deleted</string>
-    <string name="error_no_connection">No internet connection</string>
-    <string name="error_load">Something went wrong. Please, retry later</string>
-
-    <string name="add_debt_error_invalid_name">Please, enter valid name</string>
-    <string name="add_debt_error_number_equal_current">You can\'t add debt to yourself</string>
-    <string name="add_debt_error_invalid_phone">Please, enter valid phone number</string>
-    <string name="add_debt_error_user_not_exist">Such user not exist</string>
-    <string name="add_debt_error_common">Something went wrong. Please, retry later</string>
-    <string name="add_debt_action_add_local">Add local</string>
-    <string name="add_debt_invalid_number">Invalid number</string>
-    <string name="add_debt_error_invalid_info">Please, enter valid info</string>
-    <string name="add_debt_action_pick_from_contacts">Or pick from contacts</string>
-    <string name="add_debt_hint_name">Name</string>
-    <string name="add_debt_hint_value">Value</string>
-    <string name="add_debt_hint_description">Description</string>
-    <string name="add_debt_hint_date">Date</string>
-    <string name="add_debt_msg_sum">= %1$.2f</string>
-    <string name="add_debt_msg_sum_error">= ERROR</string>
-
-    <string name="debt_role_msg_i_am">I am:</string>
-    <string name="debt_role_creditor">creditor</string>
-    <string name="debt_role_debtor">debtor</string>
-
-    <string name="msg_success">Success</string>
-
-    <string name="item_local_debt_msg_empty">There are nothing</string>
-    <string name="item_local_debt_msg_debtor">I owe: %1$.2f</string>
-    <string name="item_local_debt_msg_creditor">Owe me: %1.2f</string>
-
-
-    <string name="debt_status_not_send">Not send</string>
-    <string name="debt_status_wait_for_confirmation">Wait for add confirmation</string>
-    <string name="debt_status_need_add_approve">Wait for your add confirmation</string>
-    <string name="debt_status_confirmation_rejected">Add rejected</string>
-    <string name="debt_status_wait_for_completion">Wait for complete confirmation</string>
-    <string name="debt_status_need_completion_approve">Wait for your complete confirmation</string>
-    <string name="debt_status_wait_for_edit_confirmation">Wait for changes accepting</string>
-    <string name="debt_status_need_edit_confirmation">Accept changes?</string>
-    <string name="debt_status_edit_rejected">No changes accepted</string>
-    <string name="debt_status_completion_rejected">Complete rejected</string>
-    <string name="debt_status_complete">Completed</string>
-
-    <string name="action_reject">Reject</string>
-    <string name="action_accept">Accept</string>
-    <string name="action_negative_ok">OK :(</string>
-    <string name="msg_updated">Updated</string>
-    <string name="msg_accepted">Accepted</string>
-    <string name="msg_restored">Restored</string>
-    <string name="msg_info_sent">Sent to person</string>
-    <string name="action_delete">Delete</string>
+    <string name="snackbar_msg_deleted">Deleted</string>
+    <string name="snackbar_msg_success">Success</string>
+    <string name="snackbar_msg_updated">Updated</string>
+    <string name="snackbar_msg_accepted">Accepted</string>
+    <string name="snackbar_msg_restored">Restored</string>
+    <string name="snackbar_msg_info_sent">Sent to person</string>
+    <string name="snackbar_msg_no_connection">No internet connection. Data sync is turned off</string>
 
     <string name="notification_group_debt_actions">Debt actions</string>
-    <string name="notification_channel_add_name">Add</string>
-    <string name="notification_channel_complete_name">Complete</string>
-    <string name="notification_channel_update_name">Update</string>
+    <string name="notification_channel_add">Add</string>
+    <string name="notification_channel_complete">Complete</string>
+    <string name="notification_channel_update">Update</string>
 
-    <string name="label_profile_edit">Profile edit</string>
-    <string name="label_add_debt">Add debt</string>
+    <string name="layout_no_connection_msg">No internet connection</string>
 
+    <string name="layout_debt_role_title">I am:</string>
+    <string name="layout_debt_role_text_creditor">creditor</string>
+    <string name="layout_debt_role_text_debtor">debtor</string>
 
-    <string name="remote_debt_no_connection">No internet connection. Data sync turn off</string>
+    <string name="fragment_auth_phone_error_validation">Phone number isn\'t correct</string>
+    <string name="fragment_auth_phone_error_too_many_requests">Service is not available. Please, retry later</string>
+    <string name="fragment_auth_phone_text_invalid_country">Invalid country</string>
 
-    <string name="menu_add_action_next">Next</string>
-    <string name="menu_add_action_save">Save</string>
-    <string name="menu_profile_action_logout">Logout</string>
-    <string name="menu_profile_action_edit">Edit</string>
-    <string name="menu_action_filter">Filter</string>
-    <string name="menu_debt_list_total">Total:\u0020\u0020%1$.2f</string>
+    <string name="fragment_auth_code_error_validation">Verification code isn\'t correct</string>
+    <string name="fragment_auth_code_error_not_receive_code">Still do not receive code? Sorry, retry later</string>
+    <string name="fragment_auth_code_action_resend">Resend</string>
+    <string name="fragment_auth_code_action_confirm">Confirm</string>
+    <string name="fragment_auth_code_action_verify">Verify</string>
+    <string name="fragment_auth_code_text_not_receive_code">Not receive code?</string>
+    <string name="fragment_auth_code_text_time">You can resend it after: %1$d sec</string>
+
+    <string name="fragment_profile_edit_title">Add profile</string>
+    <string name="fragment_profile_edit_error_first_name">Incorrect!</string>
+    <string name="fragment_profile_edit_error_last_name">Incorrect!</string>
+    <string name="fragment_profile_edit_error_load">Something went wrong. Please, retry later</string>
+    <string name="fragment_profile_edit_action_save">Save</string>
+    <string name="fragment_profile_edit_hint_last_name">Last name</string>
+    <string name="fragment_profile_edit_hint_first_name">First name</string>
+
+    <string name="fragment_add_debt_local_error_invalid_name">Please, enter valid name</string>
+    <string name="fragment_add_debt_local_hint_name">Name</string>
+
+    <string name="fragment_add_debt_remote_error_number_equal_current">You can\'t add debt to yourself</string>
+    <string name="fragment_add_debt_remote_error_invalid_phone">Please, enter valid phone number</string>
+    <string name="fragment_add_debt_remote_error_user_not_exist">Such user don\'t exist</string>
+    <string name="fragment_add_debt_remote_error_invalid_number">Invalid number</string>
+    <string name="fragment_add_debt_remote_action_add_local">Add local</string>
+    <string name="fragment_add_debt_remote_action_pick_from_contacts">Or pick from contacts</string>
+
+    <string name="fragment_add_debt_info_error_invalid_info">Please, enter valid info</string>
+    <string name="fragment_add_debt_info_error_sum">= ERROR</string>
+    <string name="fragment_add_debt_info_text_sum">= %1$.2f</string>
+    <string name="fragment_add_debt_info_hint_value">Value</string>
+    <string name="fragment_add_debt_info_hint_description">Description</string>
+    <string name="fragment_add_debt_info_hint_date">Date</string>
+
+    <string name="fragment_new_version_title">New version is available!</string>
+    <string name="fragment_new_version_action_download">Download</string>
+
+    <string name="item_country_text_empty">Nothing found</string>
+
+    <string name="item_debt_text_empty">There are nothing</string>
+    <string name="item_debt_text_role_debtor">I owe: %1$.2f</string>
+    <string name="item_debt_text_role_creditor">Owe me: %1.2f</string>
+
+    <string name="item_remote_debt_action_reject">Reject</string>
+    <string name="item_remote_debt_action_accept">Accept</string>
+    <string name="item_remote_debt_action_negative_ok">OK :(</string>
+    <string name="item_remote_debt_action_delete">Delete</string>
+    <string name="item_remote_debt_text_status_not_send">Not sent</string>
+    <string name="item_remote_debt_text_status_wait_for_confirmation">Wait for add confirmation</string>
+    <string name="item_remote_debt_text_status_need_add_approve">Wait for your add confirmation</string>
+    <string name="item_remote_debt_text_status_confirmation_rejected">Add rejected</string>
+    <string name="item_remote_debt_text_status_wait_for_completion">Wait for complete confirmation</string>
+    <string name="item_remote_debt_text_status_need_completion_approve">Wait for your complete confirmation</string>
+    <string name="item_remote_debt_text_status_wait_for_edit_confirmation">Wait for changes accepting</string>
+    <string name="item_remote_debt_text_status_need_edit_confirmation">Accept changes?</string>
+    <string name="item_remote_debt_text_status_edit_rejected">No changes accepted</string>
+    <string name="item_remote_debt_text_status_completion_rejected">Complete rejected</string>
+    <string name="item_remote_debt_text_status_complete">Completed</string>
 
     <string name="dialog_datetime_picker_action_ok">OK</string>
     <string name="dialog_datetime_picker_action_cancel">Cancel</string>
-    <string name="dialog_navigation_remote_debt">Remote debt</string>
-    <string name="dialog_navigation_local_debt">Local debt</string>
-    <string name="dialog_navigation_profile">Profile</string>
-    <string name="dialog_filter_filter">Filter</string>
-    <string name="dialog_filter_switch_unite">Unite persons (You can\'t perform any action in this mode)</string>
-    <string name="dialog_filter_switch_show_complete">Don\'t show completed debts</string>
-    <string name="dialog_picture_take_options_title">Choose option</string>
-    <string name="label_auth_activity">Sign in</string>
-    <string name="fragment_new_version_action_download">Download</string>
-    <string name="fragment_new_version_title">New version is available!</string>
 
-    <string name="auth_activity_title_add_profile">Add profile</string>
+    <string name="dialog_picture_take_options_title">Choose option</string>
+    <string name="dialog_picture_take_options_action_camera">Camera</string>
+    <string name="dialog_picture_take_options_action_gallery">Gallery</string>
+
+    <string name="dialog_navigation_text_remote_debt">Remote debt</string>
+    <string name="dialog_navigation_text_local_debt">Local debt</string>
+    <string name="dialog_navigation_text_profile">Profile</string>
+
+    <string name="dialog_filter_title">Filter</string>
+    <string name="dialog_filter_text_unite_persons">Unite persons (You can\'t perform any action in this mode)</string>
+    <string name="dialog_filter_text_show_complete">Don\'t show completed debts</string>
 </resources>

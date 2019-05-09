@@ -182,16 +182,24 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
     }
 
     private fun showSnackbarErrorLoad() {
-        Snackbar.make(container, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.action_retry) {
+        Snackbar.make(
+            container,
+            R.string.fragment_profile_edit_error_load,
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(R.string.common_action_retry) {
                 viewModel.loadUser()
             }
             .show()
     }
 
     private fun showSnackbarErrorSave() {
-        Snackbar.make(container, R.string.profile_edit_error_load, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.action_retry) {
+        Snackbar.make(
+            container,
+            R.string.fragment_profile_edit_error_load,
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(R.string.common_action_retry) {
                 viewModel.save()
             }
             .show()

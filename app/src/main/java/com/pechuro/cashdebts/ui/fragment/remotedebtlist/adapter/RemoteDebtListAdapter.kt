@@ -124,8 +124,8 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 text_united_person_name.text = "${data.user.firstName} ${data.user.lastName}"
 
                 val textValueStringRes = when (data.role) {
-                    DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
-                    DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
+                    DebtRole.CREDITOR -> R.string.item_debt_text_role_creditor
+                    DebtRole.DEBTOR -> R.string.item_debt_text_role_debtor
                     else -> throw IllegalArgumentException()
                 }
                 val textValue = context.getString(textValueStringRes, data.value)
@@ -155,8 +155,8 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 text_person_name.text = "${data.user.firstName} ${data.user.lastName}"
 
                 val textValueStringRes = when (data.role) {
-                    DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
-                    DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
+                    DebtRole.CREDITOR -> R.string.item_debt_text_role_creditor
+                    DebtRole.DEBTOR -> R.string.item_debt_text_role_debtor
                     else -> throw IllegalArgumentException()
                 }
                 val textValue = context.getString(textValueStringRes, data.value)
@@ -167,16 +167,16 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 var isDeleteButtonVisible = false
                 isSwipeable = false
                 val textStatusRes = when (data.status) {
-                    NOT_SEND -> R.string.debt_status_not_send
+                    NOT_SEND -> R.string.item_remote_debt_text_status_not_send
                     WAIT_FOR_CONFIRMATION -> if (data.isCurrentUserInit) {
-                        R.string.debt_status_wait_for_confirmation
+                        R.string.item_remote_debt_text_status_wait_for_confirmation
                     } else {
                         isActionButtonsVisible = true
-                        R.string.debt_status_need_add_approve
+                        R.string.item_remote_debt_text_status_need_add_approve
                     }
                     CONFIRMATION_REJECTED -> {
                         if (data.isCurrentUserInit) isOkButtonVisible = true
-                        R.string.debt_status_confirmation_rejected
+                        R.string.item_remote_debt_text_status_confirmation_rejected
                     }
                     IN_PROGRESS -> {
                         isSwipeable = true
@@ -184,47 +184,47 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                     }
                     WAIT_FOR_COMPLETE_FROM_CREDITOR -> if (data.role == DebtRole.CREDITOR) {
                         isActionButtonsVisible = true
-                        R.string.debt_status_need_completion_approve
+                        R.string.item_remote_debt_text_status_need_completion_approve
                     } else {
-                        R.string.debt_status_wait_for_completion
+                        R.string.item_remote_debt_text_status_wait_for_completion
                     }
                     WAIT_FOR_COMPLETE_FROM_DEBTOR -> if (data.role == DebtRole.DEBTOR) {
                         isActionButtonsVisible = true
-                        R.string.debt_status_need_completion_approve
+                        R.string.item_remote_debt_text_status_need_completion_approve
                     } else {
-                        R.string.debt_status_wait_for_completion
+                        R.string.item_remote_debt_text_status_wait_for_completion
                     }
                     COMPLETION_REJECTED_BY_CREDITOR -> {
                         if (data.role == DebtRole.DEBTOR) isOkButtonVisible = true
-                        R.string.debt_status_completion_rejected
+                        R.string.item_remote_debt_text_status_completion_rejected
                     }
                     COMPLETION_REJECTED_BY_DEBTOR -> {
                         if (data.role == DebtRole.CREDITOR) isOkButtonVisible = true
-                        R.string.debt_status_completion_rejected
+                        R.string.item_remote_debt_text_status_completion_rejected
                     }
                     COMPLETE -> {
                         if (data.isExpanded) isDeleteButtonVisible = true
-                        R.string.debt_status_complete
+                        R.string.item_remote_debt_text_status_complete
                     }
                     WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR -> if (data.role == DebtRole.CREDITOR) {
                         isActionButtonsVisible = true
-                        R.string.debt_status_need_edit_confirmation
+                        R.string.item_remote_debt_text_status_need_edit_confirmation
                     } else {
-                        R.string.debt_status_wait_for_edit_confirmation
+                        R.string.item_remote_debt_text_status_wait_for_edit_confirmation
                     }
                     WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR -> if (data.role == DebtRole.DEBTOR) {
                         isActionButtonsVisible = true
-                        R.string.debt_status_need_edit_confirmation
+                        R.string.item_remote_debt_text_status_need_edit_confirmation
                     } else {
-                        R.string.debt_status_wait_for_edit_confirmation
+                        R.string.item_remote_debt_text_status_wait_for_edit_confirmation
                     }
                     EDIT_CONFIRMATION_REJECTED_BY_CREDITOR -> {
                         if (data.role == DebtRole.DEBTOR) isOkButtonVisible = true
-                        R.string.debt_status_edit_rejected
+                        R.string.item_remote_debt_text_status_edit_rejected
                     }
                     EDIT_CONFIRMATION_REJECTED_BY_DEBTOR -> {
                         if (data.role == DebtRole.CREDITOR) isOkButtonVisible = true
-                        R.string.debt_status_edit_rejected
+                        R.string.item_remote_debt_text_status_edit_rejected
                     }
                     else -> throw IllegalArgumentException()
                 }

@@ -195,9 +195,9 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             if (debt.role == DebtRole.DEBTOR) WAIT_FOR_COMPLETE_FROM_CREDITOR else WAIT_FOR_COMPLETE_FROM_DEBTOR
         val firestoreDebt = debt.toFirestoreDebt(status)
         debtRepository.update(debt.id, firestoreDebt).subscribe({
-            command.onNext(Command.ShowMessage(R.string.msg_info_sent))
+            command.onNext(Command.ShowMessage(R.string.snackbar_msg_info_sent))
         }, {
-            command.onNext(Command.ShowMessage(R.string.error_load))
+            command.onNext(Command.ShowMessage(R.string.common_error_load))
         }).addTo(compositeDisposable)
     }
 
@@ -212,9 +212,9 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             is DebtAction.Update -> {
                 val firestoreDebt = info.second.toFirestoreDebt(status = action.status)
                 debtRepository.update(info.second.id, firestoreDebt).subscribe({
-                    command.onNext(Command.ShowMessage(R.string.msg_updated))
+                    command.onNext(Command.ShowMessage(R.string.snackbar_msg_updated))
                 }, {
-                    command.onNext(Command.ShowMessage(R.string.error_load))
+                    command.onNext(Command.ShowMessage(R.string.common_error_load))
                 }).addTo(compositeDisposable)
             }
         }
@@ -233,9 +233,9 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         debtRepository.update(debt.id, firestoreDebt)
             .mergeWith(debtRepository.delete("${debt.id}_tmp"))
             .subscribe({
-                command.onNext(Command.ShowMessage(R.string.msg_accepted))
+                command.onNext(Command.ShowMessage(R.string.snackbar_msg_accepted))
             }, {
-                command.onNext(Command.ShowMessage(R.string.error_load))
+                command.onNext(Command.ShowMessage(R.string.common_error_load))
             }).addTo(compositeDisposable)
     }
 
@@ -256,9 +256,9 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                 )
             }.andThen(debtRepository.delete("${id}_tmp"))
             .subscribe({
-                command.onNext(Command.ShowMessage(R.string.msg_restored))
+                command.onNext(Command.ShowMessage(R.string.snackbar_msg_restored))
             }, {
-                command.onNext(Command.ShowMessage(R.string.error_load))
+                command.onNext(Command.ShowMessage(R.string.common_error_load))
             }).addTo(compositeDisposable)
     }
 
@@ -273,7 +273,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         debtRepository.update(debt.id, firestoreDebt).subscribe({
             command.onNext(Command.ShowUndoDeletionSnackbar)
         }, {
-            command.onNext(Command.ShowMessage(R.string.error_load))
+            command.onNext(Command.ShowMessage(R.string.common_error_load))
         }).addTo(compositeDisposable)
     }
 
@@ -282,7 +282,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         debtRepository.delete(debt.id).subscribe({
             command.onNext(Command.ShowUndoDeletionSnackbar)
         }, {
-            command.onNext(Command.ShowMessage(R.string.error_load))
+            command.onNext(Command.ShowMessage(R.string.common_error_load))
         }).addTo(compositeDisposable)
     }
 

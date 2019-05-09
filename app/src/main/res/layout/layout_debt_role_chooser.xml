@@ -9,8 +9,8 @@
         style="@style/TextViewBold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/debt_role_msg_i_am"
-        android:textColor="@color/colorBlack"
+        android:text="@string/layout_debt_role_title"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <com.google.android.material.chip.ChipGroup
@@ -28,13 +28,13 @@
             style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/debt_role_creditor" />
+            android:text="@string/layout_debt_role_text_creditor" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_debtor"
             style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/debt_role_debtor" />
+            android:text="@string/layout_debt_role_text_debtor" />
     </com.google.android.material.chip.ChipGroup>
 </LinearLayout>

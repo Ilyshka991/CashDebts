@@ -10,7 +10,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
@@ -31,21 +31,21 @@
 
         <activity
             android:name=".ui.activity.auth.AuthActivity"
-            android:label="@string/label_auth_activity"
+            android:label="@string/label_activity_auth"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.activity.adddebt.AddDebtActivity"
-            android:label="@string/label_add_debt"
+            android:label="@string/label_activity_add_debt"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.activity.countryselection.CountrySelectionActivity"
-            android:label="@string/label_county_select" />
+            android:label="@string/label_activity_country_select" />
 
         <activity
             android:name=".ui.activity.profileedit.ProfileEditActivity"
-            android:label="@string/label_profile_edit"
+            android:label="@string/label_activity_profile_edit"
             android:parentActivityName=".ui.activity.main.MainActivity" />
 
         <activity android:name=".ui.activity.version.NewVersionActivity" />

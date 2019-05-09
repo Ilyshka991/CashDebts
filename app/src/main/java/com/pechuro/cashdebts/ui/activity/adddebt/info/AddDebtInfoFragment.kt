@@ -96,8 +96,11 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
                     ""
                 } else {
                     when (val result = it.second) {
-                        is Result.Success -> getString(R.string.add_debt_msg_sum, result.result)
-                        is Result.Error -> getString(R.string.add_debt_msg_sum_error)
+                        is Result.Success -> getString(
+                            R.string.fragment_add_debt_info_text_sum,
+                            result.result
+                        )
+                        is Result.Error -> getString(R.string.fragment_add_debt_info_error_sum)
                     }
                 }
             }.addTo(weakCompositeDisposable)

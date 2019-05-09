@@ -1,10 +1,12 @@
 <resources>
 
+    <!--App-->
+
     <style name="AppTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionMenuTextColor">@color/colorBlack</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="actionMenuTextColor">@color/black</item>
         <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="autoCompleteTextViewStyle">@style/SearchViewStyle</item>
@@ -16,9 +18,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <!--Activities-->
+
     <style name="SplashTheme" parent="AppTheme.NoActionBar">
         <item name="android:background">@drawable/background_splash</item>
     </style>
+
+
+    <!--Bottom sheet-->
 
     <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/background_top_rounded_dialog</item>
@@ -31,19 +39,22 @@
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/colorWhite</item>
+        <item name="android:navigationBarColor">@color/white</item>
     </style>
+
+
+    <!--Widgets-->
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/sofia_pro_light</item>
     </style>
 
     <style name="FabStyle" parent="@style/Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">@color/colorOrange</item>
-        <item name="tint">@color/colorBlack</item>
-        <item name="rippleColor">@color/colorGrayMiddleLight</item>
+        <item name="backgroundTint">@color/orange</item>
+        <item name="tint">@color/black</item>
+        <item name="rippleColor">@color/gray_middle_light</item>
     </style>
 
     <style name="ChipStyle">
@@ -51,52 +62,53 @@
         <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
         <item name="android:checkable">true</item>
         <item name="checkedIcon">@drawable/ic_chip_ok</item>
-        <item name="rippleColor">@color/colorOrange</item>
+        <item name="rippleColor">@color/orange</item>
     </style>
 
     <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/sofia_pro_light</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="SwitchStyle">
         <item name="android:fontFamily">@font/sofia_pro_light</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:backgroundTint">@color/colorTransparent</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:switchPadding">8dp</item>
     </style>
 
     <style name="TextButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
-        <item name="rippleColor">@color/colorOrange</item>
+        <item name="rippleColor">@color/orange</item>
     </style>
 
     <style name="EditTextStyle" parent="@style/Widget.AppCompat.EditText">
         <item name="android:fontFamily">@font/sofia_pro_light</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColorHint">@color/colorGrayMiddle</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColorHint">@color/gray_middle</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
+
+    <!--Texts-->
 
     <style name="TextViewLight">
         <item name="android:fontFamily">@font/sofia_pro_light</item>
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
-        <item name="android:backgroundTint">@color/colorTransparent</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextViewBold">
         <item name="android:fontFamily">@font/sofia_pro_semi_bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:backgroundTint">@color/colorTransparent</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:includeFontPadding">false</item>
     </style>
-
 </resources>

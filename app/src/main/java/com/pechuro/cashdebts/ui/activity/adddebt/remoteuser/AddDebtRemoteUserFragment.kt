@@ -15,9 +15,9 @@ import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.activity.adddebt.model.impl.RemoteDebtInfo
 import com.pechuro.cashdebts.ui.base.BaseFragment
-import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
 import com.pechuro.cashdebts.ui.utils.binding.receiveDebtRoleChangesFrom
 import com.pechuro.cashdebts.ui.utils.extensions.getUserCountryCode
+import com.pechuro.cashdebts.ui.widget.phone.receiveTextChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_remote_user.*
 import kotlinx.android.synthetic.main.layout_debt_role_chooser.*
@@ -55,14 +55,14 @@ class AddDebtRemoteUserFragment : BaseFragment<AddDebtActivityViewModel>() {
                 data?.data?.let {
                     val number = getContact(it)
                     if (number.isNullOrEmpty()) {
-                        showSnackBarError(R.string.add_debt_invalid_number)
+                        showSnackBarError(R.string.fragment_add_debt_remote_error_invalid_number)
                         return
                     }
                     val formattedNumber = number.replace(Regex("[ -]"), "")
                     if (text_phone.setPhoneNumber(formattedNumber)) {
                         viewModel.setPhoneData(formattedNumber)
                     } else {
-                        showSnackBarError(R.string.add_debt_invalid_number)
+                        showSnackBarError(R.string.fragment_add_debt_remote_error_invalid_number)
                     }
                 }
                 return

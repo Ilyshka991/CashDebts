@@ -84,8 +84,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 text_person_name_united.text = data.personName
 
                 val textValueStringRes = when (data.role) {
-                    DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
-                    DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
+                    DebtRole.CREDITOR -> R.string.item_debt_text_role_creditor
+                    DebtRole.DEBTOR -> R.string.item_debt_text_role_debtor
                     else -> throw IllegalArgumentException()
                 }
                 val textValue = context.getString(textValueStringRes, data.value)
@@ -108,8 +108,8 @@ class LocalDebtListAdapter @Inject constructor(private val dateFormatter: Simple
                 text_person_name.text = data.personName
 
                 val textValueStringRes = when (data.role) {
-                    DebtRole.CREDITOR -> R.string.item_local_debt_msg_creditor
-                    DebtRole.DEBTOR -> R.string.item_local_debt_msg_debtor
+                    DebtRole.CREDITOR -> R.string.item_debt_text_role_creditor
+                    DebtRole.DEBTOR -> R.string.item_debt_text_role_debtor
                     else -> throw IllegalArgumentException()
                 }
                 val textValue = context.getString(textValueStringRes, data.value)

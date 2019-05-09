@@ -32,7 +32,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        supportActionBar?.title = getString(R.string.label_auth_activity)
+        supportActionBar?.title = getString(R.string.label_activity_auth)
     }
 
     private fun setViewModelListener() {
@@ -57,7 +57,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     private fun showSnackBar(@StringRes id: Int) {
         Snackbar.make(container, id, Snackbar.LENGTH_LONG)
-            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.colorOrange, theme))
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             .show()
     }
 
@@ -68,7 +68,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     private fun showEditProfileFragment() {
         isBackAllowed = false
-        supportActionBar?.title = getString(R.string.auth_activity_title_add_profile)
+        supportActionBar?.title = getString(R.string.fragment_profile_edit_title)
         showFragment(ProfileEditFragment.newInstance(true))
     }
 

@@ -25,7 +25,7 @@ internal class LocalDebtRepositoryImpl @Inject constructor(
                     FirestoreStructure.LocalDebt.Structure.ownerUid,
                     userRepository.currentUserBaseInformation.uid
                 )
-                .addSnapshotListener { snapshot, exception ->
+                .addSnapshotListener { snapshot, _ ->
                     if (snapshot == null) return@addSnapshotListener
                     snapshot.documents
                         .mapNotNull {

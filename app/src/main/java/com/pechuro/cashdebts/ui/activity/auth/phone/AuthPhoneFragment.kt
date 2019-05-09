@@ -79,7 +79,7 @@ class AuthPhoneFragment : BaseFragment<AuthActivityViewModel>() {
 
     private fun onCountryChanged(country: CountryData) {
         if (country.isEmpty) {
-            text_country.setText(R.string.auth_invalid_country)
+            text_country.setText(R.string.fragment_auth_phone_text_invalid_country)
         } else {
             text_country.setText(country.name)
         }

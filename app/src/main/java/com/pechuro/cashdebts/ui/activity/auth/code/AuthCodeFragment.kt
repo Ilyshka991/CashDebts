@@ -111,7 +111,7 @@ class AuthCodeFragment : BaseFragment<AuthActivityViewModel>() {
     }
 
     private fun updateTimeViews(time: Long) {
-        text_time.text = getString(R.string.auth_code_time, time)
+        text_time.text = getString(R.string.fragment_auth_code_text_time, time)
         progress_time.progress = ((RESEND_TIMEOUT - time) * 100F / RESEND_TIMEOUT).toInt()
     }
 

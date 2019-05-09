@@ -16,7 +16,7 @@ class ProfileEditModel {
             errors.firstNameError.onNext(ID_NO_ERROR)
             true
         } else {
-            errors.firstNameError.onNext(R.string.profile_edit_error_first_name)
+            errors.firstNameError.onNext(R.string.fragment_profile_edit_error_first_name)
             false
         }
 
@@ -25,7 +25,7 @@ class ProfileEditModel {
             errors.lastNameError.onNext(ID_NO_ERROR)
             true
         } else {
-            errors.lastNameError.onNext(R.string.profile_edit_error_last_name)
+            errors.lastNameError.onNext(R.string.fragment_profile_edit_error_last_name)
             false
         }
 
