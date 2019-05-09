@@ -9,8 +9,6 @@ import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
 import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.data.data.structure.FirestoreStructure
-import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.creditorUid
-import com.pechuro.cashdebts.data.data.structure.FirestoreStructure.RemoteDebt.Structure.debtorUid
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -27,14 +25,20 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 
     override fun getSource(): Observable<Map<String, FirestoreRemoteDebt>> =
         Observable.combineLatest(
-            getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, creditorUid)
+            getRemoteDebtSource(
+                userRepository.currentUserBaseInformation.uid,
+                FirestoreRemoteDebt::creditorUid.name
+            )
                 .map { map ->
                     map.filter {
                         it.value.deleteStatus != DebtDeleteStatus.DELETED_FROM_CREDITOR &&
                                 it.value.deleteStatus != DebtDeleteStatus.CACHED
                     }
                 },
-            getRemoteDebtSource(userRepository.currentUserBaseInformation.uid, debtorUid)
+            getRemoteDebtSource(
+                userRepository.currentUserBaseInformation.uid,
+                FirestoreRemoteDebt::debtorUid.name
+            )
                 .map { map ->
                     map.filter {
                         it.value.deleteStatus != DebtDeleteStatus.DELETED_FROM_DEBTOR &&
@@ -51,24 +55,24 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 
     override fun getSingle(id: String): Single<FirestoreRemoteDebt> =
         Single.create<FirestoreRemoteDebt> { emitter ->
-            store.collection(FirestoreStructure.RemoteDebt.TAG).document(id).get()
+            store.collection(FirestoreStructure.TAG_REMOTE_DEBTS).document(id).get()
                 .addOnCompleteListener {
                     if (emitter.isDisposed) return@addOnCompleteListener
                     if (it.isSuccessful && it.result != null) {
                         val debt = with(it.result!!) {
                             FirestoreRemoteDebt(
-                                getString(FirestoreStructure.RemoteDebt.Structure.creditorUid)
+                                getString(FirestoreRemoteDebt::creditorUid.name)
                                     ?: "",
-                                getString(FirestoreStructure.RemoteDebt.Structure.debtorUid) ?: "",
-                                getDouble(FirestoreStructure.RemoteDebt.Structure.value) ?: 0.0,
-                                getString(FirestoreStructure.RemoteDebt.Structure.description)
+                                getString(FirestoreRemoteDebt::debtorUid.name) ?: "",
+                                getDouble(FirestoreRemoteDebt::value.name) ?: 0.0,
+                                getString(FirestoreRemoteDebt::description.name)
                                     ?: "",
-                                getDate(FirestoreStructure.RemoteDebt.Structure.date) ?: Date(),
-                                getLong(FirestoreStructure.RemoteDebt.Structure.status)?.toInt()
+                                getDate(FirestoreRemoteDebt::date.name) ?: Date(),
+                                getLong(FirestoreRemoteDebt::status.name)?.toInt()
                                     ?: FirestoreDebtStatus.NOT_SEND,
-                                getString(FirestoreStructure.RemoteDebt.Structure.initPersonUid)
+                                getString(FirestoreRemoteDebt::initPersonUid.name)
                                     ?: "",
-                                getLong(FirestoreStructure.RemoteDebt.Structure.deleteStatus)?.toInt()
+                                getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
                                     ?: DebtDeleteStatus.NOT_DELETED
 
                             )
@@ -81,7 +85,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
         }
 
     override fun add(debt: FirestoreRemoteDebt): Completable = Completable.create { emitter ->
-        store.collection(FirestoreStructure.RemoteDebt.TAG)
+        store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
             .add(debt).addOnCompleteListener {
                 if (emitter.isDisposed) return@addOnCompleteListener
                 if (it.isSuccessful) {
@@ -94,7 +98,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 
     override fun update(id: String, debt: FirestoreRemoteDebt): Completable =
         Completable.create { emitter ->
-            store.collection(FirestoreStructure.RemoteDebt.TAG)
+            store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
                 .document(id)
                 .set(debt)
                 .addOnCompleteListener {
@@ -108,7 +112,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
         }
 
     override fun delete(id: String): Completable = Completable.create { emitter ->
-        store.collection(FirestoreStructure.RemoteDebt.TAG)
+        store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
             .document(id)
             .delete()
             .addOnCompleteListener {
@@ -123,7 +127,7 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
 
     private fun getRemoteDebtSource(uid: String, debtRole: String) =
         Observable.create<Map<String, FirestoreRemoteDebt>> { emitter ->
-            store.collection(FirestoreStructure.RemoteDebt.TAG)
+            store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
                 .whereEqualTo(debtRole, uid)
                 .addSnapshotListener { snapshot, e ->
                     if (snapshot == null) return@addSnapshotListener
@@ -131,19 +135,18 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
                         .mapNotNull {
                             val debt = with(it) {
                                 FirestoreRemoteDebt(
-                                    getString(FirestoreStructure.RemoteDebt.Structure.creditorUid)
+                                    getString(FirestoreRemoteDebt::creditorUid.name)
                                         ?: "",
-                                    getString(FirestoreStructure.RemoteDebt.Structure.debtorUid)
+                                    getString(FirestoreRemoteDebt::debtorUid.name) ?: "",
+                                    getDouble(FirestoreRemoteDebt::value.name) ?: 0.0,
+                                    getString(FirestoreRemoteDebt::description.name)
                                         ?: "",
-                                    getDouble(FirestoreStructure.RemoteDebt.Structure.value) ?: 0.0,
-                                    getString(FirestoreStructure.RemoteDebt.Structure.description)
-                                        ?: "",
-                                    getDate(FirestoreStructure.RemoteDebt.Structure.date) ?: Date(),
-                                    getLong(FirestoreStructure.RemoteDebt.Structure.status)?.toInt()
+                                    getDate(FirestoreRemoteDebt::date.name) ?: Date(),
+                                    getLong(FirestoreRemoteDebt::status.name)?.toInt()
                                         ?: FirestoreDebtStatus.NOT_SEND,
-                                    getString(FirestoreStructure.RemoteDebt.Structure.initPersonUid)
+                                    getString(FirestoreRemoteDebt::initPersonUid.name)
                                         ?: "",
-                                    getLong(FirestoreStructure.RemoteDebt.Structure.deleteStatus)?.toInt()
+                                    getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
                                         ?: DebtDeleteStatus.NOT_DELETED
 
                                 )

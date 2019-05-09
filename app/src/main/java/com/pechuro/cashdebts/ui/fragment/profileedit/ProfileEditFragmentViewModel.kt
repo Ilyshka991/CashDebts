@@ -56,7 +56,7 @@ class ProfileEditFragmentViewModel @Inject constructor(
             return
         }
         command.onNext(Events.OnUserStartLoad)
-        userRepository.getSource()
+        userRepository.getSingle()
             .subscribe({
                 onUserLoaded(it)
                 isUserAlreadyLoaded = true

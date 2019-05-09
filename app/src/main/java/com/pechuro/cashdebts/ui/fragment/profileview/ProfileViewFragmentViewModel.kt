@@ -38,7 +38,6 @@ class ProfileViewFragmentViewModel @Inject constructor(
             }, {
                 loadingState.onNext(LoadingState.OnStop)
                 loadingState.onNext(LoadingState.OnError)
-                it.printStackTrace()
             }).addTo(compositeDisposable)
     }
 
