@@ -75,7 +75,7 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
         strongCompositeDisposable.addAll(
             EventManager.listen(AddDebtEvent::class.java).subscribe {
                 when (it) {
-                    is AddDebtEvent.OnSuccess -> showSnackbar(R.string.msg_success)
+                    is AddDebtEvent.OnSuccess -> showSnackbar(R.string.snackbar_msg_success)
                 }
             }, EventManager.listen(FilterEvent::class.java).subscribe {
                 when (it) {
@@ -121,9 +121,9 @@ class LocalDebtListFragment : BaseFragment<LocalDebtListFragmentViewModel>() {
     private fun showUndoDeletionSnackbar() {
         SnackbarManager.show(
             SnackInfo(
-                R.string.msg_deleted,
+                R.string.snackbar_msg_deleted,
                 Snackbar.LENGTH_LONG,
-                SnackActionInfo(R.string.action_undo, viewModel::restoreDebt)
+                SnackActionInfo(R.string.common_action_undo, viewModel::restoreDebt)
             )
         )
     }

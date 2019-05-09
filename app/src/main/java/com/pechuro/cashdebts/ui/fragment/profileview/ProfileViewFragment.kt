@@ -57,10 +57,10 @@ class ProfileViewFragment : BaseFragment<ProfileViewFragmentViewModel>() {
     private fun showErrorSnackbar() {
         SnackbarManager.show(
             SnackInfo(
-                R.string.error_load,
+                R.string.common_error_load,
                 Snackbar.LENGTH_INDEFINITE,
                 SnackActionInfo(
-                    R.string.action_retry,
+                    R.string.common_action_retry,
                     viewModel::loadUser
                 )
             )

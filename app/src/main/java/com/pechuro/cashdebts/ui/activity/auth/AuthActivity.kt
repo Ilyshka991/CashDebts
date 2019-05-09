@@ -68,7 +68,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     private fun showEditProfileFragment() {
         isBackAllowed = false
-        supportActionBar?.title = getString(R.string.auth_activity_title_add_profile)
+        supportActionBar?.title = getString(R.string.fragment_profile_edit_title)
         showFragment(ProfileEditFragment.newInstance(true))
     }
 

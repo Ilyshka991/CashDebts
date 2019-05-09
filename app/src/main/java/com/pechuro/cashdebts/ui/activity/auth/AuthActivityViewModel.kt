@@ -88,7 +88,7 @@ class AuthActivityViewModel @Inject constructor(
         val error = when (e) {
             is AuthInvalidCredentialsException -> R.string.fragment_auth_phone_error_validation
             is AuthNotAvailableException -> R.string.fragment_auth_phone_error_too_many_requests
-            else -> R.string.error_common
+            else -> R.string.common_error
         }
         command.onNext(Events.OnError(error))
     }

@@ -81,7 +81,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
         strongCompositeDisposable.addAll(
             EventManager.listen(AddDebtEvent::class.java).subscribe {
                 when (it) {
-                    is AddDebtEvent.OnSuccess -> showSnackbarWithDelay(R.string.msg_success)
+                    is AddDebtEvent.OnSuccess -> showSnackbarWithDelay(R.string.snackbar_msg_success)
                 }
             },
             EventManager.listen(FilterEvent::class.java).subscribe {
@@ -121,7 +121,7 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
                 SnackInfo.EMPTY
             } else {
                 SnackInfo(
-                    R.string.remote_debt_no_connection,
+                    R.string.snackbar_msg_no_connection,
                     Snackbar.LENGTH_INDEFINITE
                 )
             }
@@ -135,9 +135,9 @@ class RemoteDebtListFragment : BaseFragment<RemoteDebtListFragmentViewModel>() {
     private fun showUndoDeletionSnackbar() {
         SnackbarManager.show(
             SnackInfo(
-                R.string.msg_deleted,
+                R.string.snackbar_msg_deleted,
                 Snackbar.LENGTH_LONG,
-                SnackActionInfo(R.string.action_undo, viewModel::restoreDebt)
+                SnackActionInfo(R.string.common_action_undo, viewModel::restoreDebt)
             )
         )
     }
