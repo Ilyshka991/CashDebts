@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cash Debts</string>
+    <string name="app_name" translatable="false">Cash Debts</string>
 
     <string name="common_error">Something went wrong. Please, retry later</string>
     <string name="common_error_load">Something went wrong. Please, retry later</string>
@@ -109,8 +109,8 @@
     <string name="dialog_picture_take_options_action_camera">Camera</string>
     <string name="dialog_picture_take_options_action_gallery">Gallery</string>
 
-    <string name="dialog_navigation_text_remote_debt">Remote debt</string>
-    <string name="dialog_navigation_text_local_debt">Local debt</string>
+    <string name="dialog_navigation_text_remote_debt">Remote debts</string>
+    <string name="dialog_navigation_text_local_debt">Local debts</string>
     <string name="dialog_navigation_text_profile">Profile</string>
 
     <string name="dialog_filter_title">Filter</string>

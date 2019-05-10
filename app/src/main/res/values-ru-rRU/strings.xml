@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error">Что-то пошло не так. Пожалуйста, повторите позже</string>
+    <string name="common_error_load">Что-то пошло не так. Пожалуйста, повторите позже</string>
+    <string name="common_action_retry">Повторить</string>
+    <string name="common_action_undo">Отменить</string>
+
+    <string name="label_activity_country_select">Выбор страны</string>
+    <string name="label_activity_profile_edit">Редактирование профиля</string>
+    <string name="label_activity_add_debt">Добавить долг</string>
+    <string name="label_activity_auth">Вход</string>
+
+    <string name="menu_activity_add_action_next">Дальше</string>
+    <string name="menu_activity_add_action_save">Сохранить</string>
+
+    <string name="menu_fragment_profile_action_logout">Выйти</string>
+    <string name="menu_fragment_profile_action_edit">Редактировать</string>
+
+    <string name="menu_fragment_debt_list_action_filter">Фильтр</string>
+    <string name="menu_fragment_debt_list_action_total_sum">Общая сумма</string>
+
+    <string name="snackbar_msg_deleted">Удалено</string>
+    <string name="snackbar_msg_success">Успешно</string>
+    <string name="snackbar_msg_updated">Обновлено</string>
+    <string name="snackbar_msg_accepted">Принято</string>
+    <string name="snackbar_msg_restored">Восстановлено</string>
+    <string name="snackbar_msg_info_sent">Отправлено человеку</string>
+    <string name="snackbar_msg_no_connection">Нет интернет соединения. Синхронизация данных выключена</string>
+
+    <string name="notification_group_debt_actions">Действия над долгами</string>
+    <string name="notification_channel_add">Добавление</string>
+    <string name="notification_channel_complete">Выполнение</string>
+    <string name="notification_channel_update">Обновление</string>
+
+    <string name="layout_no_connection_msg">Нет интернет соединения</string>
+
+    <string name="layout_debt_role_title">Я:</string>
+    <string name="layout_debt_role_text_creditor">кредитор</string>
+    <string name="layout_debt_role_text_debtor">должник</string>
+
+    <string name="fragment_auth_phone_error_validation">Некорректный номер</string>
+    <string name="fragment_auth_phone_error_too_many_requests">Сервис недоступен. Пожалуйста, повторите позже</string>
+    <string name="fragment_auth_phone_text_invalid_country">Страна не найдена</string>
+
+    <string name="fragment_auth_code_error_validation">Некорректный код</string>
+    <string name="fragment_auth_code_error_not_receive_code">Все еще не получили? Пожалуйста, повторите позже</string>
+    <string name="fragment_auth_code_action_resend">Отправить еще раз</string>
+    <string name="fragment_auth_code_action_confirm">Подтвердить</string>
+    <string name="fragment_auth_code_action_verify">Отправить код</string>
+    <string name="fragment_auth_code_text_not_receive_code">Не получили код?</string>
+    <string name="fragment_auth_code_text_time">Вы можете отправить еще раз через: %1$d сек</string>
+
+    <string name="fragment_profile_edit_title">Добавление профиля</string>
+    <string name="fragment_profile_edit_error_first_name">Некорректно!</string>
+    <string name="fragment_profile_edit_error_last_name">Некорректно!</string>
+    <string name="fragment_profile_edit_error_load">Что-то пошло не так. Пожалуйста, повторите позже</string>
+    <string name="fragment_profile_edit_action_save">Сохранить</string>
+    <string name="fragment_profile_edit_hint_last_name">Фамилия</string>
+    <string name="fragment_profile_edit_hint_first_name">Имя</string>
+
+    <string name="fragment_add_debt_local_error_invalid_name">Пожалуйста, введите корректные данные</string>
+    <string name="fragment_add_debt_local_hint_name">Имя</string>
+
+    <string name="fragment_add_debt_remote_error_number_equal_current">Вы не можете добавить долг себе</string>
+    <string name="fragment_add_debt_remote_error_invalid_phone">Пожалуйста, введите корректный номер</string>
+    <string name="fragment_add_debt_remote_error_user_not_exist">Такого пользователя не существует</string>
+    <string name="fragment_add_debt_remote_error_invalid_number">Некорректный номер</string>
+    <string name="fragment_add_debt_remote_action_add_local">Добавить локально</string>
+    <string name="fragment_add_debt_remote_action_pick_from_contacts">Или выбрать из контактов</string>
+
+    <string name="fragment_add_debt_info_error_invalid_info">Пожалуйста, введите корректные данные</string>
+    <string name="fragment_add_debt_info_error_sum">= ОШИБКА</string>
+    <string name="fragment_add_debt_info_text_sum">= %1$.2f</string>
+    <string name="fragment_add_debt_info_hint_value">Сумма</string>
+    <string name="fragment_add_debt_info_hint_description">Описание</string>
+    <string name="fragment_add_debt_info_hint_date">Дата</string>
+
+    <string name="fragment_new_version_title">Новая версия доступна!</string>
+    <string name="fragment_new_version_action_download">Скачать</string>
+
+    <string name="item_country_text_empty">Ничего не найдено</string>
+
+    <string name="item_debt_text_empty">Ничего нет</string>
+    <string name="item_debt_text_role_debtor">Я должен: %1$.2f</string>
+    <string name="item_debt_text_role_creditor">Должны мне: %1.2f</string>
+
+    <string name="item_remote_debt_action_reject">Отклонить</string>
+    <string name="item_remote_debt_action_accept">Подтвердить</string>
+    <string name="item_remote_debt_action_negative_ok">ОК :(</string>
+    <string name="item_remote_debt_action_delete">Удалить</string>
+    <string name="item_remote_debt_text_status_not_send">Не отправлено</string>
+    <string name="item_remote_debt_text_status_wait_for_confirmation">Ожидание подтверждения добавления</string>
+    <string name="item_remote_debt_text_status_need_add_approve">Ожидание вашего подтверждения добавления</string>
+    <string name="item_remote_debt_text_status_confirmation_rejected">Добавление отклонено</string>
+    <string name="item_remote_debt_text_status_wait_for_completion">Ожидание подтверждения выполнения</string>
+    <string name="item_remote_debt_text_status_need_completion_approve">Ожидание вашего подтверждения выполнения</string>
+    <string name="item_remote_debt_text_status_wait_for_edit_confirmation">Ожидание подтверждения изменений</string>
+    <string name="item_remote_debt_text_status_need_edit_confirmation">Подтвердить изменения?</string>
+    <string name="item_remote_debt_text_status_edit_rejected">Изменения не подтверждены</string>
+    <string name="item_remote_debt_text_status_completion_rejected">Выполнение отклонено</string>
+    <string name="item_remote_debt_text_status_complete">Выполнено</string>
+
+    <string name="dialog_datetime_picker_action_ok">ОК</string>
+    <string name="dialog_datetime_picker_action_cancel">Отменить</string>
+
+    <string name="dialog_picture_take_options_title">Выберите</string>
+    <string name="dialog_picture_take_options_action_camera">Камера</string>
+    <string name="dialog_picture_take_options_action_gallery">Галерея</string>
+
+    <string name="dialog_navigation_text_remote_debt">Удаленные долги</string>
+    <string name="dialog_navigation_text_local_debt">Локальные долги</string>
+    <string name="dialog_navigation_text_profile">Профиль</string>
+
+    <string name="dialog_filter_title">Фильтр</string>
+    <string name="dialog_filter_text_unite_persons">Объединять людей(Вы не можете выполнить какое-либо действие в этом режиме)</string>
+    <string name="dialog_filter_text_show_complete">Не показывать выполненные долги</string>
+
+    <string name="popup_total_sum_title">Общая сумма:\u0020\u0020%1$.2f</string>
+</resources>
