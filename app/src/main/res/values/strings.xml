@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cash Debts</string>
+    <string name="app_name" translatable="false">Cash Debts</string>
 
     <string name="common_error">Something went wrong. Please, retry later</string>
     <string name="common_error_load">Something went wrong. Please, retry later</string>
@@ -19,7 +19,7 @@
     <string name="menu_fragment_profile_action_edit">Edit</string>
 
     <string name="menu_fragment_debt_list_action_filter">Filter</string>
-    <string name="menu_fragment_debt_list_text_total">Total:\u0020\u0020%1$.2f</string>
+    <string name="menu_fragment_debt_list_action_total_sum">Total sum</string>
 
     <string name="snackbar_msg_deleted">Deleted</string>
     <string name="snackbar_msg_success">Success</string>
@@ -109,11 +109,13 @@
     <string name="dialog_picture_take_options_action_camera">Camera</string>
     <string name="dialog_picture_take_options_action_gallery">Gallery</string>
 
-    <string name="dialog_navigation_text_remote_debt">Remote debt</string>
-    <string name="dialog_navigation_text_local_debt">Local debt</string>
+    <string name="dialog_navigation_text_remote_debt">Remote debts</string>
+    <string name="dialog_navigation_text_local_debt">Local debts</string>
     <string name="dialog_navigation_text_profile">Profile</string>
 
     <string name="dialog_filter_title">Filter</string>
     <string name="dialog_filter_text_unite_persons">Unite persons (You can\'t perform any action in this mode)</string>
     <string name="dialog_filter_text_show_complete">Don\'t show completed debts</string>
+
+    <string name="popup_total_sum_title">Total:\u0020\u0020%1$.2f</string>
 </resources>
