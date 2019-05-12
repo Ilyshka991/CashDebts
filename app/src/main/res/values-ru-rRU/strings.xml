@@ -24,6 +24,7 @@
     <string name="snackbar_msg_deleted">Удалено</string>
     <string name="snackbar_msg_success">Успешно</string>
     <string name="snackbar_msg_updated">Обновлено</string>
+    <string name="snackbar_msg_resent">Отправлено</string>
     <string name="snackbar_msg_accepted">Принято</string>
     <string name="snackbar_msg_restored">Восстановлено</string>
     <string name="snackbar_msg_info_sent">Отправлено человеку</string>
@@ -89,6 +90,7 @@
     <string name="item_remote_debt_action_reject">Отклонить</string>
     <string name="item_remote_debt_action_accept">Подтвердить</string>
     <string name="item_remote_debt_action_negative_ok">ОК :(</string>
+    <string name="item_remote_debt_action_resend">Отправить заново</string>
     <string name="item_remote_debt_action_delete">Удалить</string>
     <string name="item_remote_debt_text_status_not_send">Не отправлено</string>
     <string name="item_remote_debt_text_status_wait_for_confirmation">Ожидание подтверждения добавления</string>

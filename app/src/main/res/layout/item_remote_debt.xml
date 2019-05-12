@@ -84,7 +84,8 @@
             app:layout_constraintEnd_toStartOf="@+id/button_accept"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_date" />
+            app:layout_constraintTop_toBottomOf="@+id/text_date"
+            tools:visibility="gone" />
 
         <Button
             android:id="@+id/button_accept"
@@ -97,21 +98,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_reject"
-            app:layout_constraintTop_toTopOf="@+id/button_reject" />
+            app:layout_constraintTop_toTopOf="@+id/button_reject"
+            tools:visibility="gone" />
 
         <Button
             android:id="@+id/button_ok"
             style="@style/TextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:text="@string/item_remote_debt_action_negative_ok"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_resend"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_date" />
+            app:layout_constraintTop_toBottomOf="@+id/text_date"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/button_resend"
+            style="@style/TextButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_remote_debt_action_resend"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/button_ok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_ok"
+            app:layout_constraintTop_toTopOf="@+id/button_ok"
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/button_delete"
@@ -125,6 +141,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_date" />
+            app:layout_constraintTop_toBottomOf="@+id/text_date"
+            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

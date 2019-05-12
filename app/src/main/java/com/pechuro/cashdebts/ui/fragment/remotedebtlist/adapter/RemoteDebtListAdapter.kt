@@ -55,6 +55,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
             R.id.button_accept -> Actions.ACCEPT
             R.id.button_ok -> Actions.OK
             R.id.button_delete -> Actions.DELETE
+            R.id.button_resend -> Actions.RESEND
             else -> throw IllegalArgumentException()
         }
         _actionsClickEmitter.onNext(action to itemInfo)
@@ -164,6 +165,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
 
                 var isActionButtonsVisible = false
                 var isOkButtonVisible = false
+                var isResendButtonVisible = false
                 var isDeleteButtonVisible = false
                 isSwipeable = false
                 val textStatusRes = when (data.status) {
@@ -175,7 +177,10 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                         R.string.item_remote_debt_text_status_need_add_approve
                     }
                     CONFIRMATION_REJECTED -> {
-                        if (data.isCurrentUserInit) isOkButtonVisible = true
+                        if (data.isCurrentUserInit) {
+                            isOkButtonVisible = true
+                            if (data.isFirstTimeAdded) isResendButtonVisible = true
+                        }
                         R.string.item_remote_debt_text_status_confirmation_rejected
                     }
                     IN_PROGRESS -> {
@@ -239,6 +244,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 button_accept.isVisible = isActionButtonsVisible
                 button_reject.isVisible = isActionButtonsVisible
                 button_ok.isVisible = isOkButtonVisible
+                button_resend.isVisible = isResendButtonVisible
                 button_delete.isVisible = isDeleteButtonVisible
 
                 text_description.apply {
@@ -255,21 +261,12 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
                 setOnClickListener(onItemClickListener)
                 setOnLongClickListener(onLongClickListener)
 
-                button_accept.apply {
-                    tag = data
-                    setOnClickListener(onActionsClickListener)
-                }
-                button_reject.apply {
-                    tag = data
-                    setOnClickListener(onActionsClickListener)
-                }
-                button_ok.apply {
-                    tag = data
-                    setOnClickListener(onActionsClickListener)
-                }
-                button_delete.apply {
-                    tag = data
-                    setOnClickListener(onActionsClickListener)
+
+                arrayOf(button_accept, button_reject, button_ok, button_resend, button_delete).map {
+                    it.apply {
+                        tag = data
+                        setOnClickListener(onActionsClickListener)
+                    }
                 }
             }
         }
@@ -287,7 +284,7 @@ class RemoteDebtListAdapter @Inject constructor(private val dateFormatter: Simpl
     )
 
     enum class Actions {
-        ACCEPT, REJECT, OK, DELETE
+        ACCEPT, REJECT, OK, DELETE, RESEND
     }
 
     companion object ViewTypes {

@@ -39,7 +39,8 @@ class FirestoreRemoteDebt(
     date: Date,
     @FirestoreDebtStatus val status: Int,
     val initPersonUid: String,
-    @DebtDeleteStatus val deleteStatus: Int
+    @DebtDeleteStatus val deleteStatus: Int,
+    val isFirstTimeAdded: Boolean
 ) : FirestoreBaseDebt(value, description, date)
 
 @Keep

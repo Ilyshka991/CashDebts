@@ -26,6 +26,7 @@
     <string name="snackbar_msg_deleted">Deleted</string>
     <string name="snackbar_msg_success">Success</string>
     <string name="snackbar_msg_updated">Updated</string>
+    <string name="snackbar_msg_resent">Resent</string>
     <string name="snackbar_msg_accepted">Accepted</string>
     <string name="snackbar_msg_restored">Restored</string>
     <string name="snackbar_msg_info_sent">Sent to person</string>
@@ -91,6 +92,7 @@
     <string name="item_remote_debt_action_reject">Reject</string>
     <string name="item_remote_debt_action_accept">Accept</string>
     <string name="item_remote_debt_action_negative_ok">OK :(</string>
+    <string name="item_remote_debt_action_resend">Resend</string>
     <string name="item_remote_debt_action_delete">Delete</string>
     <string name="item_remote_debt_text_status_not_send">Not sent</string>
     <string name="item_remote_debt_text_status_wait_for_confirmation">Wait for add confirmation</string>
