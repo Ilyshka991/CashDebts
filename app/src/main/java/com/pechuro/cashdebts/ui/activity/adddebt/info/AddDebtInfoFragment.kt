@@ -22,8 +22,11 @@ import javax.inject.Inject
 
 
 class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
+
     @Inject
     protected lateinit var imm: InputMethodManager
+    @Inject
+    protected lateinit var dateFormatter: SimpleDateFormat
 
     override val layoutId: Int
         get() = R.layout.fragment_add_debt_info
@@ -33,9 +36,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     private val isInternetRequired by lazy {
         arguments?.getBoolean(ARG_IS_INTERNET_REQUIRED) ?: false
     }
-
-    @Inject
-    protected lateinit var dateFormatter: SimpleDateFormat
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
@@ -70,7 +70,13 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
         text_date.setOnClickListener {
             showDateTimePicker()
         }
-
+        text_value.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                text_description.requestFocus()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
         text_description.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.save()

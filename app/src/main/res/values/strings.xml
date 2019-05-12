@@ -70,11 +70,11 @@
     <string name="fragment_add_debt_remote_action_add_local">Add local</string>
     <string name="fragment_add_debt_remote_action_pick_from_contacts">Or pick from contacts</string>
 
-    <string name="fragment_add_debt_info_error_invalid_info">Please, enter valid info</string>
+    <string name="fragment_add_debt_info_error_invalid_info">Please, enter valid value</string>
     <string name="fragment_add_debt_info_error_sum">= ERROR</string>
     <string name="fragment_add_debt_info_text_sum">= %1$.2f</string>
     <string name="fragment_add_debt_info_hint_value">Value</string>
-    <string name="fragment_add_debt_info_hint_description">Description</string>
+    <string name="fragment_add_debt_info_hint_description">Description(optional)</string>
     <string name="fragment_add_debt_info_hint_date">Date</string>
 
     <string name="fragment_new_version_title">New version is available!</string>

@@ -68,11 +68,11 @@
     <string name="fragment_add_debt_remote_action_add_local">Добавить локально</string>
     <string name="fragment_add_debt_remote_action_pick_from_contacts">Или выбрать из контактов</string>
 
-    <string name="fragment_add_debt_info_error_invalid_info">Пожалуйста, введите корректные данные</string>
+    <string name="fragment_add_debt_info_error_invalid_info">Пожалуйста, введите корректную сумму</string>
     <string name="fragment_add_debt_info_error_sum">= ОШИБКА</string>
     <string name="fragment_add_debt_info_text_sum">= %1$.2f</string>
     <string name="fragment_add_debt_info_hint_value">Сумма</string>
-    <string name="fragment_add_debt_info_hint_description">Описание</string>
+    <string name="fragment_add_debt_info_hint_description">Описание(необязательно)</string>
     <string name="fragment_add_debt_info_hint_date">Дата</string>
 
     <string name="fragment_new_version_title">Новая версия доступна!</string>

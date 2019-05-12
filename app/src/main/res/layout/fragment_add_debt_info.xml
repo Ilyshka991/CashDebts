@@ -13,6 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:digits="0123456789.+-*/()"
+        android:imeOptions="actionNext"
         android:ems="10"
         android:hint="@string/fragment_add_debt_info_hint_value"
         android:inputType="number|numberDecimal|numberSigned"
@@ -30,8 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:textSize="20sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/text_value"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_value" />
 
     <EditText
         android:id="@+id/text_description"
