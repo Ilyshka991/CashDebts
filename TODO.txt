@@ -1,5 +1,5 @@
-1. Notifications
-2. Add dark theme
+1. Notifications and their settings
+2. Add dark theme and their settings
 3. Add in-app locale change
 4. Change fonts
 5. Debt items design
