@@ -3,3 +3,4 @@
 3. Add in-app locale change
 4. Change fonts
 5. Debt items design
+6. Add resend debt button

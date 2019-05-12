@@ -18,6 +18,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
+import com.pechuro.cashdebts.ui.activity.settings.SettingsActivity
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterDialog
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
@@ -129,6 +130,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             when (it.itemId) {
                 R.id.menu_profile_action_edit -> openEditProfile()
                 R.id.menu_profile_action_logout -> logout()
+                R.id.menu_profile_action_settings -> openSettingsActivity()
                 R.id.menu_debt_list_action_filter -> openFilter()
                 R.id.menu_debt_list_msg_total -> showTotalSumPopup()
             }
@@ -251,6 +253,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun openAddActivity(isLocalDebt: Boolean, id: String? = null) {
         val intent = AddDebtActivity.newIntent(this, isLocalDebt, id)
+        startActivity(intent)
+    }
+
+    private fun openSettingsActivity() {
+        val intent = SettingsActivity.newIntent(this)
         startActivity(intent)
     }
 

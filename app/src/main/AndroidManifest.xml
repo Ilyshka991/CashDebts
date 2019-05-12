@@ -50,6 +50,10 @@
 
         <activity android:name=".ui.activity.version.NewVersionActivity" />
 
+        <activity
+            android:name=".ui.activity.settings.SettingsActivity"
+            android:label="@string/label_activity_settings" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.pechuro.cashdebts.fileprovider"

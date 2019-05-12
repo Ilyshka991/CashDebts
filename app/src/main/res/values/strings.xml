@@ -11,12 +11,14 @@
     <string name="label_activity_profile_edit">Profile edit</string>
     <string name="label_activity_add_debt">Add debt</string>
     <string name="label_activity_auth">Sign in</string>
+    <string name="label_activity_settings">Settings</string>
 
     <string name="menu_activity_add_action_next">Next</string>
     <string name="menu_activity_add_action_save">Save</string>
 
     <string name="menu_fragment_profile_action_logout">Logout</string>
     <string name="menu_fragment_profile_action_edit">Edit</string>
+    <string name="menu_fragment_profile_action_settings">Settings</string>
 
     <string name="menu_fragment_debt_list_action_filter">Filter</string>
     <string name="menu_fragment_debt_list_action_total_sum">Total sum</string>

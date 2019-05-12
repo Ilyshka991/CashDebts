@@ -9,12 +9,14 @@
     <string name="label_activity_profile_edit">Редактирование профиля</string>
     <string name="label_activity_add_debt">Добавить долг</string>
     <string name="label_activity_auth">Вход</string>
+    <string name="label_activity_settings">Настройки</string>
 
     <string name="menu_activity_add_action_next">Дальше</string>
     <string name="menu_activity_add_action_save">Сохранить</string>
 
     <string name="menu_fragment_profile_action_logout">Выйти</string>
     <string name="menu_fragment_profile_action_edit">Редактировать</string>
+    <string name="menu_fragment_profile_action_settings">Настройки</string>
 
     <string name="menu_fragment_debt_list_action_filter">Фильтр</string>
     <string name="menu_fragment_debt_list_action_total_sum">Общая сумма</string>
