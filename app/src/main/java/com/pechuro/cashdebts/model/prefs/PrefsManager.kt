@@ -22,4 +22,10 @@ class PrefsManager @Inject constructor(private val prefs: SharedPreferences) {
         set(value) = prefs.edit {
             putBoolean(PrefsKey.FILTER_NOT_SHOW_COMPLETED, value)
         }
+
+    var settingsAutoAddPlus: Boolean
+        get() = prefs.getBoolean(PrefsKey.SETTING_AUTO_ADD_PLUS, true)
+        set(value) = prefs.edit {
+            putBoolean(PrefsKey.SETTING_AUTO_ADD_PLUS, value)
+        }
 }
