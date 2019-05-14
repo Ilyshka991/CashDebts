@@ -11,7 +11,7 @@ object LocaleManager {
     fun updateLocale(context: Context): Context {
         val prefsManager = PrefsManager(context.defaultSharedPreferences)
         val locale = prefsManager.settingCurrentLocale
-        return if (locale.isEmpty()) context else setNewLocale(context, locale)
+        return if (locale == "system") context else setNewLocale(context, locale)
     }
 
     private fun setNewLocale(context: Context, language: String): Context {

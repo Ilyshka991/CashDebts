@@ -29,6 +29,7 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
+import com.pechuro.cashdebts.ui.fragment.settings.SettingsFragmentEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_bar.*
@@ -165,12 +166,19 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setStrongEventListeners() {
-        EventManager.listen(MainActivityEvent::class.java).subscribe {
-            when (it) {
-                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
-                is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
+        strongCompositeDisposable.addAll(
+            EventManager.listen(MainActivityEvent::class.java).subscribe {
+                when (it) {
+                    is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
+                    is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
+                }
+            },
+            EventManager.listen(SettingsFragmentEvent::class.java).subscribe {
+                when (it) {
+                    is SettingsFragmentEvent.OnLanguageChanged -> recreate()
+                }
             }
-        }.addTo(strongCompositeDisposable)
+        )
     }
 
     private fun setWeakEventListeners() {

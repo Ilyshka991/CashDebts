@@ -83,7 +83,8 @@
     <string name="fragment_new_version_title">New version is available!</string>
     <string name="fragment_new_version_action_download">Download</string>
 
-    <string name="fragment_setting_text_add_plus">Automatically add \'+\' in value field</string>
+    <string name="fragment_settings_text_add_plus">Automatically add \'+\' in value field</string>
+    <string name="fragment_settings_text_language">Select language</string>
 
     <string name="item_country_text_empty">Nothing found</string>
 

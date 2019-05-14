@@ -29,7 +29,7 @@ class PrefsManager @Inject constructor(private val prefs: SharedPreferences) {
             putBoolean(PrefsKey.SETTING_AUTO_ADD_PLUS, value)
         }
     var settingCurrentLocale: String
-        get() = prefs.getString(PrefsKey.SETTING_CURRENT_LOCALE, "") ?: ""
+        get() = prefs.getString(PrefsKey.SETTING_CURRENT_LOCALE, "system") ?: "system"
         set(value) = prefs.edit {
             putString(PrefsKey.SETTING_CURRENT_LOCALE, value)
         }

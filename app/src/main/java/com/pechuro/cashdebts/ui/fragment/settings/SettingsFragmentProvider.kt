@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 interface SettingsFragmentProvider {
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [SettingsFragmentModule::class])
     fun bind(): SettingsFragment
 }

@@ -6,6 +6,9 @@ import android.os.Bundle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.settings.SettingsFragment
+import com.pechuro.cashdebts.ui.fragment.settings.SettingsFragmentEvent
+import com.pechuro.cashdebts.ui.utils.EventManager
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_scrolling_container.*
 
 class SettingsActivity : BaseFragmentActivity<SettingsActivityViewModel>() {
@@ -22,6 +25,7 @@ class SettingsActivity : BaseFragmentActivity<SettingsActivityViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActionBar()
+        setEventListeners()
     }
 
     private fun setupActionBar() {
@@ -30,6 +34,24 @@ class SettingsActivity : BaseFragmentActivity<SettingsActivityViewModel>() {
             setHomeAsUpIndicator(R.drawable.ic_action_close)
             setDisplayHomeAsUpEnabled(true)
         }
+    }
+
+    private fun setEventListeners() {
+        EventManager.listen(SettingsFragmentEvent::class.java).subscribe {
+            when (it) {
+                is SettingsFragmentEvent.OnLanguageChanged -> restart()
+            }
+        }.addTo(strongCompositeDisposable)
+    }
+
+    private fun restart() {
+        val intent = intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        }
+        overridePendingTransition(0, 0)
+        finish()
+        overridePendingTransition(0, 0)
+        startActivity(intent)
     }
 
     companion object {

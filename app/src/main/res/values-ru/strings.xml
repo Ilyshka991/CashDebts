@@ -81,7 +81,8 @@
     <string name="fragment_new_version_title">Новая версия доступна!</string>
     <string name="fragment_new_version_action_download">Скачать</string>
 
-    <string name="fragment_setting_text_add_plus">Автоматически добавлять \'+\' при вводе суммы</string>
+    <string name="fragment_settings_text_add_plus">Автоматически добавлять \'+\' при вводе суммы</string>
+    <string name="fragment_settings_text_language">Выберите язык</string>
 
     <string name="item_country_text_empty">Ничего не найдено</string>
 
