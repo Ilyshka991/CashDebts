@@ -7,4 +7,5 @@ object PrefsKey {
     const val FILTER_NOT_SHOW_COMPLETED = "filterNotShowCompleted"
 
     const val SETTING_AUTO_ADD_PLUS = "settingAutoAddPlus"
+    const val SETTING_CURRENT_LOCALE = "settingCurrentLocale"
 }
