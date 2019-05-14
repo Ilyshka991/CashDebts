@@ -18,6 +18,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivity
 import com.pechuro.cashdebts.ui.activity.auth.AuthActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
+import com.pechuro.cashdebts.ui.activity.settings.SettingsActivity
 import com.pechuro.cashdebts.ui.base.activity.BaseFragmentActivity
 import com.pechuro.cashdebts.ui.fragment.filterdialog.FilterDialog
 import com.pechuro.cashdebts.ui.fragment.localdebtlist.LocalDebtListFragment
@@ -28,6 +29,7 @@ import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditEvent
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragment
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragment
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragment
+import com.pechuro.cashdebts.ui.fragment.settings.SettingsFragmentEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_bottom_bar.*
@@ -129,6 +131,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             when (it.itemId) {
                 R.id.menu_profile_action_edit -> openEditProfile()
                 R.id.menu_profile_action_logout -> logout()
+                R.id.menu_profile_action_settings -> openSettingsActivity()
                 R.id.menu_debt_list_action_filter -> openFilter()
                 R.id.menu_debt_list_msg_total -> showTotalSumPopup()
             }
@@ -163,12 +166,19 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
     }
 
     private fun setStrongEventListeners() {
-        EventManager.listen(MainActivityEvent::class.java).subscribe {
-            when (it) {
-                is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
-                is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
+        strongCompositeDisposable.addAll(
+            EventManager.listen(MainActivityEvent::class.java).subscribe {
+                when (it) {
+                    is MainActivityEvent.OpenAddActivity -> openAddActivity(it.isLocalDebt, it.id)
+                    is MainActivityEvent.UpdateTotalDebtSum -> updateTotalDebtSum(it.value)
+                }
+            },
+            EventManager.listen(SettingsFragmentEvent::class.java).subscribe {
+                when (it) {
+                    is SettingsFragmentEvent.OnLanguageChanged -> recreate()
+                }
             }
-        }.addTo(strongCompositeDisposable)
+        )
     }
 
     private fun setWeakEventListeners() {
@@ -251,6 +261,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun openAddActivity(isLocalDebt: Boolean, id: String? = null) {
         val intent = AddDebtActivity.newIntent(this, isLocalDebt, id)
+        startActivity(intent)
+    }
+
+    private fun openSettingsActivity() {
+        val intent = SettingsActivity.newIntent(this)
         startActivity(intent)
     }
 

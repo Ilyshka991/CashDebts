@@ -1,3 +1,4 @@
-1. Notifications
-2. Debt items design
-3. Add dark theme
+1. Notifications and their settings
+2. Add dark theme and their settings
+4. Change fonts
+5. Debt items design

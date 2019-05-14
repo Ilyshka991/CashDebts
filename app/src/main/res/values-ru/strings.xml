@@ -9,12 +9,14 @@
     <string name="label_activity_profile_edit">Редактирование профиля</string>
     <string name="label_activity_add_debt">Добавить долг</string>
     <string name="label_activity_auth">Вход</string>
+    <string name="label_activity_settings">Настройки</string>
 
     <string name="menu_activity_add_action_next">Дальше</string>
     <string name="menu_activity_add_action_save">Сохранить</string>
 
     <string name="menu_fragment_profile_action_logout">Выйти</string>
     <string name="menu_fragment_profile_action_edit">Редактировать</string>
+    <string name="menu_fragment_profile_action_settings">Настройки</string>
 
     <string name="menu_fragment_debt_list_action_filter">Фильтр</string>
     <string name="menu_fragment_debt_list_action_total_sum">Общая сумма</string>
@@ -22,6 +24,7 @@
     <string name="snackbar_msg_deleted">Удалено</string>
     <string name="snackbar_msg_success">Успешно</string>
     <string name="snackbar_msg_updated">Обновлено</string>
+    <string name="snackbar_msg_resent">Отправлено</string>
     <string name="snackbar_msg_accepted">Принято</string>
     <string name="snackbar_msg_restored">Восстановлено</string>
     <string name="snackbar_msg_info_sent">Отправлено человеку</string>
@@ -68,15 +71,18 @@
     <string name="fragment_add_debt_remote_action_add_local">Добавить локально</string>
     <string name="fragment_add_debt_remote_action_pick_from_contacts">Или выбрать из контактов</string>
 
-    <string name="fragment_add_debt_info_error_invalid_info">Пожалуйста, введите корректные данные</string>
+    <string name="fragment_add_debt_info_error_invalid_info">Пожалуйста, введите корректную сумму</string>
     <string name="fragment_add_debt_info_error_sum">= ОШИБКА</string>
     <string name="fragment_add_debt_info_text_sum">= %1$.2f</string>
     <string name="fragment_add_debt_info_hint_value">Сумма</string>
-    <string name="fragment_add_debt_info_hint_description">Описание</string>
+    <string name="fragment_add_debt_info_hint_description">Описание(необязательно)</string>
     <string name="fragment_add_debt_info_hint_date">Дата</string>
 
     <string name="fragment_new_version_title">Новая версия доступна!</string>
     <string name="fragment_new_version_action_download">Скачать</string>
+
+    <string name="fragment_settings_text_add_plus">Автоматически добавлять \'+\' при вводе суммы</string>
+    <string name="fragment_settings_text_language">Выберите язык</string>
 
     <string name="item_country_text_empty">Ничего не найдено</string>
 
@@ -87,6 +93,7 @@
     <string name="item_remote_debt_action_reject">Отклонить</string>
     <string name="item_remote_debt_action_accept">Подтвердить</string>
     <string name="item_remote_debt_action_negative_ok">ОК :(</string>
+    <string name="item_remote_debt_action_resend">Отправить заново</string>
     <string name="item_remote_debt_action_delete">Удалить</string>
     <string name="item_remote_debt_text_status_not_send">Не отправлено</string>
     <string name="item_remote_debt_text_status_wait_for_confirmation">Ожидание подтверждения добавления</string>

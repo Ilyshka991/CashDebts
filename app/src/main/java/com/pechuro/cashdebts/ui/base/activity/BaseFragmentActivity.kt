@@ -3,6 +3,7 @@ package com.pechuro.cashdebts.ui.base.activity
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.base.BaseViewModel
@@ -12,11 +13,21 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
     @get:IdRes
     protected abstract val containerId: Int
 
+    private var pendingFragmentTransaction: PendingFragmentTransaction? = null
+
     protected abstract fun getHomeFragment(): Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) homeFragment()
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        pendingFragmentTransaction?.let {
+            showFragment(it.fragment, it.isAddToBackStack)
+            pendingFragmentTransaction = null
+        }
     }
 
     override fun onBackPressed() {
@@ -42,15 +53,19 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         fragment: BaseFragment<V>,
         isAddToBackStack: Boolean = true
     ) {
-        supportFragmentManager.transaction {
-            setCustomAnimations(
-                R.anim.anim_fade_in,
-                R.anim.anim_fade_out,
-                R.anim.anim_fade_in,
-                R.anim.anim_fade_out
-            )
-            replace(containerId, fragment)
-            if (isAddToBackStack) addToBackStack(null)
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            supportFragmentManager.transaction {
+                setCustomAnimations(
+                    R.anim.anim_fade_in,
+                    R.anim.anim_fade_out,
+                    R.anim.anim_fade_in,
+                    R.anim.anim_fade_out
+                )
+                replace(containerId, fragment)
+                if (isAddToBackStack) addToBackStack(null)
+            }
+        } else {
+            pendingFragmentTransaction = PendingFragmentTransaction(fragment, isAddToBackStack)
         }
     }
 
@@ -58,3 +73,8 @@ abstract class BaseFragmentActivity<VM : BaseViewModel> : BaseActivity<VM>() {
         supportFragmentManager.popBackStack()
     }
 }
+
+private class PendingFragmentTransaction(
+    val fragment: BaseFragment<*>,
+    val isAddToBackStack: Boolean
+)

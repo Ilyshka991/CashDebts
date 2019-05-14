@@ -1,5 +1,8 @@
 package com.pechuro.cashdebts.ui.utils.extensions
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.telephony.TelephonyManager
 import androidx.fragment.app.FragmentManager
@@ -44,3 +47,6 @@ fun TelephonyManager.getUserCountryCode(): String? {
 
 val Int.px: Int
     get() = Math.round(this * Resources.getSystem().displayMetrics.density)
+
+val Context.defaultSharedPreferences: SharedPreferences
+    get() = getSharedPreferences(packageName, MODE_PRIVATE)

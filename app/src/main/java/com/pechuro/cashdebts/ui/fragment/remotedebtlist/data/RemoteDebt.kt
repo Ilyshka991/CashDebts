@@ -17,7 +17,8 @@ data class RemoteDebt(
     val isCurrentUserInit: Boolean,
     var isExpanded: Boolean = false,
     val isLocal: Boolean,
-    var isUnited: Boolean = false
+    var isUnited: Boolean = false,
+    val isFirstTimeAdded: Boolean
 ) {
     fun isEmpty() = value == 0.0
 
@@ -33,7 +34,8 @@ data class RemoteDebt(
             isCurrentUserInit = false,
             isExpanded = false,
             isLocal = false,
-            isUnited = false
+            isUnited = false,
+            isFirstTimeAdded = true
         )
     }
 

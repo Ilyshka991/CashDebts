@@ -11,12 +11,14 @@
     <string name="label_activity_profile_edit">Profile edit</string>
     <string name="label_activity_add_debt">Add debt</string>
     <string name="label_activity_auth">Sign in</string>
+    <string name="label_activity_settings">Settings</string>
 
     <string name="menu_activity_add_action_next">Next</string>
     <string name="menu_activity_add_action_save">Save</string>
 
     <string name="menu_fragment_profile_action_logout">Logout</string>
     <string name="menu_fragment_profile_action_edit">Edit</string>
+    <string name="menu_fragment_profile_action_settings">Settings</string>
 
     <string name="menu_fragment_debt_list_action_filter">Filter</string>
     <string name="menu_fragment_debt_list_action_total_sum">Total sum</string>
@@ -24,6 +26,7 @@
     <string name="snackbar_msg_deleted">Deleted</string>
     <string name="snackbar_msg_success">Success</string>
     <string name="snackbar_msg_updated">Updated</string>
+    <string name="snackbar_msg_resent">Resent</string>
     <string name="snackbar_msg_accepted">Accepted</string>
     <string name="snackbar_msg_restored">Restored</string>
     <string name="snackbar_msg_info_sent">Sent to person</string>
@@ -70,15 +73,18 @@
     <string name="fragment_add_debt_remote_action_add_local">Add local</string>
     <string name="fragment_add_debt_remote_action_pick_from_contacts">Or pick from contacts</string>
 
-    <string name="fragment_add_debt_info_error_invalid_info">Please, enter valid info</string>
+    <string name="fragment_add_debt_info_error_invalid_info">Please, enter valid value</string>
     <string name="fragment_add_debt_info_error_sum">= ERROR</string>
     <string name="fragment_add_debt_info_text_sum">= %1$.2f</string>
     <string name="fragment_add_debt_info_hint_value">Value</string>
-    <string name="fragment_add_debt_info_hint_description">Description</string>
+    <string name="fragment_add_debt_info_hint_description">Description(optional)</string>
     <string name="fragment_add_debt_info_hint_date">Date</string>
 
     <string name="fragment_new_version_title">New version is available!</string>
     <string name="fragment_new_version_action_download">Download</string>
+
+    <string name="fragment_settings_text_add_plus">Automatically add \'+\' in value field</string>
+    <string name="fragment_settings_text_language">Select language</string>
 
     <string name="item_country_text_empty">Nothing found</string>
 
@@ -89,6 +95,7 @@
     <string name="item_remote_debt_action_reject">Reject</string>
     <string name="item_remote_debt_action_accept">Accept</string>
     <string name="item_remote_debt_action_negative_ok">OK :(</string>
+    <string name="item_remote_debt_action_resend">Resend</string>
     <string name="item_remote_debt_action_delete">Delete</string>
     <string name="item_remote_debt_text_status_not_send">Not sent</string>
     <string name="item_remote_debt_text_status_wait_for_confirmation">Wait for add confirmation</string>

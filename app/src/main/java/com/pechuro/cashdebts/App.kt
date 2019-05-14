@@ -9,18 +9,20 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.Service
+import android.content.Context
+import android.content.res.Configuration
 import androidx.core.content.pm.PackageInfoCompat
 import com.pechuro.cashdebts.data.data.repositories.IVersionRepository
 import com.pechuro.cashdebts.data.di.component.DaggerDataComponent
 import com.pechuro.cashdebts.di.component.AppComponent
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
+import com.pechuro.cashdebts.model.locale.LocaleManager
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.HasServiceInjector
 import javax.inject.Inject
-
 
 class App : Application(), HasActivityInjector, HasServiceInjector {
 
@@ -39,6 +41,15 @@ class App : Application(), HasActivityInjector, HasServiceInjector {
 
         initDI()
         setVersionListener()
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleManager.updateLocale(base))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        LocaleManager.updateLocale(this)
     }
 
     override fun activityInjector() = activityDispatchingAndroidInjector

@@ -11,6 +11,7 @@ import com.pechuro.cashdebts.ui.activity.auth.phone.AuthPhoneFragmentProvider
 import com.pechuro.cashdebts.ui.activity.countryselection.CountrySelectionActivity
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import com.pechuro.cashdebts.ui.activity.profileedit.ProfileEditActivity
+import com.pechuro.cashdebts.ui.activity.settings.SettingsActivity
 import com.pechuro.cashdebts.ui.activity.splash.SplashActivity
 import com.pechuro.cashdebts.ui.activity.version.NewVersionActivity
 import com.pechuro.cashdebts.ui.fragment.countryselection.CountrySelectionFragmentProvider
@@ -21,6 +22,7 @@ import com.pechuro.cashdebts.ui.fragment.navigationdialog.NavigationDialogProvid
 import com.pechuro.cashdebts.ui.fragment.profileedit.ProfileEditFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.profileview.ProfileViewFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.RemoteDebtListFragmentProvider
+import com.pechuro.cashdebts.ui.fragment.settings.SettingsFragmentProvider
 import com.pechuro.cashdebts.ui.fragment.version.NewVersionFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -87,4 +89,11 @@ interface AppActivitiesModule {
             NewVersionFragmentProvider::class]
     )
     fun bindVersion(): NewVersionActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(
+        modules = [
+            SettingsFragmentProvider::class]
+    )
+    fun bindSettings(): SettingsActivity
 }
