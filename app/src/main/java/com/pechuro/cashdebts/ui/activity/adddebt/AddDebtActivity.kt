@@ -30,6 +30,12 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
             field = value
             invalidateOptionsMenu()
         }
+    private var lastSnackbar: Snackbar? = null
+        set(value) {
+            field?.dismiss()
+            field = value
+            value?.show()
+        }
 
     override fun getHomeFragment() =
         if (isLocalDebt) AddDebtLocalUserFragment.newInstance() else AddDebtRemoteUserFragment.newInstance()
@@ -93,18 +99,18 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
     }
 
     private fun openInfo(isInternetRequired: Boolean) {
+        lastSnackbar = null
         showFragment(AddDebtInfoFragment.newInstance(isInternetRequired))
         invalidateOptionsMenu()
     }
 
     private fun showSnackBarError(@StringRes id: Int) {
-        Snackbar.make(container, id, Snackbar.LENGTH_LONG)
+        lastSnackbar = Snackbar.make(container, id, Snackbar.LENGTH_LONG)
             .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
-            .show()
     }
 
     private fun showSnackBarUserNotExist() {
-        Snackbar.make(
+        lastSnackbar = Snackbar.make(
             container,
             R.string.fragment_add_debt_remote_error_user_not_exist,
             Snackbar.LENGTH_INDEFINITE
@@ -112,7 +118,7 @@ class AddDebtActivity : FragmentSwitcherBaseActivity<AddDebtActivityViewModel>()
             .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
             .setAction(R.string.fragment_add_debt_remote_action_add_local) {
                 restartWithLocalDebtFragment()
-            }.show()
+            }
     }
 
     private fun restartWithLocalDebtFragment() {
