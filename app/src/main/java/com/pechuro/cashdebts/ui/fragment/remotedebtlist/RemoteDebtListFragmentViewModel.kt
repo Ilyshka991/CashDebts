@@ -92,7 +92,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                                 firestoreDebt.initPersonUid == userRepository.currentUserBaseInformation.uid,
                                 false,
                                 firestoreDebt.deleteStatus != DebtDeleteStatus.NOT_DELETED,
-                                false
+                                false,
+                                firestoreDebt.isFirstTimeAdded
                             )
                         }
                 }.toList()
@@ -209,14 +210,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             is DebtAction.FullDelete -> fullDelete(info.second)
             is DebtAction.EditReject -> rejectDebtEdit(info.second.id)
             is DebtAction.EditAccept -> acceptDebtEdit(info.second)
-            is DebtAction.Update -> {
-                val firestoreDebt = info.second.toFirestoreDebt(status = action.status)
-                debtRepository.update(info.second.id, firestoreDebt).subscribe({
-                    command.onNext(Command.ShowMessage(R.string.snackbar_msg_updated))
-                }, {
-                    command.onNext(Command.ShowMessage(R.string.common_error_load))
-                }).addTo(compositeDisposable)
-            }
+            is DebtAction.Update -> updateDebt(info.second, action.status)
+            is DebtAction.Resend -> resendDebt(info.second)
         }
     }
 
@@ -239,6 +234,31 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             }).addTo(compositeDisposable)
     }
 
+    private fun updateDebt(
+        debt: RemoteDebt,
+        status: Int
+    ) {
+        val firestoreDebt = debt.toFirestoreDebt(status = status)
+        debtRepository.update(debt.id, firestoreDebt).subscribe({
+            command.onNext(Command.ShowMessage(R.string.snackbar_msg_updated))
+        }, {
+            command.onNext(Command.ShowMessage(R.string.common_error_load))
+        }).addTo(compositeDisposable)
+    }
+
+    private fun resendDebt(debt: RemoteDebt) {
+        val firestoreDebt =
+            debt.toFirestoreDebt(
+                status = FirestoreDebtStatus.WAIT_FOR_CONFIRMATION,
+                isFirstTimeAdded = false
+            )
+        debtRepository.update(debt.id, firestoreDebt).subscribe({
+            command.onNext(Command.ShowMessage(R.string.snackbar_msg_resent))
+        }, {
+            command.onNext(Command.ShowMessage(R.string.common_error_load))
+        }).addTo(compositeDisposable)
+    }
+
     private fun rejectDebtEdit(id: String) {
         debtRepository.getSingle("${id}_tmp")
             .flatMapCompletable {
@@ -251,7 +271,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                         it.date,
                         it.status,
                         it.initPersonUid,
-                        DebtDeleteStatus.NOT_DELETED
+                        DebtDeleteStatus.NOT_DELETED,
+                        it.isFirstTimeAdded
                     )
                 )
             }.andThen(debtRepository.delete("${id}_tmp"))
@@ -293,7 +314,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             role == DebtRole.CREDITOR -> DebtDeleteStatus.DELETED_FROM_DEBTOR
             role == DebtRole.DEBTOR -> DebtDeleteStatus.DELETED_FROM_CREDITOR
             else -> throw IllegalArgumentException()
-        }
+        },
+        isFirstTimeAdded: Boolean = this.isFirstTimeAdded
     ) = FirestoreRemoteDebt(
         if (role == DebtRole.CREDITOR) userRepository.currentUserBaseInformation.uid else user.uid,
         if (role == DebtRole.DEBTOR) userRepository.currentUserBaseInformation.uid else user.uid,
@@ -302,7 +324,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         date,
         status,
         if (isCurrentUserInit) userRepository.currentUserBaseInformation.uid else user.uid,
-        deleteStatus
+        deleteStatus,
+        isFirstTimeAdded
     )
 
     private fun getDebtAction(action: RemoteDebtListAdapter.Actions, currentStatus: Int) =
@@ -333,6 +356,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                 else -> DebtAction.Update(IN_PROGRESS)
             }
             RemoteDebtListAdapter.Actions.DELETE -> DebtAction.OneSideDelete
+            RemoteDebtListAdapter.Actions.RESEND -> DebtAction.Resend
         }
 
     private sealed class DebtAction {
@@ -341,6 +365,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         object FullDelete : DebtAction()
         object EditReject : DebtAction()
         object EditAccept : DebtAction()
+        object Resend : DebtAction()
     }
 
     sealed class Command {

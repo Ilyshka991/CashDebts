@@ -111,7 +111,7 @@ class HintEditText : AppCompatEditText {
 
     private fun calculateCharSizes() {
         spaceSize = getPaint().measureText(" ")
-        charSize = getPaint().measureText("‒")
+        charSize = getPaint().measureText("−")
     }
 
     private fun calculateTextOffset() {

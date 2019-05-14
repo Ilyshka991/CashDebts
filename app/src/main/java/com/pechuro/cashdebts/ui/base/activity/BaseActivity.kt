@@ -1,5 +1,7 @@
 package com.pechuro.cashdebts.ui.base.activity
 
+import android.content.Context
+import android.content.pm.PackageManager.GET_META_DATA
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.AppEvent
+import com.pechuro.cashdebts.model.locale.LocaleManager
 import com.pechuro.cashdebts.ui.activity.version.NewVersionActivity
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.EventManager
@@ -17,6 +20,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 import kotlin.reflect.KClass
+
 
 abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     HasSupportFragmentInjector {
@@ -43,6 +47,11 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
         setAppEventListener()
+        resetTitle()
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleManager.updateLocale(base))
     }
 
     override fun onStop() {
@@ -61,6 +70,13 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass().java)
+    }
+
+    private fun resetTitle() {
+        val info = packageManager.getActivityInfo(componentName, GET_META_DATA)
+        if (info.labelRes != 0) {
+            setTitle(info.labelRes)
+        }
     }
 
     private fun setAppEventListener() {

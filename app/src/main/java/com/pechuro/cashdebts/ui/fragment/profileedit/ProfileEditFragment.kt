@@ -209,7 +209,7 @@ class ProfileEditFragment : BaseFragment<ProfileEditFragmentViewModel>() {
         private const val REQUEST_TAKE_PHOTO = 1213
         private const val REQUEST_PICK_PHOTO = 2453
 
-        private const val ARG_IS_FIRST_TIME = "isFirstTime"
+        private const val ARG_IS_FIRST_TIME = "isFirstTimeAdded"
 
         fun newInstance(isFirstTime: Boolean = false) =
             ProfileEditFragment().apply {

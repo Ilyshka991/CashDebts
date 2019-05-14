@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.calculator.Result
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.activity.adddebt.AddDebtActivityViewModel
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerDialog
@@ -14,6 +15,7 @@ import com.pechuro.cashdebts.ui.fragment.datetimepicker.DateTimePickerEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
 import com.pechuro.cashdebts.ui.utils.binding.receiveDateChangesFrom
 import com.pechuro.cashdebts.ui.utils.binding.receiveTextChangesFrom
+import com.pechuro.cashdebts.ui.utils.binding.receiveValueChangesFrom
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_add_debt_info.*
 import java.text.SimpleDateFormat
@@ -22,8 +24,13 @@ import javax.inject.Inject
 
 
 class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
+
     @Inject
     protected lateinit var imm: InputMethodManager
+    @Inject
+    protected lateinit var dateFormatter: SimpleDateFormat
+    @Inject
+    protected lateinit var prefsManager: PrefsManager
 
     override val layoutId: Int
         get() = R.layout.fragment_add_debt_info
@@ -33,9 +40,6 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     private val isInternetRequired by lazy {
         arguments?.getBoolean(ARG_IS_INTERNET_REQUIRED) ?: false
     }
-
-    @Inject
-    protected lateinit var dateFormatter: SimpleDateFormat
 
     override fun getViewModelClass() = AddDebtActivityViewModel::class
 
@@ -62,7 +66,10 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
     private fun setViewListeners() {
         with(viewModel) {
             strongCompositeDisposable.addAll(
-                mathExpression.receiveTextChangesFrom(text_value),
+                mathExpression.receiveValueChangesFrom(
+                    text_value,
+                    prefsManager.settingsAutoAddPlus
+                ),
                 debt.description.receiveTextChangesFrom(text_description),
                 debt.date.receiveDateChangesFrom(text_date, dateFormatter)
             )
@@ -70,7 +77,13 @@ class AddDebtInfoFragment : BaseFragment<AddDebtActivityViewModel>() {
         text_date.setOnClickListener {
             showDateTimePicker()
         }
-
+        text_value.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                text_description.requestFocus()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
         text_description.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.save()

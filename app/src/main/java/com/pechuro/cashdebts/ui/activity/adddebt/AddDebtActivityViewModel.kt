@@ -233,9 +233,9 @@ class AddDebtActivityViewModel @Inject constructor(
             debt.date.requireValue,
             status,
             userRepository.currentUserBaseInformation.uid,
-            DebtDeleteStatus.NOT_DELETED
+            DebtDeleteStatus.NOT_DELETED,
+            true
         )
-
 
         val operation = if (id == null) {
             remoteDebtRepository.add(sendingDebt)
@@ -250,7 +250,8 @@ class AddDebtActivityViewModel @Inject constructor(
                         it.date,
                         it.status,
                         it.initPersonUid,
-                        DebtDeleteStatus.CACHED
+                        DebtDeleteStatus.CACHED,
+                        it.isFirstTimeAdded
                     )
                 )
             }.andThen(remoteDebtRepository.update(id, sendingDebt))
