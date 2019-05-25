@@ -28,6 +28,7 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(msg: RemoteMessage?) {
+        println(msg?.data)
         notificationManager.showDebtAddNotification()
     }
 }
