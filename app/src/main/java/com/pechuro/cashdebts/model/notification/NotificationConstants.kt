@@ -10,8 +10,11 @@ object NotificationConstants {
         const val CHANNEL_UPDATE_ID = "channelUpdate"
     }
 
+    object Group {
+        const val ID_GROUP = "createGroup"
+    }
+
     object NotificationIds {
-        const val NOTIFICATION_ADD = 1
         const val NOTIFICATION_COMPLETE = 2
         const val NOTIFICATION_UPDATE = 3
     }

@@ -3,7 +3,9 @@ package com.pechuro.cashdebts.model.notification
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -11,9 +13,9 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_ADD_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_COMPLETE_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_UPDATE_ID
-import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_ADD
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_COMPLETE
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_UPDATE
+import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import javax.inject.Inject
 
 class NotificationManager @Inject constructor(
@@ -31,22 +33,29 @@ class NotificationManager @Inject constructor(
                 val personName =
                     data[NotificationStructure.PERSON_NAME]
                         ?: throw IllegalArgumentException("Value must be specified")
-                val value = data[NotificationStructure.VALUE]
+                val value = data[NotificationStructure.VALUE]?.toDoubleOrNull()
                     ?: throw IllegalArgumentException("Value must be specified")
-                showDebtAddNotification(personName, value)
+                showDebtAddNotification(NotificationCreateData(personName, value))
             }
         }
     }
 
-    private fun showDebtAddNotification(personName: String?, value: String?) {
+    private fun showDebtAddNotification(data: NotificationCreateData) {
+        val tapPendingIntent = MainActivity.newIntent(context).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.run { PendingIntent.getActivity(context, 0, this, 0) }
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ADD_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Create")
-            .setContentText("$personName - $value")
+            .setContentTitle(context.getString(R.string.notification_create_title))
+            .setContentText("${data.personName} - ${data.value}")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(tapPendingIntent)
+            .setAutoCancel(true)
+            .setGroup(NotificationConstants.Group.ID_GROUP)
             .build()
 
-        notificationManager.notify(NOTIFICATION_ADD, notification)
+        notificationManager.notify(data.hashCode(), notification)
     }
 
     private fun showDebtCompleteNotification() {

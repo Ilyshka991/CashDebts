@@ -36,6 +36,7 @@
     <string name="notification_channel_add">Add</string>
     <string name="notification_channel_complete">Complete</string>
     <string name="notification_channel_update">Update</string>
+    <string name="notification_create_title">New debt</string>
 
     <string name="layout_no_connection_msg">No internet connection</string>
 

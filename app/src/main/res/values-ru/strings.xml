@@ -34,6 +34,7 @@
     <string name="notification_channel_add">Добавление</string>
     <string name="notification_channel_complete">Выполнение</string>
     <string name="notification_channel_update">Обновление</string>
+    <string name="notification_create_title">Новый долг</string>
 
     <string name="layout_no_connection_msg">Нет интернет соединения</string>
 
