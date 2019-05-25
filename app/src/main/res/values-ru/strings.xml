@@ -25,6 +25,7 @@
     <string name="snackbar_msg_success">Успешно</string>
     <string name="snackbar_msg_updated">Обновлено</string>
     <string name="snackbar_msg_resent">Отправлено</string>
+    <string name="snackbar_msg_rejected">Отклонено</string>
     <string name="snackbar_msg_accepted">Принято</string>
     <string name="snackbar_msg_restored">Восстановлено</string>
     <string name="snackbar_msg_info_sent">Отправлено человеку</string>

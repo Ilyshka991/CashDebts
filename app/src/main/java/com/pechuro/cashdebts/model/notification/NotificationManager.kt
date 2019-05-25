@@ -27,7 +27,7 @@ class NotificationManager @Inject constructor(
         setupChannels()
     }
 
-    fun showNotification(data: Map<String, String>) {
+    fun show(data: Map<String, String>) {
         when (data[NotificationStructure.TYPE]) {
             NotificationStructure.Types.CREATE -> {
                 val personName =
@@ -38,6 +38,14 @@ class NotificationManager @Inject constructor(
                 showDebtAddNotification(NotificationCreateData(personName, value))
             }
         }
+    }
+
+    fun dismiss(id: Int) {
+        notificationManager.cancel(id)
+    }
+
+    fun dismissAll() {
+        notificationManager.cancelAll()
     }
 
     private fun showDebtAddNotification(data: NotificationCreateData) {
