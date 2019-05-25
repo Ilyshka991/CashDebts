@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.SpinnerAdapter
 import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.prefs.PrefsManager
+import com.pechuro.cashdebts.model.theme.AppTheme
 import com.pechuro.cashdebts.ui.base.BaseFragment
 import com.pechuro.cashdebts.ui.utils.EventManager
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -89,6 +90,7 @@ class SettingsFragment : BaseFragment<SettingsFragmentViewModel>() {
         val themeCode = themesId[position]
         if (themeCode != prefsManager.settingTheme) {
             prefsManager.settingTheme = themeCode
+            AppTheme.setTheme(themeCode)
             EventManager.publish(SettingsFragmentEvent.OnApplyChanges)
         }
     }

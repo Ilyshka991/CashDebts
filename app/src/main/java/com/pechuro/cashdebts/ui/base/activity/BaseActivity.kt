@@ -5,13 +5,11 @@ import android.content.pm.PackageManager.GET_META_DATA
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.pechuro.cashdebts.AppEvent
 import com.pechuro.cashdebts.model.locale.LocaleManager
-import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.activity.version.NewVersionActivity
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.utils.EventManager
@@ -40,8 +38,6 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     protected lateinit var weakCompositeDisposable: CompositeDisposable
     @Inject
     protected lateinit var strongCompositeDisposable: CompositeDisposable
-    @Inject
-    protected lateinit var prefsManager: PrefsManager
 
     protected abstract fun getViewModelClass(): KClass<V>
 
@@ -49,7 +45,6 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
         performDI()
         initViewModel()
         super.onCreate(savedInstanceState)
-        setTheme(prefsManager.settingTheme)
         setContentView(layoutId)
         setAppEventListener()
         resetTitle()
@@ -72,16 +67,6 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
 
     private fun performDI() = AndroidInjection.inject(this)
-
-    private fun setTheme(theme: String) {
-        val mode = when (theme) {
-            "auto" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            "light" -> AppCompatDelegate.MODE_NIGHT_NO
-            "dark" -> AppCompatDelegate.MODE_NIGHT_YES
-            else -> throw IllegalArgumentException("Unknown theme")
-        }
-        AppCompatDelegate.setDefaultNightMode(mode)
-    }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass().java)

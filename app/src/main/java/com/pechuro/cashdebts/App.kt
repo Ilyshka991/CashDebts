@@ -16,6 +16,8 @@ import com.pechuro.cashdebts.data.data.repositories.IVersionRepository
 import com.pechuro.cashdebts.data.di.component.DaggerDataComponent
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
 import com.pechuro.cashdebts.model.locale.LocaleManager
+import com.pechuro.cashdebts.model.prefs.PrefsManager
+import com.pechuro.cashdebts.model.theme.AppTheme
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
 import dagger.android.DispatchingAndroidInjector
@@ -31,10 +33,13 @@ class App : Application(), HasActivityInjector, HasServiceInjector {
     lateinit var serviceDispatchingAndroidInjector: DispatchingAndroidInjector<Service>
     @Inject
     protected lateinit var versionRepository: IVersionRepository
+    @Inject
+    protected lateinit var prefsManager: PrefsManager
 
     override fun onCreate() {
         super.onCreate()
         initDI()
+        AppTheme.setTheme(prefsManager.settingTheme)
         setVersionListener()
     }
 
