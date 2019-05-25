@@ -6,6 +6,7 @@ import android.content.Intent
 import com.pechuro.cashdebts.data.data.model.FirestoreDebtStatus
 import com.pechuro.cashdebts.data.data.model.FirestoreRemoteDebt
 import com.pechuro.cashdebts.data.data.repositories.IRemoteDebtRepository
+import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.notification.NotificationConstants
 import com.pechuro.cashdebts.model.notification.NotificationManager
 import dagger.android.AndroidInjection
@@ -21,6 +22,8 @@ class NotificationCreateActionService : Service() {
     protected lateinit var notificationManager: NotificationManager
     @Inject
     protected lateinit var disposable: CompositeDisposable
+    @Inject
+    protected lateinit var userRepository: IUserRepository
 
     override fun onCreate() {
         AndroidInjection.inject(this)
@@ -72,7 +75,8 @@ class NotificationCreateActionService : Service() {
                 status,
                 initPersonUid,
                 deleteStatus,
-                isFirstTimeAdded
+                isFirstTimeAdded,
+                userRepository.currentUserBaseInformation.uid
             )
         }
     }

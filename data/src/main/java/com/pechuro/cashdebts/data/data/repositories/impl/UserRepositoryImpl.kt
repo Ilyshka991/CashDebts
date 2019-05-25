@@ -181,7 +181,9 @@ internal class UserRepositoryImpl @Inject constructor(
                         getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
                             ?: DebtDeleteStatus.NOT_DELETED,
                         getBoolean(FirestoreRemoteDebt::isFirstTimeAdded.name)
-                            ?: false
+                            ?: false,
+                        getString(FirestoreRemoteDebt::lastChangePersonUid.name)
+                            ?: ""
                     )
                 }
                 store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)

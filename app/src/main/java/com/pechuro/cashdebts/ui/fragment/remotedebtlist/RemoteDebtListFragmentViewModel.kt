@@ -277,7 +277,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                         it.status,
                         it.initPersonUid,
                         DebtDeleteStatus.NOT_DELETED,
-                        it.isFirstTimeAdded
+                        it.isFirstTimeAdded,
+                        userRepository.currentUserBaseInformation.uid
                     )
                 )
             }.andThen(debtRepository.delete("${id}_tmp"))
@@ -352,7 +353,8 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         status,
         if (isCurrentUserInit) userRepository.currentUserBaseInformation.uid else user.uid,
         deleteStatus,
-        isFirstTimeAdded
+        isFirstTimeAdded,
+        userRepository.currentUserBaseInformation.uid
     )
 
     private fun getDebtAction(action: RemoteDebtListAdapter.Actions, currentStatus: Int) =
