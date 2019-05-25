@@ -30,7 +30,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="@string/fragment_new_version_action_download"
-        android:textColor="@color/pink"
+        android:textColor="@color/button_version_download"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

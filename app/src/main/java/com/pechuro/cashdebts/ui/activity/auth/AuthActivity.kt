@@ -57,7 +57,7 @@ class AuthActivity : FragmentSwitcherBaseActivity<AuthActivityViewModel>() {
 
     private fun showSnackBar(@StringRes id: Int) {
         Snackbar.make(container, id, Snackbar.LENGTH_LONG)
-            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
+            .setActionTextColor(ResourcesCompat.getColor(resources, R.color.action_snackbar, theme))
             .show()
     }
 

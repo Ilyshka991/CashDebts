@@ -8,4 +8,5 @@ object PrefsKey {
 
     const val SETTING_AUTO_ADD_PLUS = "settingAutoAddPlus"
     const val SETTING_CURRENT_LOCALE = "settingCurrentLocale"
+    const val SETTING_THEME = "settingTheme"
 }

@@ -31,8 +31,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <FrameLayout
+        android:id="@+id/layout_languages"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -57,7 +57,35 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
             android:spinnerMode="dropdown"
-            tools:listitem="@layout/item_settings_language" />
+            tools:listitem="@layout/item_spinner_settings" />
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/layout_themes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/layout_languages">
+
+        <TextView
+            android:id="@+id/text_theme"
+            style="@style/TextViewLight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/fragment_settings_text_theme"
+            android:textSize="22sp" />
+
+        <Spinner
+            android:id="@+id/spinner_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:spinnerMode="dropdown"
+            tools:listitem="@layout/item_spinner_settings" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

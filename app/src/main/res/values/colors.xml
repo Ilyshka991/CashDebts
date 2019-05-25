@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--App-->
-    <color name="primary">@color/white</color>
-    <color name="primary_dark">@color/gray_middle</color>
-    <color name="accent">@color/orange</color>
-
-
-    <!--Common-->
-
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="black">#515556</color>
@@ -20,10 +11,4 @@
     <color name="orange">#E77747</color>
     <color name="orange_half_transparent">#80E77747</color>
     <color name="green">#66B635</color>
-
-
-    <!--Activities-->
-
-    <color name="background_splash">#E0E0E0</color>
-    <color name="background_launcher">#90A4AE</color>
 </resources>

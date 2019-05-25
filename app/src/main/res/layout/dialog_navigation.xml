@@ -13,11 +13,10 @@
         android:gravity="start|center_vertical"
         android:padding="16dp"
         android:text="@string/dialog_navigation_text_remote_debt"
-        android:textColor="@color/black"
         android:textSize="18sp"
         app:icon="@drawable/ic_remote_debt"
         app:iconPadding="16dp"
-        app:iconTint="@color/black" />
+        app:iconTint="@color/button_icon_dark" />
 
     <Button
         android:id="@+id/button_local_debt"
@@ -27,11 +26,10 @@
         android:gravity="start|center_vertical"
         android:padding="16dp"
         android:text="@string/dialog_navigation_text_local_debt"
-        android:textColor="@color/black"
         android:textSize="18sp"
         app:icon="@drawable/ic_local_debt"
         app:iconPadding="16dp"
-        app:iconTint="@color/black" />
+        app:iconTint="@color/button_icon_dark" />
 
     <Button
         android:id="@+id/button_profile"
@@ -41,9 +39,9 @@
         android:gravity="start|center_vertical"
         android:padding="16dp"
         android:text="@string/dialog_navigation_text_profile"
-        android:textColor="@color/black"
+        android:textColor="@color/text"
         android:textSize="18sp"
         app:icon="@drawable/ic_user_profile"
         app:iconPadding="16dp"
-        app:iconTint="@color/black" />
+        app:iconTint="@color/button_icon_dark" />
 </LinearLayout>

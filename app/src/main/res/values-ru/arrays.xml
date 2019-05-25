@@ -5,4 +5,10 @@
         <item>English</item>
         <item>Русский</item>
     </string-array>
+
+    <string-array name="themes">
+        <item>Авто</item>
+        <item>Светлая</item>
+        <item>Темная</item>
+    </string-array>
 </resources>

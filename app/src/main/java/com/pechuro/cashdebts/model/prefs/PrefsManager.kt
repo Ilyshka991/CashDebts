@@ -33,4 +33,9 @@ class PrefsManager @Inject constructor(private val prefs: SharedPreferences) {
         set(value) = prefs.edit {
             putString(PrefsKey.SETTING_CURRENT_LOCALE, value)
         }
+    var settingTheme: String
+        get() = prefs.getString(PrefsKey.SETTING_THEME, "auto") ?: "auto"
+        set(value) = prefs.edit {
+            putString(PrefsKey.SETTING_THEME, value)
+        }
 }

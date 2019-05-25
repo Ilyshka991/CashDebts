@@ -2,11 +2,11 @@
 
     <!--App-->
 
-    <style name="AppTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="actionMenuTextColor">@color/black</item>
+        <item name="actionMenuTextColor">@color/text</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="autoCompleteTextViewStyle">@style/SearchViewStyle</item>
@@ -39,7 +39,7 @@
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/navigation_bar</item>
     </style>
 
 
@@ -47,14 +47,14 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text</item>
         <item name="android:fontFamily">@font/montserrat_light</item>
     </style>
 
     <style name="FabStyle" parent="@style/Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">@color/orange</item>
-        <item name="tint">@color/black</item>
-        <item name="rippleColor">@color/gray_middle_light</item>
+        <item name="backgroundTint">@color/background_fab</item>
+        <item name="tint">@color/icon_dark</item>
+        <item name="rippleColor">@color/fab_ripple</item>
     </style>
 
     <style name="ChipStyle">
@@ -62,21 +62,21 @@
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:checkable">true</item>
         <item name="checkedIcon">@drawable/ic_chip_ok</item>
-        <item name="rippleColor">@color/orange</item>
+        <item name="rippleColor">@color/chip_ripple</item>
     </style>
 
     <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/montserrat_light</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="SwitchStyle">
         <item name="android:fontFamily">@font/montserrat_light</item>
         <item name="android:textSize">18sp</item>
         <item name="android:backgroundTint">@color/transparent</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:colorControlActivated">@color/orange</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:colorControlActivated">@color/switch_control</item>
         <item name="android:switchPadding">8dp</item>
         <item name="trackTint">@color/colors_switch_track</item>
         <item name="thumbTint">@color/colors_switch_thumb</item>
@@ -84,16 +84,16 @@
 
     <style name="TextButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/colors_text_button</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
-        <item name="rippleColor">@color/orange</item>
+        <item name="rippleColor">@color/button_ripple</item>
     </style>
 
     <style name="EditTextStyle" parent="@style/Widget.AppCompat.EditText">
         <item name="android:fontFamily">@font/montserrat_light</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColorHint">@color/gray_middle</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
 
@@ -104,14 +104,14 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/transparent</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="TextViewBold">
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/transparent</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 </resources>
