@@ -15,7 +15,7 @@
 
     <color name="navigation_bar">@color/white</color>
 
-    <color name="text">@color/green</color>
+    <color name="text">@color/black</color>
     <color name="text_hint">@color/gray_middle</color>
     <color name="text_disabled">@color/gray_middle</color>
 
