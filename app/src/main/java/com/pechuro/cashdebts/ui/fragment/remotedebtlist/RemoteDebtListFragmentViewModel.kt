@@ -389,7 +389,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     private fun dismissNotification(debt: RemoteDebt) {
         val personName = with(debt.user) { "$firstName $lastName" }
         val value = if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
-        NotificationCreateData(personName, value).run {
+        NotificationCreateData(debt.id, personName, value).run {
             notificationManager.dismiss(hashCode())
         }
     }

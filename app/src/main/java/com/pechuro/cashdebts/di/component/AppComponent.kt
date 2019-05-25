@@ -18,7 +18,8 @@ import dagger.Component
         AppViewModelsModule::class,
         CountryListModule::class,
         RxModule::class,
-        AppServicesModule::class]
+        AppServicesModule::class,
+        AppBroadcastReceiversModule::class]
 )
 interface AppComponent {
 

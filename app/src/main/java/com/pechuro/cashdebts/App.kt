@@ -9,6 +9,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.res.Configuration
 import androidx.core.content.pm.PackageInfoCompat
@@ -20,17 +21,17 @@ import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.model.theme.AppTheme
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.HasServiceInjector
+import dagger.android.*
 import javax.inject.Inject
 
-class App : Application(), HasActivityInjector, HasServiceInjector {
+class App : Application(), HasActivityInjector, HasServiceInjector, HasBroadcastReceiverInjector {
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
     @Inject
     lateinit var serviceDispatchingAndroidInjector: DispatchingAndroidInjector<Service>
+    @Inject
+    lateinit var broadcastDispatchingAndroidInjector: DispatchingAndroidInjector<BroadcastReceiver>
 
     @Inject
     protected lateinit var versionRepository: IVersionRepository
@@ -56,6 +57,8 @@ class App : Application(), HasActivityInjector, HasServiceInjector {
     override fun activityInjector() = activityDispatchingAndroidInjector
 
     override fun serviceInjector() = serviceDispatchingAndroidInjector
+
+    override fun broadcastReceiverInjector() = broadcastDispatchingAndroidInjector
 
     private fun initDI() {
         val dataComponent = DaggerDataComponent.create()

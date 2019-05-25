@@ -31,12 +31,14 @@ class NotificationManager @Inject constructor(
     fun show(data: Map<String, String>) {
         when (data[NotificationStructure.TYPE]) {
             NotificationStructure.Types.CREATE -> {
+                val id = data[NotificationStructure.ID]
+                    ?: throw IllegalArgumentException("Id must be specified")
                 val personName =
                     data[NotificationStructure.PERSON_NAME]
                         ?: throw IllegalArgumentException("Value must be specified")
                 val value = data[NotificationStructure.VALUE]?.toDoubleOrNull()
                     ?: throw IllegalArgumentException("Value must be specified")
-                showDebtAddNotification(NotificationCreateData(personName, value))
+                showDebtAddNotification(NotificationCreateData(id, personName, value))
             }
         }
     }
@@ -53,14 +55,16 @@ class NotificationManager @Inject constructor(
         val acceptPendingIntent = NotificationActionsBroadcastReceiver.newIntent(
             context,
             NotificationConstants.Action.ADD_ACCEPT,
-            "a"
+            data.id,
+            data.hashCode()
         ).run {
             PendingIntent.getBroadcast(context, 0, this, 0)
         }
         val rejectPendingIntent = NotificationActionsBroadcastReceiver.newIntent(
             context,
             NotificationConstants.Action.ADD_ACCEPT,
-            "a"
+            data.id,
+            data.hashCode()
         ).run {
             PendingIntent.getBroadcast(context, 0, this, 0)
         }
@@ -74,14 +78,14 @@ class NotificationManager @Inject constructor(
             .setAutoCancel(true)
             .setGroup(NotificationConstants.Group.ID_GROUP)
             .addAction(
-                R.drawable.ic_action_back,
-                context.getString(R.string.notification_create_action_accept),
-                acceptPendingIntent
-            )
-            .addAction(
-                R.drawable.ic_action_back,
+                R.drawable.ic_delete,
                 context.getString(R.string.notification_create_action_reject),
                 rejectPendingIntent
+            )
+            .addAction(
+                R.drawable.ic_done,
+                context.getString(R.string.notification_create_action_accept),
+                acceptPendingIntent
             )
             .build()
 
