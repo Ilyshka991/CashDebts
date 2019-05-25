@@ -25,18 +25,31 @@ class NotificationManager @Inject constructor(
         setupChannels()
     }
 
-    fun showDebtAddNotification() {
+    fun showNotification(data: Map<String, String>) {
+        when (data[NotificationStructure.TYPE]) {
+            NotificationStructure.Types.CREATE -> {
+                val personName =
+                    data[NotificationStructure.PERSON_NAME]
+                        ?: throw IllegalArgumentException("Value must be specified")
+                val value = data[NotificationStructure.VALUE]
+                    ?: throw IllegalArgumentException("Value must be specified")
+                showDebtAddNotification(personName, value)
+            }
+        }
+    }
+
+    private fun showDebtAddNotification(personName: String?, value: String?) {
         val notification = NotificationCompat.Builder(context, CHANNEL_ADD_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Title")
-            .setContentText("Text")
+            .setContentTitle("Create")
+            .setContentText("$personName - $value")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
         notificationManager.notify(NOTIFICATION_ADD, notification)
     }
 
-    fun showDebtCompleteNotification() {
+    private fun showDebtCompleteNotification() {
         val notification = NotificationCompat.Builder(context, CHANNEL_COMPLETE_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Title")
@@ -47,7 +60,7 @@ class NotificationManager @Inject constructor(
         notificationManager.notify(NOTIFICATION_COMPLETE, notification)
     }
 
-    fun showDebtUpdateNotification() {
+    private fun showDebtUpdateNotification() {
         val notification = NotificationCompat.Builder(context, CHANNEL_UPDATE_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Title")
