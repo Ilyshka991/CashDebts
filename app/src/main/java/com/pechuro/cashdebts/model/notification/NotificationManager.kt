@@ -10,12 +10,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.pechuro.cashdebts.R
-import com.pechuro.cashdebts.broadcast.notificationactions.NotificationActionsBroadcastReceiver
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_ADD_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_COMPLETE_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_UPDATE_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_COMPLETE
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_UPDATE
+import com.pechuro.cashdebts.service.notification.NotificationActionService
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import javax.inject.Inject
 
@@ -52,21 +52,21 @@ class NotificationManager @Inject constructor(
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }.run { PendingIntent.getActivity(context, 0, this, 0) }
 
-        val acceptPendingIntent = NotificationActionsBroadcastReceiver.newIntent(
+        val acceptPendingIntent = NotificationActionService.newIntent(
             context,
             NotificationConstants.Action.ADD_ACCEPT,
             data.id,
             data.hashCode()
         ).run {
-            PendingIntent.getBroadcast(context, 0, this, 0)
+            PendingIntent.getService(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
         }
-        val rejectPendingIntent = NotificationActionsBroadcastReceiver.newIntent(
+        val rejectPendingIntent = NotificationActionService.newIntent(
             context,
             NotificationConstants.Action.ADD_ACCEPT,
             data.id,
             data.hashCode()
         ).run {
-            PendingIntent.getBroadcast(context, 0, this, 0)
+            PendingIntent.getService(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ADD_ID)

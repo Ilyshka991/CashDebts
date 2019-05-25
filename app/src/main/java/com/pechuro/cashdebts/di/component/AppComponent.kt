@@ -15,11 +15,11 @@ import dagger.Component
         ApplicationModule::class,
         ManagerModule::class,
         AppActivitiesModule::class,
+        AppServicesModule::class,
+        AppBroadcastReceiversModule::class,
         AppViewModelsModule::class,
         CountryListModule::class,
-        RxModule::class,
-        AppServicesModule::class,
-        AppBroadcastReceiversModule::class]
+        RxModule::class]
 )
 interface AppComponent {
 

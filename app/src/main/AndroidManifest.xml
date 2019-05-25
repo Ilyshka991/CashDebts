@@ -72,7 +72,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".broadcast.notificationactions.NotificationActionsBroadcastReceiver" />
+        <service android:name=".service.notification.NotificationActionService" />
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
