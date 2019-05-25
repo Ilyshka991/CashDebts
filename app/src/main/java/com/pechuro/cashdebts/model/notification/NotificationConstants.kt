@@ -6,12 +6,11 @@ object NotificationConstants {
         const val GROUP_ID = "debtActionsGroup"
 
         const val CHANNEL_ADD_ID = "channelAdd"
-        const val CHANNEL_COMPLETE_ID = "channelComplete"
         const val CHANNEL_UPDATE_ID = "channelUpdate"
     }
 
     object Group {
-        const val ID_GROUP = "createGroup"
+        const val ID_CREATE_GROUP = "createGroup"
     }
 
     enum class Action {
@@ -19,7 +18,6 @@ object NotificationConstants {
     }
 
     object NotificationIds {
-        const val NOTIFICATION_COMPLETE = 2
         const val NOTIFICATION_UPDATE = 3
     }
 }

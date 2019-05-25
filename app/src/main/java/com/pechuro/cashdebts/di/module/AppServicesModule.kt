@@ -3,7 +3,7 @@ package com.pechuro.cashdebts.di.module
 import com.pechuro.cashdebts.di.annotations.ServiceScope
 import com.pechuro.cashdebts.service.fcm.FCMService
 import com.pechuro.cashdebts.service.fcm.FCMServiceModule
-import com.pechuro.cashdebts.service.notification.NotificationActionService
+import com.pechuro.cashdebts.service.notification.NotificationCreateActionService
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -17,5 +17,5 @@ interface AppServicesModule {
 
     @ServiceScope
     @ContributesAndroidInjector
-    fun bindNotificationAction(): NotificationActionService
+    fun bindNotificationAction(): NotificationCreateActionService
 }

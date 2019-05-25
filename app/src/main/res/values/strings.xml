@@ -35,11 +35,14 @@
 
     <string name="notification_group_debt_actions">Debt actions</string>
     <string name="notification_channel_add">Add</string>
-    <string name="notification_channel_complete">Complete</string>
     <string name="notification_channel_update">Update</string>
     <string name="notification_create_title">New debt</string>
     <string name="notification_create_action_accept">Accept</string>
     <string name="notification_create_action_reject">Reject</string>
+    <string name="notification_create_text_creditor">%1$s thinks, that he owe you %2$.2f</string>
+    <string name="notification_create_text_debtor">%1$s thinks, that you owe him %2$.2f</string>
+    <string name="notification_update_title">Updates are available</string>
+    <string name="notification_update_text">Check out the new debts</string>
 
     <string name="layout_no_connection_msg">No internet connection</string>
 

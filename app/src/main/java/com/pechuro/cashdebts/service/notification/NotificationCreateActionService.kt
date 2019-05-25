@@ -13,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
-class NotificationActionService : Service() {
+class NotificationCreateActionService : Service() {
 
     @Inject
     protected lateinit var remoteDebtRepository: IRemoteDebtRepository
@@ -28,11 +28,11 @@ class NotificationActionService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent == null) return START_NOT_STICKY
+        val notificationId = intent.getIntExtra(INTENT_ARG_NOTIFICATION_ID, -1)
+        notificationManager.dismiss(notificationId)
         val action = intent.getSerializableExtra(INTENT_ARG_ACTION) as NotificationConstants.Action
         val debtId = intent.getStringExtra(INTENT_ARG_DEBT_ID)
-        val notificationId = intent.getIntExtra(INTENT_ARG_NOTIFICATION_ID, -1)
-        println(notificationId)
-        performWork(action, debtId, notificationId)
+        performWork(action, debtId)
         return START_NOT_STICKY
     }
 
@@ -43,16 +43,13 @@ class NotificationActionService : Service() {
 
     private fun performWork(
         action: NotificationConstants.Action,
-        debtId: String,
-        notificationId: Int
+        debtId: String
     ) {
         remoteDebtRepository.getSingle(debtId).flatMapCompletable {
             remoteDebtRepository.update(debtId, getDebt(action, it))
         }.subscribe({
-            notificationManager.dismiss(notificationId)
             stopSelf()
         }, {
-            notificationManager.dismiss(notificationId)
             stopSelf()
         }).addTo(disposable)
     }
@@ -93,7 +90,7 @@ class NotificationActionService : Service() {
             debtId: String,
             notificationId: Int
         ) =
-            Intent(context, NotificationActionService::class.java).apply {
+            Intent(context, NotificationCreateActionService::class.java).apply {
                 putExtra(INTENT_ARG_ACTION, action)
                 putExtra(INTENT_ARG_DEBT_ID, debtId)
                 putExtra(INTENT_ARG_NOTIFICATION_ID, notificationId)
