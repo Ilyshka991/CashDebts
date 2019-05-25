@@ -31,6 +31,7 @@ class App : Application(), HasActivityInjector, HasServiceInjector {
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
     @Inject
     lateinit var serviceDispatchingAndroidInjector: DispatchingAndroidInjector<Service>
+
     @Inject
     protected lateinit var versionRepository: IVersionRepository
     @Inject

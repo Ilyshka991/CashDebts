@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.pechuro.cashdebts.R
+import com.pechuro.cashdebts.broadcast.notificationactions.NotificationActionsBroadcastReceiver
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_ADD_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_COMPLETE_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_UPDATE_ID
@@ -44,14 +45,25 @@ class NotificationManager @Inject constructor(
         notificationManager.cancel(id)
     }
 
-    fun dismissAll() {
-        notificationManager.cancelAll()
-    }
-
     private fun showDebtAddNotification(data: NotificationCreateData) {
         val tapPendingIntent = MainActivity.newIntent(context).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }.run { PendingIntent.getActivity(context, 0, this, 0) }
+
+        val acceptPendingIntent = NotificationActionsBroadcastReceiver.newIntent(
+            context,
+            NotificationConstants.Action.ADD_ACCEPT,
+            "a"
+        ).run {
+            PendingIntent.getBroadcast(context, 0, this, 0)
+        }
+        val rejectPendingIntent = NotificationActionsBroadcastReceiver.newIntent(
+            context,
+            NotificationConstants.Action.ADD_ACCEPT,
+            "a"
+        ).run {
+            PendingIntent.getBroadcast(context, 0, this, 0)
+        }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ADD_ID)
             .setSmallIcon(R.drawable.ic_notification)
@@ -61,6 +73,16 @@ class NotificationManager @Inject constructor(
             .setContentIntent(tapPendingIntent)
             .setAutoCancel(true)
             .setGroup(NotificationConstants.Group.ID_GROUP)
+            .addAction(
+                R.drawable.ic_action_back,
+                context.getString(R.string.notification_create_action_accept),
+                acceptPendingIntent
+            )
+            .addAction(
+                R.drawable.ic_action_back,
+                context.getString(R.string.notification_create_action_reject),
+                rejectPendingIntent
+            )
             .build()
 
         notificationManager.notify(data.hashCode(), notification)

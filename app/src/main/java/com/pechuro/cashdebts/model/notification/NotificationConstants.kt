@@ -14,6 +14,10 @@ object NotificationConstants {
         const val ID_GROUP = "createGroup"
     }
 
+    enum class Action {
+        ADD_ACCEPT, ADD_REJECT
+    }
+
     object NotificationIds {
         const val NOTIFICATION_COMPLETE = 2
         const val NOTIFICATION_UPDATE = 3
