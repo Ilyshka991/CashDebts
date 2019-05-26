@@ -39,7 +39,7 @@ class SettingsActivity : BaseFragmentActivity<SettingsActivityViewModel>() {
     private fun setEventListeners() {
         EventManager.listen(SettingsFragmentEvent::class.java).subscribe {
             when (it) {
-                is SettingsFragmentEvent.OnLanguageChanged -> restart()
+                is SettingsFragmentEvent.OnApplyChanges -> restart()
             }
         }.addTo(strongCompositeDisposable)
     }

@@ -35,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/dialog_datetime_picker_action_ok"
-        android:textColor="@color/orange"
+        android:textColor="@color/button_picker"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/picker_date"
         app:layout_constraintEnd_toEndOf="@+id/picker_date"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/dialog_datetime_picker_action_cancel"
-        android:textColor="@color/orange"
+        android:textColor="@color/button_picker"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/button_ok"
         app:layout_constraintTop_toTopOf="@+id/button_ok" />

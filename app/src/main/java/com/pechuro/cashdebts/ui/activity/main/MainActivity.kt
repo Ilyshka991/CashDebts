@@ -175,7 +175,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
             },
             EventManager.listen(SettingsFragmentEvent::class.java).subscribe {
                 when (it) {
-                    is SettingsFragmentEvent.OnLanguageChanged -> recreate()
+                    is SettingsFragmentEvent.OnApplyChanges -> recreate()
                 }
             }
         )
@@ -205,7 +205,7 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
 
     private fun showSnackbar(info: SnackInfo) = Snackbar
         .make(coordinatorLayout, info.msgId, info.duration).apply {
-            setActionTextColor(ResourcesCompat.getColor(resources, R.color.orange, theme))
+            setActionTextColor(ResourcesCompat.getColor(resources, R.color.action_snackbar, theme))
             anchorView = if (fab.isVisible) fab else bottom_app_bar
             info.action?.let { info -> setAction(info.actionId) { info.callback() } }
             show()
@@ -294,8 +294,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 resources,
                 R.drawable.background_popup,
                 theme
-            )
+            )?.apply {
+                setTint(ResourcesCompat.getColor(resources, R.color.background_popup, theme))
+            }
         )
+
         isOutsideTouchable = true
     }
 

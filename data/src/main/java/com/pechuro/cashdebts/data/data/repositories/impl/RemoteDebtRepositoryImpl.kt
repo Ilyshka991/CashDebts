@@ -75,7 +75,9 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
                                 getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
                                     ?: DebtDeleteStatus.NOT_DELETED,
                                 getBoolean(FirestoreRemoteDebt::isFirstTimeAdded.name)
-                                    ?: false
+                                    ?: false,
+                                getString(FirestoreRemoteDebt::lastChangePersonUid.name)
+                                    ?: ""
                             )
                         }
                         emitter.onSuccess(debt)
@@ -150,7 +152,9 @@ internal class RemoteDebtRepositoryImpl @Inject constructor(
                                     getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
                                         ?: DebtDeleteStatus.NOT_DELETED,
                                     getBoolean(FirestoreRemoteDebt::isFirstTimeAdded.name)
-                                        ?: false
+                                        ?: false,
+                                    getString(FirestoreRemoteDebt::lastChangePersonUid.name)
+                                        ?: ""
                                 )
                             }
                             it.id to debt

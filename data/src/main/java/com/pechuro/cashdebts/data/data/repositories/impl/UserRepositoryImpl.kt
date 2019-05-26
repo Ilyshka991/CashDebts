@@ -150,7 +150,7 @@ internal class UserRepositoryImpl @Inject constructor(
             .whereEqualTo(debtRole, uid)
             .get()
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+                if (task.isSuccessful && task.result != null) {
                     updateDocuments(task.result!!).subscribe({
                         if (!emitter.isDisposed) emitter.onComplete()
                     }, {
@@ -165,33 +165,30 @@ internal class UserRepositoryImpl @Inject constructor(
     private fun updateDocuments(snapshot: QuerySnapshot) = Completable.create { emitter ->
         if (snapshot.documents.isNotEmpty()) {
             snapshot.documents.forEach { snapshot ->
+                val debt = with(snapshot) {
+                    FirestoreRemoteDebt(
+                        getString(FirestoreRemoteDebt::creditorUid.name)
+                            ?: "",
+                        getString(FirestoreRemoteDebt::debtorUid.name) ?: "",
+                        getDouble(FirestoreRemoteDebt::value.name) ?: 0.0,
+                        getString(FirestoreRemoteDebt::description.name)
+                            ?: "",
+                        getDate(FirestoreRemoteDebt::date.name) ?: Date(),
+                        getLong(FirestoreRemoteDebt::status.name)?.toInt()
+                            ?: FirestoreDebtStatus.NOT_SEND,
+                        getString(FirestoreRemoteDebt::initPersonUid.name)
+                            ?: "",
+                        getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
+                            ?: DebtDeleteStatus.NOT_DELETED,
+                        getBoolean(FirestoreRemoteDebt::isFirstTimeAdded.name)
+                            ?: false,
+                        getString(FirestoreRemoteDebt::lastChangePersonUid.name)
+                            ?: ""
+                    )
+                }
                 store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
                     .document(snapshot.id)
-                    .delete()
-                    .continueWithTask {
-                        val debt = with(snapshot) {
-                            FirestoreRemoteDebt(
-                                getString(FirestoreRemoteDebt::creditorUid.name)
-                                    ?: "",
-                                getString(FirestoreRemoteDebt::debtorUid.name) ?: "",
-                                getDouble(FirestoreRemoteDebt::value.name) ?: 0.0,
-                                getString(FirestoreRemoteDebt::description.name)
-                                    ?: "",
-                                getDate(FirestoreRemoteDebt::date.name) ?: Date(),
-                                getLong(FirestoreRemoteDebt::status.name)?.toInt()
-                                    ?: FirestoreDebtStatus.NOT_SEND,
-                                getString(FirestoreRemoteDebt::initPersonUid.name)
-                                    ?: "",
-                                getLong(FirestoreRemoteDebt::deleteStatus.name)?.toInt()
-                                    ?: DebtDeleteStatus.NOT_DELETED,
-                                getBoolean(FirestoreRemoteDebt::isFirstTimeAdded.name)
-                                    ?: false
-                            )
-                        }
-                        store.collection(FirestoreStructure.TAG_REMOTE_DEBTS)
-                            .document(snapshot.id)
-                            .set(debt)
-                    }
+                    .set(debt)
                     .addOnCompleteListener { task ->
                         if (emitter.isDisposed) return@addOnCompleteListener
                         if (task.isSuccessful) {

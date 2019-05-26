@@ -3,10 +3,10 @@ package com.pechuro.cashdebts.ui.widget.hintedittext
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
 import com.pechuro.cashdebts.R
 
@@ -40,7 +40,7 @@ class HintEditText : AppCompatEditText {
     private var charSize = 0F
 
     private val paint = Paint().apply {
-        color = Color.BLACK
+        color = ResourcesCompat.getColor(resources, R.color.text_hint, context.theme)
         isAntiAlias = true
         textSize = this@HintEditText.textSize
     }
