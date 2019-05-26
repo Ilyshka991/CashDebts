@@ -28,14 +28,21 @@
     <string name="snackbar_msg_updated">Updated</string>
     <string name="snackbar_msg_resent">Resent</string>
     <string name="snackbar_msg_accepted">Accepted</string>
+    <string name="snackbar_msg_rejected">Rejected</string>
     <string name="snackbar_msg_restored">Restored</string>
     <string name="snackbar_msg_info_sent">Sent to person</string>
     <string name="snackbar_msg_no_connection">No internet connection. Data sync is turned off</string>
 
     <string name="notification_group_debt_actions">Debt actions</string>
     <string name="notification_channel_add">Add</string>
-    <string name="notification_channel_complete">Complete</string>
     <string name="notification_channel_update">Update</string>
+    <string name="notification_create_title">New debt</string>
+    <string name="notification_create_action_accept">Accept</string>
+    <string name="notification_create_action_reject">Reject</string>
+    <string name="notification_create_text_creditor">%1$s thinks, that he owe you %2$.2f</string>
+    <string name="notification_create_text_debtor">%1$s thinks, that you owe him %2$.2f</string>
+    <string name="notification_update_title">Updates are available</string>
+    <string name="notification_update_text">Check out the new debts</string>
 
     <string name="layout_no_connection_msg">No internet connection</string>
 
@@ -85,6 +92,10 @@
 
     <string name="fragment_settings_text_add_plus">Automatically add \'+\' in value field</string>
     <string name="fragment_settings_text_language">Select language</string>
+    <string name="fragment_settings_text_theme">Select theme</string>
+    <string name="fragment_settings_text_notifications">Notifications</string>
+    <string name="fragment_settings_text_notification_create">Send on create</string>
+    <string name="fragment_settings_text_notification_update">Send on update</string>
 
     <string name="item_country_text_empty">Nothing found</string>
 

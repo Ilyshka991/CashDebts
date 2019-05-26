@@ -7,7 +7,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/gray_light" />
+        android:background="@color/divider" />
 
     <TextView
         style="@style/TextViewBold"

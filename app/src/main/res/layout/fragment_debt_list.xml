@@ -15,5 +15,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
+        android:indeterminateTint="@color/progress"
         android:visibility="gone" />
 </FrameLayout>

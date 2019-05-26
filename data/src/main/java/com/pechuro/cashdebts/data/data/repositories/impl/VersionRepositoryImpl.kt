@@ -17,10 +17,9 @@ internal class VersionRepositoryImpl @Inject constructor(
             .addSnapshotListener { snapshot, e ->
                 if (emitter.isDisposed) return@addSnapshotListener
                 if (e == null) {
-                    if (snapshot != null) {
-                        emitter.onNext(snapshot.getLong(FirestoreStructure.TAG_VERSION)!!)
-                    } else {
-                        emitter.onError(FirestoreCommonException())
+                    val version = snapshot?.getLong(FirestoreStructure.TAG_VERSION)
+                    if (version != null) {
+                        emitter.onNext(version)
                     }
                 } else {
                     emitter.onError(FirestoreCommonException())

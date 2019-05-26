@@ -25,6 +25,7 @@
     <string name="snackbar_msg_success">Успешно</string>
     <string name="snackbar_msg_updated">Обновлено</string>
     <string name="snackbar_msg_resent">Отправлено</string>
+    <string name="snackbar_msg_rejected">Отклонено</string>
     <string name="snackbar_msg_accepted">Принято</string>
     <string name="snackbar_msg_restored">Восстановлено</string>
     <string name="snackbar_msg_info_sent">Отправлено человеку</string>
@@ -32,8 +33,14 @@
 
     <string name="notification_group_debt_actions">Действия над долгами</string>
     <string name="notification_channel_add">Добавление</string>
-    <string name="notification_channel_complete">Выполнение</string>
     <string name="notification_channel_update">Обновление</string>
+    <string name="notification_create_title">Новый долг</string>
+    <string name="notification_create_action_accept">Принять</string>
+    <string name="notification_create_action_reject">Отклонить</string>
+    <string name="notification_create_text_creditor">%1$s думает, что он должен вам %2$.2f</string>
+    <string name="notification_create_text_debtor">%1$s думает, что вы должны ему %2$.2f</string>
+    <string name="notification_update_title">Доступны обновления</string>
+    <string name="notification_update_text">Проверьте, что появилось нового</string>
 
     <string name="layout_no_connection_msg">Нет интернет соединения</string>
 
@@ -83,6 +90,10 @@
 
     <string name="fragment_settings_text_add_plus">Автоматически добавлять \'+\' при вводе суммы</string>
     <string name="fragment_settings_text_language">Выберите язык</string>
+    <string name="fragment_settings_text_theme">Выберите тему</string>
+    <string name="fragment_settings_text_notifications">Уведомления</string>
+    <string name="fragment_settings_text_notification_create">Отправлять при создании</string>
+    <string name="fragment_settings_text_notification_update">Отправлять при изменении</string>
 
     <string name="item_country_text_empty">Ничего не найдено</string>
 

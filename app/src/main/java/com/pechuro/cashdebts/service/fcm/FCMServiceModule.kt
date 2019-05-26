@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import com.pechuro.cashdebts.di.annotations.ServiceScope
 import com.pechuro.cashdebts.model.notification.NotificationManager
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import dagger.Module
 import dagger.Provides
 
@@ -14,6 +15,7 @@ class FCMServiceModule {
     @ServiceScope
     fun provideNotificationManager(
         context: Context,
-        notificationManager: NotificationManagerCompat
-    ) = NotificationManager(context, notificationManager)
+        notificationManager: NotificationManagerCompat,
+        prefsManager: PrefsManager
+    ) = NotificationManager(context, notificationManager, prefsManager)
 }

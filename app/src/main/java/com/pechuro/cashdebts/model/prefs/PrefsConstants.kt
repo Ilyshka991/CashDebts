@@ -8,4 +8,7 @@ object PrefsKey {
 
     const val SETTING_AUTO_ADD_PLUS = "settingAutoAddPlus"
     const val SETTING_CURRENT_LOCALE = "settingCurrentLocale"
+    const val SETTING_THEME = "settingTheme"
+    const val SETTING_NOTIFICATION_CREATE = "settingNotificationCreate"
+    const val SETTING_NOTIFICATION_UPDATE = "settingNotificationUpdate"
 }

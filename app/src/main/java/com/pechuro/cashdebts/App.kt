@@ -9,37 +9,39 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.res.Configuration
 import androidx.core.content.pm.PackageInfoCompat
 import com.pechuro.cashdebts.data.data.repositories.IVersionRepository
 import com.pechuro.cashdebts.data.di.component.DaggerDataComponent
-import com.pechuro.cashdebts.di.component.AppComponent
 import com.pechuro.cashdebts.di.component.DaggerAppComponent
 import com.pechuro.cashdebts.model.locale.LocaleManager
+import com.pechuro.cashdebts.model.prefs.PrefsManager
+import com.pechuro.cashdebts.model.theme.AppTheme
 import com.pechuro.cashdebts.ui.utils.BaseEvent
 import com.pechuro.cashdebts.ui.utils.EventManager
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.HasServiceInjector
+import dagger.android.*
 import javax.inject.Inject
 
-class App : Application(), HasActivityInjector, HasServiceInjector {
+class App : Application(), HasActivityInjector, HasServiceInjector, HasBroadcastReceiverInjector {
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
     @Inject
     lateinit var serviceDispatchingAndroidInjector: DispatchingAndroidInjector<Service>
     @Inject
+    lateinit var broadcastDispatchingAndroidInjector: DispatchingAndroidInjector<BroadcastReceiver>
+
+    @Inject
     protected lateinit var versionRepository: IVersionRepository
+    @Inject
+    protected lateinit var prefsManager: PrefsManager
 
     override fun onCreate() {
         super.onCreate()
-
-        /*   if (LeakCanary.isInAnalyzerProcess(this)) return
-           LeakCanary.install(this)*/
-
         initDI()
+        AppTheme.setTheme(prefsManager.settingTheme)
         setVersionListener()
     }
 
@@ -56,15 +58,18 @@ class App : Application(), HasActivityInjector, HasServiceInjector {
 
     override fun serviceInjector() = serviceDispatchingAndroidInjector
 
+    override fun broadcastReceiverInjector() = broadcastDispatchingAndroidInjector
+
     private fun initDI() {
         val dataComponent = DaggerDataComponent.create()
         val calculatorComponent = DaggerCalculatorComponent.create()
-        appComponent = DaggerAppComponent.builder()
+        DaggerAppComponent.builder()
             .application(this)
             .dataComponent(dataComponent)
             .calculatorComponent(calculatorComponent)
-            .build()
-        appComponent.inject(this)
+            .build().run {
+                inject(this@App)
+            }
     }
 
     @SuppressLint("CheckResult")
@@ -77,10 +82,6 @@ class App : Application(), HasActivityInjector, HasServiceInjector {
     private fun getDeviceVersion(): Long {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         return PackageInfoCompat.getLongVersionCode(packageInfo)
-    }
-
-    companion object {
-        lateinit var appComponent: AppComponent
     }
 }
 

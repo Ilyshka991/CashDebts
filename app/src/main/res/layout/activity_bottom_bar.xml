@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:fabAnimationMode="slide"
-        android:backgroundTint="@color/gray_middle"
+        android:backgroundTint="@color/bottom_bar"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true"
         app:navigationIcon="@drawable/ic_menu" />

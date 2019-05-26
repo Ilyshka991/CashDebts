@@ -31,11 +31,11 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <FrameLayout
+        android:id="@+id/layout_languages"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/switch_add_plus">
@@ -56,8 +56,77 @@
             android:layout_gravity="end"
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
+            android:popupBackground="@color/background_popup"
             android:spinnerMode="dropdown"
-            tools:listitem="@layout/item_settings_language" />
+            tools:listitem="@layout/item_spinner_settings" />
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/layout_themes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/layout_languages">
+
+        <TextView
+            android:id="@+id/text_theme"
+            style="@style/TextViewLight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/fragment_settings_text_theme"
+            android:textSize="22sp" />
+
+        <Spinner
+            android:id="@+id/spinner_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:popupBackground="@color/background_popup"
+            android:spinnerMode="dropdown"
+            tools:listitem="@layout/item_spinner_settings" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvTextNotifications"
+        style="@style/TextViewBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/fragment_settings_text_notifications"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/layout_themes" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_notification_create"
+        style="@style/SwitchStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/fragment_settings_text_notification_create"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/tvTextNotifications" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_notification_update"
+        style="@style/SwitchStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/fragment_settings_text_notification_update"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/switch_notification_create"
+        app:layout_constraintTop_toBottomOf="@+id/switch_notification_create"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,8 @@ import com.pechuro.cashdebts.data.data.repositories.IUserRepository
 import com.pechuro.cashdebts.model.connectivity.ConnectivityListener
 import com.pechuro.cashdebts.model.entity.CountryData
 import com.pechuro.cashdebts.model.entity.DiffResult
+import com.pechuro.cashdebts.model.notification.NotificationCreateData
+import com.pechuro.cashdebts.model.notification.NotificationManager
 import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.ui.base.BaseViewModel
 import com.pechuro.cashdebts.ui.fragment.remotedebtlist.adapter.RemoteDebtListAdapter
@@ -47,6 +49,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
     private val diffCallback: RemoteDebtDiffCallback,
     private val prefsManager: PrefsManager,
     private val countryList: List<CountryData>,
+    private val notificationManager: NotificationManager,
     connectivityListener: ConnectivityListener
 ) : BaseViewModel() {
     val command = PublishSubject.create<Command>()
@@ -105,14 +108,14 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         }
         .map {
             if (prefsManager.filterNotShowCompleted) {
-                it.filter { debt -> debt.status != FirestoreDebtStatus.COMPLETE }
+                it.filter { debt -> debt.status != COMPLETE }
             } else {
                 it
             }
         }
         .map { debts ->
             if (prefsManager.filterUnitePersons) {
-                val notGroupingItems = debts.filter { it.status != FirestoreDebtStatus.IN_PROGRESS }
+                val notGroupingItems = debts.filter { it.status != IN_PROGRESS }
                 val singleItems = (debts - notGroupingItems)
                     .groupBy { it.user }
                     .filter { it.value.size == 1 }
@@ -168,7 +171,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             DiffResult(diffResult, it)
         }.map { diffResult ->
             val totalValue = diffResult.dataList
-                .filter { it.status == FirestoreDebtStatus.IN_PROGRESS }
+                .filter { it.status == IN_PROGRESS }
                 .fold(0.0) { acc, debt ->
                     acc + if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
                 }
@@ -207,31 +210,14 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             is DebtAction.OneSideDelete -> with(info.second) {
                 if (isLocal) fullDelete(this) else oneSideDelete(this)
             }
+            is DebtAction.AddReject -> rejectDebtAdd(info.second)
+            is DebtAction.AddAccept -> acceptDebtAdd(info.second)
             is DebtAction.FullDelete -> fullDelete(info.second)
             is DebtAction.EditReject -> rejectDebtEdit(info.second.id)
             is DebtAction.EditAccept -> acceptDebtEdit(info.second)
             is DebtAction.Update -> updateDebt(info.second, action.status)
             is DebtAction.Resend -> resendDebt(info.second)
         }
-    }
-
-    fun restoreDebt() {
-        val debt = previousDeletedDebt ?: return
-        debtRepository.update(debt.id, debt.toFirestoreDebt())
-            .onErrorComplete()
-            .subscribe()
-            .addTo(compositeDisposable)
-    }
-
-    private fun acceptDebtEdit(debt: RemoteDebt) {
-        val firestoreDebt = debt.toFirestoreDebt(status = IN_PROGRESS)
-        debtRepository.update(debt.id, firestoreDebt)
-            .mergeWith(debtRepository.delete("${debt.id}_tmp"))
-            .subscribe({
-                command.onNext(Command.ShowMessage(R.string.snackbar_msg_accepted))
-            }, {
-                command.onNext(Command.ShowMessage(R.string.common_error_load))
-            }).addTo(compositeDisposable)
     }
 
     private fun updateDebt(
@@ -244,6 +230,14 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         }, {
             command.onNext(Command.ShowMessage(R.string.common_error_load))
         }).addTo(compositeDisposable)
+    }
+
+    fun restoreDebt() {
+        val debt = previousDeletedDebt ?: return
+        debtRepository.update(debt.id, debt.toFirestoreDebt())
+            .onErrorComplete()
+            .subscribe()
+            .addTo(compositeDisposable)
     }
 
     private fun resendDebt(debt: RemoteDebt) {
@@ -259,6 +253,17 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         }).addTo(compositeDisposable)
     }
 
+    private fun acceptDebtEdit(debt: RemoteDebt) {
+        val firestoreDebt = debt.toFirestoreDebt(status = IN_PROGRESS)
+        debtRepository.update(debt.id, firestoreDebt)
+            .mergeWith(debtRepository.delete("${debt.id}_tmp"))
+            .subscribe({
+                command.onNext(Command.ShowMessage(R.string.snackbar_msg_accepted))
+            }, {
+                command.onNext(Command.ShowMessage(R.string.common_error_load))
+            }).addTo(compositeDisposable)
+    }
+
     private fun rejectDebtEdit(id: String) {
         debtRepository.getSingle("${id}_tmp")
             .flatMapCompletable {
@@ -272,12 +277,35 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                         it.status,
                         it.initPersonUid,
                         DebtDeleteStatus.NOT_DELETED,
-                        it.isFirstTimeAdded
+                        it.isFirstTimeAdded,
+                        userRepository.currentUserBaseInformation.uid
                     )
                 )
             }.andThen(debtRepository.delete("${id}_tmp"))
             .subscribe({
                 command.onNext(Command.ShowMessage(R.string.snackbar_msg_restored))
+            }, {
+                command.onNext(Command.ShowMessage(R.string.common_error_load))
+            }).addTo(compositeDisposable)
+    }
+
+    private fun acceptDebtAdd(debt: RemoteDebt) {
+        val firestoreDebt = debt.toFirestoreDebt(status = IN_PROGRESS)
+        debtRepository.update(debt.id, firestoreDebt)
+            .subscribe({
+                dismissNotification(debt)
+                command.onNext(Command.ShowMessage(R.string.snackbar_msg_accepted))
+            }, {
+                command.onNext(Command.ShowMessage(R.string.common_error_load))
+            }).addTo(compositeDisposable)
+    }
+
+    private fun rejectDebtAdd(debt: RemoteDebt) {
+        val firestoreDebt = debt.toFirestoreDebt(status = CONFIRMATION_REJECTED)
+        debtRepository.update(debt.id, firestoreDebt)
+            .subscribe({
+                dismissNotification(debt)
+                command.onNext(Command.ShowMessage(R.string.snackbar_msg_rejected))
             }, {
                 command.onNext(Command.ShowMessage(R.string.common_error_load))
             }).addTo(compositeDisposable)
@@ -325,13 +353,14 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
         status,
         if (isCurrentUserInit) userRepository.currentUserBaseInformation.uid else user.uid,
         deleteStatus,
-        isFirstTimeAdded
+        isFirstTimeAdded,
+        userRepository.currentUserBaseInformation.uid
     )
 
     private fun getDebtAction(action: RemoteDebtListAdapter.Actions, currentStatus: Int) =
         when (action) {
             RemoteDebtListAdapter.Actions.ACCEPT -> when (currentStatus) {
-                WAIT_FOR_CONFIRMATION -> DebtAction.Update(IN_PROGRESS)
+                WAIT_FOR_CONFIRMATION -> DebtAction.AddAccept
                 WAIT_FOR_COMPLETE_FROM_CREDITOR, WAIT_FOR_COMPLETE_FROM_DEBTOR ->
                     DebtAction.Update(COMPLETE)
                 WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR, WAIT_FOR_EDIT_CONFIRMATION_FROM_DEBTOR ->
@@ -339,7 +368,7 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
                 else -> throw IllegalArgumentException()
             }
             RemoteDebtListAdapter.Actions.REJECT -> when (currentStatus) {
-                WAIT_FOR_CONFIRMATION -> DebtAction.Update(CONFIRMATION_REJECTED)
+                WAIT_FOR_CONFIRMATION -> DebtAction.AddReject
                 WAIT_FOR_COMPLETE_FROM_CREDITOR -> DebtAction.Update(COMPLETION_REJECTED_BY_CREDITOR)
                 WAIT_FOR_COMPLETE_FROM_DEBTOR -> DebtAction.Update(COMPLETION_REJECTED_BY_DEBTOR)
                 WAIT_FOR_EDIT_CONFIRMATION_FROM_CREDITOR ->
@@ -359,8 +388,18 @@ class RemoteDebtListFragmentViewModel @Inject constructor(
             RemoteDebtListAdapter.Actions.RESEND -> DebtAction.Resend
         }
 
+    private fun dismissNotification(debt: RemoteDebt) {
+        val personName = with(debt.user) { "$firstName $lastName" }
+        val value = if (debt.role == DebtRole.CREDITOR) debt.value else -debt.value
+        NotificationCreateData(debt.id, personName, value).run {
+            notificationManager.dismiss(hashCode())
+        }
+    }
+
     private sealed class DebtAction {
         class Update(val status: Int) : DebtAction()
+        object AddReject : DebtAction()
+        object AddAccept : DebtAction()
         object OneSideDelete : DebtAction()
         object FullDelete : DebtAction()
         object EditReject : DebtAction()

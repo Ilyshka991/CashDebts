@@ -16,7 +16,7 @@
         android:imeOptions="actionNext"
         android:ems="10"
         android:hint="@string/fragment_add_debt_info_hint_value"
-        android:inputType="number|numberDecimal|numberSigned"
+        android:inputType="numberDecimal|numberSigned"
         app:layout_constraintEnd_toStartOf="@+id/text_sum"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
