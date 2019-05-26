@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
     <color name="primary">@color/white</color>
-    <color name="primary_dark">@color/gray_middle</color>
+    <color name="primary_dark">@color/black_dark</color>
     <color name="accent">@color/orange</color>
 
     <color name="background_picker">@color/orange</color>
-    <color name="background_dialog">@color/white</color>
-    <color name="background_search_view">@color/gray_light</color>
+    <color name="background_dialog">@color/black_middle</color>
+    <color name="background_search_view">@color/black_light</color>
     <color name="background_fab">@color/orange</color>
-    <color name="background_card">@color/white</color>
-    <color name="background_layout">@color/white</color>
-    <color name="background_toolbar">@color/white</color>
-    <color name="background_popup">@color/gray_light</color>
+    <color name="background_card">@color/black_middle</color>
+    <color name="background_layout">@color/black_dark</color>
+    <color name="background_toolbar">@color/black_middle</color>
+    <color name="background_popup">@color/black_light</color>
 
-    <color name="bottom_bar">@color/gray_middle</color>
+    <color name="bottom_bar">@color/black_middle</color>
 
-    <color name="navigation_bar">@color/white</color>
+    <color name="navigation_bar">@color/black_dark</color>
 
-    <color name="text">@color/black</color>
+    <color name="text">@color/white</color>
     <color name="text_hint">@color/gray_middle</color>
     <color name="text_disabled">@color/gray_middle</color>
 
     <color name="button_picker">@color/orange</color>
     <color name="button_ripple">@color/orange</color>
-    <color name="button_icon_dark">@color/black</color>
+    <color name="button_icon_dark">@color/black_light</color>
     <color name="button_icon_accent">@color/orange</color>
     <color name="button_version_download">@color/pink</color>
 
@@ -39,13 +39,13 @@
     <color name="progress">@color/orange</color>
 
     <color name="chip_ripple">@color/orange</color>
-    <color name="chip_background_unchecked">@color/gray_light</color>
-    <color name="chip_background_checked">@color/gray_middle</color>
+    <color name="chip_background_unchecked">@color/black_light</color>
+    <color name="chip_background_checked">@color/black_middle_light</color>
 
     <color name="switch_control">@color/orange</color>
 
-    <color name="icon_dark">@color/black</color>
-    <color name="icon_light">@color/white</color>
+    <color name="icon_dark">@color/white</color>
+    <color name="icon_light">@color/black_dark</color>
     <color name="icon_accent">@color/orange</color>
 
     <color name="action_delete">@color/pink</color>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
-    <color name="primary">@color/white</color>
+    <color name="primary">@color/black_light</color>
     <color name="primary_dark">@color/gray_middle</color>
     <color name="accent">@color/orange</color>
 
@@ -17,13 +17,13 @@
 
     <color name="navigation_bar">@color/white</color>
 
-    <color name="text">@color/black</color>
+    <color name="text">@color/black_light</color>
     <color name="text_hint">@color/gray_middle</color>
     <color name="text_disabled">@color/gray_middle</color>
 
     <color name="button_picker">@color/orange</color>
     <color name="button_ripple">@color/orange</color>
-    <color name="button_icon_dark">@color/black</color>
+    <color name="button_icon_dark">@color/black_light</color>
     <color name="button_icon_accent">@color/orange</color>
     <color name="button_version_download">@color/pink</color>
 
@@ -44,7 +44,7 @@
 
     <color name="switch_control">@color/orange</color>
 
-    <color name="icon_dark">@color/black</color>
+    <color name="icon_dark">@color/black_light</color>
     <color name="icon_light">@color/white</color>
     <color name="icon_accent">@color/orange</color>
 
