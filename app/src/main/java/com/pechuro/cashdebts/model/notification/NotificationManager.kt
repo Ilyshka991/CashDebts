@@ -16,6 +16,7 @@ import com.pechuro.cashdebts.model.notification.NotificationConstants.Notificati
 import com.pechuro.cashdebts.service.notification.NotificationCreateActionService
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import javax.inject.Inject
+import kotlin.random.Random
 
 class NotificationManager @Inject constructor(
     private val context: Context,
@@ -59,7 +60,12 @@ class NotificationManager @Inject constructor(
             data.id,
             data.hashCode()
         ).run {
-            PendingIntent.getService(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getService(
+                context,
+                Random.nextInt(),
+                this,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
         }
         val rejectPendingIntent = NotificationCreateActionService.newIntent(
             context,
@@ -67,7 +73,12 @@ class NotificationManager @Inject constructor(
             data.id,
             data.hashCode()
         ).run {
-            PendingIntent.getService(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getService(
+                context,
+                Random.nextInt(),
+                this,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
         }
 
         val text = if (data.value > 0) {

@@ -33,7 +33,7 @@ class NotificationCreateActionService : Service() {
         if (intent == null) return START_NOT_STICKY
         val notificationId = intent.getIntExtra(INTENT_ARG_NOTIFICATION_ID, -1)
         notificationManager.dismiss(notificationId)
-        val action = intent.getSerializableExtra(INTENT_ARG_ACTION) as NotificationConstants.Action
+        val action = intent.getIntExtra(INTENT_ARG_ACTION, NotificationConstants.Action.ADD_REJECT)
         val debtId = intent.getStringExtra(INTENT_ARG_DEBT_ID)
         performWork(action, debtId)
         return START_NOT_STICKY
@@ -45,7 +45,7 @@ class NotificationCreateActionService : Service() {
     }
 
     private fun performWork(
-        action: NotificationConstants.Action,
+        action: Int,
         debtId: String
     ) {
         remoteDebtRepository.getSingle(debtId).flatMapCompletable {
@@ -58,12 +58,13 @@ class NotificationCreateActionService : Service() {
     }
 
     private fun getDebt(
-        action: NotificationConstants.Action,
+        action: Int,
         debt: FirestoreRemoteDebt
     ): FirestoreRemoteDebt {
         val status = when (action) {
             NotificationConstants.Action.ADD_ACCEPT -> FirestoreDebtStatus.IN_PROGRESS
             NotificationConstants.Action.ADD_REJECT -> FirestoreDebtStatus.CONFIRMATION_REJECTED
+            else -> throw IllegalArgumentException()
         }
         return with(debt) {
             FirestoreRemoteDebt(
@@ -90,7 +91,7 @@ class NotificationCreateActionService : Service() {
 
         fun newIntent(
             context: Context,
-            action: NotificationConstants.Action,
+            action: Int,
             debtId: String,
             notificationId: Int
         ) =
