@@ -4,6 +4,8 @@
     <color name="primary_dark">@color/gray_middle</color>
     <color name="accent">@color/orange</color>
 
+    <color name="background_splash">@color/gray_light</color>
+    <color name="background_launcher">@color/gray_middle</color>
     <color name="background_picker">@color/orange</color>
     <color name="background_dialog">@color/white</color>
     <color name="background_search_view">@color/gray_light</color>

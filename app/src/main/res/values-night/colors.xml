@@ -4,6 +4,8 @@
     <color name="primary_dark">@color/black_dark</color>
     <color name="accent">@color/orange</color>
 
+    <color name="background_splash">@color/black_light</color>
+    <color name="background_launcher">@color/black_middle</color>
     <color name="background_picker">@color/orange</color>
     <color name="background_dialog">@color/black_middle</color>
     <color name="background_search_view">@color/black_light</color>
@@ -13,7 +15,7 @@
     <color name="background_toolbar">@color/black_middle</color>
     <color name="background_popup">@color/black_light</color>
 
-    <color name="bottom_bar">@color/black_middle</color>
+    <color name="bottom_bar">@color/gray_dark</color>
 
     <color name="navigation_bar">@color/black_dark</color>
 
