@@ -2,9 +2,12 @@ package com.pechuro.cashdebts.model.notification
 
 object NotificationStructure {
 
+    object CommonStructure {
+        const val TYPE = "type"
+    }
+
     object CreateStructure {
         const val ID = "id"
-        const val TYPE = "type"
         const val PERSON_NAME = "personName"
         const val VALUE = "value"
     }

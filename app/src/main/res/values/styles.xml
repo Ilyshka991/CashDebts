@@ -61,6 +61,7 @@
         <item name="android:textAppearance">@style/ChipTextAppearance</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:checkable">true</item>
+        <item name="chipBackgroundColor">@color/colors_chip</item>
         <item name="checkedIcon">@drawable/ic_chip_ok</item>
         <item name="rippleColor">@color/chip_ripple</item>
     </style>

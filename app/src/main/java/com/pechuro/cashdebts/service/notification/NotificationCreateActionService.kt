@@ -49,7 +49,9 @@ class NotificationCreateActionService : Service() {
         debtId: String
     ) {
         remoteDebtRepository.getSingle(debtId).flatMapCompletable {
-            remoteDebtRepository.update(debtId, getDebt(action, it))
+            getDebt(action, it).run {
+                remoteDebtRepository.update(debtId, this)
+            }
         }.subscribe({
             stopSelf()
         }, {

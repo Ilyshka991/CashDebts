@@ -28,7 +28,7 @@ class NotificationManager @Inject constructor(
     }
 
     fun show(data: Map<String, String>) {
-        when (data[NotificationStructure.CreateStructure.TYPE]) {
+        when (data[NotificationStructure.CommonStructure.TYPE]) {
             NotificationStructure.Types.CREATE -> {
                 val id = data[NotificationStructure.CreateStructure.ID]
                     ?: throw IllegalArgumentException("Id must be specified")

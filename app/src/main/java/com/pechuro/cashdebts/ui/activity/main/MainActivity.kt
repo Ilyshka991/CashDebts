@@ -294,8 +294,11 @@ class MainActivity : BaseFragmentActivity<MainActivityViewModel>() {
                 resources,
                 R.drawable.background_popup,
                 theme
-            )
+            )?.apply {
+                setTint(ResourcesCompat.getColor(resources, R.color.background_popup, theme))
+            }
         )
+
         isOutsideTouchable = true
     }
 

@@ -11,4 +11,7 @@
     <color name="orange">#E77747</color>
     <color name="orange_half_transparent">#80E77747</color>
     <color name="green">#66B635</color>
+
+    <color name="background_splash">#E0E0E0</color>
+    <color name="background_launcher">#90A4AE</color>
 </resources>
