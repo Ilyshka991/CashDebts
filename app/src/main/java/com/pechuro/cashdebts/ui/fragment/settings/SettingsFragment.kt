@@ -38,6 +38,8 @@ class SettingsFragment : BaseFragment<SettingsFragmentViewModel>() {
 
     private fun setupView() {
         switch_add_plus.isChecked = prefsManager.settingsAutoAddPlus
+        switch_notification_create.isChecked = prefsManager.settingNotificationCreate
+        switch_notification_update.isChecked = prefsManager.settingNotificationUpdate
         spinner_language.apply {
             adapter = languagesAdapter
             setSelection(languagesId.indexOf(prefsManager.settingCurrentLocale))
@@ -51,6 +53,12 @@ class SettingsFragment : BaseFragment<SettingsFragmentViewModel>() {
     private fun setViewListeners() {
         switch_add_plus.setOnCheckedChangeListener { _, isChecked ->
             prefsManager.settingsAutoAddPlus = isChecked
+        }
+        switch_notification_create.setOnCheckedChangeListener { _, isChecked ->
+            prefsManager.settingNotificationCreate = isChecked
+        }
+        switch_notification_update.setOnCheckedChangeListener { _, isChecked ->
+            prefsManager.settingNotificationUpdate = isChecked
         }
         spinner_language.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}

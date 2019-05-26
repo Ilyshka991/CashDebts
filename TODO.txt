@@ -1,2 +1,1 @@
-1. Notifications and their settings
-2. Debt items design
+1. Debt items design

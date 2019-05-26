@@ -93,6 +93,9 @@
     <string name="fragment_settings_text_add_plus">Automatically add \'+\' in value field</string>
     <string name="fragment_settings_text_language">Select language</string>
     <string name="fragment_settings_text_theme">Select theme</string>
+    <string name="fragment_settings_text_notifications">Notifications</string>
+    <string name="fragment_settings_text_notification_create">Send on create</string>
+    <string name="fragment_settings_text_notification_update">Send on update</string>
 
     <string name="item_country_text_empty">Nothing found</string>
 

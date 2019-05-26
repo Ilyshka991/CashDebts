@@ -13,6 +13,7 @@ import com.pechuro.cashdebts.R
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_ADD_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.DebtActionsChannelGroup.CHANNEL_UPDATE_ID
 import com.pechuro.cashdebts.model.notification.NotificationConstants.NotificationIds.NOTIFICATION_UPDATE
+import com.pechuro.cashdebts.model.prefs.PrefsManager
 import com.pechuro.cashdebts.service.notification.NotificationCreateActionService
 import com.pechuro.cashdebts.ui.activity.main.MainActivity
 import javax.inject.Inject
@@ -20,7 +21,8 @@ import kotlin.random.Random
 
 class NotificationManager @Inject constructor(
     private val context: Context,
-    private val notificationManager: NotificationManagerCompat
+    private val notificationManager: NotificationManagerCompat,
+    private val prefsManager: PrefsManager
 ) {
 
     init {
@@ -30,6 +32,7 @@ class NotificationManager @Inject constructor(
     fun show(data: Map<String, String>) {
         when (data[NotificationStructure.CommonStructure.TYPE]) {
             NotificationStructure.Types.CREATE -> {
+                if (!prefsManager.settingNotificationCreate) return
                 val id = data[NotificationStructure.CreateStructure.ID]
                     ?: throw IllegalArgumentException("Id must be specified")
                 val personName =
@@ -40,6 +43,7 @@ class NotificationManager @Inject constructor(
                 showDebtAddNotification(NotificationCreateData(id, personName, value))
             }
             NotificationStructure.Types.UPDATE -> {
+                if (!prefsManager.settingNotificationUpdate) return
                 showDebtUpdateNotification()
             }
         }
