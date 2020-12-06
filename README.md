@@ -2,7 +2,7 @@
 
 Android app for managing debts
 
-[Download](https://github.com/Ilyshka991/Cash_Debts/releases) latest release
+[Download](https://github.com/Ilyshka991/CashDebts/releases) latest release
 
 [Read](docs/privacy_policy.md) our privacy policy
 
