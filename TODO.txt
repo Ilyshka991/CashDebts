@@ -1,2 +1,0 @@
-1. Debt items design
-2. Review colors and font sizes. Fix overlapping
